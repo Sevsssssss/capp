@@ -1,4 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
+import Parse from 'parse'
 
-createApp(App).mount('#app')
+Parse.initialize("capp", "master");
+Parse.serverURL = 'http://localhost:1337/parse'
+
+createApp(App).use(router).mount('#app')
+
