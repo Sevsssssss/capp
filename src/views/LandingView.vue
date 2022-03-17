@@ -1,17 +1,19 @@
 <template>
   <div>
-    <div>This is LandingView</div>
-    <button @click="login()" >Login</button>
     
+     <HeroSection/>
+     <InstructionSection/>
   </div>
 </template>
 
 <script>
-
+import HeroSection from "@/components/HeroSection.vue";
+import InstructionSection from "@/components/InstructionSection.vue";
 export default {
   name: "LandingView",
   components: {
-    
+    HeroSection,
+    InstructionSection
   },
   methods: {
     login() {
