@@ -62,10 +62,6 @@
     .label-xs {
       font-size: 10px;
     }
-    /* body {
-      background-color: theme("colors.light.200");
-      color: theme("colors.dark.300");
-    } */
   }
   @layer components {
     .btn-sm {
@@ -84,7 +80,7 @@
       border-radius: 5px;
     }
     .hero {
-      background-image: url("../assets/img/hero.jpg");
+      background-image: url("../assets/img/Hero.png");
     }
     /* .map {
       background-image: url("../assets/img/map.png");
