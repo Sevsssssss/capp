@@ -1,11 +1,11 @@
 <template>
- <div> This is Home View </div>
+ <div> This is HEI View </div>
 </template>
 
 <script>
 
 export default {
-  name: 'HomeView',
+  name: 'HeiView',
   components: {
  
   }

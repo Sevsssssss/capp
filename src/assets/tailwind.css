@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arimo&display=swap');
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer base {
+    h1,h2,h3,h4,h5,h6 {
+      @apply font-heading font-bold;
+    }
+    h1 {
+      @apply text-6xl;
+    }
+    h2 {
+      @apply text-4xl;
+    }
+    h3 {
+      @apply text-3xl;
+    }
+    h4 {
+      @apply text-2xl;
+    }
+    h5 {
+      @apply text-xl;
+    }
+    h6 {
+      @apply text-base;
+    }
+    body {
+      @apply font-body;
+    }
+    .lead-paragraph {
+      font-size: 1.375rem;
+    }
+    .body-l {
+      font-size: 1.25rem;
+    }
+    .body-m {
+      font-size: 1.125rem;
+    }
+    .body-text {
+      font-size: 1rem;
+    }
+    .body-small {
+      font-size: 0.875rem;
+    }
+    .label-xl {
+      font-size: 18px;
+    }
+    .label-l {
+      font-size: 16px;
+    }
+    .label-text {
+      font-size: 14px;
+    }
+    .label-s {
+      font-size: 12px;
+    }
+    .label-xs {
+      font-size: 10px;
+    }
+    /* body {
+      background-color: theme("colors.light.200");
+      color: theme("colors.dark.300");
+    } */
+  }
+  @layer components {
+    .btn-sm {
+      padding: 12px 24px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    .btn-m {
+      padding: 14px 32px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    .btn-l {
+      padding: 16px 48px;
+      font-size: 18px;
+      border-radius: 5px;
+    }
+    .hero {
+      background-image: url("../assets/img/hero.jpg");
+    }
+    /* .map {
+      background-image: url("../assets/img/map.png");
+    } */
+  }
+  @layer utilities {
+  }
