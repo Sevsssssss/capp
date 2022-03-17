@@ -1,4 +1,7 @@
 <template>
+<div>
+
+</div>
 <section class="flex flex-col ml-20">
     <!-- Hero -->
     <div class="flex flex-row p-5">
@@ -69,7 +72,7 @@
 
     </div>
 </section>
-<!-- <br>
+<br>
 <br>
 <section class="SectionTwo">
     <h2>How to Apply</h2>
@@ -90,10 +93,7 @@
         </div>
     </div>
 
-</section> -->
-<!-- <img alt="Vue logo" src="../assets/logo.png">
-
-<HelloWorld msg="Welcome to Your Vue.js App" /> -->
+</section>
 </template>
 
 <script>
