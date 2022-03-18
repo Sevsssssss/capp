@@ -1,7 +1,7 @@
 <template>
 <div class="bg-brand-white p-5 shadow-lg ">
     <div class="grid grid-cols-3">
-        <div iv class="flex flex-row space-x-3 bg-brand-white shadow-lg rounded-lg m-2 p-4" v-for="data in datas" :key="data">
+        <div class="flex flex-row space-x-3 bg-brand-white shadow-lg rounded-lg m-2 p-4" v-for="data in datas" :key="data">
             <div class="">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />

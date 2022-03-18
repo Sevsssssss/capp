@@ -1,7 +1,7 @@
 <template>
-<div class="flex flex-row justify-center items-center space-y-5 p-16 mx-2  ">
+<div class="flex xl:flex-row md:flex-col sm:flex-col xs:flex-col  justify-center items-center space-y-5 p-16 mx-2  ">
     <!-- Map -->
-    <div class="justify-center mt-6 pt-2">
+    <div class="justify-center mt-6 md:mt-3 sm:mt-2 xs:mt-1 pt-2 sm:pt-0 xs:pt-0">
         <img src="../assets/img/Map.png" alt="Map">
     </div>
     <!-- Links -->
@@ -40,7 +40,6 @@
                 </div>
             </div>
         </div>
-
         <div>
             <a :href="url" class="flex flex-row space-x-4">
                 <div class="text-lg tracking-wider text-brand-blue"> Get Direction</div>

@@ -1,5 +1,7 @@
 <template>
- <div> This is HEI View </div>
+ <div >
+
+ </div>
 </template>
 
 <script>

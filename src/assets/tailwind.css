@@ -62,6 +62,7 @@
     .label-xs {
       font-size: 10px;
     }
+   
   }
   @layer components {
     .btn-sm {
@@ -87,4 +88,5 @@
     } */
   }
   @layer utilities {
+  
   }
