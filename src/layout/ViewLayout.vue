@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="font-body">
     <div class="flex">
       <TopNavigation class="z-40" />
       <sidebar-menu 
-      :menu="menu" class="z-10" 
+      :menu="menu" class="z-10 " 
       @update:collapsed="toggle" 
       v-model="collapsed"
       >
