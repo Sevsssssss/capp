@@ -8,6 +8,7 @@ module.exports = {
         white: '#FFFFFF',
         yellow: '#F9DA25',
         red: '#C51930',
+        blue: '#0085FF'
 
       },
       state: {

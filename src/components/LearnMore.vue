@@ -17,7 +17,7 @@
 <script>
 export default {
     name: 'LearnMore',
-     
+
     data() {
         return {
 

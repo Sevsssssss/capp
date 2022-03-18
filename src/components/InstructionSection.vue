@@ -1,6 +1,6 @@
 <template>
 <!-- Apply for Section -->
-<div class="flex flex-col justify-center space-y-5 p-16 text-black-300 " >
+<div class="flex flex-col justify-center space-y-5 p-16 text-black-300 ">
     <!-- Title -->
     <div class="space-y-5 ">
         <div class="font-semibold lead-paragraph">How to Apply?</div>
@@ -10,7 +10,7 @@
     <div class="grid grid-cols-4 gap-4 ">
         <div class="max-w-sm rounded overflow-hidden shadow-lg p-8 text-left bg-brand-white  " v-for="apply in applyfor" :key="apply.id">
             <div class="pb-4 label-xl">{{apply.title}}</div>
-            <p class="label-text ove" >{{apply.info.substring(0, 80) + '..'}}<span class="text-brand-darkblue hover:text-brand-lightblue"> more.. </span> </p>
+            <p class="label-text ove">{{apply.info.substring(0, 80) + '..'}}<span class="text-brand-darkblue hover:text-brand-lightblue"> more.. </span> </p>
         </div>
     </div>
 </div>
@@ -51,5 +51,5 @@ export default {
         }
     },
     components: {},
-};  
+};
 </script>
