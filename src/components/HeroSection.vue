@@ -55,8 +55,8 @@
                             <button @click="ChedSupervisor" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Education Supervisor</button>
                             <button @click="RQAT" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">RQAT</button>
                             <button @click="Reporting" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Reporting</button>
+                            <button @click="HEI" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">HEI</button>
                         </div>
-
                     </div>
                 </form>
             </div>
@@ -90,6 +90,9 @@ export default {
             this.$router.push("/");
         },
         Reporting() {
+            this.$router.push("/");
+        },
+        HEI() {
             this.$router.push("/");
         },
         toggleModal() {
