@@ -1,18 +1,18 @@
 <template>
 <div>
     <section class="h-screen hero bg-cover bg-fixed bg-center text-brand-white">
-        <div class="flex flex-row space-x-20 ">
+        <div class="flex space-x-20 pl-5 ">
             <!-- Section for Logo and tile -->
-            <div class="flex flex-col p-20 space-y-20 ">
+            <div class="flex flex-col p-20 space-y-32 ">
                 <!-- LOGO -->
-                <div class="flex flex-row max-w-md space-x-5 ">
+                <div class="flex max-w-md space-x-5 ">
                     <div class="justify-start">
                         <img src="../assets/img/CHED_logo.png" alt="ChedLogo" width="90px" height="90px">
                     </div>
                     <div class="text-left  ">
-                        <div class="text-base font-semibold"> REPUBLIC OF THE PHILIPPINES </div>
+                        <div class="font-body font-semibold"> REPUBLIC OF THE PHILIPPINES </div>
                         <hr>
-                        <div class="text-base "> COMMISION ON HIGHER EDUCATION </div>
+                        <div class="label-text"> COMMISION ON HIGHER EDUCATION </div>
                         <p class="text-xs"> REGION OFFICE V </p>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!-- Section for Login -->
-            <div class="flex flex-col space-y-10 w-full max-w-md mt-5 bg-brand-white text-black-300 rounded-lg " v-if="showModal">
+            <div class="flex flex-col space-y-10 w-full max-w-md mt-16 bg-brand-white text-black-300 rounded-lg " v-if="showModal">
                 <div class=" flex justify-end pt-5 pr-5 " @click="showModal = false">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />

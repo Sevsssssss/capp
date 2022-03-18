@@ -8,7 +8,7 @@
     </div>
     <!-- Details -->
     <div class="grid grid-cols-4 gap-4 ">
-        <div class="max-w-sm rounded overflow-hidden shadow-lg p-8 text-left bg-brand-white  " v-for="apply in applyfor" :key="apply.id">
+        <div class="max-w-sm rounded overflow-hidden shadow-lg hover:shadow-grey-400 p-8 text-left bg-brand-white shad " v-for="apply in applyfor" :key="apply.id">
             <div class="pb-4 label-xl">{{apply.title}}</div>
             <p class="label-text ove">{{apply.info.substring(0, 80) + '..'}}<span class="text-brand-darkblue hover:text-brand-lightblue"> more.. </span> </p>
         </div>
