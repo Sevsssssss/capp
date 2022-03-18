@@ -1,16 +1,16 @@
 <template>
 <!-- Apply for Section -->
-<div class="flex flex-col justify-center space-y-5 p-16 text-black-300">
+<div class="flex flex-col justify-center space-y-5 p-16 text-black-300 " >
     <!-- Title -->
     <div class="space-y-5 ">
         <div class="font-semibold lead-paragraph">How to Apply?</div>
         <p class="justify-center ml-32 mr-32 label-text">Use these cards when you want to display content with an image, such as a blog post or product. They’re built with CSS grid to enable the 3-column layout. When you select the “Cards Grid Container,” you’ll see a red icon on the top </p>
     </div>
     <!-- Details -->
-    <div class="flex flex-row space-x-4">
-        <div class="text-left drop-shadow-xl rounded-md m-2 p-8 bg-brand-white" v-for="apply in applyfor" :key="apply.id">
+    <div class="grid grid-cols-4 gap-4 ">
+        <div class="max-w-sm rounded overflow-hidden shadow-lg p-8 text-left bg-brand-white  " v-for="apply in applyfor" :key="apply.id">
             <div class="pb-4 label-xl">{{apply.title}}</div>
-            <p class="label-text">{{apply.info}} <span class="text-brand-darkblue hover:text-brand-lightblue"> more.. </span> </p>
+            <p class="label-text ove" >{{apply.info.substring(0, 80) + '..'}}<span class="text-brand-darkblue hover:text-brand-lightblue"> more.. </span> </p>
         </div>
     </div>
 </div>
@@ -45,12 +45,11 @@ export default {
                 {
                     id: 4,
                     title: 'Wait for Certification',
-                    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.'
+                    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. '
                 },
             ]
         }
     },
     components: {},
-    methods: {},
-};
+};  
 </script>
