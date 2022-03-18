@@ -44,7 +44,7 @@
                     <div class="pb-20">
                         <div class="mb-6">
                             <label for="username" class="block mb-2 label-s font-semibold">Username</label>
-                            <input type="username" id="usaname" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100 focus:border-brand-lightblue block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter username" required="">
+                            <input type="text" id="usaname" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100 focus:border-brand-lightblue block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter username" required="">
                         </div>
                         <div class="mb-6">
                             <label for="password" class="block mb-2 label-s font-semibold dark:text-gray-300">Password</label>
