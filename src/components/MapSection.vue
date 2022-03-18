@@ -1,7 +1,7 @@
 <template>
 <div class="flex xl:flex-row md:flex-col sm:flex-col xs:flex-col  justify-center items-center space-y-5 p-16 mx-2  ">
     <!-- Map -->
-    <div class="justify-center mt-6 md:mt-3 sm:mt-2 xs:mt-1 pt-2 sm:pt-0 xs:pt-0">
+    <div class="justify-center mt-6 md:mt-3 sm:mt-2 xs:mt-1 sm:pt-0 hidden md:block">
         <img src="../assets/img/Map.png" alt="Map">
     </div>
     <!-- Links -->
