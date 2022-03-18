@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="font-body">
     <HeroSection />
     <InstructionSection />
     <LearnMore />
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import HeroSection from "@/components/HeroSection.vue";
+import HeroSection from "@/components//HeroSection.vue";
 import InstructionSection from "@/components/InstructionSection.vue";
 import LearnMore from "@/components/LearnMore.vue";
 import MapSection from "@/components/MapSection.vue";
