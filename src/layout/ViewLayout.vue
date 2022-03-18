@@ -17,6 +17,7 @@
           <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
             Copyright &copy; 2022 CHEDROV
           </p>
+          
           </div>
         </template>
       </sidebar-menu>

@@ -49,7 +49,14 @@
                             <label for="password" class="block mb-2 label-s font-semibold">Password</label>
                             <input type="password" id="password" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100  focus:border-brand-lightblue block w-full p-2.5 " placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" required="">
                         </div>
-                        <button @click="login" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Submit</button>
+                        <div class="flex-row space-x-2 space-y-2">
+                            <button @click="SuperAdmin" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Super Admin</button>
+                            <button @click="Admin" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Admin</button>
+                            <button @click="ChedSupervisor" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Education Supervisor</button>
+                            <button @click="RQAT" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">RQAT</button>
+                            <button @click="Reporting" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Reporting</button>
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -67,12 +74,23 @@ export default {
             showModal: false,
             title: 'CHED APPLICATION MANAGEMENTE SYSTEM',
             Info: 'Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur!',
-            
         }
     },
     methods: {
-        login() {
-          this.$router.push("/home");
+        SuperAdmin() {
+            this.$router.push("/home");
+        },
+        Admin() {
+            this.$router.push("/");
+        },
+         ChedSupervisor() {
+            this.$router.push("/");
+        },
+        RQAT() {
+            this.$router.push("/");
+        },
+        Reporting() {
+            this.$router.push("/");
         },
         toggleModal() {
             this.showModal = !this.showModal
