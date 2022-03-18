@@ -18,13 +18,13 @@
                 </div>
                 <!-- TITLE -->
                 <div class="flex flex-col text-left  max-w-xl space-y-10 ">
-                    <div>
+                    <div class="flex flex-col space-y-2">
                         <h1 class="font-bold text-3xl "> CHED APPLICATION MANAGEMENT</h1>
                         <p class="font-normal text-sm break-words "> Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur! </p>
                     </div>
 
                     <div class="justify-start">
-                        <button class="btn-sm bg-brand-darkblue hover:bg-brand-lightblue" v-if="!showModal" @click="toggleModal">Sign In</button>
+                        <button class="font-semibold btn-sm bg-brand-darkblue hover:bg-brand-lightblue" v-if="!showModal" @click="toggleModal">Sign In</button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </svg>
                 </div>
 
-                <form class="flex flex-col space-y-5 text-left p-10 mr-16 ml-16 ">
+                <form class="flex flex-col  space-y-5 text-left p-5 mr-16 ml-16 ">
                     <div class="text-left" >
                         <span class="text-brand-darkblue font-bold label-l">Sign In</span>
                         <p class="text-sm">Provide the HEIs credentials</p>
@@ -44,11 +44,11 @@
                     <div class="pb-20">
                         <div class="mb-6">
                             <label for="username" class="block mb-2 label-s font-semibold">Username</label>
-                            <input type="text" id="usaname" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100 focus:border-brand-lightblue block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter username" required="">
+                            <input type="text" id="usaname" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100 focus:border-brand-lightblue block w-full p-2.5 " placeholder="Enter username" required="">
                         </div>
                         <div class="mb-6">
                             <label for="password" class="block mb-2 label-s font-semibold dark:text-gray-300">Password</label>
-                            <input type="password" id="password" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                            <input type="password" id="password" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100  focus:border-brand-lightblue block w-full p-2.5 " required="">
                         </div>
 
                         <button @click="login" type="submit" class="btn-sm shadow text-brand-white bg-brand-darkblue hover:bg-brand-lightblue font-semibold py-2 px-4 rounded">Submit</button>

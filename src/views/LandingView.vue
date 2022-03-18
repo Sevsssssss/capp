@@ -1,11 +1,11 @@
 <template>
 <div>
-
     <HeroSection />
     <InstructionSection />
     <LearnMore />
     <MapSection />
     <SendMessageForm />
+    <FooterLP />
 </div>
 </template>
 
@@ -15,16 +15,18 @@ import InstructionSection from "@/components/InstructionSection.vue";
 import LearnMore from "@/components/LearnMore.vue";
 import MapSection from "@/components/MapSection.vue";
 import SendMessageForm from "@/components/SendMessageForm.vue";
+import FooterLP from "@/components/FooterLP.vue";
 
 export default {
     name: "LandingView",
     components: {
-    HeroSection,
-    InstructionSection,
-    LearnMore,
-    MapSection,
-    SendMessageForm
-},
+        HeroSection,
+        InstructionSection,
+        LearnMore,
+        MapSection,
+        SendMessageForm,
+        FooterLP,
+    },
     methods: {
         login() {
             this.$router.push("/home");
