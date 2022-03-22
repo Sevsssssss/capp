@@ -4,6 +4,7 @@ import ViewLayout from "../layout/ViewLayout.vue";
 import HomeView from "../views/HomeView.vue";
 import ApplicationView from "../views/ApplicationView.vue";
 import HeiView from "../views/HeiView.vue";
+import AddHeiView from "../views/AddHeiView.vue";
 import RqatView from "../views/RqatView.vue";
 import EmployeesView from "../views/EmployeesView.vue";
 import EvaluationInsView from "../views/EvaluationInsView.vue";
@@ -33,6 +34,11 @@ const routes = [
         path: "/hei",
         name: "hei",
         component: HeiView,
+      },
+      {
+        path: "/addhei",
+        name: "addhei",
+        component: AddHeiView,
       },
       {
         path: "/rqat",
