@@ -23,7 +23,7 @@
                         <p class="text-sm break-words"> {{ Info }} </p>
                     </div>
                     <div class="">
-                        <button class="font-semibold btn-sm bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
+                        <button class="font-semibold btn btn-primary bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                             <input type="password" id="password" class="bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100  focus:border-brand-lightblue block w-full p-2.5 " placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" required="">
                         </div>
                         <div class="flex-row space-x-2 space-y-2">
-                            <button @click="SuperAdmin" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Super Admin</button>
+                            <button @click="SuperAdmin" type="submit" class="btn btn-primary font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Super Admin</button>
                             <!-- <button @click="Admin" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Admin</button>
                             <button @click="ChedSupervisor" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Education Supervisor</button>
                             <button @click="RQAT" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">RQAT</button>
