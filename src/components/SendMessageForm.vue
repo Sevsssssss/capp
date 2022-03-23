@@ -9,7 +9,7 @@
             <div class="flex flex-col">
                 <div class="mb-6 text-left ">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">HEI Name</label>
-                    <input type="text" id="usaname" class="bg-brand-white border border-grey-400 text-sm rounded-md focus:ring-grey-300  block w-full p-2.5 dark:bg-grey-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-black-200 dark:focus:ring-brand-blue dark:focus:border-brand-blue" placeholder="Enter HEI name" required="">
+                    <input type="text" id="usaname" class="input input-bordered w-full max-w-xs xl:input-md md:input-md sm:input-sm xs:input-xs" placeholder="Enter HEI name" required="">
                 </div>
                 <div class="mb-6 text-left">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">You name</label>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="pt-1 text-left">
-        <button class=" btn-sm shadow text-brand-white bg-brand-darkblue hover:bg-brand-lightblue font-semibold py-2 px-4 rounded">Submit</button>
+        <button class="font-semibold btn btn-primary bg-brand-darkblue hover:bg-blue-100 border-none">Submit</button>
     </div>
     </div>
 </div>

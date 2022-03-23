@@ -1,7 +1,7 @@
 module.exports = {
   content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   daisyui: {
-    styled: false,
+    styled: true,
     themes: false,
     base: true,
     utils: true,
@@ -51,6 +51,7 @@ module.exports = {
       body: ['Arimo', 'sans-serif']
     },
     screens: {
+      xxs: '320px',
       xs: '500px',
       sm: '640px',
       md: '768px',
