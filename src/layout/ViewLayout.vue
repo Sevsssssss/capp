@@ -2,10 +2,11 @@
   <div class="font-body">
     <div class="flex">
       <TopNavigation class="z-40" />
-      <sidebar-menu 
-      :menu="menu" class="z-10 " 
-      @update:collapsed="toggle" 
-      v-model="collapsed"
+      <sidebar-menu
+        :menu="menu"
+        class="z-10"
+        @update:collapsed="toggle"
+        v-model="collapsed"
       >
         <template v-slot:toggle-icon><MenuOpen class="h-6" /></template>
         <template v-slot:footer
@@ -13,36 +14,35 @@
             class="p-5 grid grid-cols-1 content-center"
             :class="collapsed ? '' : 'hidden'"
           >
-          <button class="flex pl-20 pb-10 text-blue-100"><Logout class="h-6" />Logout</button>
-          <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
-            Copyright &copy; 2022 CHEDROV
-          </p>
-          
+            <button class="flex pl-20 pb-10 text-blue-100">
+              <Logout class="h-6" />Logout
+            </button>
+            <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
+              Copyright &copy; 2022 CHEDROV
+            </p>
           </div>
         </template>
       </sidebar-menu>
-        <div
-          class="w-full content"
-          :class="
-            collapsed
-              ? 'pl-[290px]  transition-width duration-300'
-              : 'pl-[65px] transition-width duration-300'
-          "
-        >
-          <div class="breadcrumbs mt-14 w-full p-2 fixed shadow-sm text-left">
-            Breadcrumbs
-          </div>
-          <div class="main-content h-screen pt-28 bg-grey-700">
-            <router-view />
-          </div>
+      <div
+        class="w-full content"
+        :class="
+          collapsed
+            ? 'pl-[290px]  transition-width duration-300'
+            : 'pl-[65px] transition-width duration-300'
+        "
+      >
+        <BreadCrumbs :menu="menu" @selected="selected"/>
+        <div class="main-content h-screen pt-28 bg-grey-700">
+          <router-view />
         </div>
+      </div>
     </div>
   </div>
 </template>
 <style>
 .v-sidebar-menu {
   z-index: 10;
-  box-shadow: -15px 0 20px 0 ;
+  box-shadow: -15px 0 20px 0;
   padding-top: 150px;
   background-color: theme("colors.brand.white");
 }
@@ -90,17 +90,18 @@
   left: -100%;
   transition: all 0.5s ease-in-out;
 }
-.footer{
+.footer {
   vertical-align: middle;
 }
 </style>
 <script>
 import TopNavigation from "@/components/TopNavigation.vue";
+import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import { SidebarMenu } from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 
-import MenuOpen from 'vue-material-design-icons/MenuOpen.vue';
-import Logout from 'vue-material-design-icons/Logout.vue';
+import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
+import Logout from "vue-material-design-icons/Logout.vue";
 
 import HomeOutline from "@/assets/sidebar_icons/home-outline.svg";
 import FileOutline from "@/assets/sidebar_icons/file-outline.svg";
@@ -111,7 +112,8 @@ export default {
     TopNavigation,
     SidebarMenu,
     MenuOpen,
-    Logout
+    Logout,
+    BreadCrumbs,
   },
 
   methods: {
@@ -122,68 +124,65 @@ export default {
 
   data() {
     return {
-        collapsed: true,
-
-        menu:[
-            {
-            href: "/home",
-            title: "Home",
-            icon: {
+      collapsed: true,
+      menu: [
+        {
+          href: "/home",
+          title: "Home",
+          icon: {
             element: "img",
             attributes: { src: HomeOutline },
-            }
-            },
-            {
-            href: "/application",
-            title: "Application",
-            icon: {
+          },
+        },
+        {
+          href: "/application",
+          title: "Application",
+          icon: {
             element: "img",
             attributes: { src: FileOutline },
-            }
-            },
-            {
-            href: "/hei",
-            title: "HEIs Account",
-            icon: {
+          },
+        },
+        {
+          href: "/hei",
+          title: "HEIs Account",
+          icon: {
             element: "img",
             attributes: { src: HomeOutline },
-            }
-            },
-            {
-            href: "/rqat",
-            title: "RQAT Account",
-            icon: {
+          },
+        },
+        {
+          href: "/rqat",
+          title: "RQAT Account",
+          icon: {
             element: "img",
             attributes: { src: HomeOutline },
-            }
-            },
-            {
-            href: "/employees",
-            title: "Employees",
-            icon: {
+          },
+        },
+        {
+          href: "/employees",
+          title: "Employees",
+          icon: {
             element: "img",
             attributes: { src: HomeOutline },
-            }
-            },
-            {
-            href: "/evaluationins",
-            title: "Evaluation Ins.",
-            icon: {
+          },
+        },
+        {
+          href: "/evaluationins",
+          title: "Evaluation Ins.",
+          icon: {
             element: "img",
             attributes: { src: HomeOutline },
-            }
-            },
-            {
-            href: "/reporting",
-            title: "Reporting",
-            icon: {
+          },
+        },
+        {
+          href: "/reporting",
+          title: "Reporting",
+          icon: {
             element: "img",
             attributes: { src: HomeOutline },
-            }
-            },
-
-            
-        ]
+          },
+        },
+      ],
     };
   },
 };

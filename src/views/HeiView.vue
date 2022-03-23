@@ -224,7 +224,7 @@ export default {
   components: {},
   methods: {
     addHei() {
-      this.$router.push("/addhei");
+      this.$router.push("/hei/add");
     },
   },
 };

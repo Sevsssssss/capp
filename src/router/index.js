@@ -36,7 +36,7 @@ const routes = [
         component: HeiView,
       },
       {
-        path: "/addhei",
+        path: "/hei/add",
         name: "addhei",
         component: AddHeiView,
       },
