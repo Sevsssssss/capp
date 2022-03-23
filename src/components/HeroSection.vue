@@ -23,7 +23,7 @@
                         <p class="text-sm break-words"> {{ Info }} </p>
                     </div>
                     <div class="">
-                        <button class="font-semibold btn btn-primary bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
+                        <button class="font-semibold btn btn-primary border-none bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
                     </div>
                 </div>
             </div>

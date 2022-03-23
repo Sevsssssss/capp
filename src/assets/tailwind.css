@@ -69,13 +69,6 @@
   }
 }
 @layer components {
-  .btn-darkblue {
-    font-weight: 600;
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-    background-color: rgb(14 51 133 / var(--tw-bg-opacity));
-    background-color: rgb(0 133 255 / var(--tw-bg-opacity));
-  }
   .btn-sm {
     padding: 12px 24px;
     font-size: 14px;
