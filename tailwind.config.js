@@ -1,14 +1,14 @@
 module.exports = {
   content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   daisyui: {
-    styled: false,
+    styled: true,
     themes: false,
     base: true,
     utils: true,
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: "light",
+    darkTheme: "dark",
   },
   theme: {
     colors: {

@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="pt-1 text-left">
-        <button class=" btn-sm shadow text-brand-white bg-brand-darkblue hover:bg-brand-lightblue font-semibold py-2 px-4 rounded">Submit</button>
+        <button class="font-semibold btn btn-primary bg-brand-darkblue hover:bg-blue-100">Submit</button>
     </div>
     </div>
 </div>
