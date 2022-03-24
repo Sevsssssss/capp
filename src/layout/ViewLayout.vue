@@ -65,11 +65,10 @@
   border-radius: 0 0 0 0;
 }
 .v-sidebar-menu .vsm--link {
-  font-family: theme("fontFamily.body");
+  /* font-family: theme("fontFamily.body"); */
   padding: 5px 10px 5px 10px;
   margin-top: 5px;
   margin-bottom: 5px;
-  font-weight: semibold;
   color: theme("colors.grey.300");
 }
 .v-sidebar-menu .vsm--link:hover {
@@ -81,7 +80,6 @@
   box-shadow: none !important;
 }
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
-  
   fill: theme("colors.brand.darkblue");
   background-color:  transparent;
 }
@@ -131,9 +129,9 @@ export default {
         {
           href: "/home",
           title: "Home",
-          icon: {
+           icon: {
             element: "img",
-            attributes: { src: HomeOutline },
+            attributes: { src: FileOutline },
           },
         },
         {
