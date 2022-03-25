@@ -37,7 +37,7 @@
           lg:order-last lg:right-0 lg:absolute lg:pr-10
         "
       >
-        <button><BellOutline class="h-6" /></button>
+        <button><BellOutline class="h-6 " /></button>
       </div>
     </div>
   </div>
