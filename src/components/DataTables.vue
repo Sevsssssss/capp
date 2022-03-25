@@ -30,9 +30,9 @@
         </tr>
     </thead>
     <!-- head-body -->
-    <thead class="">
+    <thead class="bg-grey-500">
         <tr class="">
-            <th class="font-semibold text-grey-300" v-for="header in headers" :key="header">
+            <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
                 {{header.title}}
             </th>
         </tr>
@@ -49,7 +49,8 @@
                 </div>
             </td>
             <td>{{ table.type }}</td>
-            <td>{{ table.email }}</td>
+            <td>{{ table.program }}</td>
+            <td>{{ table.status }}</td>
             <td>
                 <div class="flex flex-row ">
                     <div class="text-grey-200 hover:text-brand-blue">

@@ -1,5 +1,5 @@
 <template>
-<table class="m-5 bg-brand-white shadow-lg text-left table-normal w-full">
+<table class="m-3 bg-brand-white shadow-lg text-left table-normal w-full">
     <!-- head -->
     <thead>
         <tr>
@@ -30,9 +30,9 @@
         </tr>
     </thead>
     <!-- head-body -->
-    <thead class="">
+    <thead class="bg-grey-500">
         <tr class="">
-            <th class="font-semibold text-grey-300" v-for="header in headers" :key="header">
+            <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
                 {{header.title}}
             </th>
         </tr>

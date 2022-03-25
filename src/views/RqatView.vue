@@ -1,5 +1,5 @@
 <template>
-  <div class="" style="padding: 10px">
+  <div class="m-3">
     <DataTables :headers="headers" :tables="tables" />
   </div>
 </template>
