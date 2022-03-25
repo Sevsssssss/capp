@@ -1,29 +1,6 @@
-
-
 <template>
   <div class="" style="padding: 10px">
-    <div class="grid grid-cols-4">
-      <div
-        class="hei-cont space-x-3 bg-brand-white shadow-lg rounded-lg m-3 p-6"
-        v-for="data in datas"
-        :key="data"
-      >
-        <div class="column">
-          <div class="flex flex-row">
-            <div>
-              <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"
-                />
-              </svg>
-            </div>
-            <div class="hei-label font-semibold">{{ data.title }}</div>
-          </div>
-          <footer class="hei-data">{{ data.num }}</footer>
-        </div>
-      </div>
-    </div>
+    <DataCards :datas="datas" />
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
       <table class="hei-table table-normal w-full">
         <!-- head -->
@@ -77,8 +54,8 @@
         </thead>
         <!-- head-body -->
         <thead class="hei-table">
-          <tr class="hei-table" >
-            <th v-for="header in headers" :key="header" >{{header.title}}</th>
+          <tr class="hei-table">
+            <th v-for="header in headers" :key="header">{{ header.title }}</th>
           </tr>
         </thead>
         <tbody class="hei-table">
@@ -153,33 +130,49 @@
 </template>
 
 <script>
+import DataCards from "@/components//DataCards.vue";
+
 export default {
   name: "HeiView",
   data() {
     return {
       headers: [
-        { title: "INSTITUTIONAL CODE" },
-        { title: "HEI NAME" },
-        { title: "TYPE" },
-        { title: "EMAIL" },
-        { title: "ACTION" },
+        {
+          title: "INSTITUTIONAL CODE",
+        },
+        {
+          title: "HEI NAME",
+        },
+        {
+          title: "TYPE",
+        },
+        {
+          title: "EMAIL",
+        },
+        {
+          title: "ACTION",
+        },
       ],
       datas: [
         {
           title: "STATE UNIVERSITIES AND COLLEGES",
           num: 46,
+          color: "orange",
         },
         {
           title: "LOCAL UNIVERSITIES AND COLLEGES",
           num: 23,
+          color: "blue",
         },
         {
           title: "PRIVATE COLLEGES",
           num: 57,
+          color: "violet",
         },
         {
           title: "OTHER GOVERNMENT SCHOOLS",
           num: 23,
+          color: "green",
         },
       ],
       tables: [
@@ -221,7 +214,7 @@ export default {
       ],
     };
   },
-  components: {},
+  components: {DataCards},
   methods: {
     addHei() {
       this.$router.push("/hei/add");
@@ -231,47 +224,5 @@ export default {
 </script>
 
 <style>
-.icon-box {
-  height: 10px;
-  width: 10px;
-  color: #8fa0b9;
-}
 
-.hei-data {
-  text-align: left;
-  padding-top: 30px;
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 38px;
-  /* identical to box height */
-
-  display: flex;
-  align-items: center;
-}
-
-.hei-name {
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 17px;
-  /* identical to box height */
-
-  /* Fonts/Primary */
-
-  color: #25213b;
-}
-
-.hei-address {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  /* identical to box height */
-
-  letter-spacing: 0.05em;
-
-  color: #919191;
-}
-
-.hei-table {
-  text-align: left;
-}
 </style>

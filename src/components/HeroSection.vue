@@ -1,7 +1,7 @@
 <template>
 <div class="text-brand-white">
     <section class="h-screen hero bg-cover bg-fixed bg-center ">
-        <div class="flex xl:flex-row md:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xs:items-center md:items-center xl:items-center">
+        <div class="flex xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xs:items-center md:items-center xl:items-center">
             <!-- Section for Logo and tile -->
             <div class="flex-col  space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14  xl:p-20 md:p-20 sm:p-10 xs:p-10">
                 <!-- LOGO -->
@@ -12,7 +12,7 @@
                     <div class="">
                         <div class="font-semibold"> REPUBLIC OF THE PHILIPPINES </div>
                         <hr>
-                        <div class="label-text"> COMMISION ON HIGHER EDUCATION </div>
+                        <div class="label-text text-brand-white"> COMMISION ON HIGHER EDUCATION </div>
                         <p class="text-xs"> REGION OFFICE V </p>
                     </div>
                 </div>
@@ -23,12 +23,12 @@
                         <p class="text-sm break-words"> {{ Info }} </p>
                     </div>
                     <div class="">
-                        <button class="font-semibold btn btn-primary bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
+                        <button class="font-semibold btn btn-primary border-none bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
                     </div>
                 </div>
             </div>
             <!-- Section for Login -->
-            <div class="flex-col  xl:relative md:absolute sm:absolute xs:absolute  xl:space-y-10  w-full max-w-md mt-10 bg-brand-white hover:shadow-grey-200 text-black-300 rounded-lg " v-if="showModal">
+            <div class="flex-col  xl:relative md:absolute xxs:absolute  xl:space-y-10  w-full max-w-md mt-10 bg-brand-white hover:shadow-grey-200 text-black-300 rounded-lg " v-if="showModal">
                 <div class="flex justify-end pt-5 pr-5 " @click="showModal = false">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />

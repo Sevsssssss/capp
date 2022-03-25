@@ -67,15 +67,82 @@
   .label-xs {
     font-size: 10px;
   }
+
+
+
+  .hei-cont {
+    height: 150px;
+     display: flex;
+  }
+  
+  .hei-data {
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 38px;
+    flex-direction: column;
+    vertical-align: end;
+    color:#1F4173;
+    display: inline-block;
+    
+  }
+  
+  .hei-address {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    /* identical to box height */
+    letter-spacing: 0.05em;
+    color: #919191;
+  }
+  
+  .hei-table {
+    text-align: left;
+  }
+  
+  .homeIcon {
+    height: 35px;
+    width: 35px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .homeIcon.orange {
+    fill: #fa582e;
+    background-color: rgba(250, 88, 46, 0.15);
+  }
+  
+  .homeIcon.blue {
+    fill: #0053d9;
+    background-color: rgba(0, 67, 212, 0.15);
+  }
+  
+  .homeIcon.violet {
+    fill: #620cce;
+    background-color: rgba(96, 8, 205, 0.15);
+  }
+  
+  .homeIcon.green {
+    fill: #04ad48;
+    background-color: rgba(5, 174, 74, 0.15);
+  }
+
+
+  .homeIcon.pink {
+    fill: #FF49CC;
+    background-color: rgba(255, 73, 204, 0.15);
+  }
+
+  
+  
+  .icon {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+  }
 }
 @layer components {
-  .btn-darkblue {
-    font-weight: 600;
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-    background-color: rgb(14 51 133 / var(--tw-bg-opacity));
-    background-color: rgb(0 133 255 / var(--tw-bg-opacity));
-  }
   .btn-sm {
     padding: 12px 24px;
     font-size: 14px;
@@ -93,6 +160,7 @@
   }
   .hero {
     background-image: url("../assets/img/Hero.png");
+    place-items: normal;
   }
   /* .map {
       background-image: url("../assets/img/map.png");

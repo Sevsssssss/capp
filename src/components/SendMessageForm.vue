@@ -1,32 +1,35 @@
 <template>
-<div class="bg-brand-lightblue/10 p-10 flex justify-center items-center">
-    <div class=" flex flex-col space-y-1">
+<div class="bg-brand-lightblue/10 xxl:p-10 xl:p-10 xxs:p-12 flex justify-center items-center">
+    <div class=" flex flex-col xxl:space-y-1 xl:space-y-1 sm:space-y-0 xs:space-y-0 xxs:space-y-0">
+        <!-- Send message title -->
         <div class="text-left pb-4">
-            <span class=" text-2xl font-bold ">Send a Message</span>
-            <img class="h-1 w-14 rounded-lg " src="../assets/img/line.png" alt="line">
+            <span class=" xxl:text-2xl xl:text-2xl xxs:label-l font-bold ">Send a Message</span>
+            <img class="h-1 xxl:w-14 xl:w-14 sm:w-10 xs:w-8 xxs:w-8 rounded-lg " src="../assets/img/line.png" alt="line">
         </div>
-        <div class="flex flex-row space-x-10">
+        <!-- Input / label -->
+        <div class="flex flex-row xxl:space-x-10 md:space-x-8 xxs:space-x-4">
             <div class="flex flex-col">
-                <div class="mb-6 text-left ">
+                <div class="xxl:mb-6 md:mb-6 xxs:mb-2  text-left ">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">HEI Name</label>
-                    <input type="text" id="usaname" class="bg-brand-white border border-grey-400 text-sm rounded-md focus:ring-grey-300  block w-full p-2.5 dark:bg-grey-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-black-200 dark:focus:ring-brand-blue dark:focus:border-brand-blue" placeholder="Enter HEI name" required="">
+                    <input type="text" id="usaname" class="input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter HEI name" required="">
                 </div>
-                <div class="mb-6 text-left">
+                <div class="xxl:mb-6 md:mb-6 xxs:mb-2 text-left">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">You name</label>
-                    <input type="text" id="usaname" class=" bg-brand-white border border-grey-400 text-sm rounded-md focus:ring-grey-300  block w-full p-2.5 dark:bg-grey-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-black-200 dark:focus:ring-brand-blue dark:focus:border-brand-blue" placeholder="Enter your name" required="">
+                    <input type="text" id="usaname" class=" input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter your name" required="">
                 </div>
-                <div class="mb-6 text-left">
+                <div class="xxl:mb-6 md:mb-6 xxs:mb-2 text-left">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">Email Address</label>
-                    <input type="email" id="usaname" class=" bg-brand-white border border-grey-400 text-sm rounded-md focus:ring-grey-300  block w-full p-2.5 dark:bg-grey-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-black-200 dark:focus:ring-brand-blue dark:focus:border-brand-blue" placeholder="Enter email address" required="">
+                    <input type="email" id="usaname" class="input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter email address" required="">
                 </div>
             </div>
             <div class="flex flex-col w-64 text-left ">
                 <label for="username" class="tracking-wider block mb-2 label-s font-semibold">Message</label>
-                <textarea v-model="message" placeholder="Message Something" class="h-56 w-full bg-brand-white border border-grey-400 text-sm rounded-md focus:ring-grey-300  p-2.5 dark:bg-grey-700 dark:border-gray-600 dark:placeholder-grey-200 dark:text-black-200 dark:focus:ring-brand-blue dark:focus:border-brand-blue"></textarea>
+                <textarea v-model="message" placeholder="Message Something" class="input input-bordered w-full max-w-xs p-2 xxl:input-md md:input-md xxs:input-sm"></textarea>
             </div>
         </div>
+        <!-- button -->
         <div class="pt-1 text-left">
-        <button class="font-semibold btn btn-primary bg-brand-darkblue hover:bg-blue-100">Submit</button>
+        <button class="btn btn-sm sm:btn-sm lg:btn-md xxl:btn-md bg-brand-darkblue hover:bg-blue-100 border-none">Submit</button>
     </div>
     </div>
 </div>

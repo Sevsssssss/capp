@@ -103,8 +103,12 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
 
-import HomeOutline from "@/assets/sidebar_icons/home-outline.svg";
-import FileOutline from "@/assets/sidebar_icons/file-outline.svg";
+import FileOutline from "@/assets/sidebar_icons/file-3-line.svg";
+import BankLine from "@/assets/sidebar_icons/bank-line.svg";
+import ClipboardLine from "@/assets/sidebar_icons/clipboard-line.svg";
+import GroupLine from "@/assets/sidebar_icons/group-line.svg";
+import FileChartOutline from "@/assets/sidebar_icons/file-chart-line.svg";
+import TeamLine from "@/assets/sidebar_icons/team-line.svg";
 
 export default {
   name: "ViewLayout",
@@ -127,14 +131,6 @@ export default {
       collapsed: true,
       menu: [
         {
-          href: "/home",
-          title: "Home",
-          icon: {
-            element: "img",
-            attributes: { src: HomeOutline },
-          },
-        },
-        {
           href: "/application",
           title: "Application",
           icon: {
@@ -147,7 +143,7 @@ export default {
           title: "HEIs Account",
           icon: {
             element: "img",
-            attributes: { src: HomeOutline },
+            attributes: { src: BankLine },
           },
         },
         {
@@ -155,7 +151,7 @@ export default {
           title: "RQAT Account",
           icon: {
             element: "img",
-            attributes: { src: HomeOutline },
+            attributes: { src: TeamLine },
           },
         },
         {
@@ -163,7 +159,7 @@ export default {
           title: "Employees",
           icon: {
             element: "img",
-            attributes: { src: HomeOutline },
+            attributes: { src: GroupLine },
           },
         },
         {
@@ -171,7 +167,7 @@ export default {
           title: "Evaluation Ins.",
           icon: {
             element: "img",
-            attributes: { src: HomeOutline },
+            attributes: { src: ClipboardLine },
           },
         },
         {
@@ -179,7 +175,7 @@ export default {
           title: "Reporting",
           icon: {
             element: "img",
-            attributes: { src: HomeOutline },
+            attributes: { src: FileChartOutline },
           },
         },
       ],

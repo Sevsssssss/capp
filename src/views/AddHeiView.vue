@@ -1,7 +1,7 @@
 
 
 <template>
-  <div class="main-page flex justify-center items-center" style="padding: 10px">
+  <div class="main-page flex justify-center items-center p-10">
     <div
       class="
         card
