@@ -64,6 +64,14 @@
   left: 0;
   border-radius: 0 0 0 0;
 }
+
+.v-sidebar-menu .vsm--mobile-bg {
+  background-color: theme("colors.grey.500");
+}
+.v-sidebar-menu.vsm_collapsed .vsm--link_active {
+  background-color: theme("colors.grey.500");
+  color: theme("colors.brand.blue");
+}
 .v-sidebar-menu .vsm--link {
   font-family: theme("fontFamily.heading");
   padding: 5px 10px 5px 10px;
@@ -80,10 +88,10 @@
   box-shadow: none !important;
 }
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
-  fill: theme("colors.brand.darkblue");
   background-color: transparent;
 }
-.v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link:hover .vsm--icon {
+
+.v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
   background-color: transparent;
 }
 .hide {
