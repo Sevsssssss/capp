@@ -32,6 +32,7 @@
             </td>
         </tr>
     </tbody>
+
     <tfoot>
         <tr>
             <th>TOTAL HEI: 40/100</th>

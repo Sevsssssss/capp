@@ -1,5 +1,5 @@
 <template>
-  <div class="font-body">
+  <div class="">
     <div class="flex">
       <TopNavigation class="z-40" />
       <sidebar-menu
@@ -14,7 +14,7 @@
             class="p-5 grid grid-cols-1 content-center"
             :class="collapsed ? '' : 'hidden'"
           >
-            <button class="flex pl-20 pb-10 text-blue-100">
+            <button class="flex pl-20 pb-5 text-blue-100">
               <Logout class="h-6" />Logout
             </button>
             <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
@@ -32,7 +32,7 @@
         "
       >
         <BreadCrumbs :menu="menu" @selected="selected"/>
-        <div class="main-content h-screen pt-28 bg-grey-700">
+        <div class="main-content h-screen pt-28 bg-grey-700 ">
           <router-view />
         </div>
       </div>
@@ -63,9 +63,18 @@
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
   left: 0;
   border-radius: 0 0 0 0;
+   transform: rotate(180deg);
+}
+
+.v-sidebar-menu .vsm--mobile-bg {
+  background-color: theme("colors.grey.500");
+}
+.v-sidebar-menu.vsm_collapsed .vsm--link_active {
+  background-color: theme("colors.grey.500");
+  color: theme("colors.brand.blue");
 }
 .v-sidebar-menu .vsm--link {
-  font-family: theme("fontFamily.heading");
+  /* font-family: theme("fontFamily.body"); */
   padding: 5px 10px 5px 10px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -80,10 +89,10 @@
   box-shadow: none !important;
 }
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
-  fill: theme("colors.brand.darkblue");
   background-color: transparent;
 }
-.v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link:hover .vsm--icon {
+
+.v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
   background-color: transparent;
 }
 .hide {

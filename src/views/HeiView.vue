@@ -3,7 +3,7 @@
     <DataCards :datas="datas" />
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px;">
         <div class="top-row flex flex-row" style="justify-content: space-between;">
-            <TableTopLeft/>
+            <TableTopLeft />
 
             <div class="right-side flex flex-row">
                 <div class="month-sort flex flex-row">
@@ -15,13 +15,21 @@
                         <option>Others</option>
                     </select>
                 </div>
-
-                <button @click="addHei()" class="btn btn-primary1 bg-brand-darkblue">
-                    <div class="flex flex-row add-hei-content">
-                        <svg style="fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"/></svg>
+                <button @click="addHei()" class="
+                btn btn-md
+                bg-brand-darkblue
+                hover:bg-brand-blue
+                border-none
+                p-2
+              ">
+                    <div class="flex flex-row">
+                        <svg style="fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" /></svg>
                         <div class="btn-text">Add HEI</div>
                     </div>
                 </button>
+                
             </div>
         </div>
         <DataTables :headers="headers" :tables="tables" />
@@ -168,7 +176,7 @@ tr:nth-child(1) {
 }
 
 .month-sort {
-    width: 120px;
+    width: 130px;
     align-self: center;
     justify-content: center;
 }
@@ -198,7 +206,7 @@ tr:nth-child(1) {
     align-items: center;
 }
 
-.hei-table-head{
-  font-size: 12px;
+.hei-table-head {
+    font-size: 12px;
 }
 </style>
