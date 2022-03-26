@@ -1,5 +1,16 @@
 <template>
 <div class="m-3">
+    <div class="flex flex-row justify-between px-2">
+        <div class="dropdown">
+            <label tabindex="0" class="btn m-1 text-grey-200 bg-transparent hover:bg-transparent hover:text-blue-100 hover:border-blue-100">Application</label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>HEI ACCOUNT</a></li>
+                <li><a>RQAT ACCOUNT</a></li>
+                 <li><a>EMPLOYEES</a></li>
+            </ul>
+        </div>
+        <button class="m-1 btn btn-normal border-none bg-brand-darkblue hover:bg-blue-100">Export</button>
+    </div>
     <table class="m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
         <!-- head -->
         <thead>
@@ -17,20 +28,20 @@
                     </div>
                 </th>
                 <th></th>
-                 <th></th>
+                <th></th>
                 <div class="flex flex-row pt-2 ">
-                <th class="absolute" style="right: 20rem">
-                    <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">All</button>
-                </th>
-                <th class="absolute" style="right: 13.6rem">
-                    <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approval</button>
-                </th>
-                 <th class="absolute" style="right: 7rem">
-                    <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approved</button>
-                </th>
-                 <th class="absolute" style="right: 1rem">
-                    <button class="btn btn-sm text-grey-200 bg-grey-500 hover:text-state-100 hover:bg-grey-500 border-none p-2">Revision</button>
-                </th>
+                    <th class="absolute" style="right: 20rem">
+                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">All</button>
+                    </th>
+                    <th class="absolute" style="right: 13.6rem">
+                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approval</button>
+                    </th>
+                    <th class="absolute" style="right: 7rem">
+                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approved</button>
+                    </th>
+                    <th class="absolute" style="right: 1rem">
+                        <button class="btn btn-sm text-grey-200 bg-grey-500 hover:text-state-100 hover:bg-grey-500 border-none p-2">Revision</button>
+                    </th>
                 </div>
             </tr>
         </thead>
@@ -57,9 +68,9 @@
                 <td class="font-normal ">{{ table.type }}</td>
                 <td class="font-normal ">{{ table.program }}</td>
                 <td class="font-normal ">
-                 
+
                     <button class="btn btn-sm p-2 font-normal"> {{ table.status }}</button>
-                  </td>
+                </td>
                 <td>
                     <div class="flex flex-row ">
                         <a class="link link-primary hover:text-brand-darkblue text-brand-blue pr-2">view</a>
@@ -136,33 +147,6 @@ export default {
                     title: "ACTION"
                 },
             ],
-
-            datas: [{
-                    title: "FOR APPROVAL",
-                    num: 300,
-                    color: "orange",
-                },
-                {
-                    title: "FOR REVISION",
-                    num: 300,
-                    color: "blue",
-                },
-                {
-                    title: "FOR ISSUANCE",
-                    num: 300,
-                    color: "violet",
-                },
-                {
-                    title: "FOR EVALUATION",
-                    num: 300,
-                    color: "green",
-                },
-                {
-                    title: "FOR COMPLETION",
-                    num: 300,
-                    color: "pink",
-                },
-            ],
             tables: [{
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
@@ -188,7 +172,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                     status: "APPROVAL",
+                    status: "APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -197,7 +181,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                     status: "APPROVAL",
+                    status: "APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -211,8 +195,7 @@ export default {
             ],
         };
     },
-    components: {
-    },
+    components: {},
 };
 </script>
 
