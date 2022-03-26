@@ -9,7 +9,13 @@
                  <li><a>EMPLOYEES</a></li>
             </ul>
         </div>
-        <button class="m-1 btn btn-normal border-none bg-brand-darkblue hover:bg-blue-100">Export</button>
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn m-1  border-none bg-brand-darkblue hover:bg-blue-100">Export</label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>PDF</a></li>
+                <li><a>EXEL</a></li>
+            </ul>
+        </div>
     </div>
     <table class="m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
         <!-- head -->
