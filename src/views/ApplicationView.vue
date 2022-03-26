@@ -1,7 +1,7 @@
 <template>
-<div class="" style="padding: 10px">
+<div class="m-3">
     <DataCards :datas="datas" />
-    <table class="table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
+    <table class="m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
         <!-- head -->
         <thead>
             <tr>
@@ -19,21 +19,20 @@
                 </th>
                 <th></th>
                  <th></th>
-                <div class="flex flex-row r">
+                <div class="flex flex-row pt-2 ">
                 <th class="absolute" style="right: 20rem">
-                    <button class="btn btn-sm p-2">All</button>
+                    <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">All</button>
                 </th>
                 <th class="absolute" style="right: 13.6rem">
-                    <button class="btn btn-sm p-2">Approval</button>
+                    <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approval</button>
                 </th>
                  <th class="absolute" style="right: 7rem">
-                    <button class="btn btn-sm p-2">Approved</button>
+                    <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approved</button>
                 </th>
                  <th class="absolute" style="right: 1rem">
-                    <button class="btn btn-sm p-2">Revision</button>
+                    <button class="btn btn-sm text-grey-200 bg-grey-500 hover:text-state-100 hover:bg-grey-500 border-none p-2">Revision</button>
                 </th>
                 </div>
-                
             </tr>
         </thead>
         <!-- head-body -->
@@ -60,7 +59,7 @@
                 <td class="font-normal ">{{ table.program }}</td>
                 <td class="font-normal ">
                  
-                    <button class="btn btn-sm p-2"> {{ table.status }}</button>
+                    <button class="btn btn-sm p-2 font-normal"> {{ table.status }}</button>
                   </td>
                 <td>
                     <div class="flex flex-row ">
@@ -174,7 +173,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "FOR APPROVAL",
+                    status: "APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -183,7 +182,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "FOR APPROVAL",
+                    status: "APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -192,7 +191,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "FOR APPROVAL",
+                     status: "APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -201,7 +200,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "FOR APPROVAL",
+                     status: "APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -210,7 +209,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "FOR APPROVAL",
+                    status: "APPROVAL",
                 },
             ],
         };
