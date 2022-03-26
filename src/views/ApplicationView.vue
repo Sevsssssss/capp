@@ -1,34 +1,12 @@
 <template>
   <div class="" style="padding: 10px">
-    <div class="grid grid-cols-3">
-      <div
-        class="hei-cont space-x-3 bg-brand-white shadow-lg rounded-lg m-3 p-6"
-        v-for="data in datas"
-        :key="data"
-      >
-        <div class="column">
-          <div class="flex flex-row">
-            <div>
-              <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"
-                />
-              </svg>
-            </div>
-            <div class="app-label font-semibold">{{ data.title }}</div>
-          </div>
-          <footer class="app-data" style="text-align: right">
-            {{ data.num }}
-          </footer>
-        </div>
-      </div>
-    </div>
+    <DataCards :datas="datas" />
     <DataTables :headers="headers" :tables="tables" />
   </div>
 </template>
 
 <script>
+import DataCards from "@/components//DataCards.vue";
 import DataTables from "@/components//DataTables.vue";
 
 export default {
@@ -48,22 +26,27 @@ export default {
         {
           title: "FOR APPROVAL",
           num: 300,
+          color: "orange",
         },
         {
           title: "FOR REVISION",
           num: 300,
+          color: "blue",
         },
         {
           title: "FOR ISSUANCE",
           num: 300,
+          color: "violet",
         },
         {
           title: "FOR EVALUATION",
           num: 300,
+          color: "green",
         },
         {
           title: "FOR COMPLETION",
           num: 300,
+          color: "pink",
         },
       ],
       tables: [
@@ -106,6 +89,7 @@ export default {
     };
   },
   components: {
+    DataCards,
     DataTables,
   },
 };
@@ -129,4 +113,6 @@ export default {
   color: #8fa0b9;
   display: block;
 }
+
+
 </style>

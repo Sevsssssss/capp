@@ -8,7 +8,7 @@ module.exports = {
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: "light",
+    darkTheme: "dark",
   },
   theme: {
     colors: {
