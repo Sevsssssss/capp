@@ -7,6 +7,11 @@
 </template>
 
 <script>
+
+
+
+
+
 import Parse from "parse";
 Parse.serverURL = "http://localhost:1337/api";
 Parse.initialize(

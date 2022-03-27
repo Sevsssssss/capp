@@ -1,8 +1,12 @@
 <template>
 <div class="" style="padding: 10px">
+
+    
+
     <DataCards :datas="datas" />
-    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px;">
-        <div class="top-row flex flex-row" style="justify-content: space-between;">
+
+    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
+        <div class="top-row flex flex-row" style="justify-content: space-between">
             <TableTopLeft />
 
             <div class="right-side flex flex-row">
@@ -16,20 +20,20 @@
                     </select>
                 </div>
                 <button @click="addHei()" class="
-                btn btn-md
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-                p-2
-              ">
+              btn btn-md
+              bg-brand-darkblue
+              hover:bg-brand-blue
+              border-none
+              p-2
+            ">
                     <div class="flex flex-row">
-                        <svg style="fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" /></svg>
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                        </svg>
                         <div class="btn-text">Add HEI</div>
                     </div>
                 </button>
-                
             </div>
         </div>
         <DataTables :headers="headers" :tables="tables" />
@@ -42,10 +46,78 @@ import DataCards from "@/components//DataCards.vue";
 import TableTopLeft from "@/components//TableTopLeft.vue";
 import DataTables from "@/components//DataTables.vue";
 
+
+
 export default {
     name: "HeiView",
     data() {
         return {
+            columns: [{
+                    label: 'Name',
+                    field: 'name',
+                },
+                {
+                    label: 'Age',
+                    field: 'age',
+                    type: 'number',
+                },
+                {
+                    label: 'Created On',
+                    field: 'createdAt',
+                    type: 'date',
+                    dateInputFormat: 'yyyy-MM-dd',
+                    dateOutputFormat: 'MMM do yy',
+                },
+                {
+                    label: 'Percent',
+                    field: 'score',
+                    type: 'percentage',
+                },
+            ],
+            rows: [{
+                    id: 1,
+                    name: "John",
+                    age: 20,
+                    createdAt: '',
+                    score: 0.03343
+                },
+                {
+                    id: 2,
+                    name: "Jane",
+                    age: 24,
+                    createdAt: '2011-10-31',
+                    score: 0.03343
+                },
+                {
+                    id: 3,
+                    name: "Susan",
+                    age: 16,
+                    createdAt: '2011-10-30',
+                    score: 0.03343
+                },
+                {
+                    id: 4,
+                    name: "Chris",
+                    age: 55,
+                    createdAt: '2011-10-11',
+                    score: 0.03343
+                },
+                {
+                    id: 5,
+                    name: "Dan",
+                    age: 40,
+                    createdAt: '2011-10-21',
+                    score: 0.03343
+                },
+                {
+                    id: 6,
+                    name: "John",
+                    age: 20,
+                    createdAt: '2011-10-31',
+                    score: 0.03343
+                },
+            ],
+
             headers: [{
                     title: "INSTITUTIONAL CODE",
                 },

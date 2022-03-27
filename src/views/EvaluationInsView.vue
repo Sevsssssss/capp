@@ -1,5 +1,10 @@
 <template>
 <main class="min-h-screen bg-blue-50">
+  <div>
+    <vue-good-table
+      :columns="columns"
+      :rows="rows"/>
+  </div>
     <div class="p-5">
         <div class="overflow-x-auto">
             <table class="table w-full">
