@@ -17,7 +17,7 @@
             </ul>
         </div>
     </div>
-    <table class="m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
+    <table class="overflow-auto m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
         <!-- head -->
         <thead>
             <tr>
