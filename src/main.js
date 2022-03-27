@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import './assets/tailwind.css'
+import '@ocrv/vue-tailwind-pagination/styles'
 
 
 //I move this line of codes in App.vue
