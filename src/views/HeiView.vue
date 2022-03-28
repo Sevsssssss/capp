@@ -1,228 +1,284 @@
 <template>
-  <div class="" style="padding: 10px">
+<div class="" style="padding: 10px">
+
+    
+
     <DataCards :datas="datas" />
+
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
-      <table class="hei-table table-normal w-full">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th>
-              <div class="form-control">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    placeholder="Search…"
-                    class="input input-bordered"
-                  />
-                  <button class="btn btn-square">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </button>
+        <div class="top-row flex flex-row" style="justify-content: space-between">
+            <TableTopLeft />
+
+            <div class="right-side flex flex-row">
+                <div class="month-sort flex flex-row">
+                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
+                        <option disabled selected>Sort by type</option>
+                        <option>Private</option>
+                        <option>State Univeristies</option>
+                        <option>Local Universities</option>
+                        <option>Others</option>
+                    </select>
                 </div>
-              </div>
-            </th>
-            <th class="flex">
-              <button
-                @click="addHei()"
-                class="btn"
-                style="width: 100px; height: 10px"
-              >
-                <div class="flex flex-row">
-                  <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22M12,7L7,12H10V16H14V12H17L12,7Z"
-                    />
-                  </svg>
-                  Add HEI
-                </div>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <!-- head-body -->
-        <thead class="hei-table">
-          <tr class="hei-table">
-            <th v-for="header in headers" :key="header">{{ header.title }}</th>
-          </tr>
-        </thead>
-        <tbody class="hei-table">
-          <!-- row 1 -->
-          <tr class="" v-for="table in tables" :key="table">
-            <th>{{ table.InstNo }}</th>
-            <td>
-              <div class="column">
-                <div class="hei-name">{{ table.HeiName }}</div>
-                <div class="hei-address">{{ table.address }}</div>
-              </div>
-            </td>
-            <td>{{ table.type }}</td>
-            <td>{{ table.email }}</td>
-            <td>
-              <div class="flex flex-row">
-                <div>
-                  <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>TOTAL HEI: 40/100</th>
-            <th></th>
-            <th></th>
-            <th>
-              <div class="flex flex-row">
-                <div class="text">Rows per page: 10</div>
-                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                </svg>
-              </div>
-            </th>
-            <th>
-              <div class="flex flex-row">
-                1-10 of 276
-                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                  <path
-                    fill="currentColor"
-                    d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
-                  />
-                </svg>
-                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                  <path
-                    fill="currentColor"
-                    d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-                  />
-                </svg>
-              </div>
-            </th>
-          </tr>
-        </tfoot>
-      </table>
+                <button @click="addHei()" class="
+              btn btn-md
+              bg-brand-darkblue
+              hover:bg-brand-blue
+              border-none
+              p-2
+            ">
+                    <div class="flex flex-row">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                        </svg>
+                        <div class="btn-text">Add HEI</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <DataTables :headers="headers" :tables="tables" />
     </div>
-  </div>
+</div>
 </template>
 
 <script>
 import DataCards from "@/components//DataCards.vue";
+import TableTopLeft from "@/components//TableTopLeft.vue";
+import DataTables from "@/components//DataTables.vue";
+
+
 
 export default {
-  name: "HeiView",
-  data() {
-    return {
-      headers: [
-        {
-          title: "INSTITUTIONAL CODE",
-        },
-        {
-          title: "HEI NAME",
-        },
-        {
-          title: "TYPE",
-        },
-        {
-          title: "EMAIL",
-        },
-        {
-          title: "ACTION",
-        },
-      ],
-      datas: [
-        {
-          title: "STATE UNIVERSITIES AND COLLEGES",
-          num: 46,
-          color: "orange",
-        },
-        {
-          title: "LOCAL UNIVERSITIES AND COLLEGES",
-          num: 23,
-          color: "blue",
-        },
-        {
-          title: "PRIVATE COLLEGES",
-          num: 57,
-          color: "violet",
-        },
-        {
-          title: "OTHER GOVERNMENT SCHOOLS",
-          num: 23,
-          color: "green",
-        },
-      ],
-      tables: [
-        {
-          InstNo: "56543",
-          HeiName: "Ateneo De Naga University",
-          address: "Naga City",
-          type: "Private Institution",
-          email: "ateneodenaga@gbox.adnu.edu.ph",
-        },
-        {
-          InstNo: "20746",
-          HeiName: "Bicol University",
-          address: "Legazpi City",
-          type: "State University",
-          email: "bu@bicol-u.edu.ph",
-        },
-        {
-          InstNo: "12865",
-          HeiName: "Catanduanes State University",
-          address: "Virac",
-          type: "State University",
-          email: "areneo@gbox.adnu.edu.ph",
-        },
-        {
-          InstNo: "95848",
-          HeiName: "Aquinas University of Legazpi",
-          address: "Legazpi City",
-          type: "Private",
-          email: "ust@ust-legazpi.edu.ph",
-        },
-        {
-          InstNo: "56543",
-          HeiName: "Camarines Norte State College",
-          address: "Daet",
-          type: "State College",
-          email: "cnsc@cnsc.edu.ph",
-        },
-      ],
-    };
-  },
-  components: {DataCards},
-  methods: {
-    addHei() {
-      this.$router.push("/hei/add");
+    name: "HeiView",
+    data() {
+        return {
+            columns: [{
+                    label: 'Name',
+                    field: 'name',
+                },
+                {
+                    label: 'Age',
+                    field: 'age',
+                    type: 'number',
+                },
+                {
+                    label: 'Created On',
+                    field: 'createdAt',
+                    type: 'date',
+                    dateInputFormat: 'yyyy-MM-dd',
+                    dateOutputFormat: 'MMM do yy',
+                },
+                {
+                    label: 'Percent',
+                    field: 'score',
+                    type: 'percentage',
+                },
+            ],
+            rows: [{
+                    id: 1,
+                    name: "John",
+                    age: 20,
+                    createdAt: '',
+                    score: 0.03343
+                },
+                {
+                    id: 2,
+                    name: "Jane",
+                    age: 24,
+                    createdAt: '2011-10-31',
+                    score: 0.03343
+                },
+                {
+                    id: 3,
+                    name: "Susan",
+                    age: 16,
+                    createdAt: '2011-10-30',
+                    score: 0.03343
+                },
+                {
+                    id: 4,
+                    name: "Chris",
+                    age: 55,
+                    createdAt: '2011-10-11',
+                    score: 0.03343
+                },
+                {
+                    id: 5,
+                    name: "Dan",
+                    age: 40,
+                    createdAt: '2011-10-21',
+                    score: 0.03343
+                },
+                {
+                    id: 6,
+                    name: "John",
+                    age: 20,
+                    createdAt: '2011-10-31',
+                    score: 0.03343
+                },
+            ],
+
+            headers: [{
+                    title: "INSTITUTIONAL CODE",
+                },
+                {
+                    title: "HEI NAME",
+                },
+                {
+                    title: "TYPE",
+                },
+                {
+                    title: "EMAIL",
+                },
+                {
+                    title: "ACTION",
+                },
+            ],
+            datas: [{
+                    title: "STATE UNIVERSITIES AND COLLEGES",
+                    num: 46,
+                    color: "orange",
+                },
+                {
+                    title: "LOCAL UNIVERSITIES AND COLLEGES",
+                    num: 23,
+                    color: "blue",
+                },
+                {
+                    title: "PRIVATE COLLEGES",
+                    num: 57,
+                    color: "violet",
+                },
+                {
+                    title: "OTHER GOVERNMENT SCHOOLS",
+                    num: 23,
+                    color: "green",
+                },
+            ],
+            tables: [{
+                    InstNo: "56543",
+                    HeiName: "Ateneo De Naga University",
+                    address: "Naga City",
+                    type: "Private Institution",
+                    email: "ateneodenaga@gbox.adnu.edu.ph",
+                },
+                {
+                    InstNo: "20746",
+                    HeiName: "Bicol University",
+                    address: "Legazpi City",
+                    type: "State University",
+                    email: "bu@bicol-u.edu.ph",
+                },
+                {
+                    InstNo: "12865",
+                    HeiName: "Catanduanes State University",
+                    address: "Virac",
+                    type: "State University",
+                    email: "areneo@gbox.adnu.edu.ph",
+                },
+                {
+                    InstNo: "95848",
+                    HeiName: "Aquinas University of Legazpi",
+                    address: "Legazpi City",
+                    type: "Private",
+                    email: "ust@ust-legazpi.edu.ph",
+                },
+                {
+                    InstNo: "56543",
+                    HeiName: "Camarines Norte State College",
+                    address: "Daet",
+                    type: "State College",
+                    email: "cnsc@cnsc.edu.ph",
+                },
+            ],
+        };
     },
-  },
+    components: {
+        DataCards,
+        TableTopLeft,
+        DataTables,
+    },
+    methods: {
+        addHei() {
+            this.$router.push("/hei/add");
+        },
+    },
 };
 </script>
 
 <style>
+tr:nth-child(1) {
+    background: rgba(163, 171, 185, 0.24);
+}
 
+.search-container {
+    height: 35px;
+    width: 300px;
+    border-radius: 5px;
+    padding: 10px 10px;
+    display: flex;
+    background: rgba(55, 63, 65, 0.051);
+    align-self: center;
+}
+
+.search-container .search-input {
+    background: transparent;
+    outline: none;
+    height: 25px;
+    width: 300px;
+    font-weight: 500;
+    font-size: 16px;
+    align-self: center;
+    padding: 0;
+}
+
+.search-btn {
+    fill: #373f41;
+    align-self: center;
+}
+
+.top-row {
+    padding: 0px 20px;
+}
+
+.date-sort {
+    width: 170px;
+    align-self: center;
+    justify-content: space-evenly;
+}
+
+.month-sort {
+    width: 130px;
+    align-self: center;
+    justify-content: center;
+}
+
+.btn-text {
+    align-self: center;
+}
+
+.add-hei {
+    padding: 5px;
+}
+
+.add-hei-content {
+    width: 170px;
+    justify-content: space-evenly;
+}
+
+.btn-primary1 {
+    width: 120px;
+    min-height: 40px;
+    height: 40px;
+    padding: 5px;
+    margin: 7px;
+}
+
+.sort-btn {
+    align-items: center;
+}
+
+.hei-table-head {
+    font-size: 12px;
+}
 </style>

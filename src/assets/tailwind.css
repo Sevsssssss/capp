@@ -97,6 +97,7 @@
   
   .hei-table {
     text-align: left;
+    font-size: 12px
   }
   
   .homeIcon {
@@ -141,6 +142,13 @@
     margin: 0 auto;
     text-align: center;
   }
+
+  .right-side{
+    width: 245px;
+    align-self: center;
+    justify-content: space-evenly;
+    padding: 10px;
+}
 }
 @layer components {
   .btn-sm {

@@ -1,5 +1,5 @@
 <template>
-<div class="grid grid-cols-4">
+<div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
     <div class="hei-cont space-x-3 bg-brand-white shadow-lg rounded-lg m-3 p-6" v-for="data in datas" :key="data">
         <div class="flex flex-col justify-between text-left">
             <div class="flex flex-row">
@@ -13,7 +13,7 @@
                     {{ data.title }}
                 </div>
             </div>
-            <div class="hei-data">{{ data.num }}</div>
+            <div class="text-xl">{{ data.num }}</div>
         </div>
     </div>
 </div>

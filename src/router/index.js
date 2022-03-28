@@ -6,9 +6,12 @@ import ApplicationView from "../views/ApplicationView.vue";
 import HeiView from "../views/HeiView.vue";
 import AddHeiView from "../views/AddHeiView.vue";
 import RqatView from "../views/RqatView.vue";
+import AddRQATView from "../views/AddRQATView.vue";
 import EmployeesView from "../views/EmployeesView.vue";
+import AddEmployeeView from "../views/AddEmployeeView.vue";
 import EvaluationInsView from "../views/EvaluationInsView.vue";
 import ReportingView from "../views/ReportingView.vue";
+
 
 const routes = [
   {
@@ -46,9 +49,19 @@ const routes = [
         component: RqatView,
       },
       {
+        path: "/rqat/add",
+        name: "addrqat",
+        component: AddRQATView,
+      },
+      {
         path: "/employees",
         name: "employees",
         component: EmployeesView,
+      },
+      {
+        path: "/employees/add",
+        name: "addemployee",
+        component: AddEmployeeView,
       },
       {
         path: "/evaluationins",

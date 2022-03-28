@@ -63,6 +63,7 @@
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
   left: 0;
   border-radius: 0 0 0 0;
+   transform: rotate(180deg);
 }
 
 .v-sidebar-menu .vsm--mobile-bg {

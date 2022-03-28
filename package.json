@@ -8,16 +8,20 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@ocrv/vue-tailwind-pagination": "^0.0.4",
     "@vue/cli": "^5.0.3",
     "autoprefixer": "^10",
+    "axios": "^0.26.1",
     "core-js": "^3.8.3",
     "daisyui": "^2.11.1",
+    "json-server": "^0.17.0",
     "parse": "^3.4.1",
     "postcss": "^8",
     "routes": "^2.1.0",
     "tailwind": "^4.0.0",
     "tailwindcss": "^3",
     "vue": "^3.2.13",
+    "vue-good-table": "^2.21.11",
     "vue-material-design-icons": "^5.0.0",
     "vue-router": "^4.0.3",
     "vue-sidebar-menu": "^5.2.0"
