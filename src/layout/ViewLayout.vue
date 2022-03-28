@@ -88,12 +88,7 @@
   box-shadow: none !important;
 }
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
-<<<<<<< HEAD
-  fill: theme("colors.brand.darkblue");
-  background-color:  transparent;
-=======
   background-color: transparent;
->>>>>>> d5698846960678d254b5c7ad965b745af58fccda
 }
 
 .v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
@@ -144,17 +139,6 @@ export default {
       collapsed: true,
       menu: [
         {
-<<<<<<< HEAD
-          href: "/home",
-          title: "Home",
-           icon: {
-            element: "img",
-            attributes: { src: FileOutline },
-          },
-        },
-        {
-=======
->>>>>>> d5698846960678d254b5c7ad965b745af58fccda
           href: "/application",
           title: "Application",
           icon: {
