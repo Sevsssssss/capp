@@ -1,7 +1,7 @@
 <template>
 <div class="left-side flex flex-row">
     <div class="search-container">
-        <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" />
+        <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search"/>
         <a href="#" class="search-btn">
             <div class="search_icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

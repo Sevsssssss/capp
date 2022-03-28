@@ -7,6 +7,7 @@
   </div>
     <div class="p-5">
         <div class="overflow-x-auto space-y-2">
+          <TableTopLeft />
             <div class="form-control p-2">
                 <div class="input-group">
                     <input type="text" placeholder="Search by email" class="input input-bordered" v-model="search" />
@@ -49,12 +50,14 @@
 
 <script>
 import VueTailwindPagination from '@ocrv/vue-tailwind-pagination';
+import TableTopLeft from "@/components//TableTopLeft.vue";
 import axios from 'axios';
 
 export default {
     name: 'EvaluationInsView',
     components: {
         VueTailwindPagination,
+        TableTopLeft,
     },
     data() {
         return {
