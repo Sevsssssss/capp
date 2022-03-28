@@ -1,169 +1,131 @@
 <template>
-<table class="m-3 bg-brand-white shadow-lg text-left table-normal w-full">
-    <!-- head -->
-    <thead>
-        <tr>
-            <th>
-                <div class="form-control">
-                    <div class="input-group">
-                        <input type="text" placeholder="Search…" class="input input-bordered" />
-                        <button class="btn btn-square bg-brand-darkblue hover:bg-blue-100 border-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </button>
-                    </div>
+  <div class="" style="padding: 10px">
+    <div class="top-row flex flex-row" style="justify-content: space-between;">
+            <TableTopLeft/>
+
+            <div class="right-side flex flex-row">
+                <div class="month-sort flex flex-row">
+                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
+                        <option disabled selected>Sort by type</option>
+                        <option>Private</option>
+                        <option>State Univeristies</option>
+                        <option>Local Universities</option>
+                        <option>Others</option>
+                    </select>
                 </div>
-            </th>
-            <th class="flex">
-                <button @click="addHei()" class="btn btn-primary bg-brand-darkblue hover:bg-blue-100 border-none">
-                    <div class="flex flex-row justify-center items-center space-x-2 ">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22M12,7L7,12H10V16H14V12H17L12,7Z" />
-                        </svg>
-                        <div>
-                            ADD EMPLOYEE
-                        </div>
+
+                <button @click="addHei()" class="btn btn-primary1 bg-brand-darkblue">
+                    <div class="flex flex-row add-hei-content">
+                        <svg style="fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"/></svg>
+                        <div class="btn-text">Add HEI</div>
                     </div>
                 </button>
-            </th>
-        </tr>
-    </thead>
-    <!-- head-body -->
-    <thead class="bg-grey-500">
-        <tr class="">
-            <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
-                {{header.title}}
-            </th>
-        </tr>
-    </thead>
-
-    <tbody class="">
-        <!-- row 1 -->
-        <tr class="" v-for="table in tables" :key="table">
-            <th class="font-normal ">{{ table.InstNo }}</th>
-            <td>
-                <div class="">
-                    <div class="font-normal">{{ table.HeiName }}</div>
-                </div>
-            </td>
-            <td>{{ table.type }}</td>
-            <td>{{ table.email }}</td>
-            <td>
-                <div class="flex flex-row ">
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-                        </svg>
-                    </div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                        </svg>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-
-    <tfoot>
-        <tr>
-            <th class="font-normal text-sm">TOTAL HEI: 40/100</th>
-            <th></th>
-            <th></th>
-            <th>
-                <div class="flex flex-row justify-center items-center">
-                    <div class="font-normal text-sm">Rows per page: 10</div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
-                    </div>
-                </div>
-            </th>
-            <th>
-                <div class="flex flex-row justify-center items-center font-normal text-sm">
-                    <p>1-10 of 276</p>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                        </svg>
-                    </div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                        </svg>
-
-                    </div>
-
-                </div>
-            </th>
-        </tr>
-    </tfoot>
-</table>
+            </div>
+        </div>
+    <DataTables :headers="headers" :tables="tables" />
+  </div>
 </template>
 
 <script>
-export default {
-    name: 'EmployeesView',
-    components: {
+import DataTables from "@/components//DataTables.vue";
+import TableTopLeft from "@/components//TableTopLeft.vue";
 
-    },
-    data() {
-        return {
-            headers: [{
-                    title: "EMPLOYEE NAME"
-                },
-                {
-                    title: "CONTACT NUMBER"
-                },
-                {
-                    title: "USERNAME"
-                },
-                {
-                    title: "DESIGNATION"
-                },
-                {
-                    title: "ACTION"
-                },
-            ],
-            tables: [{
-                    InstNo: "Joshua Sarmiento",
-                    HeiName: "09123123123",
-                    address: "",
-                    type: "imsusda",
-                    email: "CHED Supervisor",
-                },
-                {
-                    InstNo: "Joshua Sarmiento",
-                    HeiName: "09123123123",
-                    address: "",
-                    type: "imsusda",
-                    email: "CHED Supervisor",
-                },
-                {
-                    InstNo: "Joshua Sarmiento",
-                    HeiName: "09123123123",
-                    address: "",
-                    type: "imsusda",
-                    email: "CHED Supervisor",
-                },
-                {
-                    InstNo: "Joshua Sarmiento",
-                    HeiName: "09123123123",
-                    address: "",
-                    type: "imsusda",
-                    email: "CHED Supervisor",
-                },
-                {
-                    InstNo: "Joshua Sarmiento",
-                    HeiName: "09123123123",
-                    address: "",
-                    type: "imsusda",
-                    email: "CHED Supervisor",
-                },
-            ],
-        };
-    },
-}
+export default {
+  name: "ApplicationView",
+  data() {
+    return {
+      headers: [
+        { title: "RQAT MEMBER NAME" },
+        { title: "HEI" },
+        { title: "COTACT NUMBER" },
+        { title: "USERNAME" },
+        { title: "ACTION" },
+      ],
+
+      datas: [
+        {
+          title: "FOR APPROVAL",
+          num: 300,
+        },
+        {
+          title: "FOR REVISION",
+          num: 300,
+        },
+        {
+          title: "FOR ISSUANCE",
+          num: 300,
+        },
+        {
+          title: "FOR EVALUATION",
+          num: 300,
+        },
+        {
+          title: "FOR COMPLETION",
+          num: 300,
+        },
+      ],
+      tables: [
+        {
+          InstNo: "56543",
+          HeiName: "Ateneo De Naga University",
+          address: "Naga City",
+          type: "Private Institution",
+          email: "ateneodenaga@gbox.adnu.edu.ph",
+        },
+        {
+          InstNo: "20746",
+          HeiName: "Bicol University",
+          address: "Legazpi City",
+          type: "State University",
+          email: "bu@bicol-u.edu.ph",
+        },
+        {
+          InstNo: "12865",
+          HeiName: "Catanduanes State University",
+          address: "Virac",
+          type: "State University",
+          email: "areneo@gbox.adnu.edu.ph",
+        },
+        {
+          InstNo: "95848",
+          HeiName: "Aquinas University of Legazpi",
+          address: "Legazpi City",
+          type: "Private",
+          email: "ust@ust-legazpi.edu.ph",
+        },
+        {
+          InstNo: "56543",
+          HeiName: "Camarines Norte State College",
+          address: "Daet",
+          type: "State College",
+          email: "cnsc@cnsc.edu.ph",
+        },
+      ],
+    };
+  },
+  components: {
+    DataTables,
+    TableTopLeft,
+  },
+};
 </script>
+
+<style>
+.app-data {
+  text-align: left;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 38px;
+  align-items: center;
+}
+
+.app-label {
+  padding-left: 10px;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: start;
+  vertical-align: middle;
+  color: #8fa0b9;
+  display: block;
+}
+</style>
