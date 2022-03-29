@@ -1,5 +1,5 @@
 <template>
-  
+  APPLICATION
 </template>
 
 <script>

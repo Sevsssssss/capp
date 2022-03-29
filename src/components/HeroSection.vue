@@ -54,8 +54,8 @@
                             <!-- <button @click="Admin" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Admin</button>
                             <button @click="ChedSupervisor" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Education Supervisor</button>
                             <button @click="RQAT" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">RQAT</button>
-                            <button @click="Reporting" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Reporting</button>
-                            <button @click="HEI" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">HEI</button> -->
+                            <button @click="Reporting" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Reporting</button>-->
+                            <button @click="HEI" type="submit" class="btn btn-normal border-none font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">HEI</button> 
                         </div>
                     </div>
                 </form>
@@ -93,7 +93,7 @@ export default {
             this.$router.push("/");
         },
         HEI() {
-            this.$router.push("/");
+            this.$router.push("/HEIPage");
         },
         toggleModal() {
             this.showModal = !this.showModal
