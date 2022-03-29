@@ -1,3 +1,4 @@
+
 <template>
 <div class="main-page flex justify-center items-center p-10">
     <div class=" card justify-center items-center space-x-3 bg-brand-white shadow-lg rounded-lg m-3 p-6">
@@ -14,33 +15,33 @@
                 <label class="label">
                     <span class="label-text">HEI Name</span>
                 </label>
-                <input type="text" placeholder="Enter HEI’s name" class="input input-bordered w-full" />
+                <input type="text" placeholder="Enter HEI’s name" class="input input-bordered w-full" required v-model="hei_name"/>
             </div>
 
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Username</span>
                 </label>
-                <input type="text" placeholder="Enter username" class="input input-bordered w-full" />
+                <input type="text" placeholder="Enter username" class="input input-bordered w-full" required v-model="username"/>
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Address</span>
                 </label>
-                <input type="text" placeholder="Enter address" class="input input-bordered w-full" />
+                <input type="text" placeholder="Enter address" class="input input-bordered w-full" required v-model="address"/>
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
-                <input type="text" placeholder="09*********" class="input input-bordered w-full" />
+                <input type="text" placeholder="09*********" class="input input-bordered w-full" required v-model="number"/>
             </div>
             <div class="flex flex-row">
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Institutional Code</span>
                     </label>
-                    <input type="text" placeholder="Enter Code" class="input input-bordered" style="width: 170px" />
+                    <input type="text" placeholder="Enter Code" class="input input-bordered" style="width: 170px" required v-model="inst_code"/>
                 </div>
 
                 <div class="form-control w-full pl-4">
@@ -48,9 +49,9 @@
                         <span class="label-text">HEI Type:</span>
                         <span class="label-text"><a>+ Add Designation</a></span>
                     </label>
-                    <select class="select select-bordered w-full">
+                    <select class="select select-bordered w-full" required v-model="hei_type">
                         <option v-for="hei in heis" :key="hei">
-                            <div class="hei-name">{{ hei.title }}</div>
+                            <div class="hei-name" >{{ hei.title }}</div>
                         </option>
                     </select>
                 </div>
@@ -58,7 +59,7 @@
 
             <div class="flex flex-row pt-5">
                 <button class="btn btn-margin btn-wide btn-outline">Cancel</button>
-                <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue">Add HEI</button>
+                <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue" v-on:click="addHEI()">Add HEI</button>
             </div>
         </div>
     </div>
@@ -66,6 +67,11 @@
 </template>
 
 <script>
+import Parse from 'parse'
+
+Parse.initialize("capp", "master");
+Parse.serverURL = 'http://localhost:1337/parse'
+
 export default {
     name: "AddHeiView",
     data() {
@@ -83,10 +89,71 @@ export default {
                     title: "OTHER GOVERNMENT SCHOOLS",
                 },
             ],
+            hei_name: '',
+            username: '',
+            address: '',
+            number: '',
+            inst_code: '',
+            hei_type: 'STATE UNIVERSITIES AND COLLEGES',
         };
+    },
+    methods:{
+        addHEI(){
+           
+            
+            const HEIAccount = Parse.Object.extend("HEIAccount");
+            const newAccount = new HEIAccount();
+
+            var has_error = 0;
+            var error_text = "Account not created due to the following reasons:\n";
+
+            if(this.hei_name == ''){
+                has_error = 1;
+                error_text += "HEI Name is empty\n"
+            } 
+            if(this.username == ''){
+                has_error = 1;
+                error_text += "Username is empty\n"
+            } 
+            if(this.address == ''){
+                has_error = 1;
+                error_text += "Address is empty\n"
+            } 
+            if(this.number == ''){
+                has_error = 1;
+                error_text += "Contact Number is empty\n"
+            } 
+            if(this.inst_code == ''){
+                has_error = 1;
+                error_text += "Institution Code is empty\n"
+            } 
+
+            if(has_error < 1){
+            newAccount.save({
+                hei_name: this.hei_name,
+                username: this.username,
+                address: this.address,
+                number: this.number,
+                inst_code: this.inst_code,
+                hei_type: this.hei_type,
+            })
+            .then(
+            (newAccount)=> {
+                alert('Account Added Successfully ' + newAccount.id);
+            }, 
+            (error) => {
+                alert('Account Adding Failed' + error);
+            });}
+            else{
+                alert(error_text);
+            }
+            
+            
+        },
     },
     components: {},
 };
+
 </script>
 
 <style>
