@@ -1,11 +1,6 @@
 <template>
-<main class="min-h-screen bg-blue-50">
-  <div>
-    <vue-good-table
-      :columns="columns"
-      :rows="rows"/>
-  </div>
-    <div class="p-5">
+<div class="min-h-screen bg-blue-50">
+    <div class="p-5 ">
         <div class="overflow-x-auto space-y-2">
           <TableTopLeft />
             <div class="form-control p-2">
@@ -18,7 +13,7 @@
                     </button>
                 </div>
             </div>
-            <VueTailwindPagination :current="current" :total="total" :per-page="perPage" @page-changed="pageChange($event)" />
+            
             <table class="table w-full">
                 <thead>
                     <tr>
@@ -42,10 +37,11 @@
                     </tr>
                 </tbody>
             </table>
+            <VueTailwindPagination :current="current" :total="total" :per-page="perPage" @page-changed="pageChange($event)" />
         </div>
 
     </div>
-</main>
+</div>
 </template>
 
 <script>
