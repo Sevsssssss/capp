@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import './assets/tailwind.css'
 import '@ocrv/vue-tailwind-pagination/styles'
+import Vuelidate from 'vuelidate'
 
 
 
@@ -12,5 +13,5 @@ import '@ocrv/vue-tailwind-pagination/styles'
 // Parse.serverURL = 'http://localhost:1337/parse'
 
 createApp(App).use(router).mount('#app');
-
+createApp(App).use(Vuelidate);
 
