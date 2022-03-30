@@ -15,8 +15,8 @@ if (!databaseUri) {
 const config = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/capp',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'KmDW6ET9Px',
-  masterKey: process.env.MASTER_KEY || '/f?71gfHPN?ia;5}3hD.dRAot(iOwd`_r2"*W~<w17}*,JuPL<Omf6nf|cF*P:_', //Add your master key here. Keep it secret!
+  appId: process.env.APP_ID || 'capp',
+  masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/api', // Don't forget to change to https if needed
   liveQuery: {
     classNames: ['Posts', 'Comments'], // List of classes to support for query subscriptions

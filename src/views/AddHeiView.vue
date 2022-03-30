@@ -242,14 +242,24 @@ export default {
             }
 
             if (has_error < 1) {
+                var password = '';
+                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < 8; i++ ) {
+                    password += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                console.log(password);
                 newAccount
                     .save({
                         hei_name: this.hei_name,
                         username: this.username,
+                        email: this.email,
+                        password: password,
                         address: this.address,
                         number: this.number,
                         inst_code: this.inst_code,
                         hei_type: this.hei_type,
+                        
                     })
                     .then(
                         (newAccount) => {
@@ -259,8 +269,6 @@ export default {
                             alert("Account Adding Failed" + error);
                         }
                     );
-            } else {
-                //alert(error_text);
             }
         },
 
