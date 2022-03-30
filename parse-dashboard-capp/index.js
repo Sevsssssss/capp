@@ -5,9 +5,9 @@ var dashboard = new ParseDashboard({
   "apps": [
     {
       "serverURL": "http://localhost:1337/api",
-      "appId": "KmDW6ET9Px",
-      "masterKey": '/f?71gfHPN?ia;5}3hD.dRAot(iOwd`_r2"*W~<w17}*,JuPL<Omf6nf|cF*P:_',
-      "appName": 'CAPP'
+      "appId": "capp",
+      "masterKey": 'master',
+      "appName": 'capp'
     }
   ]
 });
