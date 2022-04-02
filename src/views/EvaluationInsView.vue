@@ -1,101 +1,81 @@
 <template>
-<div class="min-h-screen bg-blue-50">
-    <div class="p-5 ">
-        <div class="overflow-x-auto space-y-2">
-          <TableTopLeft />
-            <div class="form-control p-2">
-                <div class="input-group">
-                    <input type="text" placeholder="Search by email" class="input input-bordered" v-model="search" />
-                    <button class="btn btn-square bg-brand-darkblue hover:bg-blue-100 border-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </button>
+<div class="" style="padding: 10px">
+    <div class="top-row flex flex-row" style="justify-content: space-between;">
+        <TableTopLeft />
+        <div class="right-side flex flex-row">
+            <button @click="addEvalIns()" class="
+              btn btn-md
+              bg-brand-darkblue
+              hover:bg-brand-blue
+              border-none
+              p-2
+            ">
+                <div class="flex flex-row">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                    </svg>
+                    <div class="btn-text">Add Evalutation Ins.</div>
                 </div>
-            </div>
-            
-            <table class="table w-full">
-                <thead>
-                    <tr>
-                        <th>CMO</th>
-                        <th>email</th>
-                        <!-- <th>Action</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- row 1 -->
-                    <tr v-for="d in filteredPosts" :key="d.id">
-                        <th>{{d.id}}</th>
-                        <td>{{d.email}}</td>
-                        <td>
-                            <div class="flex flex-row">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <VueTailwindPagination :current="current" :total="total" :per-page="perPage" @page-changed="pageChange($event)" />
+            </button>
         </div>
-
     </div>
+    <DataTables :headers="headers" :tables="tables" />
 </div>
 </template>
 
 <script>
-import VueTailwindPagination from '@ocrv/vue-tailwind-pagination';
+import DataTables from "@/components//Description.vue";
 import TableTopLeft from "@/components//TableTopLeft.vue";
-import axios from 'axios';
 
 export default {
-    name: 'EvaluationInsView',
-    components: {
-        VueTailwindPagination,
-        TableTopLeft,
-    },
+    name: "ApplicationView",
     data() {
         return {
-            search: "",
-            current: 0,
-            perPage: 0,
-            total: 0,
-            data: [],
-        }
+            headers: [{
+                    title: "CMO"
+                },
+                {
+                    title: "DESCRIPTION"
+                },
+                {
+                    title: "ACTION"
+                },
+            ],
+            tables: [{
+                    cmoNo: "1",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                    
+                },
+                {
+                    cmoNo: "2",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+                {
+                    cmoNo: "3",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+                {
+                    cmoNo: "4",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+                {
+                    cmoNo: "5",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+            ],
+        };
+    },
+    components: {
+        DataTables,
+        TableTopLeft,
     },
     methods: {
-        // getData(){
-        //     fetch(`http://localhost:3000/data?`)
-        //     .then(res => res.json())
-        //     .then(d => this.data = d)
-        //     .catch(err => console.log(err.message))
-        // },
-        async getData() {
-            var response = await axios(`https://reqres.in/api/users?page=${this.current}`);
-            var responseData = response.data;
-            this.data = responseData.data;
-            this.perPage = responseData.per_page;
-            this.total = responseData.total;
-        },
-        pageChange(event) {
-            this.current = event;
-            this.getData();
-        },
+        //<!-- addEvalIns() {
+        //    this.$router.push("/EvalINs/add");
+        //}, 
     },
-    mounted() {
-        this.current = 1;
-        this.getData();
-    },
-    computed: {
-        filteredPosts() {
-            return this.data.filter(d =>
-                d.email.toLowerCase().includes(this.search.toLowerCase()),
-            );
-        }
-    }
-
-}
+};
 </script>
 
 <style>
