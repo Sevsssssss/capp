@@ -15,8 +15,8 @@
 import Parse from "parse";
 Parse.serverURL = "http://localhost:1337/api";
 Parse.initialize(
-  "KmDW6ET9Px",
-  ";9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o"
+  "capp",
+  ";9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o","master"
 );
 
 // const GameScore2 = Parse.Object.extend("GameScore2");

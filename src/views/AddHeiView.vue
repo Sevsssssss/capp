@@ -200,7 +200,7 @@ export default {
             if (!this.v$.$pending || !this.v$.$error) return;
         },
 
-        addHEI() {
+        async addHEI() {
             console.log("Hello")
             // this.v$.$validate();
             // if(!this.v$.$error){
@@ -209,8 +209,7 @@ export default {
             //     alert('nay')
             // }
 
-            const HEIAccount = Parse.Object.extend("HEIAccount");
-            const newAccount = new HEIAccount();
+            const newHEI = new Parse.User();
             console.log("Hello2")
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
@@ -242,25 +241,30 @@ export default {
             }
 
             if (has_error < 1) {
-                newAccount
-                    .save({
-                        hei_name: this.hei_name,
-                        username: this.username,
-                        address: this.address,
-                        number: this.number,
-                        inst_code: this.inst_code,
-                        hei_type: this.hei_type,
-                    })
-                    .then(
-                        (newAccount) => {
-                            alert("Account Added Successfully " + newAccount.id);
-                        },
-                        (error) => {
-                            alert("Account Adding Failed" + error);
-                        }
-                    );
-            } else {
-                //alert(error_text);
+                var password = '';
+                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < 8; i++ ) {
+                    password += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+
+                newHEI.set("hei_name", this.hei_name);
+                newHEI.set("username", this.username);
+                newHEI.set("password", password);
+                newHEI.set("email", this.email);
+                newHEI.set("address", this.address);
+                newHEI.set("number", this.number);
+                newHEI.set("inst_code", this.inst_code);
+                newHEI.set("hei_type", this.hei_type);
+                newHEI.set("user_type", "hei");
+                
+                try{
+                    await newHEI.signUp();
+                }
+                catch(error){
+                    alert("Error: " + error.code + " " + error.message);
+                }
+
             }
         },
 

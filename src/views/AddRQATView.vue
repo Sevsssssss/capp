@@ -17,33 +17,32 @@
                     <label class="label">
                         <span class="label-text">Last Name</span>
                     </label>
-                    <input type="text" placeholder="Last Name" :class="{'input-error': validationStatus(v$.last_name)}" class="input input-bordered w-full" v-model="v$.last_name.$model" />
+                    <input type="text" placeholder="Last Name" :class="{'input-error': validationStatus(v$.lastname)}" class="input input-bordered w-full" v-model="v$.lastname.$model"/>
                     <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.last_name)}" v-if="validationStatus(v$.last_name)">
-                        Last Name is Required</span>
-                </label>
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.lastname)}" v-if="validationStatus(v$.lastname)"> Lastname is Required</span>
+                    </label>
                 </div>
 
                 <div class="form-control w-full pr-4">
                     <label class="label">
                         <span class="label-text">First Name</span>
                     </label>
-                    <input type="text" placeholder="First Name" :class="{'input-error': validationStatus(v$.first_name)}" class="input input-bordered w-full" v-model="v$.first_name.$model" />
+                    <input type="text" placeholder="First Name" :class="{'input-error': validationStatus(v$.firstname)}" class="input input-bordered w-full" v-model="v$.firstname.$model"/>
                     <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.first_name)}" v-if="validationStatus(v$.first_name)">
-                        First Name is Required</span>
-                </label>
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.firstname)}" v-if="validationStatus(v$.firstname)">
+                        Firstname is Required</span>
+                    </label>
                 </div>
 
                 <div class="form-control" style="width: 200px;">
                     <label class="label">
                         <span class="label-text">M.I.</span>
                     </label>
-                    <input type="text" placeholder="M.I." :class="{'input-error': validationStatus(v$.midInt)}" class="input input-bordered w-full" v-model="v$.midInt.$model" />
+                    <input type="text" placeholder="M.I." :class="{'input-error': validationStatus(v$.midinit)}" class="input input-bordered w-full" v-model="v$.midinit.$model"/>
                     <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.midInt)}" v-if="validationStatus(v$.midInt)">
-                        M.I. is Required</span>
-                </label>
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.midinit)}" v-if="validationStatus(v$.midinit)">
+                        Middle Initial is Required</span>
+                    </label>
                 </div>
 
             </div>
@@ -52,21 +51,10 @@
                 <label class="label">
                     <span class="label-text">Username</span>
                 </label>
-                <input type="text" placeholder="Enter username" :class="{'input-error': validationStatus(v$.username)}" class="input input-bordered w-full" v-model="v$.username.$model" />
+                <input type="text" placeholder="Enter username" :class="{'input-error': validationStatus(v$.username)}" class="input input-bordered w-full" v-model="v$.username.$model"/>
                 <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.username)}" v-if="validationStatus(v$.username)">
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.username)}" v-if="validationStatus(v$.username)">
                         Username is Required</span>
-                </label>
-            </div>
-
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Email</span>
-                </label>
-                <input type="text" placeholder="Enter Email" :class="{'input-error': validationStatus(v$.email)}"  class="input input-bordered w-full" v-model="v$.email.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
-                        Email is Required</span>
                 </label>
             </div>
 
@@ -74,9 +62,9 @@
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
-                <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.number)}"  class="input input-bordered w-full" v-model="v$.number.$model" />
+                <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.contactnum)}" class="input input-bordered w-full" v-model="v$.contactnum.$model"/>
                 <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.number)}" v-if="validationStatus(v$.number)">
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.contactnum)}" v-if="validationStatus(v$.contactnum)">
                         Contact Number is Required</span>
                 </label>
             </div>
@@ -87,7 +75,7 @@
                         <span class="label-text">HEI Affiliation:</span>
                         <span class="label-text"><a>+ Add HEI Affiliation</a></span>
                     </label>
-                    <select class="select select-bordered w-full" v-model="hei_type">
+                    <select class="select select-bordered w-full" v-model="v$.hei_affil.$model">
                         <option v-for="hei in heis" :key="hei">
                             <div class="hei-name">{{ hei.title }}</div>
                         </option>
@@ -97,14 +85,7 @@
 
             <div class="flex flex-row pt-10" style="align-self: center;">
                 <button class="btn btn-margin btn-wide btn-outline">Cancel</button>
-                <button class="
-              btn btn-margin btn-wide
-              submit
-              bg-brand-darkblue
-              hover:bg-brand-blue
-            " @click="addRQAT()">
-                    Add RQAT
-                </button>
+                <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue" @click="addRQAT()">Add RQAT</button>
             </div>
         </form>
     </div>
@@ -112,14 +93,19 @@
 </template>
 
 <script>
+import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
     required,
-    email,
+    
 } from "@vuelidate/validators";
 
+Parse.initialize("capp", "master");
+Parse.serverURL = "http://localhost:1337/parse";
+
 export default {
-    name: "AddHeiView",
+    name: "AddRQATView",
+
     data() {
         return {
             v$: useVuelidate(),
@@ -136,47 +122,38 @@ export default {
                     title: "OTHER GOVERNMENT SCHOOLS",
                 },
             ],
-
-            last_name: "",
-            first_name: "",
-            midInt: "",
+            lastname: "",
+            firstname: "",
+            midinit: "",
             username: "",
-            email: "",
-            number: "",
-            hei_type: "STATE UNIVERSITIES AND COLLEGES",
+            contactnum: "",
+            hei_affil: "STATE UNIVERSITIES AND COLLEGES",
 
-            hei_nameError: "",
+            lastnameError: "",
+            firstnameError: "",
+            midinitError: "",
             usernameError: "",
-            emailError: "",
-            numberError: "",
-            hei_typeError: "",
+            contactnumError: "",
         };
     },
     validations() {
         return {
-            last_name: {
+            lastname: {
                 required,
             },
-            first_name: {
+            firstname: {
                 required,
             },
-            midInt: {
+            midinit: {
                 required,
             },
             username: {
                 required,
             },
-            email: {
-                required,
-                email,
-            },
-            address: {
+            contactnum: {
                 required,
             },
-            number: {
-                required,
-            },
-            hei_type: {
+            hei_affil: {
                 required,
             },
         };
@@ -192,70 +169,66 @@ export default {
             if (!this.v$.$pending || !this.v$.$error) return;
         },
 
-        addRQAT() {
-            // console.log("Hello")
-            // this.v$.$validate();
-            // if(!this.v$.$error){
-            //     alert('Yey')
-            // }else{
-            //     alert('nay')
-            // }
+        async addRQAT() {
+            const newRQAT = new Parse.User();
+            var has_error = 0;
 
-            // const HEIAccount = Parse.Object.extend("HEIAccount");
-            // const newAccount = new HEIAccount();
-            // console.log("Hello2")
-            // var has_error = 0;
-            // var error_text = "Account not created due to the following reasons:\n";
+            if (this.lastname == "") {
+                has_error = 1;
+                //error_text += "HEI Name is empty\n"
+                this.lastnameError = "Lastname is Required";
+            }
+            if (this.firstname == "") {
+                has_error = 1;
+                //error_text += "Username is empty\n"
+                this.firstnameError = "Firstname is Required";
+            }
+            if (this.midinit == "") {
+                has_error = 1;
+                //error_text += "Username is empty\n"
+                this.midinitError = "Middle Initial is Required";
+            }
+            if (this.username == "") {
+                has_error = 1;
+                //error_text += "Address is empty\n"
+                this.usernameError = "Username is Required";
+            }
+            if (this.contactnum == "") {
+                has_error = 1;
+                //error_text += "Contact Number is empty\n"
+                this.contactnumError = "Contact Number is Required";
+            }
+            
+         
+            if (has_error < 1) {
+                var password = '';
+                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < 8; i++ ) {
+                    password += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                var rqatName ={
+                    "lastname": this.lastname,
+                    "firstname": this.firstname,
+                    "middleinitial": this.midinit,
+                }
 
-            // if (this.hei_name == "") {
-            //     has_error = 1;
-            //     error_text += "HEI Name is empty\n"
-            //     this.hei_nameError = "HEI Name is Required";
-            // }
-            // if (this.username == "") {
-            //     has_error = 1;
-            //     error_text += "Username is empty\n"
-            //     this.usernameError = "Username is Required";
-            // }
-            // if (this.address == "") {
-            //     has_error = 1;
-            //     error_text += "Address is empty\n"
-            //     this.addressError = "Address is Required";
-            // }
-            // if (this.number == "") {
-            //     has_error = 1;
-            //     error_text += "Contact Number is empty\n"
-            //     this.numberError = "Contact Number is Required";
-            // }
-            // if (this.inst_code == "") {
-            //     has_error = 1;
-            //     error_text += "Institution Code is empty\n"
-            //     this.inst_codeError = "Institution Code is Required";
-            // }
+                newRQAT.set("name", rqatName);
+                newRQAT.set("username", this.username);
+                newRQAT.set("password", password);
+                newRQAT.set("contact_num", this.contactnum);
+                newRQAT.set("hei_affil", this.hei_affil);
+                newRQAT.set("user_type", "rqat");
+                
+                try{
+                    await newRQAT.signUp();
+                }
+                catch(error){
+                    alert("Error: " + error.code + " " + error.message);
+                }
 
-            // if (has_error < 1) {
-            //     newAccount
-            //         .save({
-            //             hei_name: this.hei_name,
-            //             username: this.username,
-            //             address: this.address,
-            //             number: this.number,
-            //             inst_code: this.inst_code,
-            //             hei_type: this.hei_type,
-            //         })
-            //         .then(
-            //             (newAccount) => {
-            //                 alert("Account Added Successfully " + newAccount.id);
-            //             },
-            //             (error) => {
-            //                 alert("Account Adding Failed" + error);
-            //             }
-            //         );
-            // } else {
-            //     //alert(error_text);
-            // }
+            }
         },
-
     },
     components: {},
 };
@@ -277,5 +250,8 @@ export default {
 .btn-margin {
     margin-left: 10px;
     margin-right: 10px;
+}
+.text-error{
+    color: red;
 }
 </style>
