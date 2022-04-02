@@ -64,7 +64,6 @@
                 <div class="form-control w-full pl-2">
                     <label class="label">
                         <span class="label-text">Access Type:</span>
-                        <span class="label-text"><a>+ Add Designation</a></span>
                     </label>
                     <select class="select select-bordered w-full">
                         <option v-for="accessType in accessTypes" :key="accessType">
