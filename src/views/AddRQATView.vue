@@ -57,6 +57,7 @@
                         Username is Required</span>
                 </label>
             </div>
+
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
@@ -67,11 +68,12 @@
                         Contact Number is Required</span>
                 </label>
             </div>
-            <div class="flex flex-row">
+                
+
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">HEI Affiliation:</span>
-                        <span class="label-text"><a>+ Add Designation</a></span>
+                        <span class="label-text"><a>+ Add HEI Affiliation</a></span>
                     </label>
                     <select class="select select-bordered w-full" v-model="v$.hei_affil.$model">
                         <option v-for="hei in heis" :key="hei">
@@ -79,9 +81,9 @@
                         </option>
                     </select>
                 </div>
-            </div>
 
-            <div class="flex flex-row pt-5" style="align-self: center;">
+
+            <div class="flex flex-row pt-10" style="align-self: center;">
                 <button class="btn btn-margin btn-wide btn-outline">Cancel</button>
                 <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue" @click="addRQAT()">Add RQAT</button>
             </div>
@@ -126,12 +128,6 @@ export default {
             username: "",
             contactnum: "",
             hei_affil: "STATE UNIVERSITIES AND COLLEGES",
-
-            lastnameError: "",
-            firstnameError: "",
-            midinitError: "",
-            usernameError: "",
-            contactnumError: "",
         };
     },
     validations() {
@@ -171,31 +167,10 @@ export default {
             const newRQAT = new Parse.User();
             var has_error = 0;
 
-            if (this.lastname == "") {
+            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "") {
                 has_error = 1;
-                //error_text += "HEI Name is empty\n"
-                this.lastnameError = "Lastname is Required";
             }
-            if (this.firstname == "") {
-                has_error = 1;
-                //error_text += "Username is empty\n"
-                this.firstnameError = "Firstname is Required";
-            }
-            if (this.midinit == "") {
-                has_error = 1;
-                //error_text += "Username is empty\n"
-                this.midinitError = "Middle Initial is Required";
-            }
-            if (this.username == "") {
-                has_error = 1;
-                //error_text += "Address is empty\n"
-                this.usernameError = "Username is Required";
-            }
-            if (this.contactnum == "") {
-                has_error = 1;
-                //error_text += "Contact Number is empty\n"
-                this.contactnumError = "Contact Number is Required";
-            }
+            
             
          
             if (has_error < 1) {

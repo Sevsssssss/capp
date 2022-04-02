@@ -207,9 +207,9 @@ export default {
 </script>
 
 <style>
-tr:nth-child(1) {
+/* tr:nth-child(1) {
     background: rgba(163, 171, 185, 0.24);
-}
+} */
 
 .search-container {
     height: 35px;
