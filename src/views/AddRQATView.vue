@@ -128,12 +128,6 @@ export default {
             username: "",
             contactnum: "",
             hei_affil: "STATE UNIVERSITIES AND COLLEGES",
-
-            lastnameError: "",
-            firstnameError: "",
-            midinitError: "",
-            usernameError: "",
-            contactnumError: "",
         };
     },
     validations() {
@@ -173,31 +167,10 @@ export default {
             const newRQAT = new Parse.User();
             var has_error = 0;
 
-            if (this.lastname == "") {
+            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "") {
                 has_error = 1;
-                //error_text += "HEI Name is empty\n"
-                this.lastnameError = "Lastname is Required";
             }
-            if (this.firstname == "") {
-                has_error = 1;
-                //error_text += "Username is empty\n"
-                this.firstnameError = "Firstname is Required";
-            }
-            if (this.midinit == "") {
-                has_error = 1;
-                //error_text += "Username is empty\n"
-                this.midinitError = "Middle Initial is Required";
-            }
-            if (this.username == "") {
-                has_error = 1;
-                //error_text += "Address is empty\n"
-                this.usernameError = "Username is Required";
-            }
-            if (this.contactnum == "") {
-                has_error = 1;
-                //error_text += "Contact Number is empty\n"
-                this.contactnumError = "Contact Number is Required";
-            }
+            
             
          
             if (has_error < 1) {
