@@ -265,26 +265,6 @@ export default {
                     alert("Error: " + error.code + " " + error.message);
                 }
 
-                // newHEI
-                //     .save({
-                //         hei_name: this.hei_name,
-                //         username: this.username,
-                //         email: this.email,
-                //         password: password,
-                //         address: this.address,
-                //         number: this.number,
-                //         inst_code: this.inst_code,
-                //         hei_type: this.hei_type,
-                        
-                //     })
-                //     .then(
-                //         (newAccount) => {
-                //             alert("Account Added Successfully " + newAccount.id);
-                //         },
-                //         (error) => {
-                //             alert("Account Adding Failed" + error);
-                //         }
-                //     );
             }
         },
 
