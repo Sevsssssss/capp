@@ -2,7 +2,7 @@
 <table class="hei-table table-normal w-full">
     <!-- head-body -->
     <tbody class="hei-table">
-        <tr class="hei-table">
+        <tr class="hei-table bg-grey-500">
             <th class="hei-table-head" v-for="header in headers" :key="header">{{ header.title }}</th>
         </tr>
         <!-- row 1 -->

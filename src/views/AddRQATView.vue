@@ -1,7 +1,7 @@
 <template>
 <div class="main-page flex justify-center items-center p-10">
     <div class=" card justify-center items-center space-x-3 bg-brand-white shadow-lg rounded-lg m-3 p-6">
-        <div class="card-body">
+        <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -17,21 +17,33 @@
                     <label class="label">
                         <span class="label-text">Last Name</span>
                     </label>
-                    <input type="text" placeholder="Last Name" class="input input-bordered w-full" />
+                    <input type="text" placeholder="Last Name" :class="{'input-error': validationStatus(v$.last_name)}" class="input input-bordered w-full" v-model="v$.last_name.$model" />
+                    <label class="label">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.last_name)}" v-if="validationStatus(v$.last_name)">
+                        Last Name is Required</span>
+                </label>
                 </div>
 
                 <div class="form-control w-full pr-4">
                     <label class="label">
                         <span class="label-text">First Name</span>
                     </label>
-                    <input type="text" placeholder="First Name" class="input input-bordered w-full" />
+                    <input type="text" placeholder="First Name" :class="{'input-error': validationStatus(v$.first_name)}" class="input input-bordered w-full" v-model="v$.first_name.$model" />
+                    <label class="label">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.first_name)}" v-if="validationStatus(v$.first_name)">
+                        First Name is Required</span>
+                </label>
                 </div>
 
                 <div class="form-control" style="width: 200px;">
                     <label class="label">
                         <span class="label-text">M.I.</span>
                     </label>
-                    <input type="text" placeholder="M.I." class="input input-bordered w-full" />
+                    <input type="text" placeholder="M.I." :class="{'input-error': validationStatus(v$.midInt)}" class="input input-bordered w-full" v-model="v$.midInt.$model" />
+                    <label class="label">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.midInt)}" v-if="validationStatus(v$.midInt)">
+                        M.I. is Required</span>
+                </label>
                 </div>
 
             </div>
@@ -40,42 +52,77 @@
                 <label class="label">
                     <span class="label-text">Username</span>
                 </label>
-                <input type="text" placeholder="Enter username" class="input input-bordered w-full" />
+                <input type="text" placeholder="Enter username" :class="{'input-error': validationStatus(v$.username)}" class="input input-bordered w-full" v-model="v$.username.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.username)}" v-if="validationStatus(v$.username)">
+                        Username is Required</span>
+                </label>
             </div>
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="text" placeholder="Enter Email" :class="{'input-error': validationStatus(v$.email)}"  class="input input-bordered w-full" v-model="v$.email.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label>
+            </div>
+
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
-                <input type="text" placeholder="09*********" class="input input-bordered w-full" />
+                <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.number)}"  class="input input-bordered w-full" v-model="v$.number.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.number)}" v-if="validationStatus(v$.number)">
+                        Contact Number is Required</span>
+                </label>
             </div>
-            <div class="flex flex-row">
+                
+
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">HEI Affiliation:</span>
-                        <span class="label-text"><a>+ Add Designation</a></span>
+                        <span class="label-text"><a>+ Add HEI Affiliation</a></span>
                     </label>
-                    <select class="select select-bordered w-full">
+                    <select class="select select-bordered w-full" v-model="hei_type">
                         <option v-for="hei in heis" :key="hei">
                             <div class="hei-name">{{ hei.title }}</div>
                         </option>
                     </select>
                 </div>
-            </div>
 
-            <div class="flex flex-row pt-5" style="align-self: center;">
+
+            <div class="flex flex-row pt-10" style="align-self: center;">
                 <button class="btn btn-margin btn-wide btn-outline">Cancel</button>
-                <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue">Add RQAT</button>
+                <button class="
+              btn btn-margin btn-wide
+              submit
+              bg-brand-darkblue
+              hover:bg-brand-blue
+            " @click="addRQAT()">
+                    Add RQAT
+                </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import {
+    required,
+    email,
+} from "@vuelidate/validators";
+
 export default {
     name: "AddHeiView",
     data() {
         return {
+            v$: useVuelidate(),
             heis: [{
                     title: "STATE UNIVERSITIES AND COLLEGES",
                 },
@@ -89,7 +136,126 @@ export default {
                     title: "OTHER GOVERNMENT SCHOOLS",
                 },
             ],
+
+            last_name: "",
+            first_name: "",
+            midInt: "",
+            username: "",
+            email: "",
+            number: "",
+            hei_type: "STATE UNIVERSITIES AND COLLEGES",
+
+            hei_nameError: "",
+            usernameError: "",
+            emailError: "",
+            numberError: "",
+            hei_typeError: "",
         };
+    },
+    validations() {
+        return {
+            last_name: {
+                required,
+            },
+            first_name: {
+                required,
+            },
+            midInt: {
+                required,
+            },
+            username: {
+                required,
+            },
+            email: {
+                required,
+                email,
+            },
+            address: {
+                required,
+            },
+            number: {
+                required,
+            },
+            hei_type: {
+                required,
+            },
+        };
+    },
+    methods: {
+
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
+
+        addRQAT() {
+            // console.log("Hello")
+            // this.v$.$validate();
+            // if(!this.v$.$error){
+            //     alert('Yey')
+            // }else{
+            //     alert('nay')
+            // }
+
+            // const HEIAccount = Parse.Object.extend("HEIAccount");
+            // const newAccount = new HEIAccount();
+            // console.log("Hello2")
+            // var has_error = 0;
+            // var error_text = "Account not created due to the following reasons:\n";
+
+            // if (this.hei_name == "") {
+            //     has_error = 1;
+            //     error_text += "HEI Name is empty\n"
+            //     this.hei_nameError = "HEI Name is Required";
+            // }
+            // if (this.username == "") {
+            //     has_error = 1;
+            //     error_text += "Username is empty\n"
+            //     this.usernameError = "Username is Required";
+            // }
+            // if (this.address == "") {
+            //     has_error = 1;
+            //     error_text += "Address is empty\n"
+            //     this.addressError = "Address is Required";
+            // }
+            // if (this.number == "") {
+            //     has_error = 1;
+            //     error_text += "Contact Number is empty\n"
+            //     this.numberError = "Contact Number is Required";
+            // }
+            // if (this.inst_code == "") {
+            //     has_error = 1;
+            //     error_text += "Institution Code is empty\n"
+            //     this.inst_codeError = "Institution Code is Required";
+            // }
+
+            // if (has_error < 1) {
+            //     newAccount
+            //         .save({
+            //             hei_name: this.hei_name,
+            //             username: this.username,
+            //             address: this.address,
+            //             number: this.number,
+            //             inst_code: this.inst_code,
+            //             hei_type: this.hei_type,
+            //         })
+            //         .then(
+            //             (newAccount) => {
+            //                 alert("Account Added Successfully " + newAccount.id);
+            //             },
+            //             (error) => {
+            //                 alert("Account Adding Failed" + error);
+            //             }
+            //         );
+            // } else {
+            //     //alert(error_text);
+            // }
+        },
+
     },
     components: {},
 };

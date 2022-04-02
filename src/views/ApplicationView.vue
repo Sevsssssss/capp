@@ -5,44 +5,15 @@
         <div class="top-row flex flex-row" style="justify-content: space-between">
             <TableTopLeft />
 
-            <div class="app-right-side flex flex-row">
-                <button class="
-                btn btn-sm
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-                p-2
-              ">
-                    All
-                </button>
-                <button class="
-                btn btn-sm
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-                p-2
-              ">
-                    Approval
-                </button>
-                <button class="
-                btn btn-sm
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-                p-2
-              ">
-                    Approved
-                </button>
-                <button class="
-                btn btn-sm
-                text-grey-200
-                bg-grey-500
-                hover:text-state-100 hover:bg-grey-500
-                border-none
-                p-2
-              ">
-                    Revision
-                </button>
+            
+
+            <div class="app-right-side tabs tabs-boxed flex flex-row">
+                
+                <a class="tab">All</a>
+                <a class="tab tab-active bg-brand-darkblue hover:bg-brand-blue">Approval</a>
+                <a class="tab">Approved</a>
+                <a class="tab">Revision</a>
+            
             </div>
         </div>
         <table class="
@@ -276,6 +247,7 @@ export default {
     width: 350px;
     align-self: center;
     justify-content: space-evenly;
-    padding: 10px;
+    padding: 20px;
+    margin: 10px;
 }
 </style>

@@ -49,14 +49,26 @@
                 <input type="text" placeholder="09*********" class="input input-bordered w-full" />
             </div>
             <div class="flex flex-row">
-                <div class="form-control w-full">
+                <div class="form-control w-full pr-2">
                     <label class="label">
                         <span class="label-text">Designation:</span>
                         <span class="label-text"><a>+ Add Designation</a></span>
                     </label>
                     <select class="select select-bordered w-full">
-                        <option v-for="hei in heis" :key="hei">
-                            <div class="hei-name">{{ hei.title }}</div>
+                        <option v-for="designation in designations" :key="designation">
+                            <div class="hei-name">{{ designation.title }}</div>
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-control w-full pl-2">
+                    <label class="label">
+                        <span class="label-text">Access Type:</span>
+                        <span class="label-text"><a>+ Add Designation</a></span>
+                    </label>
+                    <select class="select select-bordered w-full">
+                        <option v-for="accessType in accessTypes" :key="accessType">
+                            <div class="hei-name">{{ accessType.title }}</div>
                         </option>
                     </select>
                 </div>
@@ -76,17 +88,31 @@ export default {
     name: "AddHeiView",
     data() {
         return {
-            heis: [{
-                    title: "STATE UNIVERSITIES AND COLLEGES",
+            accessTypes: [{
+                    title: "ADMIN",
                 },
                 {
-                    title: "LOCAL UNIVERSITIES AND COLLEGES",
+                    title: "EDUCATION SUPERVISOR",
                 },
                 {
-                    title: "PRIVATE COLLEGES",
+                    title: "RQAT",
                 },
                 {
-                    title: "OTHER GOVERNMENT SCHOOLS",
+                    title: "REPORTS",
+                },
+            ],
+
+            designations: [{
+                    title: "DIRECTOR",
+                },
+                {
+                    title: "EDUCATION SUPERVISOR",
+                },
+                {
+                    title: "SECRETARY",
+                },
+                {
+                    title: "CHED EMPLOYEE",
                 },
             ],
         };

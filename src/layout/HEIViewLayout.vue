@@ -113,6 +113,7 @@ import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
 
 import FileOutline from "@/assets/sidebar_icons/file-3-line.svg";
+import HomeOutline from "@/assets/sidebar_icons/home-outline.svg";
 
 export default {
   name: "ViewLayout",
@@ -139,7 +140,7 @@ export default {
           title: "Home",
           icon: {
             element: "img",
-            attributes: { src: FileOutline },
+            attributes: { src: HomeOutline },
           },
         },
         {

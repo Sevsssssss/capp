@@ -90,7 +90,7 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
-                        <span class="label-text"><a>+ Add Designation</a></span>
+                        <span class="label-text"><a>+ Add HEI Type</a></span>
                     </label>
                     <select class="select select-bordered w-full" v-model="hei_type">
                         <option v-for="hei in heis" :key="hei">
