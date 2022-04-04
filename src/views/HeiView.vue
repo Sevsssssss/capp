@@ -5,13 +5,13 @@
 
     <DataCards :datas="datas" />
 
-    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
+    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
         <div class="top-row flex flex-row" style="justify-content: space-between">
             <TableTopLeft />
 
             <div class="right-side flex flex-row">
                 <div class="month-sort flex flex-row">
-                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
+                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
                         <option disabled selected>Sort by type</option>
                         <option>Private</option>
                         <option>State Univeristies</option>
@@ -46,6 +46,13 @@ import DataCards from "@/components//DataCards.vue";
 import TableTopLeft from "@/components//TableTopLeft.vue";
 import DataTables from "@/components//DataTables.vue";
 
+import Parse from "parse";
+
+var dataNumber = 10;
+var page = 0;
+
+Parse.initialize("capp", "master");
+Parse.serverURL = "http://localhost:1337/parse";
 
 
 export default {
@@ -155,7 +162,7 @@ export default {
                     color: "green",
                 },
             ],
-            tables: [{
+            tables: [/*{
                     InstNo: "56543",
                     HeiName: "Ateneo De Naga University",
                     address: "Naga City",
@@ -189,8 +196,10 @@ export default {
                     address: "Daet",
                     type: "State College",
                     email: "cnsc@cnsc.edu.ph",
-                },
+                },*/
             ],
+
+            sort_type: "Sort by type",
         };
     },
     components: {
@@ -202,7 +211,167 @@ export default {
         addHei() {
             this.$router.push("/hei/add");
         },
+        async filterHEI(){
+            
+            var i = 0;
+            if (this.sort_type == "Private"){
+                var heisPriv =[];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "hei");
+                query.equalTo("hei_type", "PRIVATE COLLEGES");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for(i = 0; i < querResult.length; i++){
+                    const hei = querResult[i];
+                    
+                    heisPriv.push({
+                        InstNo: hei.get("inst_code"),
+                        HeiName: hei.get("hei_name"),
+                        address: hei.get("address"),
+                        type: hei.get("hei_type"),
+                        email: "test",
+                    },);
+                }
+                this.tables = heisPriv;
+            }
+            if (this.sort_type == "State Univeristies"){
+                var heisState =[];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "hei");
+                query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for(i = 0; i < querResult.length; i++){
+                    const hei = querResult[i];
+                    
+                    heisState.push({
+                        InstNo: hei.get("inst_code"),
+                        HeiName: hei.get("hei_name"),
+                        address: hei.get("address"),
+                        type: hei.get("hei_type"),
+                        email: "test",
+                    },);
+                }
+                this.tables = heisState;
+            }
+            if (this.sort_type == "Local Universities"){
+                var heisLocal =[];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "hei");
+                query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for(i = 0; i < querResult.length; i++){
+                    const hei = querResult[i];
+                    
+                    heisLocal.push({
+                        InstNo: hei.get("inst_code"),
+                        HeiName: hei.get("hei_name"),
+                        address: hei.get("address"),
+                        type: hei.get("hei_type"),
+                        email: "test",
+                    },);
+                }
+                this.tables = heisLocal;
+            }
+            if (this.sort_type == "Others"){
+                var heisOthers =[];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "hei");
+                query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for(i = 0; i < querResult.length; i++){
+                    const hei = querResult[i];
+                    
+                    heisOthers.push({
+                        InstNo: hei.get("inst_code"),
+                        HeiName: hei.get("hei_name"),
+                        address: hei.get("address"),
+                        type: hei.get("hei_type"),
+                        email: "test",
+                    },);
+                }
+                this.tables = heisOthers;
+            }
+        }
     },
+    mounted: async function() {
+            var heis =[];
+
+            const query = new Parse.Query(Parse.User);
+            query.equalTo("user_type", "hei");
+            query.limit(dataNumber);
+            query.skip(page * dataNumber);
+
+            const querResult = await query.find();
+            for(var i = 0; i < querResult.length; i++){
+                const hei = querResult[i];
+                
+                heis.push({
+                    InstNo: hei.get("inst_code"),
+                    HeiName: hei.get("hei_name"),
+                    address: hei.get("address"),
+                    type: hei.get("hei_type"),
+                    email: "test",
+                },);
+            }
+            this.tables = heis;
+
+         
+
+            const queryPrivate = new Parse.Query(Parse.User);
+            queryPrivate.equalTo("user_type", "hei");
+            queryPrivate.equalTo("hei_type", "PRIVATE COLLEGES");
+
+            const queryState = new Parse.Query(Parse.User);
+            queryState.equalTo("user_type", "hei");
+            queryState.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
+
+            const queryLocal = new Parse.Query(Parse.User);
+            queryLocal.equalTo("user_type", "hei");
+            queryLocal.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
+
+            const queryOthers = new Parse.Query(Parse.User);
+            queryOthers.equalTo("user_type", "hei");
+            queryOthers.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
+
+            this.datas = [{
+                    title: "STATE UNIVERSITIES AND COLLEGES",
+                    num: await queryState.count(),
+                    color: "orange",
+                },
+                {
+                    title: "LOCAL UNIVERSITIES AND COLLEGES",
+                    num: await queryLocal.count(),
+                    color: "blue",
+                },
+                {
+                    title: "PRIVATE COLLEGES",
+                    num: await queryPrivate.count(),
+                    color: "violet",
+                },
+                {
+                    title: "OTHER GOVERNMENT SCHOOLS",
+                    num: await queryOthers.count(),
+                    color: "green",
+                },
+
+
+            ]
+        }
 };
 </script>
 
