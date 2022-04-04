@@ -6,6 +6,7 @@
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
         <div class="top-row flex flex-row" style="justify-content: space-between">
             <div class="left-side flex flex-row">
+                <!-- search -->
                 <div class="search-container">
                     <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
                     <a href="#" class="search-btn">
@@ -19,6 +20,7 @@
                 </div>
             </div>
             <div class="flex flex-row">
+                <!-- sort -->
                 <div class="month-sort flex flex-row">
                     <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
                         <option disabled selected>Sort by type</option>
@@ -28,6 +30,8 @@
                         <option>Others</option>
                     </select>
                 </div>
+
+                <!-- add -->
                 <button @click="addHei()" class="
               btn btn-md
               bg-brand-darkblue
@@ -45,14 +49,75 @@
                 </button>
             </div>
         </div>
-        <DataTables :headers="headers" :tables="tables" />
+        <!-- table -->
+        <table class="hei-table table-normal w-full">
+            <!-- head-body -->
+            <tbody class="hei-table">
+                <tr class="hei-table bg-grey-500">
+                    <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
+                </tr>
+                <!-- row 1 -->
+                <tr class="" v-for="table in tables" :key="table">
+                    <th>{{ table.InstNo }}</th>
+                    <td>
+                        <div class="column">
+                            <div class="hei-name">{{ table.HeiName }}</div>
+                            <div class="hei-address">{{ table.address }}</div>
+                        </div>
+                    </td>
+                    <td>{{ table.type }}</td>
+                    <td>{{ table.email }}</td>
+                    <td>
+                        <div class="flex flex-row">
+                            <div>
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Footer -->
+        <div class="table-footer flex flex-row" style="justify-content: space-between;">
+            <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
+
+            <div class="flex flex-row">
+                <div class="flex flex-row justify-center items-center pr-5">
+                    <div class="font-normal text-sm">Rows per page: 10</div>
+                    <div class="text-grey-200 hover:text-brand-blue">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="
+                  flex flex-row
+                  justify-center
+                  items-center
+                  font-normal
+                ">
+                    <p>1-10 of 276</p>
+                    <div class="text-grey-200 hover:text-brand-blue">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+                        </svg>
+                    </div>
+                    <div class="text-grey-200 hover:text-brand-blue">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
 
 <script>
 import DataCards from "@/components//DataCards.vue";
-import DataTables from "@/components//DataTables.vue";
 
 import Parse from "parse";
 
@@ -212,7 +277,6 @@ export default {
     },
     components: {
         DataCards,
-        DataTables,
     },
     methods: {
         addHei() {

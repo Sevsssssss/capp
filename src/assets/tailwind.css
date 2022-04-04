@@ -121,6 +121,11 @@
     margin: 15px;
   }
 
+  .center{
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
   .dropdown {
     flex-wrap: wrap;
     align-items: center;
@@ -209,6 +214,10 @@
   }
 
   .btn-sm1 {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     width: 160px;
     padding: 10px 10px;
     border-radius: 10px;
@@ -323,6 +332,27 @@
     color: #04ad48;
     background-color: rgba(5, 174, 74, 0.15);
     border: none;
+  }
+  .app-data {
+    text-align: left;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    align-items: center;
+}
+
+.app-label {
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: start;
+    vertical-align: middle;
+    color: #8fa0b9;
+    display: block;
+}
+
+  .table-footer{
+    padding: 10px;
   }
 }
 

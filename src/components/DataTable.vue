@@ -80,21 +80,4 @@ export default {
 </script>
 
 <style>
-.app-data {
-    text-align: left;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 38px;
-    align-items: center;
-}
-
-.app-label {
-    padding-left: 10px;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: start;
-    vertical-align: middle;
-    color: #8fa0b9;
-    display: block;
-}
 </style>
