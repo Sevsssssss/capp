@@ -1,15 +1,14 @@
 <template>
 <div class="" style="padding: 10px">
 
-    
-
     <DataCards :datas="datas" />
 
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
         <div class="top-row flex flex-row" style="justify-content: space-between">
-            <TableTopLeft />
-
-            <div class="right-side flex flex-row">
+            <div class="left-side flex flex-row">
+                <TableTopLeft />
+            </div>
+            <div class="flex flex-row">
                 <div class="month-sort flex flex-row">
                     <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
                         <option disabled selected>Sort by type</option>
@@ -45,8 +44,6 @@
 import DataCards from "@/components//DataCards.vue";
 import TableTopLeft from "@/components//TableTopLeft.vue";
 import DataTables from "@/components//DataTables.vue";
-
-
 
 export default {
     name: "HeiView",
@@ -207,13 +204,11 @@ export default {
 </script>
 
 <style>
-/* tr:nth-child(1) {
-    background: rgba(163, 171, 185, 0.24);
-} */
+
 
 .search-container {
-    height: 35px;
-    width: 300px;
+    height: 45px;
+    width: fit-content;
     border-radius: 5px;
     padding: 10px 10px;
     display: flex;
@@ -237,9 +232,6 @@ export default {
     align-self: center;
 }
 
-.top-row {
-    padding: 0px 20px;
-}
 
 .date-sort {
     width: 170px;
@@ -266,13 +258,7 @@ export default {
     justify-content: space-evenly;
 }
 
-.btn-primary1 {
-    width: 120px;
-    min-height: 40px;
-    height: 40px;
-    padding: 5px;
-    margin: 7px;
-}
+
 
 .sort-btn {
     align-items: center;

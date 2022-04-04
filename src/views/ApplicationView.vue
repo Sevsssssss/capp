@@ -7,7 +7,7 @@
 
             
 
-            <div class="app-right-side tabs tabs-boxed flex flex-row">
+            <div class="tabs tabs-boxed flex flex-row">
                 
                 <a class="tab">All</a>
                 <a class="tab tab-active bg-brand-darkblue hover:bg-brand-blue">Approval</a>
@@ -48,6 +48,7 @@
                     </td>
                     <td class="font-normal">{{ table.type }}</td>
                     <td class="font-normal">{{ table.program }}</td>
+                    <td class="font-normal">{{ table.dateApplied }}</td>
                     <td class="font-normal">
                         <button class="btn btn-sm p-2 font-normal">
                             {{ table.status }}
@@ -136,6 +137,9 @@ export default {
                     title: "PROGRAM",
                 },
                 {
+                    title: "DATE APPLIED",
+                },
+                {
                     title: "STATUS",
                 },
                 {
@@ -176,6 +180,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
+                    dateApplied: "June 8, 2015",
                     status: "APPROVAL",
                 },
                 {
@@ -185,6 +190,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
+                    dateApplied: "June 8, 2015",
                     status: "APPROVAL",
                 },
                 {
@@ -194,6 +200,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
+                    dateApplied: "June 8, 2015",
                     status: "APPROVAL",
                 },
                 {
@@ -203,6 +210,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
+                    dateApplied: "June 8, 2015",
                     status: "APPROVAL",
                 },
                 {
@@ -212,6 +220,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
+                    dateApplied: "June 8, 2015",
                     status: "APPROVAL",
                 },
             ],

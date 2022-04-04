@@ -3,7 +3,7 @@
     <div class="top-row flex flex-row" style="justify-content: space-between;">
         <TableTopLeft />
 
-        <div class="right-side flex flex-row">
+        <div class="flex flex-row">
             <div class="month-sort flex flex-row">
                 <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
                     <option disabled selected>Sort by type</option>

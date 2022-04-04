@@ -1,38 +1,6 @@
 <template>
 <div class="" style="padding: 10px">
     <div class="overflow-x-auto shadow-lg rounded-lg bg-brand-white" style="margin: 11px">
-        <div class="top-row flex flex-row" style="justify-content: space-between">
-
-            <div class="search-container">
-                <input type="search" name="search" placeholder="Search by email" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
-                <a href="#" class="search-btn">
-                    <div class="search_icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
-                        </svg>
-                    </div>
-                </a>
-            </div>
-
-            <div class="flex flex-row">
-                <button @click="addHei()" class="
-              btn btn-md
-              bg-brand-darkblue
-              hover:bg-brand-blue
-              border-none
-              p-2
-            ">
-                    <div class="flex flex-row">
-                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                        </svg>
-                        <div class="btn-text">Add Evaluation Inst.</div>
-                    </div>
-                </button>
-            </div>
-        </div>
         <table class="table w-full">
             <thead>
                 <tr>
@@ -64,12 +32,14 @@
 
 <script>
 import VueTailwindPagination from "@ocrv/vue-tailwind-pagination";
+import TableTopLeft from "@/components//TableTopLeft.vue";
 import axios from "axios";
 
 export default {
     name: "EvaluationInsView",
     components: {
         VueTailwindPagination,
+        TableTopLeft,
     },
     data() {
         return {
@@ -81,12 +51,6 @@ export default {
         };
     },
     methods: {
-        // getData(){
-        //     fetch(`http://localhost:3000/data?`)
-        //     .then(res => res.json())
-        //     .then(d => this.data = d)
-        //     .catch(err => console.log(err.message))
-        // },
         async getData() {
             var response = await axios(
                 `https://reqres.in/api/users?page=${this.current}`
