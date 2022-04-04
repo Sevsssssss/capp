@@ -1,21 +1,34 @@
 <template>
 <div class="" style="padding: 10px">
-    <DataCards :datas="datas" />
+    <DataCards :datas="datas" /> <!-- component for showing the cards with the datas for application -->
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
+        <!-- Top Header for search and sort -->
         <div class="top-row flex flex-row" style="justify-content: space-between">
-            <TableTopLeft />
-
-            
-
-            <div class="tabs tabs-boxed flex flex-row">
-                
-                <a class="tab">All</a>
-                <a class="tab tab-active bg-brand-darkblue hover:bg-brand-blue">Approval</a>
-                <a class="tab">Approved</a>
-                <a class="tab">Revision</a>
-            
+            <!-- Search -->
+            <div class="search-container">
+                <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
+                <a href="#" class="search-btn">
+                    <div class="search_icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+            <!-- Sort -->
+            <div class="dropdown flex flex-row">
+                <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" >
+                    <option selected>All</option>
+                    <option>Approved</option>
+                    <option>For Revision</option>
+                    <option>For Evaluation</option>
+                    <option>Completed</option>
+                </select>
             </div>
         </div>
+
+        <!-- Table -->
         <table class="
           table-normal
           w-full
@@ -34,23 +47,36 @@
             </thead>
 
             <tbody class="">
-                <!-- row 1 -->
+                <!-- rows -->
                 <tr class="" v-for="table in tables" :key="table">
-                    <th class="">{{ table.rep }}</th>
-                    <td class="font-normal">{{ table.email }}</td>
-                    <td>
-                        <div class="">
+                    <th class=""><div class="">
                             <div class="font-semibold text-grey-300">
                                 {{ table.HeiName }}
                             </div>
                             <div class="font-normal">{{ table.address }}</div>
-                        </div>
-                    </td>
+                        </div></th>
                     <td class="font-normal">{{ table.type }}</td>
+                    <td>
+                        {{ table.rep }}
+                    </td>
+                    <td class="font-normal">{{ table.email }}</td>
                     <td class="font-normal">{{ table.program }}</td>
                     <td class="font-normal">{{ table.dateApplied }}</td>
                     <td class="font-normal">
-                        <button class="btn btn-sm p-2 font-normal">
+                        <!-- :class="'homeIcon.' + data.color" -->
+                        <button v-if="table.status === 'FOR APPROVAL'" class="btn-sm1 p-2 font-normal approval">
+                            {{ table.status }}
+                        </button>
+                        <button v-else-if="table.status === 'FOR REVISION'" class="btn-sm1 p-2 font-normal revision">
+                            {{ table.status }}
+                        </button>
+                        <button v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 p-2 font-normal evaluation">
+                            {{ table.status }}
+                        </button>
+                        <button v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 p-2 font-normal issuance">
+                            {{ table.status }}
+                        </button>
+                        <button v-else-if="table.status === 'COMPLETED'" class="btn-sm1 p-2 font-normal completed">
                             {{ table.status }}
                         </button>
                     </td>
@@ -66,7 +92,7 @@
                     </td>
                 </tr>
             </tbody>
-
+            <!-- Footer -->
             <tfoot>
                 <tr>
                     <th class="font-normal text-sm">TOTAL HEI: 40/100</th>
@@ -115,24 +141,24 @@
 
 <script>
 import DataCards from "@/components//DataCards.vue";
-import TableTopLeft from "@/components//TableTopLeft.vue";
 
 export default {
     name: "ApplicationView",
     data() {
         return {
             headers: [{
-                    title: "REPRESENTATIVE",
-                },
-                {
-                    title: "EMAIL",
-                },
-                {
                     title: "HEI",
                 },
                 {
                     title: "TYPE",
                 },
+                {
+                    title: "REPRESENTATIVE",
+                },
+                {
+                    title: "EMAIL",
+                },
+                
                 {
                     title: "PROGRAM",
                 },
@@ -168,20 +194,20 @@ export default {
                     color: "green",
                 },
                 {
-                    title: "FOR COMPLETION",
+                    title: "COMPLETED",
                     num: 300,
                     color: "pink",
                 },
             ],
             tables: [{
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
                     HeiName: "Ateneo De Naga University",
                     address: "Naga City",
                     type: "Initial Offering",
+                    rep: "Aiden Gibbs",
+                    email: "aadnu@adnu.edu.ph",
                     program: "BSIT",
                     dateApplied: "June 8, 2015",
-                    status: "APPROVAL",
+                    status: "FOR APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -191,7 +217,7 @@ export default {
                     type: "Initial Offering",
                     program: "BSIT",
                     dateApplied: "June 8, 2015",
-                    status: "APPROVAL",
+                    status: "FOR REVISION",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -201,7 +227,7 @@ export default {
                     type: "Initial Offering",
                     program: "BSIT",
                     dateApplied: "June 8, 2015",
-                    status: "APPROVAL",
+                    status: "FOR EVALUATION",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -211,7 +237,7 @@ export default {
                     type: "Initial Offering",
                     program: "BSIT",
                     dateApplied: "June 8, 2015",
-                    status: "APPROVAL",
+                    status: "FOR ISSUANCE",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -221,42 +247,17 @@ export default {
                     type: "Initial Offering",
                     program: "BSIT",
                     dateApplied: "June 8, 2015",
-                    status: "APPROVAL",
+                    status: "COMPLETED",
                 },
             ],
         };
     },
     components: {
         DataCards,
-        TableTopLeft,
     },
 };
 </script>
 
 <style>
-.app-data {
-    text-align: left;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 38px;
-    align-items: center;
-}
 
-.app-label {
-    padding-left: 10px;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: start;
-    vertical-align: middle;
-    color: #8fa0b9;
-    display: block;
-}
-
-.app-right-side {
-    width: 350px;
-    align-self: center;
-    justify-content: space-evenly;
-    padding: 20px;
-    margin: 10px;
-}
 </style>

@@ -6,7 +6,7 @@
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a>HEI ACCOUNT</a></li>
                 <li><a>RQAT ACCOUNT</a></li>
-                 <li><a>EMPLOYEES</a></li>
+                <li><a>EMPLOYEES</a></li>
             </ul>
         </div>
         <div class="dropdown dropdown-end">
@@ -17,112 +17,107 @@
             </ul>
         </div>
     </div>
-    <table class="m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
-        <!-- head -->
-        <thead>
-            <tr>
-                <th>
-                    <div class="form-control">
-                        <div class="input-group">
-                            <input type="text" placeholder="Search…" class="input input-bordered" />
-                            <button class="btn btn-square bg-brand-darkblue hover:bg-blue-100 border-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </button>
+    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
+        <div class="top-row flex flex-row" style="justify-content: space-between">
+            <div class="left-side flex flex-row">
+                <div class="search-container">
+                    <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
+                    <a href="#" class="search-btn">
+                        <div class="search_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
+                            </svg>
                         </div>
-                    </div>
-                </th>
-                <th></th>
-                <th></th>
-                <div class="flex flex-row pt-2 ">
-                    <th class="absolute" style="right: 20rem">
-                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">All</button>
-                    </th>
-                    <th class="absolute" style="right: 13.6rem">
-                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approval</button>
-                    </th>
-                    <th class="absolute" style="right: 7rem">
-                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approved</button>
-                    </th>
-                    <th class="absolute" style="right: 1rem">
-                        <button class="btn btn-sm text-grey-200 bg-grey-500 hover:text-state-100 hover:bg-grey-500 border-none p-2">Revision</button>
-                    </th>
+                    </a>
                 </div>
-            </tr>
-        </thead>
-        <!-- head-body -->
-        <thead class="bg-grey-500">
-            <tr class="">
-                <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
-                    {{header.title}}
-                </th>
-            </tr>
-        </thead>
+            </div>
+            <div class="dropdown flex flex-row">
+                <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" >
+                    <option selected>All</option>
+                    <option>Approved</option>
+                    <option>For Revision</option>
+                    <option>For Evaluation</option>
+                    <option>Completed</option>
+                </select>
+            </div>
+        </div>
+        <table class="table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
+            <!-- head -->
+            <!-- head-body -->
+            <thead class="bg-grey-500">
+                <tr class="">
+                    <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
+                        {{header.title}}
+                    </th>
+                </tr>
+            </thead>
 
-        <tbody class="">
-            <!-- row 1 -->
-            <tr class="" v-for="table in tables" :key="table">
-                <th class="">{{ table.rep }}</th>
-                <td class="font-normal ">{{ table.email }}</td>
-                <td>
-                    <div class="">
-                        <div class="font-semibold text-grey-300">{{ table.HeiName }}</div>
-                        <div class="font-normal">{{ table.address }}</div>
-                    </div>
-                </td>
-                <td class="font-normal ">{{ table.type }}</td>
-                <td class="font-normal ">{{ table.program }}</td>
-                <td class="font-normal ">
-
-                    <button class="btn btn-sm p-2 font-normal"> {{ table.status }}</button>
-                </td>
-                <td>
-                    <div class="flex flex-row ">
-                        <a class="link link-primary hover:text-brand-darkblue text-brand-blue pr-2">view</a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-
-        <tfoot>
-            <tr>
-                <th class="font-normal text-sm">TOTAL HEI: 40/100</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>
-                    <div class="flex flex-row justify-center items-center">
-                        <div class="font-normal text-sm">Rows per page: 10</div>
-                        <div class="text-grey-200 hover:text-brand-blue">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                            </svg>
+            <tbody class="">
+                <!-- row 1 -->
+                <tr class="" v-for="table in tables" :key="table">
+                    <th class="">{{ table.rep }}</th>
+                    <td class="font-normal ">{{ table.email }}</td>
+                    <td>
+                        <div class="">
+                            <div class="font-semibold text-grey-300">{{ table.HeiName }}</div>
+                            <div class="font-normal">{{ table.address }}</div>
                         </div>
-                    </div>
-                </th>
+                    </td>
+                    <td class="font-normal ">{{ table.type }}</td>
+                    <td class="font-normal ">{{ table.program }}</td>
+                    <td class="font-normal ">
 
-                <th>
-                    <div class="flex flex-row justify-center items-center font-normal text-sm">
-                        <p>1-10 of 276</p>
-                        <div class="text-grey-200 hover:text-brand-blue">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                            </svg>
+                        <button class="btn btn-sm p-2 font-normal"> {{ table.status }}</button>
+                    </td>
+                    <td>
+                        <div class="flex flex-row ">
+                            <a class="link link-primary hover:text-brand-darkblue text-brand-blue pr-2">view</a>
                         </div>
-                        <div class="text-grey-200 hover:text-brand-blue">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                            </svg>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th class="font-normal text-sm">TOTAL HEI: 40/100</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        <div class="flex flex-row justify-center items-center">
+                            <div class="font-normal text-sm">Rows per page: 10</div>
+                            <div class="text-grey-200 hover:text-brand-blue">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="flex flex-row justify-center items-center font-normal text-sm">
+                            <p>1-10 of 276</p>
+                            <div class="text-grey-200 hover:text-brand-blue">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+                                </svg>
+                            </div>
+                            <div class="text-grey-200 hover:text-brand-blue">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                                </svg>
+
+                            </div>
 
                         </div>
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-                    </div>
-                </th>
-            </tr>
-        </tfoot>
-    </table>
 </div>
 </template>
 

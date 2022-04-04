@@ -72,13 +72,13 @@ export default {
     data() {
         return {
             showModal: false,
-            title: 'CHED APPLICATION MANAGEMENT SYSTEM',
+            title: 'CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM',
             Info: 'Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur!',
         }
     },
     methods: {
         SuperAdmin() {
-            this.$router.push("/home");
+            this.$router.push("/application");
         },
         Admin() {
             this.$router.push("/");
