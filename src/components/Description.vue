@@ -62,7 +62,7 @@
 
 <script>
 export default {
-    name: "DataTables",
+    name: "Description",
     props: ['headers', 'tables'],
 
 };
