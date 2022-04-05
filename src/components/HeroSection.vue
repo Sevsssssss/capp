@@ -93,7 +93,7 @@ export default {
             this.$router.push("/");
         },
         HEI() {
-            this.$router.push("/HEIPage");
+            this.$router.push("/HEIhome");
         },
         toggleModal() {
             this.showModal = !this.showModal
