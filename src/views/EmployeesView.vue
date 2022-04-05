@@ -15,16 +15,16 @@
             </div>
 
             <div class="flex flex-row">
-                <div class="month-sort flex flex-row">
-                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
-                        <option disabled selected>Sort by type</option>
-                        <option>Private</option>
-                        <option>State Univeristies</option>
-                        <option>Local Universities</option>
+              <!-- sort -->
+                <div class="dropdown flex flex-row">
+                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterEmployees()">
+                        <option disabled selected>Sort by Designation</option>
+                        <option>CHED Director</option>
+                        <option>Supervisor</option>
+                        <option>Employees</option>
                         <option>Others</option>
                     </select>
                 </div>
-
                 <button @click="addEmployee()" class="btn btn-primary1 bg-brand-darkblue" style="width: 180px">
                     <div class="flex flex-row add-hei-content">
                         <svg style="fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -44,16 +44,15 @@
                     <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
                 </tr>
                 <!-- row 1 -->
-                <tr class="" v-for="table in tables" :key="table">
-                    <th>{{ table.InstNo }}</th>
+                <tr class="" v-for="table in searchEmployee" :key="table">
+                    <th>{{ table.Name }}</th>
                     <td>
                         <div class="column">
-                            <div class="hei-name">{{ table.HeiName }}</div>
-                            <div class="hei-address">{{ table.address }}</div>
+                            <div class="hei-name">{{ table.ContactNo }}</div>
                         </div>
                     </td>
-                    <td>{{ table.type }}</td>
-                    <td>{{ table.email }}</td>
+                    <td>{{ table.Username}}</td>
+                    <td>{{ table.Designation }}</td>
                     <td>
                         <div class="flex flex-row center">
                             <div>
@@ -104,16 +103,21 @@
 </template>
 
 <script>
+import Parse from "parse";
+
+var dataNumber = 10;
+var page = 0;
+
+Parse.initialize("capp", "master");
+Parse.serverURL = "http://localhost:1337/parse";
+
 
 export default {
     name: "ApplicationView",
     data() {
         return {
             headers: [{
-                    title: "RQAT MEMBER NAME"
-                },
-                {
-                    title: "HEI"
+                    title: "EMPLOYEE NAME"
                 },
                 {
                     title: "COTACT NUMBER"
@@ -122,76 +126,176 @@ export default {
                     title: "USERNAME"
                 },
                 {
+                    title: "DESIGNATION"
+                },
+                {
                     title: "ACTION"
                 },
             ],
-
-            datas: [{
-                    title: "FOR APPROVAL",
-                    num: 300,
+            tables: [/*{
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    title: "FOR REVISION",
-                    num: 300,
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    title: "FOR ISSUANCE",
-                    num: 300,
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    title: "FOR EVALUATION",
-                    num: 300,
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    title: "FOR COMPLETION",
-                    num: 300,
-                },
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
+                },*/
             ],
-            tables: [{
-                    InstNo: "56543",
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Private Institution",
-                    email: "ateneodenaga@gbox.adnu.edu.ph",
-                },
-                {
-                    InstNo: "20746",
-                    HeiName: "Bicol University",
-                    address: "Legazpi City",
-                    type: "State University",
-                    email: "bu@bicol-u.edu.ph",
-                },
-                {
-                    InstNo: "12865",
-                    HeiName: "Catanduanes State University",
-                    address: "Virac",
-                    type: "State University",
-                    email: "areneo@gbox.adnu.edu.ph",
-                },
-                {
-                    InstNo: "95848",
-                    HeiName: "Aquinas University of Legazpi",
-                    address: "Legazpi City",
-                    type: "Private",
-                    email: "ust@ust-legazpi.edu.ph",
-                },
-                {
-                    InstNo: "56543",
-                    HeiName: "Camarines Norte State College",
-                    address: "Daet",
-                    type: "State College",
-                    email: "cnsc@cnsc.edu.ph",
-                },
-            ],
+            search: '',
+            sort_type: 'Sort by Designation',
         };
     },
     components: {
+    },
+    computed: {
+        searchEmployee(){
+            return this.tables.filter(p => {
+                return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            });
+        }
     },
     methods: {
         addEmployee() {
             this.$router.push("/employees/add");
         },
+        async filterEmployees() {
+
+            var i = 0;
+            
+            if (this.sort_type == "CHED Director") {
+                var empDir = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "DIRECTOR");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empDir.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empDir;
+            }
+            if (this.sort_type == "Supervisor") {
+                var empSuper = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "EDUCATION SUPERVISOR");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empSuper.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empSuper;
+                
+            }
+            if (this.sort_type == "Employees") {
+                var empEmp = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "CHED EMPLOYEE");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empEmp.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empEmp;
+            }
+            if (this.sort_type == "Others") {
+                var empOthers = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "DIRECTOR");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empOthers.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empOthers;
+            }
+        }
     },
+    mounted: async function () {
+        var employees = [];
+
+        const query = new Parse.Query(Parse.User);
+        query.equalTo("user_type", "employee");
+        query.limit(dataNumber);
+        query.skip(page * dataNumber);
+
+        const querResult = await query.find();
+        for (var i = 0; i < querResult.length; i++) {
+            const emp = querResult[i];
+
+            employees.push({
+                Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                ContactNo: emp.get("contact_num"),
+                Username: "test",
+                Designation: emp.get("designation"),
+            }, );
+        }
+        this.tables = employees;
+    }
 };
 </script>
 
