@@ -4,7 +4,7 @@ import router from './router'
 import './assets/tailwind.css'
 import '@ocrv/vue-tailwind-pagination/styles'
 import Vuelidate from 'vuelidate'
-
+import 'flowbite';
 
 
 //I move this line of codes in App.vue

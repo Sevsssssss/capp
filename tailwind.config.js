@@ -1,5 +1,8 @@
 module.exports = {
-  content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [
+  './public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}',
+  "./node_modules/flowbite/**/*.js"
+],
   daisyui: {
     styled: true,
     themes: false,
@@ -29,7 +32,8 @@ module.exports = {
 
       },
       blue :{
-        100: '#0085FF'
+        100: '#0085FF',
+        200: '#006ed4'
       },
       black: {
         100: '#000000',
@@ -61,5 +65,8 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require('flowbite/plugin')
+  ],
 }

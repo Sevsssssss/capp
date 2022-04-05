@@ -16,6 +16,7 @@ import ReportingView from "../views/ReportingView.vue";
 import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
+import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
 
 const routes = [
   {
@@ -103,6 +104,12 @@ const routes = [
         name: "HEIapplication",
         component: HEI_Application,
       },
+      {
+        path: "/HEIapplication/edit",
+        name: "EditHEIapplication",
+        component: Edit_HEI_Application,
+      },
+
     ]
   }
 ]

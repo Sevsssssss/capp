@@ -6,7 +6,7 @@
             {{detail.text}}
         </p>
         <div class="pt-4">
-            <button class="btn btn-primary  bg-brand-darkblue hover:bg-blue-100 border-none">Learn more</button>
+            <button class="btn btn-primary  bg-brand-darkblue hover:bg-blue-500 border-none">Learn more</button>
         </div>
     </div>
     <div class="p-10 md:py-20 md:items-center hidden md:block">
