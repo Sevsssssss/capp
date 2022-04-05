@@ -143,9 +143,9 @@ export default {
         TableTopLeft,
     },
     methods: {
-        //<!-- addEvalIns() {
-        //    this.$router.push("/EvalINs/add");
-        //}, 
+        addEvalIns() {
+           this.$router.push("/evaluationins/add");
+        }, 
     },
 };
 </script>
