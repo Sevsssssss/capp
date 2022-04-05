@@ -7,11 +7,6 @@
 </template>
 
 <script>
-
-
-
-
-
 import Parse from "parse";
 Parse.serverURL = "http://localhost:1337/api";
 Parse.initialize(
@@ -19,25 +14,25 @@ Parse.initialize(
   ";9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o","master"
 );
 
-// const GameScore2 = Parse.Object.extend("GameScore2");
-// const gameScore = new GameScore2();
+// const user = new Parse.User();
+// user.set("firstname", "MyFirstName");
+// user.set("middlename", "MyMidName");
+// user.set("lastname", "MyLastName");
+// user.set("email", "chedrov@gmail.com");
+// user.set("contact_no", "09123456789");
+// user.set("username", "CHEDROV");
+// user.set("password", "chedrov");
+// user.set("employee_type", "super admin");
+// user.set("user_type", "super admin");
 
-// gameScore.set("score", 1337);
-// gameScore.set("playerName", "Sean Plott");
-// gameScore.set("cheatMode", false);
-
-// gameScore.save().then(
-//   (gameScore) => {
-//     // Execute any logic that should take place after the object is saved.
-//     alert("New object created with objectId: " + gameScore.id);
-//   },
-//   (error) => {
-//     // Execute any logic that should take place if the save fails.
-//     // error is a Parse.Error with an error code and message.
-//     alert("Failed to create new object, with error code: " + error.message);
-//   }
-// );
-
+// try {
+//    user.signUp();
+//   // Hooray! Let them use the app now.
+// } catch (error) {
+//   // Show the error message somewhere and let the user try again.
+//   alert("Error: " + error.code + " " + error.message);
+// }
+// Parse.User.logOut();
 export default {};
 </script>
 

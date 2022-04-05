@@ -14,7 +14,7 @@
             class="p-5 grid grid-cols-1 content-center"
             :class="collapsed ? '' : 'hidden'"
           >
-            <button class="flex pl-20 pb-5 text-blue-100">
+            <button @click="Logout" class="flex pl-20 pb-5 text-blue-100">
               <Logout class="h-6" />Logout
             </button>
             <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
@@ -31,8 +31,8 @@
             : 'pl-[65px] transition-width duration-300'
         "
       >
-        <BreadCrumbs :menu="menu" @selected="selected"/>
-        <div class="main-content h-screen pt-28 bg-grey-700 ">
+        <BreadCrumbs :menu="menu" @selected="selected" />
+        <div class="main-content h-screen pt-28 bg-grey-700">
           <router-view />
         </div>
       </div>
@@ -63,7 +63,7 @@
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
   left: 0;
   border-radius: 0 0 0 0;
-   transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .v-sidebar-menu .vsm--mobile-bg {
@@ -104,6 +104,7 @@
 }
 </style>
 <script>
+import Parse from 'parse';
 import TopNavigation from "@/components/TopNavigation.vue";
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import { SidebarMenu } from "vue-sidebar-menu";
@@ -132,6 +133,10 @@ export default {
   methods: {
     toggle() {
       this.collapsed = !this.collapsed;
+    },
+    Logout() {
+      Parse.User.logOut();
+      this.$router.push("/");
     },
   },
 
