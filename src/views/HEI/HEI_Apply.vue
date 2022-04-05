@@ -1,84 +1,92 @@
 <template>
 <section class="min-h-screen ">
-    <div class="m-3 shadow-lg rounded-lg bg-brand-white">
-        <div class="flex flex-row items-center justify-evenly py-6">
-            <div class="flex-col pt-8">
-                <div class="font-semibold">HIGHER EDUCATION INSTITUTION</div>
-                <hr>
-                <div class="space-y-2">
-                    <div class="form-control w-full max-w-xs">
-                        <label class="label">
-                            <span class="text-sm">Point Person</span>
-                        </label>
-                        <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" required>
+        <div class="m-3 shadow-lg rounded-lg bg-brand-white">
+            <div class="flex flex-row items-center justify-evenly py-6">
+                <div class="flex-col pt-8">
+                    <div class="font-semibold">HIGHER EDUCATION INSTITUTION</div>
+                    <hr>
+                  
+                    <div class="space-y-2">
+                        <div class="form-control w-full max-w-xs" >
+                            <label class="label">
+                                <span class="text-sm">Point Person</span>
+                            </label>
+                            <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" required>
+                        </div>
+                        <div class="form-control w-full max-w-xs" >
+                            <label class="label">
+                                <span class="label-text">Email Address</span>
+                            </label>
+                            <input  type="email" laceholder="Type here" class="input input-bordered w-full max-w-xs" required>
+                        </div>
+                        <div class="form-control w-full max-w-xs">
+                            <label class="label">
+                                <span class="label-text">Contact Number</span>
+                            </label>
+                            <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" required>
+                        </div>
                     </div>
-                    <div class="form-control w-full max-w-xs">
-                        <label class="label">
-                            <span class="label-text">Email Address</span>
-                        </label>
-                        <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" required>
-                    </div>
-                    <div class="form-control w-full max-w-xs">
-                        <label class="label">
-                            <span class="label-text">Contact Number</span>
-                        </label>
-                        <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" required>
+                  
+                </div>
+                <div class="flex-col  pt-8">
+                    <div class="font-semibold text-left">UPLOAD HEIs CREDENTIALS</div>
+                    <hr>
+                    <div class="space-y-2">
+                        <div class="flex flex-row space-x-4">
+                            <div>
+                                <div class="mb-3 w-64">
+                                    <label class="label">
+                                        <span class="label-text">School Admin</span>
+                                    </label>
+                                    <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                </div>
+                                <div class="mb-3 w-64">
+                                    <label class="label">
+                                        <span class="label-text">Non-Teaching</span>
+                                    </label>
+                                    <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                </div>
+                                <div class="mb-3 w-64">
+                                    <label class="label">
+                                        <span class="label-text">Application Fee</span>
+                                    </label>
+                                    <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="mb-3 w-64">
+                                    <label class="label">
+                                        <span class="label-text">Faculty</span>
+                                    </label>
+                                    <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                </div>
+                                <div class="mb-3 w-64">
+                                    <label class="label">
+                                        <span class="label-text">Support Faculty</span>
+                                    </label>
+                                    <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="flex-col  pt-8">
-                <div class="font-semibold text-left">UPLOAD HEIs CREDENTIALS</div>
-                <hr>
-                <div class="space-y-2">
-                    <div class="flex flex-row space-x-4">
-                        <div>
-                            <div class="mb-3 w-64">
-                                <label class="label">
-                                    <span class="label-text">School Admin</span>
-                                </label>
-                                <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
-                            </div>
-                            <div class="mb-3 w-64">
-                                <label class="label">
-                                    <span class="label-text">Non-Teaching</span>
-                                </label>
-                                <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
-                            </div>
-                            <div class="mb-3 w-64">
-                                <label class="label">
-                                    <span class="label-text">Application Fee</span>
-                                </label>
-                                <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
-                            </div>
-                        </div>
-                        <div>
-                            <div class="mb-3 w-64">
-                                <label class="label">
-                                    <span class="label-text">Faculty</span>
-                                </label>
-                                <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
-                            </div>
-                            <div class="mb-3 w-64">
-                                <label class="label">
-                                    <span class="label-text">Support Faculty</span>
-                                </label>
-                                <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
-                            </div> 
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
+            <ApplyChangeEvent />
         </div>
-        <ApplyChangeEvent/>
-    </div>
+    
 </section>
 </template>
 
 <script>
 import ApplyChangeEvent from './ApplyChangeEvent.vue'
+
 export default {
-    components: {ApplyChangeEvent}
+   
+    components: {
+        ApplyChangeEvent
+    }
+
 }
 </script>
 
