@@ -7,17 +7,16 @@
         </tr>
         <!-- row 1 -->
         <tr class="" v-for="table in tables" :key="table">
-            <th>{{ table.InstNo }}</th>
-            <td>
-                <div class="column">
-                    <div class="hei-name">{{ table.HeiName }}</div>
-                    <div class="hei-address">{{ table.address }}</div>
-                </div>
-            </td>
-            <td>{{ table.type }}</td>
-            <td>{{ table.email }}</td>
+            <td>{{ table.cmoNo }}</td>
+            <td>{{ table.description}}</td>
             <td>
                 <div class="flex flex-row">
+                    <a class="
+                                    link link-primary
+                                    hover:text-brand-darkblue
+                                    text-brand-blue
+                                    pr-2
+                                ">view</a>
                     <div>
                         <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
@@ -36,8 +35,7 @@
     <tfoot>
         <tr>
             <th>TOTAL HEI: 40/100</th>
-            <th></th>
-            <th></th>
+            
             <th>
                 <div class="flex flex-row">
                     <div class="text">Rows per page: 10</div>
@@ -64,7 +62,7 @@
 
 <script>
 export default {
-    name: "DataTables",
+    name: "Description",
     props: ['headers', 'tables'],
 
 };

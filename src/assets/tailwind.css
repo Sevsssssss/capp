@@ -8,6 +8,7 @@
 @tailwind utilities;
 
 @layer base {
+
   h1,
   h2,
   h3,
@@ -16,76 +17,146 @@
   h6 {
     @apply font-heading font-bold;
   }
+
   h1 {
     @apply text-6xl;
   }
+
   h2 {
     @apply text-4xl;
   }
+
   h3 {
     @apply text-3xl;
   }
+
   h4 {
     @apply text-2xl;
   }
+
   h5 {
     @apply text-xl;
   }
+
   h6 {
     @apply text-base;
   }
+
   body {
     @apply font-body;
   }
+
   .lead-paragraph {
     font-size: 1.375rem;
   }
+
   .body-l {
     font-size: 1.25rem;
   }
+
   .body-m {
     font-size: 1.125rem;
   }
+
   .body-text {
     font-size: 1rem;
   }
+
   .body-small {
     font-size: 0.875rem;
   }
+
   .label-xl {
     font-size: 18px;
   }
+
   .label-l {
     font-size: 16px;
   }
+
   .label-text {
     font-size: 14px;
   }
+
   .label-s {
     font-size: 12px;
   }
+
   .label-xs {
     font-size: 10px;
   }
 
 
+}
+
+@layer components {
+  .btn-sm {
+    padding: 12px 24px;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+
+  .btn-m {
+    padding: 14px 32px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+
+  .btn-l {
+    padding: 16px 48px;
+    font-size: 18px;
+    border-radius: 5px;
+  }
+
+  .hero {
+    background-image: url("../assets/img/Hero.png");
+    place-items: normal;
+  }
+
+  /* .map {
+      background-image: url("../assets/img/map.png");
+    } */
+
+  .top-row {
+    margin: 15px;
+  }
+
+  .center {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dropdown {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-sm-cstm {
+    height: 2rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    min-height: 2rem;
+  }
+
 
   .hei-cont {
     height: 150px;
-     display: flex;
+    display: flex;
   }
-  
+
   .hei-data {
     font-weight: 600;
     font-size: 27px;
     line-height: 38px;
     flex-direction: column;
     vertical-align: end;
-    color:#1F4173;
+    color: #1F4173;
     display: inline-block;
-    
+
   }
-  
+
   .hei-address {
     font-weight: 400;
     font-size: 14px;
@@ -94,12 +165,12 @@
     letter-spacing: 0.05em;
     color: #919191;
   }
-  
+
   .hei-table {
     text-align: left;
     font-size: 12px
   }
-  
+
   .homeIcon {
     height: 35px;
     width: 35px;
@@ -108,22 +179,22 @@
     display: flex;
     align-items: center;
   }
-  
+
   .homeIcon.orange {
     fill: #fa582e;
     background-color: rgba(250, 88, 46, 0.15);
   }
-  
+
   .homeIcon.blue {
     fill: #0053d9;
     background-color: rgba(0, 67, 212, 0.15);
   }
-  
+
   .homeIcon.violet {
     fill: #620cce;
     background-color: rgba(96, 8, 205, 0.15);
   }
-  
+
   .homeIcon.green {
     fill: #04ad48;
     background-color: rgba(5, 174, 74, 0.15);
@@ -135,45 +206,173 @@
     background-color: rgba(255, 73, 204, 0.15);
   }
 
-  
-  
+
+
   .icon {
     display: block;
     margin: 0 auto;
     text-align: center;
   }
 
-  .right-side{
-    width: 245px;
+  .right-side {
+    width: 265px;
+    align-self: center;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .btn-sm1 {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 160px;
+    padding: 10px 10px;
+    border-radius: 10px;
+  }
+
+  .search-container {
+    height: 45px;
+    width: fit-content;
+    border-radius: 5px;
+    padding: 10px 10px;
+    display: flex;
+    background: rgba(55, 63, 65, 0.051);
+    align-self: center;
+  }
+
+  .search-container .search-input {
+    background: transparent;
+    outline: none;
+    height: 25px;
+    width: 300px;
+    font-weight: 500;
+    font-size: 16px;
+    align-self: center;
+    padding: 0;
+  }
+
+  .search-btn {
+    fill: #373f41;
+    align-self: center;
+  }
+
+  .date-sort {
+    width: 170px;
     align-self: center;
     justify-content: space-evenly;
-    padding: 10px;
-}
-}
-@layer components {
-  .btn-sm {
-    padding: 12px 24px;
-    font-size: 14px;
-    border-radius: 5px;
   }
-  .btn-m {
-    padding: 14px 32px;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-  .btn-l {
-    padding: 16px 48px;
-    font-size: 18px;
-    border-radius: 5px;
-  }
-  .hero {
-    background-image: url("../assets/img/Hero.png");
-    place-items: normal;
-  }
-  /* .map {
-      background-image: url("../assets/img/map.png");
-    } */
-}
-@layer utilities {
 
+  .month-sort {
+    width: 165px;
+    align-self: center;
+    justify-content: center;
+  }
+
+  .btn-text {
+    align-self: center;
+  }
+
+  .add-hei {
+    padding: 5px;
+  }
+
+  .add-hei-content {
+    width: 170px;
+    justify-content: space-evenly;
+  }
+
+  .sort-btn {
+    align-items: center;
+  }
+
+  .hei-table-head {
+    font-size: 12px;
+  }
+
+  .app-data {
+    text-align: left;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    align-items: center;
+  }
+
+  .app-label {
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: start;
+    vertical-align: middle;
+    color: #8fa0b9;
+    display: block;
+  }
+
+  .app-right-side {
+    width: 350px;
+    align-self: center;
+    justify-content: space-evenly;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .approval {
+    color: #fa582e;
+    background-color: rgba(250, 88, 46, 0.15);
+    border: none;
+  }
+
+  .revision {
+    color: #0053d9;
+    background-color: rgba(0, 67, 212, 0.15);
+    border: none;
+  }
+
+  .evaluation {
+    color: #FF49CC;
+    background-color: rgba(255, 73, 204, 0.15);
+    border: none;
+  }
+
+  .issuance {
+    color: #620cce;
+    background-color: rgba(96, 8, 205, 0.15);
+    border: none;
+  }
+
+  .completed {
+    color: #04ad48;
+    background-color: rgba(5, 174, 74, 0.15);
+    border: none;
+  }
+
+  .app-data {
+    text-align: left;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    align-items: center;
+  }
+
+  .app-label {
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: start;
+    vertical-align: middle;
+    color: #8fa0b9;
+    display: block;
+  }
+
+  .table-footer {
+    padding: 10px;
+  }
+
+  .noDataAvail {
+    font-size: 50px;
+    padding: 10px;
+    color:#BDBDBD;
+  }
 }
+
+@layer utilities {}

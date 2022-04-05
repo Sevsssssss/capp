@@ -11,10 +11,12 @@ import AddRQATView from "../views/AddRQATView.vue";
 import EmployeesView from "../views/EmployeesView.vue";
 import AddEmployeeView from "../views/AddEmployeeView.vue";
 import EvaluationInsView from "../views/EvaluationInsView.vue";
+import AddEvaluationInsView from "../views/AddEvaluationInsView.vue";
 import ReportingView from "../views/ReportingView.vue";
 import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
+import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
 
 const routes = [
   {
@@ -72,6 +74,11 @@ const routes = [
         component: EvaluationInsView,
       },
       {
+        path: "/evaluationins/add",
+        name: "addevaluationins",
+        component: AddEvaluationInsView,
+      },
+      {
         path: "/reporting",
         name: "reporting",
         component: ReportingView,
@@ -97,6 +104,12 @@ const routes = [
         name: "HEIapplication",
         component: HEI_Application,
       },
+      {
+        path: "/HEIapplication/edit",
+        name: "EditHEIapplication",
+        component: Edit_HEI_Application,
+      },
+
     ]
   }
 ]

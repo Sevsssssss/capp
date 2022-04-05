@@ -1,119 +1,142 @@
 <template>
-<div class="min-h-screen bg-blue-50">
-    <div class="p-5 ">
-        <div class="overflow-x-auto space-y-2">
-          <TableTopLeft />
-            <div class="form-control p-2">
-                <div class="input-group">
-                    <input type="text" placeholder="Search by email" class="input input-bordered" v-model="search" />
-                    <button class="btn btn-square bg-brand-darkblue hover:bg-blue-100 border-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+<div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="EvalInstView" />
+</div>
+<div v-else class="" style="padding: 10px">
+    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
+        <div class="top-row flex flex-row" style="justify-content: space-between;">
+            <TableTopLeft />
+            <div class="flex flex-row">
+                <button @click="addEvalIns()" class="
+              btn btn-md
+              bg-brand-darkblue
+              hover:bg-brand-blue
+              border-none
+              p-2
+            ">
+                    <div class="flex flex-row">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
                         </svg>
-                    </button>
-                </div>
+                        <div class="btn-text">Add Evalutation Ins.</div>
+                    </div>
+                </button>
             </div>
-            
-            <table class="table w-full">
-                <thead>
-                    <tr>
-                        <th>CMO</th>
-                        <th>email</th>
-                        <!-- <th>Action</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- row 1 -->
-                    <tr v-for="d in filteredPosts" :key="d.id">
-                        <th>{{d.id}}</th>
-                        <td>{{d.email}}</td>
-                        <td>
-                            <div class="flex flex-row">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <VueTailwindPagination :current="current" :total="total" :per-page="perPage" @page-changed="pageChange($event)" />
         </div>
 
+        <!-- table -->
+        <table class="hei-table table-normal w-full">
+            <!-- head-body -->
+            <tbody class="hei-table">
+                <tr class="hei-table bg-grey-500">
+                    <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
+                </tr>
+                <!-- row 1 -->
+                <tr class="" v-for="table in tables" :key="table">
+                    <th>{{ table.cmoNo }}</th>
+                    <td>
+                        <div class="column">
+                            <div class="hei-name">{{ table.description }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex flex-row center">
+                            <a class="
+                            link link-primary
+                            hover:text-brand-darkblue
+                            text-brand-blue
+                            pr-2">
+                                view
+                            </a>
+                            <div>
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Footer -->
+        <div class="table-footer flex flex-row" style="justify-content: space-between;">
+            <div class="flex flex-row center">
+                    <div>Showing 11 to 20 of 58 entries</div>
+                </div>
+                <div class="flex flex-row">
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">«</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">1</button>
+                        <button class="btn btn-outline btn-sm-cstm btn-active hover:bg-brand-blue">2</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">3</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">4</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">»</button>
+                    </div>
+                </div>
+        </div>
     </div>
 </div>
 </template>
 
 <script>
-import VueTailwindPagination from '@ocrv/vue-tailwind-pagination';
 import TableTopLeft from "@/components//TableTopLeft.vue";
-import axios from 'axios';
+import NoDataAvail from "@/components//NoDataAvail.vue";
 
 export default {
-    name: 'EvaluationInsView',
-    components: {
-        VueTailwindPagination,
-        TableTopLeft,
-    },
+    name: "EvalInstView",
     data() {
         return {
-            search: "",
-            current: 0,
-            perPage: 0,
-            total: 0,
-            data: [],
-        }
+            headers: [{
+                    title: "CMO"
+                },
+                {
+                    title: "DESCRIPTION"
+                },
+                {
+                    title: "ACTION"
+                },
+            ],
+            tables: [{
+                    cmoNo: "1",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+
+                },
+                {
+                    cmoNo: "2",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+                {
+                    cmoNo: "3",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+                {
+                    cmoNo: "4",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+                {
+                    cmoNo: "5",
+                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                },
+            ],
+        };
+    },
+    components: {
+        TableTopLeft,
+        NoDataAvail,
     },
     methods: {
-        // getData(){
-        //     fetch(`http://localhost:3000/data?`)
-        //     .then(res => res.json())
-        //     .then(d => this.data = d)
-        //     .catch(err => console.log(err.message))
-        // },
-        async getData() {
-            var response = await axios(`https://reqres.in/api/users?page=${this.current}`);
-            var responseData = response.data;
-            this.data = responseData.data;
-            this.perPage = responseData.per_page;
-            this.total = responseData.total;
-        },
-        pageChange(event) {
-            this.current = event;
-            this.getData();
-        },
+        addEvalIns() {
+           this.$router.push("/evaluationins/add");
+        }, 
     },
-    mounted() {
-        this.current = 1;
-        this.getData();
-    },
-    computed: {
-        filteredPosts() {
-            return this.data.filter(d =>
-                d.email.toLowerCase().includes(this.search.toLowerCase()),
-            );
-        }
-    }
-
-}
+};
 </script>
 
 <style>
-.app-data {
-    text-align: left;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 38px;
-    align-items: center;
-}
-
-.app-label {
-    padding-left: 10px;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: start;
-    vertical-align: middle;
-    color: #8fa0b9;
-    display: block;
-}
 </style>

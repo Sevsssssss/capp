@@ -83,7 +83,7 @@
                   btn btn-primary
                   border-none
                   bg-brand-darkblue
-                  hover:bg-blue-100
+                  hover:bg-blue-500
                 "
                 v-if="!showModal"
                 @click="toggleModal"
@@ -156,25 +156,29 @@
               <span class="text-brand-darkblue font-bold label-xl"
                 >Sign In</span
               >
-              <p class="text-sm xxs:leading-tight">
+              <p class="text-sm xxs:leading-tight text-grey-200">
                 Provide the HEIs credentials
               </p>
             </div>
             <div class="xxl:pb-20 xl:pb-20 sm:pb-10 xxs:pb-10">
               <div class="mb-6">
-                <label for="username" class="block mb-2 label-s font-semibold"
+                <label
+                  for="username"
+                  class="block mb-2 label-s font-semibold text-grey-200"
                   >Username</label
                 >
                 <input
-                  type="text"
-                  name="username"
                   v-model="username"
+                  type="text"
+                  id="usaname"
                   class="
                     xxl:input-md
                     md:input-md
                     xxs:input-sm
                     bg-brand-white
-                    border border-black-200
+                    border
+                    text-grey-200
+                    border-black-200
                     text-sm
                     rounded-lg
                     focus:ring-grey-100 focus:border-brand-lightblue
@@ -187,18 +191,21 @@
                 />
               </div>
               <div class="mb-6">
-                <label for="password" class="block mb-2 label-s font-semibold"
+                <label
+                  for="password"
+                  class="block mb-2 label-s font-semibold text-grey-200"
                   >Password</label
                 >
                 <input
-                  type="password"
-                  name="password"
                   v-model="password"
+                  type="password"
+                  id="password"
                   class="
                     xxl:input-md
                     md:input-md
                     xxs:input-sm
                     bg-brand-white
+                    text-grey-200
                     border border-black-200
                     text-sm
                     rounded-lg
@@ -211,22 +218,22 @@
                   required=""
                 />
               </div>
-              <!-- <div class="flex-row space-x-2 space-y-2"> -->
-              <button
-                type="submit"
-                class="
-                  btn btn-primary
-                  border-none
-                  font-semibold
-                  shadow
-                  text-brand-white
-                  bg-brand-darkblue
-                  hover:bg-blue-100
-                "
-              >
-                Login
-              </button>
-              <!-- </div> -->
+              <div class="flex-row space-x-2 space-y-2">
+                <button
+                  type="submit"
+                  class="
+                    btn btn-primary
+                    border-none
+                    font-semibold
+                    shadow
+                    text-brand-white
+                    bg-brand-darkblue
+                    hover:bg-blue-500
+                  "
+                >
+                  Sign In
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -258,7 +265,7 @@ export default {
               throw new Error(`Problem handling something: ${err}.`);
             });
           } else if (user.get("user_type") === "hei") {
-            this.$router.push({ path: "/HEIPage" }).catch((err) => {
+            this.$router.push({ path: "/HEIhome" }).catch((err) => {
               throw new Error(`Problem handling something: ${err}.`);
             });
           }

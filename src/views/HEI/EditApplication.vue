@@ -1,10 +1,10 @@
 <template>
-HOME
+Edit HEI Application
 </template>
 
 <script>
 export default {
-
+    name: 'EditHEIapplication',
 }
 </script>
 
