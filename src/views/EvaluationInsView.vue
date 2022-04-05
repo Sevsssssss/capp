@@ -3,7 +3,7 @@
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
         <div class="top-row flex flex-row" style="justify-content: space-between;">
             <TableTopLeft />
-            <div class="right-side flex flex-row">
+            <div class="flex flex-row">
                 <button @click="addEvalIns()" class="
               btn btn-md
               bg-brand-darkblue

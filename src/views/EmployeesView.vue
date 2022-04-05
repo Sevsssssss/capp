@@ -15,16 +15,16 @@
             </div>
 
             <div class="flex flex-row">
-                <div class="month-sort flex flex-row">
-                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
-                        <option disabled selected>Sort by type</option>
-                        <option>Private</option>
-                        <option>State Univeristies</option>
-                        <option>Local Universities</option>
+              <!-- sort -->
+                <div class="dropdown flex flex-row">
+                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
+                        <option disabled selected>Sort by Designation</option>
+                        <option>CHED Director</option>
+                        <option>Supervisor</option>
+                        <option>Employees</option>
                         <option>Others</option>
                     </select>
                 </div>
-
                 <button @click="addEmployee()" class="btn btn-primary1 bg-brand-darkblue" style="width: 180px">
                     <div class="flex flex-row add-hei-content">
                         <svg style="fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -45,15 +45,14 @@
                 </tr>
                 <!-- row 1 -->
                 <tr class="" v-for="table in tables" :key="table">
-                    <th>{{ table.InstNo }}</th>
+                    <th>{{ table.Name }}</th>
                     <td>
                         <div class="column">
-                            <div class="hei-name">{{ table.HeiName }}</div>
-                            <div class="hei-address">{{ table.address }}</div>
+                            <div class="hei-name">{{ table.ContactNo }}</div>
                         </div>
                     </td>
-                    <td>{{ table.type }}</td>
-                    <td>{{ table.email }}</td>
+                    <td>{{ table.Username}}</td>
+                    <td>{{ table.Designation }}</td>
                     <td>
                         <div class="flex flex-row center">
                             <div>
@@ -110,10 +109,7 @@ export default {
     data() {
         return {
             headers: [{
-                    title: "RQAT MEMBER NAME"
-                },
-                {
-                    title: "HEI"
+                    title: "EMPLOYEE NAME"
                 },
                 {
                     title: "COTACT NUMBER"
@@ -122,66 +118,43 @@ export default {
                     title: "USERNAME"
                 },
                 {
+                    title: "DESIGNATION"
+                },
+                {
                     title: "ACTION"
                 },
             ],
-
-            datas: [{
-                    title: "FOR APPROVAL",
-                    num: 300,
-                },
-                {
-                    title: "FOR REVISION",
-                    num: 300,
-                },
-                {
-                    title: "FOR ISSUANCE",
-                    num: 300,
-                },
-                {
-                    title: "FOR EVALUATION",
-                    num: 300,
-                },
-                {
-                    title: "FOR COMPLETION",
-                    num: 300,
-                },
-            ],
             tables: [{
-                    InstNo: "56543",
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Private Institution",
-                    email: "ateneodenaga@gbox.adnu.edu.ph",
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    InstNo: "20746",
-                    HeiName: "Bicol University",
-                    address: "Legazpi City",
-                    type: "State University",
-                    email: "bu@bicol-u.edu.ph",
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    InstNo: "12865",
-                    HeiName: "Catanduanes State University",
-                    address: "Virac",
-                    type: "State University",
-                    email: "areneo@gbox.adnu.edu.ph",
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    InstNo: "95848",
-                    HeiName: "Aquinas University of Legazpi",
-                    address: "Legazpi City",
-                    type: "Private",
-                    email: "ust@ust-legazpi.edu.ph",
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
                 {
-                    InstNo: "56543",
-                    HeiName: "Camarines Norte State College",
-                    address: "Daet",
-                    type: "State College",
-                    email: "cnsc@cnsc.edu.ph",
+                    Name: "Salvatore Brewer",
+                    ContactNo: "09291445216 ",
+                    Username: "birdpager",
+                    Designation: "CHED Supervisor",
                 },
+
             ],
         };
     },

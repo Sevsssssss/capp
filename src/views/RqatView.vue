@@ -15,15 +15,6 @@
             </div>
 
             <div class="flex flex-row">
-                <div class="month-sort flex flex-row">
-                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
-                        <option disabled selected>Sort by type</option>
-                        <option>Private</option>
-                        <option>State Univeristies</option>
-                        <option>Local Universities</option>
-                        <option>Others</option>
-                    </select>
-                </div>
                 <button @click="addRQAT()" class="
               btn btn-md
               bg-brand-darkblue
