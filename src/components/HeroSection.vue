@@ -23,7 +23,7 @@
                         <p class="text-sm break-words"> {{ Info }} </p>
                     </div>
                     <div class="">
-                        <button class="font-semibold btn btn-primary border-none bg-brand-darkblue hover:bg-blue-100" v-if="!showModal" @click="toggleModal">Sign In</button>
+                        <button class="font-semibold btn btn-primary border-none bg-brand-darkblue hover:bg-blue-500" v-if="!showModal" @click="toggleModal">Sign In</button>
                     </div>
                 </div>
             </div>
@@ -38,24 +38,24 @@
                 <form class="flex-col xxl:space-y-5 xl:space-y-5 sm:space-y-2 xxs:space-y-2 text-left xxl:p-5 xl:p-5 sm:p-2 xxsp-2 xxl:mx-16 xl:mx-16 sm:mx-10 xxs:mx-10">
                     <div class="">
                         <span class="text-brand-darkblue font-bold label-xl">Sign In</span>
-                        <p class="text-sm xxs:leading-tight">Provide the HEIs credentials</p>
+                        <p class="text-sm xxs:leading-tight text-grey-200">Provide the HEIs credentials</p>
                     </div>
                     <div class="xxl:pb-20 xl:pb-20 sm:pb-10 xxs:pb-10">
                         <div class="mb-6">
-                            <label for="username" class="block mb-2 label-s font-semibold">Username</label>
-                            <input type="text" id="usaname" class="xxl:input-md md:input-md xxs:input-sm bg-brand-white border  border-black-200 text-sm rounded-lg focus:ring-grey-100 focus:border-brand-lightblue block w-full p-2.5 " placeholder="Enter username" required="">
+                            <label for="username" class="block mb-2 label-s font-semibold text-grey-200">Username</label>
+                            <input type="text" id="usaname" class="xxl:input-md md:input-md xxs:input-sm bg-brand-white border text-grey-200 border-black-200 text-sm rounded-lg focus:ring-grey-100 focus:border-brand-lightblue block w-full p-2.5 " placeholder="Enter username" required="">
                         </div>
                         <div class="mb-6">
-                            <label for="password" class="block mb-2 label-s font-semibold">Password</label>
-                            <input type="password" id="password" class="xxl:input-md md:input-md xxs:input-sm bg-brand-white border border-black-200 text-sm rounded-lg focus:ring-grey-100  focus:border-brand-lightblue block w-full p-2.5 " placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" required="">
+                            <label for="password" class="block mb-2 label-s font-semibold text-grey-200">Password</label>
+                            <input type="password" id="password" class="xxl:input-md md:input-md xxs:input-sm bg-brand-white text-grey-200 border border-black-200 text-sm rounded-lg focus:ring-grey-100  focus:border-brand-lightblue block w-full p-2.5 " placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" required="">
                         </div>
                         <div class="flex-row space-x-2 space-y-2">
-                            <button @click="SuperAdmin" type="submit" class="btn btn-primary border-none font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Super Admin</button>
+                            <button @click="SuperAdmin" type="submit" class="btn btn-primary border-none font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-500 ">Super Admin</button>
                             <!-- <button @click="Admin" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Admin</button>
                             <button @click="ChedSupervisor" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Education Supervisor</button>
                             <button @click="RQAT" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">RQAT</button>
                             <button @click="Reporting" type="submit" class="btn-sm font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">Reporting</button>-->
-                            <button @click="HEI" type="submit" class="btn btn-normal border-none font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-100 ">HEI</button> 
+                            <button @click="HEI" type="submit" class="btn btn-normal border-none font-semibold shadow text-brand-white bg-brand-darkblue hover:bg-blue-500 ">HEI</button> 
                         </div>
                     </div>
                 </form>

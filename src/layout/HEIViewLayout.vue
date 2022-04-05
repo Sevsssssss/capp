@@ -14,7 +14,7 @@
             class="p-5 grid grid-cols-1 content-center"
             :class="collapsed ? '' : 'hidden'"
           >
-            <button class="flex pl-20 pb-5 text-blue-100">
+            <button class="flex pl-20 pb-5 text-blue-500">
               <Logout class="h-6" />Logout
             </button>
             <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
@@ -71,7 +71,7 @@
 }
 .v-sidebar-menu.vsm_collapsed .vsm--link_active {
   background-color: theme("colors.grey.500");
-  color: theme("colors.brand.blue");
+  color: theme("colors.blue.400");
 }
 .v-sidebar-menu .vsm--link {
   /* font-family: theme("fontFamily.body"); */
@@ -85,7 +85,7 @@
 }
 .v-sidebar-menu .vsm--link_active {
   background-color: theme("colors.grey.600");
-  color: theme("colors.blue.100");
+  color: theme("colors.blue.400");
   box-shadow: none !important;
 }
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
