@@ -41,16 +41,15 @@
                     <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
                 </tr>
                 <!-- row 1 -->
-                <tr class="" v-for="table in tables" :key="table">
-                    <th>{{ table.InstNo }}</th>
+                <tr class="" v-for="table in searchRqat" :key="table">
+                    <th>{{ table.rqatName }}</th>
                     <td>
                         <div class="column">
-                            <div class="hei-name">{{ table.HeiName }}</div>
-                            <div class="hei-address">{{ table.address }}</div>
+                            <div class="hei-name">{{ table.hei }}</div>
                         </div>
                     </td>
-                    <td>{{ table.type }}</td>
-                    <td>{{ table.email }}</td>
+                    <td>{{ table.contactNum }}</td>
+                    <td>{{ table.username }}</td>
                     <td>
                         <div class="flex flex-row center">
                             <div>
@@ -101,6 +100,14 @@
 </template>
 
 <script>
+import Parse from "parse";
+
+var dataNumber = 10;
+var page = 0;
+
+Parse.initialize("capp", "master");
+Parse.serverURL = "http://localhost:1337/parse";
+
 
 export default {
     name: "ApplicationView",
@@ -144,7 +151,7 @@ export default {
                     num: 300,
                 },
             ],
-            tables: [{
+            tables: [/*{
                     InstNo: "56543",
                     HeiName: "Ateneo De Naga University",
                     address: "Naga City",
@@ -178,17 +185,45 @@ export default {
                     address: "Daet",
                     type: "State College",
                     email: "cnsc@cnsc.edu.ph",
-                },
+                },*/
             ],
+            search: '',
         };
     },
     components: {
+    },
+    computed: {
+        searchRqat(){
+            return this.tables.filter(p => {
+                return p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            });
+        }
     },
     methods: {
         addRQAT() {
             this.$router.push("/rqat/add");
         },
     },
+    mounted: async function () {
+        var rqats = [];
+
+        const query = new Parse.Query(Parse.User);
+        query.equalTo("user_type", "rqat");
+        query.limit(dataNumber);
+        query.skip(page * dataNumber);
+
+        const querResult = await query.find();
+        for (var i = 0; i < querResult.length; i++) {
+            const rqat = querResult[i];
+            rqats.push({
+                rqatName: rqat.get("name")["lastname"] + ", " + rqat.get("name")["firstname"] + " " + rqat.get("name")["middleinitial"] + ".",
+                hei: rqat.get("hei_affil"),
+                contactNum: rqat.get("contact_num"),
+                username: "test",
+            }, );
+        }
+        this.tables = rqats;
+    }
 };
 </script>
 

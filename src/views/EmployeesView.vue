@@ -17,7 +17,7 @@
             <div class="flex flex-row">
               <!-- sort -->
                 <div class="dropdown flex flex-row">
-                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
+                    <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterEmployees()">
                         <option disabled selected>Sort by Designation</option>
                         <option>CHED Director</option>
                         <option>Supervisor</option>
@@ -44,7 +44,7 @@
                     <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
                 </tr>
                 <!-- row 1 -->
-                <tr class="" v-for="table in tables" :key="table">
+                <tr class="" v-for="table in searchEmployee" :key="table">
                     <th>{{ table.Name }}</th>
                     <td>
                         <div class="column">
@@ -103,6 +103,14 @@
 </template>
 
 <script>
+import Parse from "parse";
+
+var dataNumber = 10;
+var page = 0;
+
+Parse.initialize("capp", "master");
+Parse.serverURL = "http://localhost:1337/parse";
+
 
 export default {
     name: "ApplicationView",
@@ -124,7 +132,7 @@ export default {
                     title: "ACTION"
                 },
             ],
-            tables: [{
+            tables: [/*{
                     Name: "Salvatore Brewer",
                     ContactNo: "09291445216 ",
                     Username: "birdpager",
@@ -153,18 +161,141 @@ export default {
                     ContactNo: "09291445216 ",
                     Username: "birdpager",
                     Designation: "CHED Supervisor",
-                },
-
+                },*/
             ],
+            search: '',
+            sort_type: 'Sort by Designation',
         };
     },
     components: {
+    },
+    computed: {
+        searchEmployee(){
+            return this.tables.filter(p => {
+                return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            });
+        }
     },
     methods: {
         addEmployee() {
             this.$router.push("/employees/add");
         },
+        async filterEmployees() {
+
+            var i = 0;
+            
+            if (this.sort_type == "CHED Director") {
+                var empDir = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "DIRECTOR");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empDir.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empDir;
+            }
+            if (this.sort_type == "Supervisor") {
+                var empSuper = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "EDUCATION SUPERVISOR");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empSuper.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empSuper;
+                
+            }
+            if (this.sort_type == "Employees") {
+                var empEmp = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "CHED EMPLOYEE");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empEmp.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empEmp;
+            }
+            if (this.sort_type == "Others") {
+                var empOthers = [];
+
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("user_type", "employee");
+                query.equalTo("designation", "DIRECTOR");
+                query.limit(dataNumber);
+                query.skip(page * dataNumber);
+
+                const querResult = await query.find();
+                for (i = 0; i < querResult.length; i++) {
+                    const emp = querResult[i];
+
+                    empOthers.push({
+                        Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                        ContactNo: emp.get("contact_num"),
+                        Username: "test",
+                        Designation: emp.get("designation"),
+                    },);
+                }
+                this.tables = empOthers;
+            }
+        }
     },
+    mounted: async function () {
+        var employees = [];
+
+        const query = new Parse.Query(Parse.User);
+        query.equalTo("user_type", "employee");
+        query.limit(dataNumber);
+        query.skip(page * dataNumber);
+
+        const querResult = await query.find();
+        for (var i = 0; i < querResult.length; i++) {
+            const emp = querResult[i];
+
+            employees.push({
+                Name: emp.get("name")["lastname"] + ", " + emp.get("name")["firstname"] + " " + emp.get("name")["middleinitial"] + ".",
+                ContactNo: emp.get("contact_num"),
+                Username: "test",
+                Designation: emp.get("designation"),
+            }, );
+        }
+        this.tables = employees;
+    }
 };
 </script>
 
