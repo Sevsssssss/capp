@@ -1,5 +1,8 @@
 <template>
-<div class="m-3">
+<div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="ReportingView" />
+</div>
+<div v-else class="" style="padding: 10px">
     <div class="flex flex-row justify-between px-2">
         <div class="dropdown">
             <label tabindex="0" class="btn m-1 text-grey-200 bg-transparent hover:bg-transparent hover:text-blue-100 hover:border-blue-100">Application</label>
@@ -108,45 +111,31 @@
         </table>
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
-            <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
-
-            <div class="flex flex-row">
-                <div class="flex flex-row justify-center items-center pr-5">
-                    <div class="font-normal text-sm">Rows per page: 10</div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
+            <div class="flex flex-row center">
+                    <div>Showing 11 to 20 of 58 entries</div>
+                </div>
+                <div class="flex flex-row">
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">«</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">1</button>
+                        <button class="btn btn-outline btn-sm-cstm btn-active hover:bg-brand-blue">2</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">3</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">4</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">»</button>
                     </div>
                 </div>
-                <div class="
-                  flex flex-row
-                  justify-center
-                  items-center
-                  font-normal
-                ">
-                    <p>1-10 of 276</p>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                        </svg>
-                    </div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
 </div>
 </template>
 
+
+
 <script>
+import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
-    name: "ApplicationView",
+    name: "ReportingView",
     data() {
         return {
             headers: [
@@ -223,7 +212,9 @@ export default {
             ],
         };
     },
-    components: {},
+    components: {
+        NoDataAvail,
+    },
 };
 </script>
 

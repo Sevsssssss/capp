@@ -1,5 +1,8 @@
 <template>
-<div class="" style="padding: 10px">
+<div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="ApplicationView" />
+</div>
+<div v-else class="" style="padding: 10px">
     <DataCards :datas="datas" /> <!-- component for showing the cards with the datas for application -->
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
         <!-- Top Header for search and sort -->
@@ -33,7 +36,7 @@
           table-normal
           w-full
           bg-brand-white
-          
+
           text-left
         ">
             <!-- head-body -->
@@ -89,12 +92,11 @@
                     </td>
                 </tr>
             </tbody>
-            
 
         </table>
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
-            <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
+            <!-- <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
 
             <div class="flex flex-row">
                 <div class="flex flex-row justify-center items-center pr-5">
@@ -123,7 +125,23 @@
                         </svg>
                     </div>
                 </div>
-            </div>
+            </div> -->
+
+                <div class="flex flex-row center">
+                    <div>Showing 11 to 20 of 58 entries</div>
+                </div>
+                <div class="flex flex-row">
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">«</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">1</button>
+                        <button class="btn btn-outline btn-sm-cstm btn-active hover:bg-brand-blue">2</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">3</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">4</button>
+                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">»</button>
+                    </div>
+                </div>
+                
+            
         </div>
     </div>
 </div>
@@ -131,7 +149,7 @@
 
 <script>
 import DataCards from "@/components//DataCards.vue";
-
+import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
     name: "ApplicationView",
     data() {
@@ -237,6 +255,7 @@ export default {
     },
     components: {
         DataCards,
+        NoDataAvail,
     },
 };
 </script>

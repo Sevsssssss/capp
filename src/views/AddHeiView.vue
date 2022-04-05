@@ -101,7 +101,7 @@
             </div>
 
             <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-wide btn-outline">Cancel</button>
+                <button class="btn btn-margin btn-wide btn-outline "  @click="$router.go(-1)">Cancel</button>
                 <button class="
               btn btn-margin btn-wide
               submit
