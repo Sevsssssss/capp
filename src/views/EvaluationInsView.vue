@@ -131,7 +131,9 @@ export default {
         NoDataAvail,
     },
     methods: {
-
+        addEvalIns() {
+           this.$router.push("/evaluationins/add");
+        }, 
     },
 };
 </script>
