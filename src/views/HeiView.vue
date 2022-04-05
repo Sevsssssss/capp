@@ -8,7 +8,7 @@
             <div class="left-side flex flex-row">
                 <!-- search -->
                 <div class="search-container">
-                    <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
+                    <input type="text" id="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
                     <a href="#" class="search-btn">
                         <div class="search_icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -57,7 +57,7 @@
                     <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
                 </tr>
                 <!-- row 1 -->
-                <tr class="" v-for="table in tables" :key="table">
+                <tr class="" v-for="table in searchHEI" :key="table">
                     <th>{{ table.InstNo }}</th>
                     <td>
                         <div class="column">
@@ -126,6 +126,8 @@ var page = 0;
 
 Parse.initialize("capp", "master");
 Parse.serverURL = "http://localhost:1337/parse";
+
+
 
 export default {
     name: "HeiView",
@@ -271,12 +273,19 @@ export default {
                                     email: "cnsc@cnsc.edu.ph",
                                 },*/
             ],
-
+            search: '',
             sort_type: "Sort by type",
         };
     },
     components: {
         DataCards,
+    },
+    computed: {
+        searchHEI(){
+            return this.tables.filter(p => {
+                return p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            });
+        }
     },
     methods: {
         addHei() {
@@ -330,6 +339,7 @@ export default {
                     }, );
                 }
                 this.tables = heisState;
+                
             }
             if (this.sort_type == "Local Universities") {
                 var heisLocal = [];
