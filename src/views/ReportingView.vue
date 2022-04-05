@@ -6,7 +6,7 @@
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a>HEI ACCOUNT</a></li>
                 <li><a>RQAT ACCOUNT</a></li>
-                 <li><a>EMPLOYEES</a></li>
+                <li><a>EMPLOYEES</a></li>
             </ul>
         </div>
         <div class="dropdown dropdown-end">
@@ -17,112 +17,130 @@
             </ul>
         </div>
     </div>
-    <table class="m-3 table-normal w-full bg-brand-white shadow-lg rounded-lg text-left">
-        <!-- head -->
-        <thead>
-            <tr>
-                <th>
-                    <div class="form-control">
-                        <div class="input-group">
-                            <input type="text" placeholder="Search…" class="input input-bordered" />
-                            <button class="btn btn-square bg-brand-darkblue hover:bg-blue-100 border-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </button>
+    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
+        <div class="top-row flex flex-row" style="justify-content: space-between">
+            <div class="left-side flex flex-row">
+                <div class="search-container">
+                    <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
+                    <a href="#" class="search-btn">
+                        <div class="search_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
+                            </svg>
                         </div>
-                    </div>
-                </th>
-                <th></th>
-                <th></th>
-                <div class="flex flex-row pt-2 ">
-                    <th class="absolute" style="right: 20rem">
-                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">All</button>
-                    </th>
-                    <th class="absolute" style="right: 13.6rem">
-                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approval</button>
-                    </th>
-                    <th class="absolute" style="right: 7rem">
-                        <button class="btn btn-sm bg-brand-darkblue hover:bg-brand-blue border-none p-2">Approved</button>
-                    </th>
-                    <th class="absolute" style="right: 1rem">
-                        <button class="btn btn-sm text-grey-200 bg-grey-500 hover:text-state-100 hover:bg-grey-500 border-none p-2">Revision</button>
-                    </th>
+                    </a>
                 </div>
-            </tr>
-        </thead>
-        <!-- head-body -->
-        <thead class="bg-grey-500">
-            <tr class="">
-                <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
-                    {{header.title}}
-                </th>
-            </tr>
-        </thead>
+            </div>
+            <div class="dropdown flex flex-row">
+                <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" >
+                    <option selected>All</option>
+                    <option>Approved</option>
+                    <option>For Revision</option>
+                    <option>For Evaluation</option>
+                    <option>Completed</option>
+                </select>
+            </div>
+        </div>
+        <!-- Table -->
+        <table class="
+          table-normal
+          w-full
+          bg-brand-white
+          
+          text-left
+        ">
+            <!-- head-body -->
+            <thead class="bg-grey-500">
+                <tr class="">
+                    <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
+                        {{ header.title }}
+                    </th>
+                </tr>
+            </thead>
 
-        <tbody class="">
-            <!-- row 1 -->
-            <tr class="" v-for="table in tables" :key="table">
-                <th class="">{{ table.rep }}</th>
-                <td class="font-normal ">{{ table.email }}</td>
-                <td>
-                    <div class="">
-                        <div class="font-semibold text-grey-300">{{ table.HeiName }}</div>
-                        <div class="font-normal">{{ table.address }}</div>
-                    </div>
-                </td>
-                <td class="font-normal ">{{ table.type }}</td>
-                <td class="font-normal ">{{ table.program }}</td>
-                <td class="font-normal ">
-
-                    <button class="btn btn-sm p-2 font-normal"> {{ table.status }}</button>
-                </td>
-                <td>
-                    <div class="flex flex-row ">
-                        <a class="link link-primary hover:text-brand-darkblue text-brand-blue pr-2">view</a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-
-        <tfoot>
-            <tr>
-                <th class="font-normal text-sm">TOTAL HEI: 40/100</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>
-                    <div class="flex flex-row justify-center items-center">
-                        <div class="font-normal text-sm">Rows per page: 10</div>
-                        <div class="text-grey-200 hover:text-brand-blue">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                            </svg>
+            <tbody class="">
+                <!-- rows -->
+                <tr class="" v-for="table in tables" :key="table">
+                    <th class="">
+                        <div class="">
+                            <div class="font-semibold text-grey-300">
+                                {{ table.HeiName }}
+                            </div>
+                            <div class="font-normal">{{ table.address }}</div>
                         </div>
-                    </div>
-                </th>
-
-                <th>
-                    <div class="flex flex-row justify-center items-center font-normal text-sm">
-                        <p>1-10 of 276</p>
-                        <div class="text-grey-200 hover:text-brand-blue">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                            </svg>
+                    </th>
+                    <td class="font-normal">{{ table.type }}</td>
+                    <td class="font-normal">{{ table.program }}</td>
+                    <td class="font-normal">{{ table.dateApplied }}</td>
+                    <td class="font-normal">
+                        <!-- :class="'homeIcon.' + data.color" -->
+                        <div v-if="table.status === 'FOR APPROVAL'" class="btn-sm1 p-2 font-normal approval">
+                            {{ table.status }}
                         </div>
-                        <div class="text-grey-200 hover:text-brand-blue">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                            </svg>
-
+                        <div v-else-if="table.status === 'FOR REVISION'" class="btn-sm1 p-2 font-normal revision">
+                            {{ table.status }}
                         </div>
+                        <div v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 p-2 font-normal evaluation">
+                            {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 p-2 font-normal issuance">
+                            {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'COMPLETED'" class="btn-sm1 p-2 font-normal completed">
+                            {{ table.status }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex flex-row center">
+                            <a class="
+                    link link-primary
+                    hover:text-brand-darkblue
+                    text-brand-blue
+                    pr-2
+                  ">view</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            
 
+        </table>
+        <!-- Footer -->
+        <div class="table-footer flex flex-row" style="justify-content: space-between;">
+            <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
+
+            <div class="flex flex-row">
+                <div class="flex flex-row justify-center items-center pr-5">
+                    <div class="font-normal text-sm">Rows per page: 10</div>
+                    <div class="text-grey-200 hover:text-brand-blue">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
+                        </svg>
                     </div>
-                </th>
-            </tr>
-        </tfoot>
-    </table>
+                </div>
+                <div class="
+                  flex flex-row
+                  justify-center
+                  items-center
+                  font-normal
+                ">
+                    <p>1-10 of 276</p>
+                    <div class="text-grey-200 hover:text-brand-blue">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+                        </svg>
+                    </div>
+                    <div class="text-grey-200 hover:text-brand-blue">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -131,12 +149,8 @@ export default {
     name: "ApplicationView",
     data() {
         return {
-            headers: [{
-                    title: "REPRESENTATIVE"
-                },
-                {
-                    title: "EMAIL"
-                },
+            headers: [
+                
                 {
                     title: "HEI"
                 },
@@ -147,6 +161,9 @@ export default {
                     title: "PROGRAM"
                 },
                 {
+                    title: "DATE APPLIED"
+                },
+                {
                     title: "STATUS"
                 },
                 {
@@ -154,13 +171,14 @@ export default {
                 },
             ],
             tables: [{
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
                     HeiName: "Ateneo De Naga University",
                     address: "Naga City",
                     type: "Initial Offering",
+                    rep: "Aiden Gibbs",
+                    email: "aadnu@adnu.edu.ph",
                     program: "BSIT",
-                    status: "APPROVAL",
+                    dateApplied: "June 8, 2015",
+                    status: "FOR APPROVAL",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -169,7 +187,8 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "APPROVAL",
+                    dateApplied: "June 8, 2015",
+                    status: "FOR REVISION",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -178,7 +197,8 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "APPROVAL",
+                    dateApplied: "June 8, 2015",
+                    status: "FOR EVALUATION",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -187,7 +207,8 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "APPROVAL",
+                    dateApplied: "June 8, 2015",
+                    status: "FOR ISSUANCE",
                 },
                 {
                     rep: "Aiden Gibbs",
@@ -196,7 +217,8 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    status: "APPROVAL",
+                    dateApplied: "June 8, 2015",
+                    status: "COMPLETED",
                 },
             ],
         };
@@ -206,21 +228,5 @@ export default {
 </script>
 
 <style>
-.app-data {
-    text-align: left;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 38px;
-    align-items: center;
-}
 
-.app-label {
-    padding-left: 10px;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: start;
-    vertical-align: middle;
-    color: #8fa0b9;
-    display: block;
-}
 </style>

@@ -69,14 +69,15 @@
                 </div>
             </div>
         </div>
-        
+        <ApplyChangeEvent/>
     </div>
 </section>
 </template>
 
 <script>
+import ApplyChangeEvent from './ApplyChangeEvent.vue'
 export default {
-
+    components: {ApplyChangeEvent}
 }
 </script>
 
