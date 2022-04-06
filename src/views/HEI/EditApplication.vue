@@ -10,7 +10,6 @@
         <div class="flex flex-col">
             <div class="text-left p-4 pr-6 space-y-3">
                 <span>Status: {{status}}</span>
-
             </div>
             <!-- <p>ID Number: {{id}}</p> -->
         </div>

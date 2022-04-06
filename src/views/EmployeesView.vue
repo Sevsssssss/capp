@@ -18,7 +18,7 @@
             </div>
 
             <div class="flex flex-row">
-              <!-- sort -->
+                <!-- sort -->
                 <div class="dropdown flex flex-row">
                     <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterEmployees()">
                         <option disabled selected>Sort by Designation</option>
@@ -38,7 +38,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- table -->
         <table class="hei-table table-normal w-full">
             <!-- head-body -->
@@ -70,34 +70,36 @@
         </table>
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
-            <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
-
-            <div class="flex flex-row">
-                <div class="flex flex-row justify-center items-center pr-5">
-                    <div class="font-normal text-sm">Rows per page: 10</div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="
-                  flex flex-row
-                  justify-center
-                  items-center
-                  font-normal
-                ">
-                    <p>1-10 of 276</p>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                        </svg>
-                    </div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                        </svg>
-                    </div>
+            <div class="flex flex-row center">
+                <span class="text-sm text-gray-700 dark:text-gray-400">
+                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+                </span>
+            </div>
+            <div class="p-2">
+                <div class="btn-group">
+                    <ul class="inline-flex -space-x-px">
+                        <li>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                        </li>
+                        <li>
+                            <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -113,7 +115,6 @@ var page = 0;
 
 Parse.initialize("capp", "master");
 Parse.serverURL = "http://localhost:1337/parse";
-
 
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
@@ -137,36 +138,37 @@ export default {
                     title: "ACTION"
                 },
             ],
-            tables: [/*{
-                    Name: "Salvatore Brewer",
-                    ContactNo: "09291445216 ",
-                    Username: "birdpager",
-                    Designation: "CHED Supervisor",
-                },
-                {
-                    Name: "Salvatore Brewer",
-                    ContactNo: "09291445216 ",
-                    Username: "birdpager",
-                    Designation: "CHED Supervisor",
-                },
-                {
-                    Name: "Salvatore Brewer",
-                    ContactNo: "09291445216 ",
-                    Username: "birdpager",
-                    Designation: "CHED Supervisor",
-                },
-                {
-                    Name: "Salvatore Brewer",
-                    ContactNo: "09291445216 ",
-                    Username: "birdpager",
-                    Designation: "CHED Supervisor",
-                },
-                {
-                    Name: "Salvatore Brewer",
-                    ContactNo: "09291445216 ",
-                    Username: "birdpager",
-                    Designation: "CHED Supervisor",
-                },*/
+            tables: [
+                /*{
+                                    Name: "Salvatore Brewer",
+                                    ContactNo: "09291445216 ",
+                                    Username: "birdpager",
+                                    Designation: "CHED Supervisor",
+                                },
+                                {
+                                    Name: "Salvatore Brewer",
+                                    ContactNo: "09291445216 ",
+                                    Username: "birdpager",
+                                    Designation: "CHED Supervisor",
+                                },
+                                {
+                                    Name: "Salvatore Brewer",
+                                    ContactNo: "09291445216 ",
+                                    Username: "birdpager",
+                                    Designation: "CHED Supervisor",
+                                },
+                                {
+                                    Name: "Salvatore Brewer",
+                                    ContactNo: "09291445216 ",
+                                    Username: "birdpager",
+                                    Designation: "CHED Supervisor",
+                                },
+                                {
+                                    Name: "Salvatore Brewer",
+                                    ContactNo: "09291445216 ",
+                                    Username: "birdpager",
+                                    Designation: "CHED Supervisor",
+                                },*/
             ],
             search: '',
             sort_type: 'Sort by Designation',
@@ -176,7 +178,7 @@ export default {
         NoDataAvail,
     },
     computed: {
-        searchEmployee(){
+        searchEmployee() {
             return this.tables.filter(p => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
             });
@@ -189,7 +191,7 @@ export default {
         async filterEmployees() {
 
             var i = 0;
-            
+
             if (this.sort_type == "CHED Director") {
                 var empDir = [];
 
@@ -208,7 +210,7 @@ export default {
                         ContactNo: emp.get("contact_num"),
                         Username: "test",
                         Designation: emp.get("designation"),
-                    },);
+                    }, );
                 }
                 this.tables = empDir;
             }
@@ -230,10 +232,10 @@ export default {
                         ContactNo: emp.get("contact_num"),
                         Username: "test",
                         Designation: emp.get("designation"),
-                    },);
+                    }, );
                 }
                 this.tables = empSuper;
-                
+
             }
             if (this.sort_type == "Employees") {
                 var empEmp = [];
@@ -253,7 +255,7 @@ export default {
                         ContactNo: emp.get("contact_num"),
                         Username: "test",
                         Designation: emp.get("designation"),
-                    },);
+                    }, );
                 }
                 this.tables = empEmp;
             }
@@ -275,7 +277,7 @@ export default {
                         ContactNo: emp.get("contact_num"),
                         Username: "test",
                         Designation: emp.get("designation"),
-                    },);
+                    }, );
                 }
                 this.tables = empOthers;
             }

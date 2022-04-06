@@ -68,18 +68,37 @@
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
             <div class="flex flex-row center">
-                    <div>Showing 11 to 20 of 58 entries</div>
+                <span class="text-sm text-gray-700 dark:text-gray-400">
+                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+                </span>
+            </div>
+            <div class="p-2">
+                <div class="btn-group">
+                    <ul class="inline-flex -space-x-px">
+                        <li>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                        </li>
+                        <li>
+                            <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="flex flex-row">
-                    <div class="btn-group">
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">«</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">1</button>
-                        <button class="btn btn-outline btn-sm-cstm btn-active hover:bg-brand-blue">2</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">3</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">4</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">»</button>
-                    </div>
-                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -93,7 +112,6 @@ var page = 0;
 
 Parse.initialize("capp", "master");
 Parse.serverURL = "http://localhost:1337/parse";
-
 
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
@@ -139,41 +157,42 @@ export default {
                     num: 300,
                 },
             ],
-            tables: [/*{
-                    InstNo: "56543",
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Private Institution",
-                    email: "ateneodenaga@gbox.adnu.edu.ph",
-                },
-                {
-                    InstNo: "20746",
-                    HeiName: "Bicol University",
-                    address: "Legazpi City",
-                    type: "State University",
-                    email: "bu@bicol-u.edu.ph",
-                },
-                {
-                    InstNo: "12865",
-                    HeiName: "Catanduanes State University",
-                    address: "Virac",
-                    type: "State University",
-                    email: "areneo@gbox.adnu.edu.ph",
-                },
-                {
-                    InstNo: "95848",
-                    HeiName: "Aquinas University of Legazpi",
-                    address: "Legazpi City",
-                    type: "Private",
-                    email: "ust@ust-legazpi.edu.ph",
-                },
-                {
-                    InstNo: "56543",
-                    HeiName: "Camarines Norte State College",
-                    address: "Daet",
-                    type: "State College",
-                    email: "cnsc@cnsc.edu.ph",
-                },*/
+            tables: [
+                /*{
+                                    InstNo: "56543",
+                                    HeiName: "Ateneo De Naga University",
+                                    address: "Naga City",
+                                    type: "Private Institution",
+                                    email: "ateneodenaga@gbox.adnu.edu.ph",
+                                },
+                                {
+                                    InstNo: "20746",
+                                    HeiName: "Bicol University",
+                                    address: "Legazpi City",
+                                    type: "State University",
+                                    email: "bu@bicol-u.edu.ph",
+                                },
+                                {
+                                    InstNo: "12865",
+                                    HeiName: "Catanduanes State University",
+                                    address: "Virac",
+                                    type: "State University",
+                                    email: "areneo@gbox.adnu.edu.ph",
+                                },
+                                {
+                                    InstNo: "95848",
+                                    HeiName: "Aquinas University of Legazpi",
+                                    address: "Legazpi City",
+                                    type: "Private",
+                                    email: "ust@ust-legazpi.edu.ph",
+                                },
+                                {
+                                    InstNo: "56543",
+                                    HeiName: "Camarines Norte State College",
+                                    address: "Daet",
+                                    type: "State College",
+                                    email: "cnsc@cnsc.edu.ph",
+                                },*/
             ],
             search: '',
         };
@@ -182,7 +201,7 @@ export default {
         NoDataAvail,
     },
     computed: {
-        searchRqat(){
+        searchRqat() {
             return this.tables.filter(p => {
                 return p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
             });
