@@ -65,54 +65,60 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
-                        <a @click="goedit()" v-if="table.status != 'COMPLETED'" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <router-link :to="{ 
+                            name: 'EditHEIapplication', 
+                            params: { 
+                                id: table.id, 
+                                HeiName: table.HeiName, 
+                                type: table.type, 
+                                status: table.status,
+                                dateApplied: table.dateApplied
+                                }}">
+                            <a v-if="table.status != 'COMPLETED'" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        </router-link>
+
                     </td>
                 </tr>
             </tbody>
 
         </table>
     </div>
-   <div class="flex flex-row items-center justify-between">
-    <span class="text-sm text-gray-700 dark:text-gray-400 pl-8">
-        Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
-    </span>
-    <nav>
-        <ul class="inline-flex -space-x-px">
-            <li>
-                <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-            </li>
-            <li>
-                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-            </li>
-            <li>
-                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-            </li>
-            <li>
-                <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-            </li>
-            <li>
-                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-            </li>
-            <li>
-                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-            </li>
-            <li>
-                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-            </li>
-        </ul>
-    </nav>
-   </div>
+    <div class="flex flex-row items-center justify-between">
+        <span class="text-sm text-gray-700 dark:text-gray-400 pl-8">
+            Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+        </span>
+        <nav>
+            <ul class="inline-flex -space-x-px">
+                <li>
+                    <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                </li>
+                <li>
+                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                </li>
+                <li>
+                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                </li>
+                <li>
+                    <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                </li>
+                <li>
+                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                </li>
+                <li>
+                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                </li>
+                <li>
+                    <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 </template>
 
 <script>
 export default {
     name: "ApplicationView",
-    methods: {
-        goedit() {
-            this.$router.push("/HEIapplication/edit");
-        }
-    },
     data() {
         return {
             headers: [{
@@ -129,53 +135,58 @@ export default {
                 },
             ],
             tables: [{
-                    HeiName: "Ateneo De Naga University",
+                    id: 1,
+                    HeiName: "Bicol University",
                     address: "Naga City",
                     type: "Initial Offering",
                     rep: "San Goku",
                     email: "aadnu@adnu.edu.ph",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 1, 2015",
                     status: "FOR APPROVAL",
                 },
                 {
+                    id: 2,
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
                     HeiName: "Ateneo De Naga University",
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 2, 2015",
                     status: "FOR REVISION",
                 },
                 {
+                    id: 3,
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
-                    HeiName: "Ateneo De Naga University",
+                    HeiName: "Universidad de Sta. Isabel",
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 3, 2015",
                     status: "FOR APPROVAL",
                 },
                 {
+                    id: 4,
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
-                    HeiName: "Ateneo De Naga University",
+                    HeiName: "Aquinas University of Legazpi",
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 4, 2015",
                     status: "FOR APPROVAL",
                 },
                 {
+                    id: 5,
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
-                    HeiName: "Ateneo De Naga University",
+                    HeiName: "La Consolacion College",
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 5, 2015",
                     status: "COMPLETED",
                 },
             ],
