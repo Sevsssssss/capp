@@ -62,8 +62,9 @@
                             {{ table.status }}
                         </div>
                 </td>
-                <td @click="goedit()" class="px-6 py-4 text-right">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                <td class="px-6 py-4 text-right">
+                    <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
+                    <a @click="goedit()" v-if="table.status != 'COMPLETED'" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                 </td>
             </tr>
         </tbody>
