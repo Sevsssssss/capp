@@ -1,5 +1,8 @@
 <template>
-<div class="" style="padding: 10px">
+<div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="EmployeeView" />
+</div>
+<div v-else class="" style="padding: 10px">
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
         <div class="top-row flex flex-row" style="justify-content: space-between;">
             <div class="search-container">
@@ -112,8 +115,10 @@ Parse.initialize("capp", "master");
 Parse.serverURL = "http://localhost:1337/parse";
 
 
+import NoDataAvail from "@/components//NoDataAvail.vue";
+
 export default {
-    name: "ApplicationView",
+    name: "EmployeesView",
     data() {
         return {
             headers: [{
@@ -168,6 +173,7 @@ export default {
         };
     },
     components: {
+        NoDataAvail,
     },
     computed: {
         searchEmployee(){

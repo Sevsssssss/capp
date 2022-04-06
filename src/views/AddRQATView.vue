@@ -84,7 +84,7 @@
 
 
             <div class="flex flex-row pt-10" style="align-self: center;">
-                <button class="btn btn-margin btn-wide btn-outline">Cancel</button>
+                <button class="btn btn-margin btn-wide btn-outline" @click="$router.go(-1)">Cancel</button>
                 <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue" @click="addRQAT()">Add RQAT</button>
             </div>
         </form>

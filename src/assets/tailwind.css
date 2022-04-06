@@ -121,15 +121,23 @@
     margin: 15px;
   }
 
-  .center{
+  .center {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
   }
+
   .dropdown {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+  }
+
+  .btn-sm-cstm {
+    height: 2rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    min-height: 2rem;
   }
 
 
@@ -308,40 +316,45 @@
     margin: 10px;
   }
 
-  .approval{
+  .approval {
     color: #fa582e;
     background-color: rgba(250, 88, 46, 0.15);
     border: none;
   }
-  .revision{
+
+  .revision {
     color: #0053d9;
     background-color: rgba(0, 67, 212, 0.15);
     border: none;
   }
-  .evaluation{
+
+  .evaluation {
     color: #FF49CC;
     background-color: rgba(255, 73, 204, 0.15);
     border: none;
   }
-  .issuance{
+
+  .issuance {
     color: #620cce;
     background-color: rgba(96, 8, 205, 0.15);
     border: none;
   }
-  .completed{
+
+  .completed {
     color: #04ad48;
     background-color: rgba(5, 174, 74, 0.15);
     border: none;
   }
+
   .app-data {
     text-align: left;
     font-weight: 600;
     font-size: 32px;
     line-height: 38px;
     align-items: center;
-}
+  }
 
-.app-label {
+  .app-label {
     padding-left: 10px;
     font-size: 14px;
     line-height: 14px;
@@ -349,10 +362,16 @@
     vertical-align: middle;
     color: #8fa0b9;
     display: block;
-}
+  }
 
-  .table-footer{
+  .table-footer {
     padding: 10px;
+  }
+
+  .noDataAvail {
+    font-size: 50px;
+    padding: 10px;
+    color:#BDBDBD;
   }
 }
 
