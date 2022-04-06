@@ -1,31 +1,31 @@
 <template>
 <!--Header-->
-<div class="" style="margin: 11px">
+<div class="" style="margin: 60px">
     <div class="top-row flex flex-row" style="justify-content: space-between;">
 
         <div class="form-control mr-3 w-full">
             <label class="label">
                 <span class="label-text">CMO No.*</span>
             </label>
-            <input type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" />
+            <input type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" style="height: 48px; width:250px;"/>
         </div>
 
         <div class="form-control mr-3 w-full">
             <label class="label">
                 <span class="label-text">Series*</span>
             </label>
-            <input type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" />
+            <input type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" style="height: 48px; width:250px;" />
         </div>
 
         <div class="form-control mr-3 w-full">
             <label class="label">
                 <span class="label-text">Description*</span>
             </label>
-            <input type="text" placeholder="Enter Description" class="input input-bordered w-full max-w-xs" />
+            <input type="text" placeholder="Enter Description" class="input input-bordered w-full max-w-xs" style="height: 48px; width:250px;"/>
         </div>
 
         <div class="flex flex-row center" style="margin-top: 35px;">
-            <button @click="addEvalIns()" class="btn btn-wide  bg-brand-darkblue hover:bg-brand-blue border-none p-2">
+            <button class="btn btn-wide  bg-brand-darkblue hover:bg-brand-blue border-none p-2">
                 Add Category
             </button>
         </div>
@@ -33,33 +33,52 @@
 
     <!-- Body -->
     <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
-        <div class="mx-5 top-row flex flex-row" style="justify-content: space-between;">
+        <div class="flex justify-end">
+            <button type="button" class="rounded-md p-2 inline-flex items-center justify-center text-black-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+              <span class="sr-only">Close menu</span>
+              <!-- Heroicon name: outline/x -->
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+        </div>
 
-            <div class="flex flex-row">
+        <div class="mx-5 top-row flex flex-row" style="justify-content: space-between ;">
+
+            <div class="px-4 top-row flex flex-row">
                 <div class="form-control w-full mr-3">
                     <label class="label">
                         <span class="label-text">Category*</span>
                     </label>
-                    <input type="text" placeholder="Enter Criteria Name" class="input input-bordered w-full max-w-xs" />
+                    <input type="text" placeholder="Enter Criteria Name" class="input input-bordered w-full max-w-xs" style="height: 48px; width:250px;"/>
                 </div>
 
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Description</span>
                     </label>
-                    <textarea class="textarea textarea-bordered" placeholder="Enter Description" style="height: 48px; width:190px;"></textarea>
+                    <input type="text" placeholder="Enter Description" class="input input-bordered w-full max-w-xs" style="height: 48px; width:250px;"/>
                 </div>
             </div>
 
             <div class="flex flex-row center"  style="margin-top: 35px;">
-                <button @click="addEvalIns()" class="btn btn-wide  bg-brand-darkblue hover:bg-brand-blue border-none p-2">
+                <button class="btn btn-wide  bg-brand-darkblue hover:bg-brand-blue border-none p-2">
                     Add Sub-Category
                 </button>
             </div>
 
         </div>
 
-        <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 22px">
+        <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 50px">
+            <div class="flex justify-end">
+                <button type="button" class="rounded-md p-2 inline-flex items-center justify-center text-black-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <span class="sr-only">Close menu</span>
+                <!-- Heroicon name: outline/x -->
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                </button>
+            </div>
             <div class="px-4 top-row flex flex-row ">
 
                 <div class="flex flex-row">
@@ -74,7 +93,8 @@
                         <label class="label">
                             <span class="label-text">Item</span>
                         </label>
-                        <textarea class="textarea textarea-bordered" placeholder="Enter requirements" style="height: 48px; width:190px;"></textarea>
+                        
+                        <textarea class="textarea textarea-bordered" placeholder="Enter requirements" style="height: 150px; width:930px;"></textarea>
                         
                     </div>
                 </div>
@@ -94,7 +114,7 @@
               submit
               bg-brand-darkblue
               hover:bg-brand-blue
-            " @click="addHEI()">
+            ">
                 Create
             </button>
         </div>
