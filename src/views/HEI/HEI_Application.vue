@@ -80,7 +80,6 @@
                     </td>
                 </tr>
             </tbody>
-
         </table>
     </div>
     <div class="flex flex-row items-center justify-between">
