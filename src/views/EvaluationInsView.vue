@@ -46,7 +46,7 @@
                             link link-primary
                             hover:text-brand-darkblue
                             text-brand-blue
-                            pr-2">
+                            pr-2" @click="viewEvalIns()">
                                 view
                             </a>
                             <div>
@@ -134,6 +134,9 @@ export default {
         addEvalIns() {
            this.$router.push("/evaluationins/add");
         }, 
+        viewEvalIns(){
+            this.$router.push("/evaluationins/view");
+        }
     },
 };
 </script>

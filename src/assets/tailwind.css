@@ -371,7 +371,17 @@
   .noDataAvail {
     font-size: 50px;
     padding: 10px;
-    color:#BDBDBD;
+    color: #BDBDBD;
+  }
+
+  .aoe {
+    width: 30%;
+  }
+
+  .eval-table :where(th, td) {
+    white-space: normal;
+    padding: 1rem;
+    vertical-align: middle;
   }
 }
 

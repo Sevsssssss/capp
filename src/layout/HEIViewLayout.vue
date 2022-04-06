@@ -71,7 +71,7 @@
 }
 .v-sidebar-menu.vsm_collapsed .vsm--link_active {
   background-color: theme("colors.grey.500");
-  color: theme("colors.blue.400");
+  color: theme("colors.blue.600");
 }
 .v-sidebar-menu .vsm--link {
   /* font-family: theme("fontFamily.body"); */
@@ -82,10 +82,11 @@
 }
 .v-sidebar-menu .vsm--link:hover {
   background-color: theme("colors.grey.600");
+  color: theme("colors.blue.600");
 }
 .v-sidebar-menu .vsm--link_active {
   background-color: theme("colors.grey.600");
-  color: theme("colors.blue.400");
+  color: theme("colors.blue.600");
   box-shadow: none !important;
 }
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
