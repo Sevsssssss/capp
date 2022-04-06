@@ -1,56 +1,57 @@
 <template>
-<div class="" style="padding: 10px">
-    <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px">
-        <!-- Top Header for search and sort -->
-        <div class="top-row flex flex-row" style="justify-content: space-between">
-            <!-- Search -->
-            <div class="search-container">
-                <input type="search" name="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
-                <a href="#" class="search-btn">
-                    <div class="search_icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
+<div class="m-3">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="flex flex-row">
+            <div class="p-4">
+                <label for="table-search" class="sr-only">Search</label>
+                <div class="relative mt-1">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
-                </a>
+                    <input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+                </div>
             </div>
             <!-- Sort -->
             <div class="dropdown flex flex-row">
-                <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none">
+                <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none">
                     <option selected>All</option>
                     <option>Approved</option>
                     <option>For Revision</option>
                     <option>Completed</option>
                 </select>
             </div>
-        </div>
 
-        <!-- Table -->
-        <table class="table-normal w-full bg-brand-white text-left">
-            <!-- head-body -->
-            <thead class="bg-grey-500">
-                <tr class="">
-                    <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">
-                        {{ header.title }}
+        </div>
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
+                        {{header.title}}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">Edit</span>
                     </th>
                 </tr>
             </thead>
-
-            <tbody class="">
-                <!-- rows -->
-                <tr class="" v-for="table in tables" :key="table">
-                    <td class="font-normal">{{ table.dateApplied }}</td>
-                    <th class="">
+            <tbody>
+                <tr v-for="table in tables" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        {{table.dateApplied}}
+                    </th>
+                    <td class="px-6 py-4">
                         <div class="">
                             <div class="font-semibold text-grey-300">
                                 {{ table.rep }}
                             </div>
                             <div class="font-normal">{{ table.address }}</div>
                         </div>
-                    </th>
-                    <td class="font-normal">{{ table.type }}</td>
-                    <td class="font-normal">
+                    </td>
+                    <td class="px-6 py-4">
+                        {{table.type}}
+                    </td>
+                    <td class="px-6 py-4">
                         <!-- :class="'homeIcon.' + data.color" -->
                         <div v-if="table.status === 'FOR APPROVAL'" class="btn-sm1 p-2 font-normal approval">
                             {{ table.status }}
@@ -58,56 +59,54 @@
                         <div v-else-if="table.status === 'FOR REVISION'" class="btn-sm1 p-2 font-normal revision">
                             {{ table.status }}
                         </div>
+                        <div v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 p-2 font-normal evaluation">
+                            {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 p-2 font-normal issuance">
+                            {{ table.status }}
+                        </div>
                         <div v-else-if="table.status === 'COMPLETED'" class="btn-sm1 p-2 font-normal completed">
                             {{ table.status }}
                         </div>
                     </td>
-                    <td>
-                        <div class="flex flex-row center">
-                            <button class="" @click="goedit()">
-                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-                                </svg>
-                            </button>
-                        </div>
+                    <td class="px-6 py-4 text-right">
+                        <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
+                        <router-link :to="{ 
+                            name: 'EditHEIapplication', 
+                            params: { 
+                                id: table.id, 
+                                HeiName: table.HeiName, 
+                                type: table.type, 
+                                status: table.status,
+                                dateApplied: table.dateApplied
+                                }}">
+                            <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        </router-link>
+
                     </td>
                 </tr>
             </tbody>
-        </table>
-        <!-- Footer -->
-        <div class="table-footer flex flex-row" style="justify-content: space-between;">
-            <div class="font-normal text-sm text-grey-200">TOTAL APPLICATIONS: 40/100</div>
 
+        </table>
+        <div class="table-footer flex flex-row items-center justify-between">
+            <div class="flex flex-row center">
+                <span class="text-sm text-gray-700 dark:text-gray-400">
+                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+                </span>
+            </div>
             <div class="flex flex-row">
-                <div class="flex flex-row justify-center items-center pr-5">
-                    <div class="font-normal text-sm">Rows per page: 10</div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="
-                  flex flex-row
-                  justify-center
-                  items-center
-                  font-normal
-                ">
-                    <p>1-10 of 276</p>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                        </svg>
-                    </div>
-                    <div class="text-grey-200 hover:text-brand-blue">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                        </svg>
-                    </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline btn-sm-cstm py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">«</button>
+                    <button class="btn btn-outline btn-sm-cstm py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</button>
+                    <button aria-current="page" class="btn btn-outline btn-sm-cstm py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">2</button>
+                    <button class="btn btn-outline btn-sm-cstm py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">3</button>
+                    <button class="btn btn-outline btn-sm-cstm py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</button>
+                    <button class="btn btn-outline btn-sm-cstm py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">»</button>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 </template>
 
@@ -128,66 +127,72 @@ export default {
                 {
                     title: "STATUS",
                 },
-                {
-                    title: "ACTION",
-                },
             ],
             tables: [{
-                    HeiName: "Ateneo De Naga University",
+                    id: 1,
+                    HeiName: "Bicol University",
                     address: "Naga City",
                     type: "Initial Offering",
                     rep: "San Goku",
                     email: "aadnu@adnu.edu.ph",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 1, 2015",
                     status: "FOR APPROVAL",
                 },
                 {
+                    id: 2,
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
                     HeiName: "Ateneo De Naga University",
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 2, 2015",
+                    status: "FOR EVALUATION",
+                },
+                {
+                    id: 3,
+                    rep: "Aiden Gibbs",
+                    email: "aadnu@adnu.edu.ph",
+                    HeiName: "Universidad de Sta. Isabel",
+                    address: "Naga City",
+                    type: "Initial Offering",
+                    program: "BSIT",
+                    dateApplied: "June 3, 2015",
+                    status: "FOR ISSUANCE",
+                },
+                {
+                    id: 4,
+                    rep: "Aiden Gibbs",
+                    email: "aadnu@adnu.edu.ph",
+                    HeiName: "Aquinas University of Legazpi",
+                    address: "Naga City",
+                    type: "Initial Offering",
+                    program: "BSIT",
+                    dateApplied: "June 4, 2015",
                     status: "FOR REVISION",
                 },
                 {
+                    id: 5,
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
-                    HeiName: "Ateneo De Naga University",
+                    HeiName: "La Consolacion College",
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
-                    status: "FOR APPROVAL",
-                },
-                {
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "June 8, 2015",
-                    status: "FOR APPROVAL",
-                },
-                {
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "June 5, 2015",
                     status: "COMPLETED",
                 },
             ],
-            goedit() {
-               this.$router.push("/HEIapplication/edit");
-            }
         };
     },
+    methods: {
+        statusChecker(status){
+            if (status != "COMPLETED" && status != "FOR EVALUATION" && status != "FOR ISSUANCE"){
+                return true;
+            }
+        }
+    }
 };
 </script>
 

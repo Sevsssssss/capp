@@ -66,7 +66,6 @@
                     Add Sub-Category
                 </button>
             </div>
-
         </div>
 
         <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 50px">
@@ -84,14 +83,17 @@
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
                         <label class="label">
-                            <span class="label-text">Sub Category</span>
+                            <span class="label-text">Category*</span>
                         </label>
-                        <input type="text" placeholder="Enter Criteria Name" class="input input-bordered w-full max-w-xs" />
+                        <input type="text" placeholder="Enter Criteria Name" :class="{'input-error': validationStatus(v$.category)}" class="input input-bordered w-full max-w-xs" v-model="v$.category.$model" />
+                        <label class="label">
+                            <span v-if="validationStatus(v$.category)" :class="{'text-error': validationStatus(v$.category)}" class="label-text-alt"> Category is Required</span>
+                        </label>
                     </div>
 
                     <div class="form-control w-full">
                         <label class="label">
-                            <span class="label-text">Item</span>
+                            <span class="label-text">Description</span>
                         </label>
                         
                         <textarea class="textarea textarea-bordered" placeholder="Enter requirements" style="height: 150px; width:930px;"></textarea>
@@ -119,12 +121,62 @@
             </button>
         </div>
     </div>
-
 </div>
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import {
+    required,
+    email,
+} from "@vuelidate/validators";
+
 export default {
+    name: "AddEvalInstView",
+    data() {
+        return {
+            v$: useVuelidate(),
+            hei_name: "",
+            cmo_no: "",
+            series: "",
+            description: "",
+            category: "",
+            catdescription: "",
+            subcategory: "",
+            item: "",
+        };
+    },
+    validations() {
+        return {
+            cmo_no: {
+                required,
+            },
+            series: {
+                required,
+            },
+            description: {
+                required,
+                email,
+            },
+            category: {
+                required,
+            },
+            catdescription: {
+                required,
+            },
+            subcategory: {
+                required,
+            },
+            item: {
+                required,
+            },
+        };
+    },
+    methods: {
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+    }
 
 }
 </script>
