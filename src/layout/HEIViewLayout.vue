@@ -21,7 +21,15 @@
             ? 'pl-[290px]  transition-width duration-300'
             : 'pl-[65px] transition-width duration-300'
         ">
-            <BreadCrumbs :menu="menu" @selected="selected" />
+            <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
+            <div class="breadcrumbs mt-14 w-full bg-light-100 p-3 fixed shadow-sm">
+                <ul class="flex space-x-3 text-sm">
+                    <li class="list space-x-3 cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
+                        <span class="name">{{ breadcrumb.name }}</span>
+                        <span class="separator">/</span>
+                    </li>
+                </ul>
+            </div>
             <div class="main-content h-screen pt-28 bg-grey-700 ">
                 <router-view />
             </div>
@@ -108,7 +116,6 @@
 
 <script>
 import TopNavigation from "@/components/TopNavigation.vue";
-import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import {
     SidebarMenu
 } from "vue-sidebar-menu";
@@ -127,18 +134,33 @@ export default {
         SidebarMenu,
         MenuOpen,
         Logout,
-        BreadCrumbs,
+    },
+    watch: {
+        $route() {
+            this.updateList();
+        },
+    },
+    mounted() {
+        this.updateList();
     },
 
     methods: {
+        updateList() {
+            this.breadcrumbs = this.$route.meta.breadcrumb;
+        },
         toggle() {
             this.collapsed = !this.collapsed;
         },
+        routeTo(pRouteTo) {
+            if (this.breadcrumbs[pRouteTo].link) {
+                this.$router.push(this.breadcrumbs[pRouteTo].link);
+            }
+        },
     },
-
     data() {
         return {
             collapsed: true,
+            breadcrumbs: [],
             menu: [{
                     href: "/HEIhome",
                     title: "Home",
