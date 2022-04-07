@@ -16,19 +16,13 @@
                     <!--v-if--></label>
             </div>
             <div class="flex flex-row center" style="margin-top: 20px">
-                <button class="
-              btn btn-margin
-              bg-brand-darkblue
-              hover:bg-brand-blue
-              border-none
-              p-2
-            ">
+                <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none p-2" @click="toggleModal">
                     Add Category
                 </button>
             </div>
         </div>
         <!-- Body -->
-        <div class="overflow-x-auto rounded-lg">
+        <div class="overflow-x-auto rounded-lg" v-if="!showModal">
             <div class="mx-5 top-row flex flex-row" style="justify-content: space-between">
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
@@ -41,28 +35,17 @@
                     </div>
                 </div>
                 <div class="center" style="margin-top: 35px">
-                    <button class="
-                btn btn-margin
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-                pr-2
-              ">
+                    <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none pr-2" @click="toggleModal1">
                         Add Sub-Category
                     </button>
 
-                    <button class="
-                btn btn-margin
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-              ">
+                    <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none">
                         DELETE
                     </button>
 
                 </div>
             </div>
-            <div class="overflow-x-auto rounded-lg">
+            <div class="overflow-x-auto rounded-lg" v-if="!showModal1">
                 <div class="px-8 top-row flex flex-row">
                     <div class="flex flex-row">
                         <div class="form-control w-full mr-3">
@@ -118,6 +101,8 @@ export default {
     name: "AddEvalInstView",
     data() {
         return {
+            showModal: true,
+            showModal1: true,
             v$: useVuelidate(),
             hei_name: "",
             cmo_no: "",
@@ -158,6 +143,12 @@ export default {
     methods: {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
+        },
+         toggleModal() {
+            this.showModal = !this.showModal
+        },
+        toggleModal1() {
+            this.showModal1 = !this.showModal1
         },
     },
 };
