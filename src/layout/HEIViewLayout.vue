@@ -23,10 +23,9 @@
         ">
             <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
             <div class="breadcrumbs mt-14 w-full bg-light-100 p-3 fixed shadow-sm">
-                <ul class="flex space-x-3 text-sm">
+                <ul class="flex text-sm">
                     <li class="list space-x-3 cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
                         <span class="name">{{ breadcrumb.name }}</span>
-                        <span class="separator">/</span>
                     </li>
                 </ul>
             </div>
