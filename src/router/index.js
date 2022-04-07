@@ -46,62 +46,128 @@ const routes = [
         path: "/application",
         name: "application",
         component: ApplicationView,
+        meta:{
+          breadcrumb: [
+            {name: 'Application'},
+          ]
+        }
       },
       {
         path: "/application/:id",
         name: "StatusApplication",
         component: StatusApplication,
         props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'Application', link: '/application' },
+            { name: 'Status'}
+          ]
+        }
       },
       {
         path: "/hei",
         name: "hei",
         component: HeiView,
+        meta:{
+          breadcrumb: [
+            {name: 'HEI'},
+          ]
+        }
       },
       {
         path: "/hei/add",
         name: "addhei",
         component: AddHeiView,
+        meta:{
+          breadcrumb: [
+            { name: 'HEI', link: '/hei' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/rqat",
         name: "rqat",
         component: RqatView,
+        meta:{
+          breadcrumb: [
+            {name: 'RQAT'},
+          ]
+        }
       },
       {
         path: "/rqat/add",
         name: "addrqat",
         component: AddRQATView,
+        meta:{
+          breadcrumb: [
+            { name: 'RQAT', link: '/rqat' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/employees",
         name: "employees",
         component: EmployeesView,
+        meta:{
+          breadcrumb: [
+            {name: 'EMPLOYEE'},
+          ]
+        }
       },
       {
         path: "/employees/add",
         name: "addemployee",
         component: AddEmployeeView,
+        meta:{
+          breadcrumb: [
+            { name: 'EMPLOYEE', link: '/employees' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/evaluationins",
         name: "evaluationins",
         component: EvaluationInsView,
+        meta:{
+          breadcrumb: [
+            {name: 'EVALUATION Ins.'},
+          ]
+        }
       },
       {
         path: "/evaluationins/view",
         name: "evaluationinsfile",
         component: EvalFileView,
+        meta:{
+          breadcrumb: [
+            { name: 'EVALUATION Ins.', link: '/evaluationins' },
+            { name: 'STATUS'}
+          ]
+        }
       },
       {
         path: "/evaluationins/add",
         name: "addevaluationins",
         component: AddEvaluationInsView,
+        meta:{
+          breadcrumb: [
+            { name: 'EVALUATION Ins.', link: '/evaluationins' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/reporting",
         name: "reporting",
         component: ReportingView,
+        meta:{
+          breadcrumb: [
+            {name: 'REPORTING'},
+          ]
+        }
       },
     ]
   },
