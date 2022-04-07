@@ -260,8 +260,14 @@ export default {
     async Login() {
       Parse.User.logIn(this.username, this.password)
         .then((user) => {
-          if (user.get("user_type") === "super admin") {
-            this.$router.push({ path: "/application" }).catch((err) => {
+          if (
+            user.get("user_type") === "super admin" ||
+            user.get("user_type") === "admin" ||
+            user.get("user_type") === "education supervisor" ||
+            user.get("user_type") === "rqat" ||
+            user.get("user_type") === "reporting"
+          ) {
+            this.$router.push({ path: "/home" }).catch((err) => {
               throw new Error(`Problem handling something: ${err}.`);
             });
           } else if (user.get("user_type") === "hei") {

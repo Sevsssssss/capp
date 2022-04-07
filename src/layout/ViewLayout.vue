@@ -104,7 +104,7 @@
 }
 </style>
 <script>
-import Parse from 'parse';
+import Parse from "parse";
 import TopNavigation from "@/components/TopNavigation.vue";
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import { SidebarMenu } from "vue-sidebar-menu";
@@ -113,6 +113,7 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
 
+import HomeOutline from "@/assets/sidebar_icons/home-outline.svg";
 import FileOutline from "@/assets/sidebar_icons/file-3-line.svg";
 import BankLine from "@/assets/sidebar_icons/bank-line.svg";
 import ClipboardLine from "@/assets/sidebar_icons/clipboard-line.svg";
@@ -141,59 +142,201 @@ export default {
   },
 
   data() {
-    return {
-      collapsed: true,
-      menu: [
-        {
-          href: "/application",
-          title: "Application",
-          icon: {
-            element: "img",
-            attributes: { src: FileOutline },
+    if (Parse.User.current().get("user_type") === "super admin") {
+      return {
+        collapsed: true,
+        menu: [
+          {
+            href: "/home",
+            title: "Home",
+            icon: {
+              element: "img",
+              attributes: { src: HomeOutline },
+            },
           },
-        },
-        {
-          href: "/hei",
-          title: "HEIs Account",
-          icon: {
-            element: "img",
-            attributes: { src: BankLine },
+          {
+            href: "/application",
+            title: "Application",
+            icon: {
+              element: "img",
+              attributes: { src: FileOutline },
+            },
           },
-        },
-        {
-          href: "/rqat",
-          title: "RQAT Account",
-          icon: {
-            element: "img",
-            attributes: { src: TeamLine },
+          {
+            href: "/hei",
+            title: "HEIs Account",
+            icon: {
+              element: "img",
+              attributes: { src: BankLine },
+            },
           },
-        },
-        {
-          href: "/employees",
-          title: "Employees",
-          icon: {
-            element: "img",
-            attributes: { src: GroupLine },
+          {
+            href: "/rqat",
+            title: "RQAT Account",
+            icon: {
+              element: "img",
+              attributes: { src: TeamLine },
+            },
           },
-        },
-        {
-          href: "/evaluationins",
-          title: "Evaluation Ins.",
-          icon: {
-            element: "img",
-            attributes: { src: ClipboardLine },
+          {
+            href: "/employees",
+            title: "Employees",
+            icon: {
+              element: "img",
+              attributes: { src: GroupLine },
+            },
           },
-        },
-        {
-          href: "/reporting",
-          title: "Reporting",
-          icon: {
-            element: "img",
-            attributes: { src: FileChartOutline },
+          {
+            href: "/evaluationins",
+            title: "Evaluation Ins.",
+            icon: {
+              element: "img",
+              attributes: { src: ClipboardLine },
+            },
           },
-        },
-      ],
-    };
+          {
+            href: "/reporting",
+            title: "Reporting",
+            icon: {
+              element: "img",
+              attributes: { src: FileChartOutline },
+            },
+          },
+        ],
+      };
+    } else if (Parse.User.current().get("user_type") === "admin") {
+      return {
+        collapsed: true,
+        menu: [
+          {
+            href: "/home",
+            title: "Home",
+            icon: {
+              element: "img",
+              attributes: { src: HomeOutline },
+            },
+          },
+          {
+            href: "/application",
+            title: "Application",
+            icon: {
+              element: "img",
+              attributes: { src: FileOutline },
+            },
+          },
+
+          {
+            href: "/evaluationins",
+            title: "Evaluation Ins.",
+            icon: {
+              element: "img",
+              attributes: { src: ClipboardLine },
+            },
+          },
+          {
+            href: "/reporting",
+            title: "Reporting",
+            icon: {
+              element: "img",
+              attributes: { src: FileChartOutline },
+            },
+          },
+        ],
+      };
+    } else if (
+      Parse.User.current().get("user_type") === "education supervisor"
+    ) {
+      return {
+        collapsed: true,
+        menu: [
+          {
+            href: "/home",
+            title: "Home",
+            icon: {
+              element: "img",
+              attributes: { src: HomeOutline },
+            },
+          },
+          {
+            href: "/application",
+            title: "Application",
+            icon: {
+              element: "img",
+              attributes: { src: FileOutline },
+            },
+          },
+
+          {
+            href: "/evaluationins",
+            title: "Evaluation Ins.",
+            icon: {
+              element: "img",
+              attributes: { src: ClipboardLine },
+            },
+          },
+          {
+            href: "/reporting",
+            title: "Reporting",
+            icon: {
+              element: "img",
+              attributes: { src: FileChartOutline },
+            },
+          },
+        ],
+      };
+    } else if (Parse.User.current().get("user_type") === "rqat") {
+      return {
+        collapsed: true,
+        menu: [
+          {
+            href: "/home",
+            title: "Home",
+            icon: {
+              element: "img",
+              attributes: { src: HomeOutline },
+            },
+          },
+          {
+            href: "/application",
+            title: "Application",
+            icon: {
+              element: "img",
+              attributes: { src: FileOutline },
+            },
+          },
+          {
+            href: "/reporting",
+            title: "Reporting",
+            icon: {
+              element: "img",
+              attributes: { src: FileChartOutline },
+            },
+          },
+        ],
+      };
+    } else if (Parse.User.current().get("user_type") === "reporting") {
+      return {
+        collapsed: true,
+        menu: [
+          {
+            href: "/home",
+            title: "Home",
+            icon: {
+              element: "img",
+              attributes: { src: HomeOutline },
+            },
+          },
+          {
+            href: "/reporting",
+            title: "Reporting",
+            icon: {
+              element: "img",
+              attributes: { src: FileChartOutline },
+            },
+          },
+        ],
+      };
+    }
   },
 };
 </script>
