@@ -5,13 +5,14 @@
         <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
             <template v-slot:toggle-icon>
                 <MenuOpen class="h-6" /></template>
-            <template v-slot:footer>
-                <div class="p-5 grid grid-cols-1 content-center" :class="collapsed ? '' : 'hidden'">
-                        <button class="flex pl-20 pb-5 text-blue-500">
-                            <Logout class="h-6" />Logout
+           <template v-slot:footer>
+                <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
+                        <button class="flex space-x-1 justify-center items-center text-blue-500">
+                            <Logout class="h-6" />
+                            <span class="text-sm hover:font-semibold">Logout</span>
                         </button>
-                    <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
-                        Copyright &copy; 2022 CHEDROV
+                    <p class="flex justify-center text-sm text-grey-300 tracking-wide">
+                        Copyright &copy; {{new Date().getFullYear()}} CHEDROV
                     </p>
                 </div>
             </template>
@@ -22,7 +23,7 @@
             : 'pl-[65px] transition-width duration-300'
         ">
             <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
-            <div class="breadcrumbs mt-14 w-full bg-light-100 p-3 fixed shadow-sm">
+            <div class="breadcrumbs w-full mt-14 p-3  fixed shadow-sm">
                 <ul class="flex text-sm">
                     <li class="list space-x-3 cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
                         <span class="name">{{ breadcrumb.name }}</span>
@@ -122,7 +123,7 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
 
-import FileOutline from "@/assets/sidebar_icons/file-3-line.svg";
+import FileOutline from "@/assets/sidebar_icons/file.svg";
 import BankLine from "@/assets/sidebar_icons/bank-line.svg";
 import ClipboardLine from "@/assets/sidebar_icons/clipboard-line.svg";
 import GroupLine from "@/assets/sidebar_icons/group-line.svg";

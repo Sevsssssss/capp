@@ -18,7 +18,7 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
-import NoFoundPage from '../views/NoFoundPage.vue'
+import NotFoundPage from '../views/NotFoundPage.vue'
 import StatusApplication from '../views/Application/StatusApplication.vue'
 
 
@@ -30,8 +30,8 @@ const routes = [
   },
   {
     path: '/:catchAll(.*)',
-    name: 'NoFoundPage',
-    component: NoFoundPage,
+    name: 'NotFoundPage',
+    component: NotFoundPage,
   },
   {
     path: "/capp",

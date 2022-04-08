@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between p-2 xxl:px-10 xl:px-10 sm:px-8 xxs:px-4">
         <!-- Copyright -->
         <div class="justify-start">
-            <p class="text-grey-400 text-sm tracking-wide font-normal">Copyright - {{new Date().getFullYear()}} CHEDRO5</p>
+            <p class="text-grey-400 text-sm tracking-wide font-normal">Copyright - {{new Date().getFullYear()}} CHEDROV</p>
         </div>
         <!-- Icons -->
         <div class="flex space-x-4">
