@@ -1,20 +1,18 @@
 <template>
-<div class="m-3">
+<div class="m-5">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex flex-row space-x-2">
-              <!-- Table -->
-                <TableTopLeft class="px-5"></TableTopLeft>
-                <!-- Sort -->
-                <div class="dropdown flex">
-                    <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none">
-                        <option selected>All</option>
-                        <option>For Approval</option>
-                        <option>For Revision</option>
-                        <option>For Evaluation</option>
-                        <option>For Issuance</option>
-                        <option>Completed</option>
-                    </select>
-                </div>
+            <!-- Table -->
+            <TableTopLeft class="px-5"></TableTopLeft>
+            <!-- Sort -->
+            <div class="dropdown flex">
+                <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none">
+                    <option selected>All</option>
+                    <option>For Approval</option>
+                    <option>For Revision</option>
+                    <option>Completed</option>
+                </select>
+            </div>
 
         </div>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -115,7 +113,6 @@
             </div>
         </div>
     </div>
-
 </div>
 </template>
 
@@ -123,7 +120,9 @@
 import TableTopLeft from "@/components//TableTopLeft.vue";
 export default {
     name: "ApplicationView",
-    components: {TableTopLeft},
+    components: {
+        TableTopLeft
+    },
     data() {
         return {
             headers: [{
