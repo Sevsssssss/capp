@@ -1,34 +1,32 @@
 <template>
-<div>
-    <div class="center" style="width:100%; background-color: #F0F3FA; padding:60px">
-        <!-- Header -->
-        <div class="space-x-5 text-justify center">
-            <div class="">
-
-            </div>
-            <div class="">
-                <div class="font-semibold body-small xxs:leading-tight mb-3"> CHED Porgram Applications Management System </div>
-                <p class="font-medium body-small">
-                    Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum. At nam minimum ponderum. Est audiam animal molestiae te. Ex duo eripuit mentitum. Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum. At nam minimum ponderum. Est audiam animal molestiae te. Ex duo eripuit mentitum
-                </p>
-            </div>
+<div class="w-full" style="background-color: #F0F3FA; padding:60px">
+    <!-- Header -->'
+    <div class="flex flex-row text-left">
+        <div class="space-x-5 text-justify"></div>
+        <!-- <img src="../assets/img/CHED_logo.png" alt="" > -->
+        <div :style="image"></div>
+        <div class="space-y-2">
+            <div class="font-semibold text-2xl xxs:leading-tight"> CHED Program Applications Management System </div>
+            <p class="font-medium body-small">
+                Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum. At nam minimum ponderum. Est audiam animal molestiae te. Ex duo eripuit mentitum. Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum. At nam minimum ponderum. Est audiam animal molestiae te. Ex duo eripuit mentitum
+            </p>
         </div>
     </div>
+</div>
 
-    <div class="center mx-10">
-        <div class="font-semibold body-small xxs:leading-tight mt-10"> HOW TO APPLY? </div>
-        <div class=" grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2">
-            <div class="flex flex-row p-4" v-for="table in tables" :key="table">
-                <div class="font-semibold mr-3" style="font-size: 96px; color:#BDCCF0;">
-                    {{table.step}}
+<div class="mx-10">
+    <div class="font-semibold text-2xl xxs:leading-tight mt-10"> HOW TO APPLY? </div>
+    <div class=" grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2">
+        <div class="flex flex-row p-4" v-for="table in tables" :key="table">
+            <div class="font-semibold mr-3" style="font-size: 90px; color:#BDCCF0;">
+                {{table.step}}
+            </div>
+            <div class="text-left " style="align-self:center;">
+                <div class="font-semibold">
+                    {{table.title}}
                 </div>
-                <div class="text-left" style="align-self:center;">
-                    <div class="font-semibold mb-2">
-                         {{table.title}}
-                    </div>
-                    <div class="body-small xxs:leading-tight text-justify" style="width: 200px">
-                         {{table.desc}}
-                    </div>
+                <div class="text-sm xxs:leading-tight">
+                    {{table.desc}}
                 </div>
             </div>
         </div>
@@ -38,8 +36,11 @@
 
 <script>
 export default {
-    data(){
+    data() {
         return {
+            image: {
+                backgroundImage: "url(../assets/img/CHED_logo.png)"
+            },
             tables: [{
                     id: 1,
                     step: "01",

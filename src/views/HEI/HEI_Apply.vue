@@ -1,6 +1,6 @@
 <template>
 <section class="min-h-screen">
-    <div class="m-3 shadow-lg rounded-lg bg-brand-white">
+    <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <div class="p-12">
             <div class="flex flex-row items-start space-x-10">
                 <div class="flex-col">

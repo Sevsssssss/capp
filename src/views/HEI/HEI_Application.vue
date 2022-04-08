@@ -1,20 +1,18 @@
 <template>
-<div class="m-3">
+<div class="m-5">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex flex-row space-x-2">
-              <!-- Table -->
-                <TableTopLeft class="px-5"></TableTopLeft>
-                <!-- Sort -->
-                <div class="dropdown flex">
-                    <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none">
-                        <option selected>All</option>
-                        <option>For Approval</option>
-                        <option>For Revision</option>
-                        <option>For Evaluation</option>
-                        <option>For Issuance</option>
-                        <option>Completed</option>
-                    </select>
-                </div>
+            <!-- Table -->
+            <TableTopLeft class="px-5"></TableTopLeft>
+            <!-- Sort -->
+            <div class="dropdown flex">
+                <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none">
+                    <option selected>All</option>
+                    <option>For Approval</option>
+                    <option>For Revision</option>
+                    <option>Completed</option>
+                </select>
+            </div>
 
         </div>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -80,49 +78,51 @@
             </tbody>
         </table>
     </div>
-     <!-- Footer -->
-        <div class="table-footer flex flex-row space-y-2 justify-between pb-8">
-            <div class="flex flex-row center">
-                <span class="text-sm text-gray-700 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
-                </span>
-            </div>
-            <div class="p-2">
-                <div class="btn-group">
-                    <ul class="inline-flex -space-x-px">
-                        <li>
-                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                        </li>
-                    </ul>
-                </div>
+    <!-- Footer -->
+    <div class="table-footer flex flex-row space-y-2 justify-between pb-8">
+        <div class="flex flex-row center">
+            <span class="text-sm text-gray-700 dark:text-gray-400">
+                Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+            </span>
+        </div>
+        <div class="p-2">
+            <div class="btn-group">
+                <ul class="inline-flex -space-x-px">
+                    <li>
+                        <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                    <li>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                    </li>
+                    <li>
+                        <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                    </li>
+                    <li>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                    </li>
+                    <li>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
 import TableTopLeft from "@/components//TableTopLeft.vue";
 export default {
     name: "ApplicationView",
-    components: {TableTopLeft},
+    components: {
+        TableTopLeft
+    },
     data() {
         return {
             headers: [{
