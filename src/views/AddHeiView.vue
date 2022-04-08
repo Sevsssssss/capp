@@ -258,7 +258,7 @@ export default {
                 newHEI.set("user_type", "hei");
                 
                 try{
-                    await newHEI.signUp();
+                    await newHEI.save();
                 }
                 catch(error){
                     alert("Error: " + error.code + " " + error.message);

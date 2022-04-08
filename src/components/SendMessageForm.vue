@@ -11,15 +11,15 @@
             <div class="flex flex-col">
                 <div class="xxl:mb-6 md:mb-6 xxs:mb-2  text-left ">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">HEI Name</label>
-                    <input type="text" id="usaname" class="input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter HEI name" required="">
+                    <input type="text" id="username" class="input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter HEI name" required="">
                 </div>
                 <div class="xxl:mb-6 md:mb-6 xxs:mb-2 text-left">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">You name</label>
-                    <input type="text" id="usaname" class=" input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter your name" required="">
+                    <input type="text" id="username" class=" input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter your name" required="">
                 </div>
                 <div class="xxl:mb-6 md:mb-6 xxs:mb-2 text-left">
                     <label for="username" class="tracking-wider block mb-2 label-s font-semibold">Email Address</label>
-                    <input type="email" id="usaname" class="input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter email address" required="">
+                    <input type="email" id="username" class="input input-bordered w-full max-w-xs xxl:input-md md:input-md xxs:input-sm" placeholder="Enter email address" required="">
                 </div>
             </div>
             <div class="flex flex-col w-64 text-left ">
