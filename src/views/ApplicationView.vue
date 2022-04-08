@@ -1,10 +1,9 @@
 <template>
 <div v-if="!tables.length" style="height: 100%">
-    <NoDataAvail names="ApplicationView" />
+    <NoDataAvail names="ApplicationView"/>
 </div>
 <div v-else class="" style="padding: 10px">
     <DataCards :datas="datas" /> <!-- component for showing the cards with the datas for application -->
-
     <div class="m-3">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div class="flex flex-row justify-between">
@@ -30,7 +29,6 @@
                         <option>Completed</option>
                     </select>
                 </div>
-
             </div>
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -131,11 +129,9 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 </template>
-
 <script>
 import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
@@ -143,27 +139,17 @@ export default {
     name: "ApplicationView",
     data() {
         return {
-            headers: [{
-                    title: "HEI",
-                },
-                {
-                    title: "TYPE",
-                },
-                {
-                    title: "PROGRAM",
-                },
-                {
-                    title: "DATE APPLIED",
-                },
-                {
-                    title: "STATUS",
-                },
-                {
-                    title: "ACTION",
-                },
+            headers: [
+                {title: "HEI",},
+                {title: "TYPE",},
+                {title: "PROGRAM",},
+                {title: "DATE APPLIED",},
+                {title: "STATUS",},
+                {title: "ACTION",},
             ],
 
-            datas: [{
+            datas: [
+                {
                     title: "FOR APPROVAL",
                     num: 300,
                     color: "orange",

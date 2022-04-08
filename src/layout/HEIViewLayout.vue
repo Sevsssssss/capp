@@ -1,34 +1,35 @@
 <template>
 <div class="">
-    <div class="flex">
+    <div class="flex ">
         <TopNavigation class="z-40" />
         <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
             <template v-slot:toggle-icon>
                 <MenuOpen class="h-6" /></template>
-            <template v-slot:footer>
-                <div class="p-5 grid grid-cols-1 content-center" :class="collapsed ? '' : 'hidden'">
-                    <button class="flex pl-20 pb-5 text-blue-500">
-                        <Logout class="h-6" />Logout
-                    </button>
-                    <p class="pl-10 text-xs font-bold text-grey-300 tracking-wide">
-                        Copyright &copy; 2022 CHEDROV
+           <template v-slot:footer>
+                <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
+                        <button class="flex space-x-1 justify-center items-center text-blue-500">
+                            <Logout class="h-6" />
+                            <span class="text-sm hover:font-semibold">Logout</span>
+                        </button>
+                    <p class="flex justify-center text-sm text-grey-300 tracking-wide">
+                        Copyright &copy; {{new Date().getFullYear()}} CHEDROV
                     </p>
                 </div>
             </template>
         </sidebar-menu>
         <div class="w-full content" :class="
           collapsed
-            ? 'pl-[290px]  transition-width duration-300'
+            ? 'pl-[290px] transition-width duration-300'
             : 'pl-[65px] transition-width duration-300'
         ">
             <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
-            <div class="breadcrumbs mt-14 w-full bg-white p-3 fixed shadow-sm">
+            <nav class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm">
                 <ul class="flex text-sm">
-                    <li class="list cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
+                    <li class="list space-x-3 cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
                         <span class="name">{{ breadcrumb.name }}</span>
                     </li>
                 </ul>
-            </div>
+            </nav>
             <div class="main-content h-screen pt-28 bg-grey-700 ">
                 <router-view />
             </div>
@@ -58,12 +59,10 @@
     position: absolute;
     top: 55px;
     background-color: theme("colors.brand.darkblue");
-    border-radius: 5px 0 0 5px;
 }
 
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
     left: 0;
-    border-radius: 0 0 0 0;
     transform: rotate(180deg);
 }
 
@@ -73,7 +72,7 @@
 
 .v-sidebar-menu.vsm_collapsed .vsm--link_active {
     background-color: theme("colors.grey.500");
-    color: theme("colors.blue.600");
+    color: theme("colors.blue.500");
 }
 
 .v-sidebar-menu .vsm--link {
@@ -82,25 +81,31 @@
     margin-top: 5px;
     margin-bottom: 5px;
     color: theme("colors.grey.300");
+    font-size: 14px;
 }
 
 .v-sidebar-menu .vsm--link:hover {
     background-color: theme("colors.grey.600");
-    color: theme("colors.blue.600");
 }
 
 .v-sidebar-menu .vsm--link_active {
     background-color: theme("colors.grey.600");
-    color: theme("colors.blue.600");
+    color: theme("colors.blue.500");
     box-shadow: none !important;
+    
 }
 
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
     background-color: transparent;
+    width: 30px;
+    height: 30px;
+    padding-left: 4px;
 }
+
 
 .v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
     background-color: transparent;
+    padding-left: 8px;
 }
 
 .hide {
@@ -123,8 +128,9 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
 
-import FileOutline from "@/assets/sidebar_icons/file-3-line.svg";
-import HomeOutline from "@/assets/sidebar_icons/home-outline.svg";
+import FilePlus from "@/assets/sidebar_icons/file-plus.svg";
+import HomeOutline from "@/assets/sidebar_icons/home.svg";
+import FileOutline from "@/assets/sidebar_icons/file.svg";
 
 export default {
     name: "ViewLayout",
@@ -176,7 +182,7 @@ export default {
                     icon: {
                         element: "img",
                         attributes: {
-                            src: FileOutline
+                            src: FilePlus
                         },
                     },
                 },
