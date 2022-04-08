@@ -23,12 +23,12 @@ Parse.initialize(
 // user.set("email", "chedrov@gmail.com");
 // user.set("contact_no", "09123456789");
 // user.set("username", "CHEDROV");
-// user.set("password", "chedrov");
+// user.set("password", "c");
 // user.set("employee_type", "super admin");
 // user.set("user_type", "super admin");
 
 // try {
-//    user.signUp();
+//    user.save();
 //   // Hooray! Let them use the app now.
 // } catch (error) {
 //   // Show the error message somewhere and let the user try again.
@@ -129,7 +129,7 @@ Parse.initialize(
 // newHEI.set("user_type", "hei");
 
 // try {
-//    newHEI.signUp();
+//    newHEI.save();
 // } catch (error) {
 //   alert("Error: " + error.code + " " + error.message);
 // }
