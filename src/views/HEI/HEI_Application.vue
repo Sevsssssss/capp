@@ -79,7 +79,6 @@
                 </tr>
             </tbody>
         </table>
-       
     </div>
      <!-- Footer -->
         <div class="table-footer flex flex-row space-y-2 justify-between pb-8">
@@ -116,7 +115,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 
 <script>

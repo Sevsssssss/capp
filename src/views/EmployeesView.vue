@@ -72,14 +72,14 @@
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
             <div class="flex flex-row center">
                 <span class="text-sm text-gray-700 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+                    Showing <span class="font-semibold text-gray-900 dark:text-white">{{1 + (numPerPage * currentpage)}}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{((currentpage + 1) * numPerPage) > totalEntries ? totalEntries : (currentpage + 1) * numPerPage}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{totalEntries}}</span> Entries
                 </span>
             </div>
             <div class="p-2">
                 <div class="btn-group">
                     <ul class="inline-flex -space-x-px">
                         <li>
-                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
                         </li>
                         <li>
                             <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
@@ -97,7 +97,7 @@
                             <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
                         </li>
                         <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -110,18 +110,15 @@
 <script>
 import Parse from "parse";
 
-var dataNumber = 10;
-var page = 0;
-
-Parse.initialize("capp", "master");
-Parse.serverURL = "http://localhost:1337/parse";
-
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
 export default {
     name: "EmployeesView",
     data() {
         return {
+            currentpage:0,
+            numPerPage:10,
+            totalEntries:0,
             headers: [{
                     title: "EMPLOYEE NAME"
                 },
@@ -181,12 +178,23 @@ export default {
         searchEmployee() {
             return this.tables.filter(p => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-            });
+            }).slice((this.numPerPage * this.currentpage),(this.currentpage + 1) * this.numPerPage);
         }
     },
     methods: {
         addEmployee() {
             this.$router.push("/employees/add");
+        },
+        newEntCount(){
+            this.totalEntries = this.tables.filter(p => {
+                return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            }).length;
+        },
+        prevPage() {
+            this.currentpage -= 1;
+        },
+        nextPage() {
+            this.currentpage += 1;
         },
         async filterEmployees() {
 
@@ -198,8 +206,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "employee");
                 query.equalTo("designation", "DIRECTOR");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -220,8 +227,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "employee");
                 query.equalTo("designation", "EDUCATION SUPERVISOR");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -243,8 +249,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "employee");
                 query.equalTo("designation", "CHED EMPLOYEE");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -265,8 +270,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "employee");
                 query.equalTo("designation", "DIRECTOR");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+            
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -288,8 +292,7 @@ export default {
 
         const query = new Parse.Query(Parse.User);
         query.equalTo("user_type", "employee");
-        query.limit(dataNumber);
-        query.skip(page * dataNumber);
+        
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
@@ -302,6 +305,7 @@ export default {
                 Designation: emp.get("designation"),
             }, );
         }
+        this.totalEntries = querResult.length;
         this.tables = employees;
     }
 };

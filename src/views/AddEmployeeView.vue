@@ -111,8 +111,6 @@ import {
     
 } from "@vuelidate/validators";
 
-Parse.initialize("capp", "master");
-Parse.serverURL = "http://localhost:1337/parse";
 
 export default {
     name: "AddEmployeeView",
