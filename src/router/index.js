@@ -20,8 +20,8 @@ import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
 import Parse from 'parse';
 
-import Forbidden403 from "../views/Errors/403.vue";
-import NotFound404 from "../views/Errors/404.vue";
+import Forbidden403 from "../views/errors/403.vue";
+import NotFound404 from "../views/errors/404.vue";
 import StatusApplication from '../views/Application/StatusApplication.vue';
 
 
