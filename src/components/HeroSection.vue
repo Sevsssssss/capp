@@ -281,7 +281,26 @@ export default {
         });
     },
     toggleModal() {
-      this.showModal = !this.showModal;
+      if (Parse.User.current() !== null) {
+        const user = Parse.User.current();
+        if (
+          user.get("user_type") === "super admin" ||
+          user.get("user_type") === "admin" ||
+          user.get("user_type") === "education supervisor" ||
+          user.get("user_type") === "rqat" ||
+          user.get("user_type") === "reporting"
+        ) {
+          this.$router.push({ path: "/home" }).catch((err) => {
+            throw new Error(`Problem handling something: ${err}.`);
+          });
+        } else if (user.get("user_type") === "hei") {
+          this.$router.push({ path: "/HEIhome" }).catch((err) => {
+            throw new Error(`Problem handling something: ${err}.`);
+          });
+        }
+      } else {
+        this.showModal = !this.showModal;
+      }
     },
     // closeModal() {
     //     this.$emit('close')
