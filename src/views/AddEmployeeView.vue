@@ -225,7 +225,7 @@ export default {
                 newEmployee.set("user_type", "employee");
                 
                 try{
-                    await newEmployee.signUp();
+                    await newEmployee.save();
                 }
                 catch(error){
                     alert("Error: " + error.code + " " + error.message);

@@ -11,19 +11,28 @@
                             <label class="label">
                                 <span class="text-sm">Point Person</span>
                             </label>
-                            <input type="text" placeholder="Enter point person" class="input input-bordered w-full max-w-xs" required>
+                            <input :class="{'input-error': validationStatus(v$.pointPerson)}" v-model="v$.pointPerson.$model" type="text" placeholder="Enter point person" class="input input-bordered w-full max-w-xs">
+                            <label class="label">
+                                <span v-if="validationStatus(v$.pointPerson)" :class="{'text-error': validationStatus(v$.pointPerson)}" class="label-text-alt"> Point Person is Required</span>
+                            </label>
                         </div>
                         <div class="form-control w-full max-w-xs">
                             <label class="label">
                                 <span class="label-text">Email Address</span>
                             </label>
-                            <input type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs" required>
+                            <input :class="{'input-error': validationStatus(v$.email)}" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs">
+                            <label class="label">
+                                <span v-if="validationStatus(v$.email)" :class="{'text-error': validationStatus(v$.email)}" class="label-text-alt"> Email is Required</span>
+                            </label>
                         </div>
                         <div class="form-control w-full max-w-xs">
                             <label class="label">
                                 <span class="label-text">Contact Number</span>
                             </label>
-                            <input :value="phoneNumber" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs" required>
+                            <input :class="{'input-error': validationStatus(v$.phoneNumber)}" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs">
+                            <label class="label">
+                                <span v-if="validationStatus(v$.phoneNumber)" :class="{'text-error': validationStatus(v$.phoneNumber)}" class="label-text-alt"> Phone Number is Required</span>
+                            </label>
                         </div>
                     </div>
 
@@ -81,17 +90,42 @@
 
 <script>
 import ApplyChangeEvent from './ApplyChangeEvent.vue'
+import useVuelidate from "@vuelidate/core";
+import {
+    required,
+    email,
+} from "@vuelidate/validators";
 
 export default {
     data() {
         return {
+            v$: useVuelidate(),
+            pointPerson: "",
+            email: "",
             phoneNumber: '',
         }
+    },
+    validations() {
+        return {
+            pointPerson: {
+                required,
+            },
+            email: {
+                required,
+                email,
+            },
+            phoneNumber: {
+                required,
+            },
+        };
     },
     components: {
         ApplyChangeEvent
     },
     methods: {
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
         handleUserInput(input) {
             var replacedInput = input.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
             this.value = !replacedInput[2] ? replacedInput[1] : '(' + replacedInput[1] + ') ' + replacedInput[2] + (replacedInput[3] ? '-' + replacedInput[3] : '');

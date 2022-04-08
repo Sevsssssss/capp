@@ -130,8 +130,6 @@ import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
 
 
-Parse.initialize("capp", "master");
-Parse.serverURL = "http://localhost:1337/parse";
 
 export default {
     name: "HeiView",

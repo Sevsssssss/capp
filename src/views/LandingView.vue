@@ -28,9 +28,6 @@ export default {
         FooterLP,
     },
     methods: {
-        login() {
-            this.$router.push("/home");
-        },
     },
 };
 </script>

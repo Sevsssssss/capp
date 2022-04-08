@@ -18,6 +18,10 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
+import Parse from 'parse';
+
+import Forbidden403 from "../views/errors/403.vue";
+import NotFound404 from "../views/errors/404.vue";
 import NotFoundPage from '../views/NotFoundPage.vue'
 import StatusApplication from '../views/Application/StatusApplication.vue'
 
@@ -36,6 +40,11 @@ const routes = [
   {
     path: "/capp",
     component: ViewLayout,
+    beforeEnter: () => {
+      if (Parse.User.current().get("user_type") === "hei") {
+        return { name: '403' }
+      }
+    },
     children: [
       {
         path: "/home",
@@ -68,6 +77,11 @@ const routes = [
         path: "/hei",
         name: "hei",
         component: HeiView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin") {
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             {name: 'HEI'},
@@ -78,6 +92,11 @@ const routes = [
         path: "/hei/add",
         name: "addhei",
         component: AddHeiView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin") {
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -89,6 +108,11 @@ const routes = [
         path: "/rqat",
         name: "rqat",
         component: RqatView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin") {
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             {name: 'RQAT'},
@@ -99,6 +123,11 @@ const routes = [
         path: "/rqat/add",
         name: "addrqat",
         component: AddRQATView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin") {
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
@@ -110,6 +139,11 @@ const routes = [
         path: "/employees",
         name: "employees",
         component: EmployeesView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin") {
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             {name: 'EMPLOYEE'},
@@ -120,6 +154,11 @@ const routes = [
         path: "/employees/add",
         name: "addemployee",
         component: AddEmployeeView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin") {
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
@@ -131,6 +170,11 @@ const routes = [
         path: "/evaluationins",
         name: "evaluationins",
         component: EvaluationInsView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin" && Parse.User.current().get("user_type") !== "admin" && Parse.User.current().get("user_type") !== "education supervisor"){
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             {name: 'EVALUATION Ins.'},
@@ -152,6 +196,11 @@ const routes = [
         path: "/evaluationins/add",
         name: "addevaluationins",
         component: AddEvaluationInsView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("user_type") !== "super admin" && Parse.User.current().get("user_type") !== "admin" && Parse.User.current().get("user_type") !== "education supervisor"){
+            return { name: '403' }
+          }
+        },
         meta:{
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -174,6 +223,11 @@ const routes = [
   {
     path: "/HEIPage",
     component: HEIViewLayout,
+    beforeEnter: () => {
+      if (Parse.User.current().get("user_type") !== "hei") {
+        return { name: '403' }
+      }
+    },
     children: [
       {
         path: "/HEIhome",
@@ -222,12 +276,27 @@ const routes = [
         redirect: '/HEIapplication'
       },
     ]
+  },
+  {
+    path: "/403",
+    name: "403",
+    component: Forbidden403,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "404",
+    component: NotFound404,
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'landing' && Parse.User.current() === null) next({ name: 'landing' })
+  else next()
 })
 
 export default router
