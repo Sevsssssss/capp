@@ -1,10 +1,9 @@
 <template>
 <div class="w-full" style="background-color: #F0F3FA; padding:60px">
     <!-- Header -->'
-    <div class="flex flex-row text-left">
-        <div class="space-x-5 text-justify"></div>
+    <div class="flex flex-row text-left space-x-4">
         <!-- <img src="../assets/img/CHED_logo.png" alt="" > -->
-        <div :style="image"></div>
+        <img src="@/assets/img/CHED_logo.png" class="h-28 w-28">
         <div class="space-y-2">
             <div class="font-semibold text-2xl xxs:leading-tight"> CHED Program Applications Management System </div>
             <p class="font-medium body-small">
@@ -13,8 +12,7 @@
         </div>
     </div>
 </div>
-
-<div class="mx-10">
+<div class="mx-10 pb-8">
     <div class="font-semibold text-2xl xxs:leading-tight mt-10"> HOW TO APPLY? </div>
     <div class=" grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2">
         <div class="flex flex-row p-4" v-for="table in tables" :key="table">
@@ -38,9 +36,6 @@
 export default {
     data() {
         return {
-            image: {
-                backgroundImage: "url(../assets/img/CHED_logo.png)"
-            },
             tables: [{
                     id: 1,
                     step: "01",
