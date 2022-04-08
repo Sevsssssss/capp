@@ -5,12 +5,12 @@
         <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
             <template v-slot:toggle-icon>
                 <MenuOpen class="h-6" /></template>
-           <template v-slot:footer>
+            <template v-slot:footer>
                 <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
-                        <button class="flex space-x-1 justify-center items-center text-blue-500">
-                            <Logout class="h-6" />
-                            <span class="text-sm hover:font-semibold">Logout</span>
-                        </button>
+                    <button class="flex space-x-1 justify-center items-center text-blue-500">
+                        <Logout class="h-6" />
+                        <span class="text-sm hover:font-semibold">Logout</span>
+                    </button>
                     <p class="flex justify-center text-sm text-grey-300 tracking-wide">
                         Copyright &copy; {{new Date().getFullYear()}} CHEDROV
                     </p>
@@ -74,7 +74,7 @@
 
 .v-sidebar-menu.vsm_collapsed .vsm--link_active {
     background-color: theme("colors.grey.500");
-    color: theme("colors.brand.blue");
+    color: theme("colors.blue.500");
 }
 
 .v-sidebar-menu .vsm--link {
@@ -91,16 +91,20 @@
 
 .v-sidebar-menu .vsm--link_active {
     background-color: theme("colors.grey.600");
-    color: theme("colors.blue.400");
+    color: theme("colors.blue.500");
     box-shadow: none !important;
 }
 
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
     background-color: transparent;
+    width: 30px;
+    height: 30px;
+    padding-left: 4px;
 }
 
 .v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
     background-color: transparent;
+    padding-left: 8px;
 }
 
 .hide {

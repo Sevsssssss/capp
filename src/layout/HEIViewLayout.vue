@@ -59,10 +59,12 @@
     position: absolute;
     top: 55px;
     background-color: theme("colors.brand.darkblue");
+    border-radius: 5px 0 0 5px;
 }
 
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
     left: 0;
+    border-radius: 0 0 0 0;
     transform: rotate(180deg);
 }
 
