@@ -22,7 +22,7 @@
             </div>
         </div>
         <!-- Body -->
-        <div class="overflow-x-auto rounded-lg" v-if="!showModal">
+        <div class="overflow-x-auto rounded-lg"  id="add-cat" v-for="(cat) in addCat" v-bind:key="cat.id" >
             <div class="mx-5 top-row flex flex-row" style="justify-content: space-between">
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
@@ -45,7 +45,7 @@
 
                 </div>
             </div>
-            <div class="overflow-x-auto rounded-lg" v-if="!showModal1">
+            <div class="overflow-x-auto rounded-lg" id="add-subcat" v-for="(subCat) in addSubCat" v-bind:key="subCat.id">
                 <div class="px-8 top-row flex flex-row">
                     <div class="flex flex-row">
                         <div class="form-control w-full mr-3">
@@ -101,8 +101,16 @@ export default {
     name: "AddEvalInstView",
     data() {
         return {
-            showModal: true,
-            showModal1: true,
+            counter: 0,
+            addCat: [{
+                id: "",
+                
+            }],
+            addSubCat: [{
+                id: "",
+            }],
+            nextAddCatId: "",
+            nextaddSubCatId: "",
             v$: useVuelidate(),
             hei_name: "",
             cmo_no: "",
@@ -144,11 +152,12 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
-         toggleModal() {
-            this.showModal = !this.showModal
-        },
+         toggleModal: function() {
+            this.addCat.push({id: this.nextAddCatId++})
+            
+        }, 
         toggleModal1() {
-            this.showModal1 = !this.showModal1
+            this.addSubCat.push({id: this.nextAddSubCatId++})
         },
     },
 };
