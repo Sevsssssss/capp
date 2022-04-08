@@ -192,7 +192,7 @@ export default {
                 newRQAT.set("user_type", "rqat");
                 
                 try{
-                    await newRQAT.signUp();
+                    await newRQAT.save();
                 }
                 catch(error){
                     alert("Error: " + error.code + " " + error.message);

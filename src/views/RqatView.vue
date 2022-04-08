@@ -277,8 +277,8 @@
 <script>
 import Parse from "parse";
 
-var dataNumber = 10;
-var page = 0;
+// var dataNumber = 10;
+// var page = 0;
 
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
