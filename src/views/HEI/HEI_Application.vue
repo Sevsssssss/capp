@@ -86,9 +86,7 @@
                 </tr>
             </tbody>
         </table>
-       
-    </div>
-     <!-- Footer -->
+        <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
             <div class="flex flex-row center">
                 <span class="text-sm text-gray-700 dark:text-gray-400">
@@ -123,6 +121,8 @@
                 </div>
             </div>
         </div>
+    </div>
+
 </div>
 </template>
 

@@ -23,14 +23,14 @@
             : 'pl-[65px] transition-width duration-300'
         ">
             <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
-            <nav class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm">
+            <nav class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm"  style="background-color: white;">
                 <ul class="flex text-sm">
                     <li class="list space-x-3 cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
                         <span class="name">{{ breadcrumb.name }}</span>
                     </li>
                 </ul>
             </nav>
-            <div class="main-content h-screen pt-28 bg-grey-700 ">
+            <div class="main-content h-screen bg-grey-700" style="padding-top:100px">
                 <router-view />
             </div>
         </div>
