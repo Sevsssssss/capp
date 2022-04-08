@@ -113,22 +113,43 @@ const routes = [
         path: "/HEIhome",
         name: "HEIhome",
         component: HEI_Home,
+        meta:{
+          breadcrumb: [
+            {name: 'Home'},
+          ]
+        }
       },
       {
         path: "/HEIapply",
         name: "HEIapply",
         component: HEI_Apply,
+        meta:{
+          breadcrumb: [
+            {name: 'Apply'},
+          ]
+        }
       },
       {
         path: "/HEIapplication",
         name: "HEIapplication",
         component: HEI_Application,
+        meta:{
+          breadcrumb: [
+            {name: 'Application'},
+          ]
+        }
       },
       {
         path: "/HEIapplication/:id",
         name: "EditHEIapplication",
         component: Edit_HEI_Application,
         props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'Application', link: '/HEIapplication' },
+            { name: 'Edit'}
+          ]
+        }
       },
       {
         path: '/add-tables',

@@ -58,18 +58,18 @@
                         <div v-else-if="table.status === 'FOR REVISION'" class="btn-sm1 p-2 font-normal revision">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 p-2 font-normal evaluation">
+                        <!-- <div v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 p-2 font-normal evaluation">
                             {{ table.status }}
                         </div>
                         <div v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 p-2 font-normal issuance">
                             {{ table.status }}
-                        </div>
+                        </div> -->
                         <div v-else-if="table.status === 'COMPLETED'" class="btn-sm1 p-2 font-normal completed">
                             {{ table.status }}
                         </div>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
+                        <a v-if="table.status === 'COMPLETED'"></a>
                         <router-link :to="{ 
                             name: 'EditHEIapplication', 
                             params: { 
@@ -86,7 +86,9 @@
                 </tr>
             </tbody>
         </table>
-        <!-- Footer -->
+       
+    </div>
+     <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: space-between;">
             <div class="flex flex-row center">
                 <span class="text-sm text-gray-700 dark:text-gray-400">
@@ -121,8 +123,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
 </div>
 </template>
 
@@ -164,7 +164,7 @@ export default {
                     type: "Initial Offering",
                     program: "BSIT",
                     dateApplied: "June 2, 2015",
-                    status: "FOR EVALUATION",
+                    status: "FOR APPROVAL",
                 },
                 {
                     id: 3,
@@ -175,7 +175,7 @@ export default {
                     type: "Initial Offering",
                     program: "BSIT",
                     dateApplied: "June 3, 2015",
-                    status: "FOR ISSUANCE",
+                    status: "FOR APPROVAL",
                 },
                 {
                     id: 4,
