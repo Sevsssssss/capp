@@ -87,16 +87,35 @@
             <!-- Footer -->
             <div class="table-footer flex flex-row" style="justify-content: space-between;">
                 <div class="flex flex-row center">
-                    <div>Showing 11 to 20 of 58 entries</div>
+                    <span class="text-sm text-gray-700 dark:text-gray-400">
+                        Showing <span class="font-semibold text-gray-900 dark:text-white">{{1 + (numPerPage * currentpage)}}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{((currentpage + 1) * numPerPage) > totalEntries ? totalEntries : (currentpage + 1) * numPerPage}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{totalEntries}}</span> Entries
+                    </span>
                 </div>
-                <div class="flex flex-row">
+                <div class="p-2">
                     <div class="btn-group">
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">«</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">1</button>
-                        <button class="btn btn-outline btn-sm-cstm btn-active hover:bg-brand-blue">2</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">3</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">4</button>
-                        <button class="btn btn-outline btn-sm-cstm hover:bg-brand-blue">»</button>
+                        <ul class="inline-flex -space-x-px">
+                            <li>
+                                <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
+                            </li>
+                            <li>
+                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                            </li>
+                            <li>
+                                <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                            </li>
+                            <li>
+                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                            </li>
+                            <li>
+                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                            </li>
+                            <li>
+                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -111,14 +130,15 @@ import NoDataAvail from "@/components//NoDataAvail.vue";
 
 import Parse from "parse";
 
-var dataNumber = 10;
-var page = 0;
 
 
 export default {
     name: "HeiView",
     data() {
         return {
+            currentpage:0,
+            numPerPage:10,
+            totalEntries:0,
             columns: [{
                     label: 'Name',
                     field: 'name',
@@ -268,14 +288,27 @@ export default {
     },
     computed: {
         searchHEI() {
+            this.newEntCount();
             return this.tables.filter(p => {
                 return p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-            });
+            }).slice((this.numPerPage * this.currentpage),(this.currentpage + 1) * this.numPerPage);
+            
         }
     },
     methods: {
         addHei() {
             this.$router.push("/hei/add");
+        },
+        newEntCount(){
+            this.totalEntries = this.tables.filter(p => {
+                return p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            }).length;
+        },
+        prevPage() {
+            this.currentpage -= 1;
+        },
+        nextPage() {
+            this.currentpage += 1;
         },
         async filterHEI() {
 
@@ -286,8 +319,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "hei");
                 query.equalTo("hei_type", "PRIVATE COLLEGES");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -309,8 +341,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "hei");
                 query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -333,8 +364,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "hei");
                 query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -356,8 +386,7 @@ export default {
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("user_type", "hei");
                 query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
-                query.limit(dataNumber);
-                query.skip(page * dataNumber);
+                
 
                 const querResult = await query.find();
                 for (i = 0; i < querResult.length; i++) {
@@ -380,8 +409,7 @@ export default {
 
         const query = new Parse.Query(Parse.User);
         query.equalTo("user_type", "hei");
-        query.limit(dataNumber);
-        query.skip(page * dataNumber);
+        
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
@@ -395,6 +423,7 @@ export default {
                 email: "test",
             }, );
         }
+        this.totalEntries = querResult.length;
         this.tables = heis;
 
         const queryPrivate = new Parse.Query(Parse.User);

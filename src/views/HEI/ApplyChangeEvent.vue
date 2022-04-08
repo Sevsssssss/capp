@@ -1,11 +1,10 @@
 <template>
 <!-- Parent -->
-<div class="px-8">
+<div class="">
     <!-- Title -->
-    <div class="text-left pl-4">
-
+    <div class="text-left">
         <div class="flex flex-row pt-8">
-            <div class="font-semibold">APPLY FOR APPLICATION</div>
+            <div class="font-semibold text-md">APPLY FOR APPLICATION</div>
          <div class="dropdown dropdown-start pl-1">
             <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 stroke-current">
@@ -14,18 +13,16 @@
             </label>
             <div tabindex="0" class="card compact dropdown-content shadow bg-base-100 rounded-box w-64">
                 <div class="card-body text-left">
-                    <h2 class="card-title">You needed more info?</h2>
-                    <p>Submit onces you attached all necessarity files!</p>
+                    <h2 class="card-title text-sm">You needed more info?</h2>
+                    <p class="text-sm">Submit onces you attached all necessarity files!</p>
                 </div>
             </div>
         </div>
         </div>
         <hr>
     </div>
-
-    <div class="flex flex-col justify-start items-start p-4">
-       
-        <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-lg w-64">
+    <div class="flex flex-col justify-start items-start pt-5">
+        <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64">
             <option class="" v-for="i in items" :key="i.v" :value="i.href">{{i.v}}</option>
         </select>
         <div v-if="selected === 'Initial Permit'">
@@ -42,9 +39,9 @@
         </div>
     </div>
 
-    <div class="space-x-6 pb-10">
-       <button type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
-       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sumit</button>
+    <div class="space-x-6 p-10">
+       <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+       <button type="submit" class="w-40 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sumit</button>
     </div>
 </div>
 </template>

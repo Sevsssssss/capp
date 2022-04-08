@@ -11,6 +11,7 @@ import AddRQATView from "../views/AddRQATView.vue";
 import EmployeesView from "../views/EmployeesView.vue";
 import AddEmployeeView from "../views/AddEmployeeView.vue";
 import EvaluationInsView from "../views/EvaluationInsView.vue";
+import EvalFileView from "../views/EvalFileView.vue";
 import AddEvaluationInsView from "../views/AddEvaluationInsView.vue";
 import ReportingView from "../views/ReportingView.vue";
 import HEI_Application from "../views/HEI/HEI_Application.vue";
@@ -21,12 +22,20 @@ import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
 import NotFound404 from "../views/errors/404.vue";
+import NotFoundPage from '../views/NotFoundPage.vue'
+import StatusApplication from '../views/Application/StatusApplication.vue'
+
 
 const routes = [
   {
     path: "/",
     name: "landing",
     component: LandingView,
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFoundPage',
+    component: NotFoundPage,
   },
   {
     path: "/capp",
@@ -46,6 +55,23 @@ const routes = [
         path: "/application",
         name: "application",
         component: ApplicationView,
+        meta:{
+          breadcrumb: [
+            {name: 'Application'},
+          ]
+        }
+      },
+      {
+        path: "/application/:id",
+        name: "StatusApplication",
+        component: StatusApplication,
+        props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'Application', link: '/application' },
+            { name: 'Status'}
+          ]
+        }
       },
       {
         path: "/hei",
@@ -56,6 +82,11 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            {name: 'HEI'},
+          ]
+        }
       },
       {
         path: "/hei/add",
@@ -66,6 +97,12 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            { name: 'HEI', link: '/hei' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/rqat",
@@ -76,6 +113,11 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            {name: 'RQAT'},
+          ]
+        }
       },
       {
         path: "/rqat/add",
@@ -86,6 +128,12 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            { name: 'RQAT', link: '/rqat' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/employees",
@@ -96,6 +144,11 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            {name: 'EMPLOYEE'},
+          ]
+        }
       },
       {
         path: "/employees/add",
@@ -106,6 +159,12 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            { name: 'EMPLOYEE', link: '/employees' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/evaluationins",
@@ -116,6 +175,22 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            {name: 'EVALUATION Ins.'},
+          ]
+        }
+      },
+      {
+        path: "/evaluationins/view",
+        name: "evaluationinsfile",
+        component: EvalFileView,
+        meta:{
+          breadcrumb: [
+            { name: 'EVALUATION Ins.', link: '/evaluationins' },
+            { name: 'STATUS'}
+          ]
+        }
       },
       {
         path: "/evaluationins/add",
@@ -126,11 +201,22 @@ const routes = [
             return { name: '403' }
           }
         },
+        meta:{
+          breadcrumb: [
+            { name: 'EVALUATION Ins.', link: '/evaluationins' },
+            { name: 'ADD'}
+          ]
+        }
       },
       {
         path: "/reporting",
         name: "reporting",
         component: ReportingView,
+        meta:{
+          breadcrumb: [
+            {name: 'REPORTING'},
+          ]
+        }
       },
     ]
   },
@@ -147,23 +233,48 @@ const routes = [
         path: "/HEIhome",
         name: "HEIhome",
         component: HEI_Home,
+        meta:{
+          breadcrumb: [
+            {name: 'Home'},
+          ]
+        }
       },
       {
         path: "/HEIapply",
         name: "HEIapply",
         component: HEI_Apply,
+        meta:{
+          breadcrumb: [
+            {name: 'Apply'},
+          ]
+        }
       },
       {
         path: "/HEIapplication",
         name: "HEIapplication",
         component: HEI_Application,
+        meta:{
+          breadcrumb: [
+            {name: 'Application'},
+          ]
+        }
       },
       {
-        path: "/HEIapplication/edit",
+        path: "/HEIapplication/:id",
         name: "EditHEIapplication",
         component: Edit_HEI_Application,
+        props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'Application', link: '/HEIapplication' },
+            { name: 'Edit'}
+          ]
+        }
       },
-
+      {
+        path: '/add-tables',
+        redirect: '/HEIapplication'
+      },
     ]
   },
   {
