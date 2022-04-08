@@ -136,9 +136,6 @@ export default {
         TopNavigation,
         SidebarMenu,
         MenuOpen,
-<<<<<<< HEAD
-        Logout,
-=======
         Logout
     },
     watch: {
@@ -148,7 +145,6 @@ export default {
     },
     mounted() {
         this.updateList();
->>>>>>> caf0c695a43ee0f8c1aaa9b8cf729f616760e81f
     },
     methods: {
         updateList() {
