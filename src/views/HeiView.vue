@@ -7,7 +7,6 @@
 
     <div >
         <DataCards :datas="datas" />
-
         <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
             <div class="top-row flex flex-row" style="justify-content: space-between">
                 <div class="left-side flex flex-row">
