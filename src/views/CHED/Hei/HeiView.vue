@@ -73,9 +73,9 @@
                         <th scope="col" class="px-6 py-3" v-for="header in headers" :key="header">
                             {{ header.title }}
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <!-- <th scope="col" class="px-6 py-3">
                             <span class="sr-only">Edit</span>
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -127,69 +127,6 @@
             </div>
         </div>
     </div>
-    <!-- <div>
-        <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
-            <div class="top-row flex flex-row" style="justify-content: space-between">
-                <div class="left-side flex flex-row">
-
-                    <div class="search-container">
-                        <input type="text" id="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
-                        <a href="#" class="search-btn">
-                            <div class="search_icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
-                                </svg>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="flex flex-row">
-
-                    <div class="month-sort flex flex-row">
-                        <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
-                            <option disabled selected>Sort by type</option>
-                            <option>All</option>
-                            <option>Private</option>
-                            <option>State Univeristies</option>
-                            <option>Local Universities</option>
-                            <option>Others</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <table class="hei-table table-normal w-full">
-
-                <tbody class="hei-table">
-                    <tr class="hei-table bg-grey-500">
-                        <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
-                    </tr>
-
-                    <tr class="" v-for="table in searchHEI" :key="table">
-                        <th>{{ table.InstNo }}</th>
-                        <td>
-                            <div class="column">
-                                <div class="hei-name">{{ table.HeiName }}</div>
-                                <div class="hei-address">{{ table.address }}</div>
-                            </div>
-                        </td>
-                        <td>{{ table.type }}</td>
-                        <td>{{ table.email }}</td>
-                        <td>
-                            <div class="flex flex-row">
-                                <div>
-                                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div> -->
 </div>
 </template>
 
@@ -197,7 +134,7 @@
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
 import Parse from "parse";
-
+         
 export default {
     name: "HeiView",
     data() {
@@ -359,6 +296,7 @@ export default {
         }
     },
     methods: {
+
         addHei() {
             this.$router.push("/hei/add");
         },
@@ -463,6 +401,7 @@ export default {
             }
         }
     },
+    
     mounted: async function () {
         var heis = [];
 
@@ -520,8 +459,7 @@ export default {
                 num: await queryOthers.count(),
                 color: "green",
             },
-
-        ]
+        ]    
     }
 };
 </script>

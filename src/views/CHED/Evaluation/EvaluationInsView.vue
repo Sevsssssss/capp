@@ -2,17 +2,36 @@
 <div v-if="!tables.length" style="height: 100%">
     <NoDataAvail names="EvalInstView" />
 </div>
-<div v-else class="p-4">
-    <div class="flex justify-end">
-        <button  @click="addEvalIns()" type="button" class="text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Evaluation Ins.</button>
-    </div>
-    <div class="overflow-x-auto shadow-lg rounded-lg m-3">
-        <div class="flex flex-row justify-between">
-            <!-- Table -->
-            <div class="pl-5">
-                <TableTopLeft></TableTopLeft>
+<div v-else class="p-3">
+    <div class="overflow-x-auto shadow-lg rounded-lg m-2">
+        <!-- Table header -->
+        <div class="flex flex-row justify-between items-center">
+            <!-- Search -->
+            <div class="flex space-x-4 pl-5 py-4">
+                <div class="">
+                    <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative mt-1">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+                    </div>
+                </div>
+            </div>
+            <!-- button -->
+            <div class="h-fit pr-5 pt-3 items-center">
+                <button @click="addEvalIns()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                    </svg>
+                    <div class="pl-2">Add Evaluation</div>
+                </button>
             </div>
         </div>
+        <!-- Table body -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -26,62 +45,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="table in tables" :key="table">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-for="table in searchEval" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {{ table.cmoNo }}
                         </th>
                         <td class="px-6 py-4">
                             {{ table.description }}
                         </td>
-                        <td class="px-6 py-4 text-right flex space-x-2">
-                            <div @click="viewEvalIns" class="hover:text-blue-500">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-                                </svg>
-                            </div>
-                            <div class="hover:text-brand-red/60">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
-                            </div>
+                        <td class="px-6 py-4 text-right">
+                            <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-    <!-- Footer -->
-    <div class="table-footer flex flex-row space-y-4" style="justify-content: space-between;">
-        <div class="flex flex-row center">
-            <span class="text-sm text-gray-700 dark:text-gray-400">
-                Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
-            </span>
-        </div>
-        <div class="p-2">
-            <div class="btn-group">
-                <ul class="inline-flex -space-x-px">
-                    <li>
-                        <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
+            <!-- Table Footer -->
+            <div class="table-footer flex flex-row justify-between">
+                <div class="flex flex-row pl-4 justify-center items-center">
+                    <span class="text-sm text-gray-700 dark:text-gray-400">
+                        Showing <span class="font-semibold text-gray-900 dark:text-white">{{1 + (numPerPage * currentpage)}}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{((currentpage + 1) * numPerPage) > totalEntries ? totalEntries : (currentpage + 1) * numPerPage}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{totalEntries}}</span> Entries
+                    </span>
+                </div>
+                <div class="p-2 pr-4">
+                    <div class="btn-group">
+                        <ul class="inline-flex -space-x-px">
+                            <li>
+                                <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
+                            </li>
+                            <li>
+                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -89,13 +84,13 @@
 </template>
 
 <script>
-import TableTopLeft from "@/components//TableTopLeft.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
 export default {
     name: "EvalInstView",
     data() {
         return {
+            search: '',
             headers: [{
                     title: "CMO"
                 },
@@ -110,15 +105,15 @@ export default {
                 },
                 {
                     cmoNo: "2",
-                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                    description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
                     cmoNo: "3",
-                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                    description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
                     cmoNo: "4",
-                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                    description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
                     cmoNo: "5",
@@ -128,8 +123,18 @@ export default {
         };
     },
     components: {
-        TableTopLeft,
         NoDataAvail,
+    },
+    computed: {
+        searchEval() {
+            if (this.search) {
+                return this.tables.filter((item) => {
+                    return this.search.toLowerCase().split(' ').every(v => item.description.toLowerCase().includes(v))
+                })
+            } else {
+                return this.tables;
+            }
+        }
     },
     methods: {
         addEvalIns() {
