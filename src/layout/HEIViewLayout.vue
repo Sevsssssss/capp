@@ -15,7 +15,7 @@
             :class="collapsed ? '' : 'hidden'"
           >
             <button
-              @click="Logout"
+              @click="Logout(), scrollToTop()"
               class="flex space-x-1 justify-center items-center text-blue-500"
             >
               <Logout class="h-6" />
@@ -172,6 +172,9 @@ export default {
     this.updateList();
   },
   methods: {
+    scrollToTop(){
+      window.scrollTo(0, 0);
+    },
     Logout() {
       Parse.User.logOut();
       this.$router.push("/");

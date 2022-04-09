@@ -94,7 +94,7 @@ const routes = [
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
-            { name: 'ADD'}
+            { name: 'ADD HEI ACCOUNT'}
           ]
         }
       },
@@ -125,7 +125,7 @@ const routes = [
         meta:{
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
-            { name: 'ADD'}
+            { name: 'ADD RQAT ACCOUNT'}
           ]
         }
       },
@@ -156,7 +156,7 @@ const routes = [
         meta:{
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
-            { name: 'ADD'}
+            { name: 'ADD EMPLOYEE ACCOUNT'}
           ]
         }
       },
@@ -198,7 +198,7 @@ const routes = [
         meta:{
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
-            { name: 'ADD'}
+            { name: 'ADD EVALUATION INs.'}
           ]
         }
       },
