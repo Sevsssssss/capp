@@ -1,4 +1,5 @@
 <template>
+<!-- Table -->
 <div class="py-3">
     <label for="table-search" class="sr-only">Search</label>
     <div class="relative mt-1">
