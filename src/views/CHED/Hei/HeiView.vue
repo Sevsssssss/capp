@@ -2,8 +2,27 @@
 <div v-if="!tables.length" style="height: 100%">
     <NoDataAvail names="HeiView" />
 </div>
-<div v-else class="p-4">
-    <DataCards :datas="datas" />
+<div v-else class="p-3">
+    <div class=" grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
+        <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
+            <div class="flex flex-col justify-between text-left">
+                <div class="flex flex-row">
+                    <div :class="'homeIcon ' + data.color" class="mr-3">
+                        <svg class="icon" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z" />
+                        </svg>
+                    </div>
+                    <div class="text-sm font-semibold" style="color: #8fa0b9">
+                        {{ data.title }}
+                    </div>
+                </div>
+                <div class="text-2xl text-right font-semibold text-grey-300">{{ data.num }}</div>
+            </div>
+        </div>
+    </div>
+    <!-- Can't Read -->
+    <!-- <DataCards :datas="datas" /> -->
     <!-- Table -->
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
@@ -112,7 +131,7 @@
         <div class="overflow-x-auto shadow-lg rounded-lg" style="margin: 11px" onload="getHEI()">
             <div class="top-row flex flex-row" style="justify-content: space-between">
                 <div class="left-side flex flex-row">
-                   
+
                     <div class="search-container">
                         <input type="text" id="search" placeholder="Search" class="search-input input rounded-lg text-sm focus:outline-none" v-model="search" />
                         <a href="#" class="search-btn">
@@ -126,7 +145,7 @@
                     </div>
                 </div>
                 <div class="flex flex-row">
-                    
+
                     <div class="month-sort flex flex-row">
                         <select class="select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
                             <option disabled selected>Sort by type</option>
@@ -139,14 +158,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <table class="hei-table table-normal w-full">
-              
+
                 <tbody class="hei-table">
                     <tr class="hei-table bg-grey-500">
                         <th class="font-semibold text-grey-200" v-for="header in headers" :key="header">{{ header.title }}</th>
                     </tr>
-                  
+
                     <tr class="" v-for="table in searchHEI" :key="table">
                         <th>{{ table.InstNo }}</th>
                         <td>
