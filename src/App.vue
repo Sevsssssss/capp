@@ -117,22 +117,22 @@ Parse.initialize(
 
 
 // RUN THIS CODE TO HAVE A TEMPORARY HEI ACCOUNT
-// const newHEI = new Parse.User();
-// newHEI.set("hei_name", "HEI");
-// newHEI.set("username", "HEI");
-// newHEI.set("password","hei");
-// newHEI.set("email", "hei@gmail.com");
-// newHEI.set("address","hei Address");
-// newHEI.set("number", "09123456789");
-// newHEI.set("inst_code", "7890");
-// newHEI.set("hei_type", "heiType");
-// newHEI.set("user_type", "hei");
+const newHEI = new Parse.User();
+newHEI.set("hei_name", "HEI");
+newHEI.set("username", "HEI");
+newHEI.set("password","hei");
+newHEI.set("email", "hei@gmail.com");
+newHEI.set("address","hei Address");
+newHEI.set("number", "09123456789");
+newHEI.set("inst_code", "7890");
+newHEI.set("hei_type", "heiType");
+newHEI.set("user_type", "hei");
 
-// try {
-//    newHEI.save();
-// } catch (error) {
-//   alert("Error: " + error.code + " " + error.message);
-// }
+try {
+   newHEI.save();
+} catch (error) {
+  alert("Error: " + error.code + " " + error.message);
+}
 //RUN THIS CODE TO LOGOUT
 // Parse.User.logOut();
 export default {};
