@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LandingView from "../views/LandingView.vue";
-import ViewLayout from "../layout/ViewLayout.vue";
+import CHEDViewLayout from "../layout/CHEDViewLayout.vue";
 import HEIViewLayout from "../layout/HEIViewLayout.vue";
-import HomeView from "../views/HomeView.vue";
-import ApplicationView from "../views/ApplicationView.vue";
-import HeiView from "../views/HeiView.vue";
-import AddHeiView from "../views/AddHeiView.vue";
-import RqatView from "../views/RqatView.vue";
-import AddRQATView from "../views/AddRQATView.vue";
-import EmployeesView from "../views/EmployeesView.vue";
-import AddEmployeeView from "../views/AddEmployeeView.vue";
-import EvaluationInsView from "../views/EvaluationInsView.vue";
-import EvalFileView from "../views/EvalFileView.vue";
-import AddEvaluationInsView from "../views/AddEvaluationInsView.vue";
-import ReportingView from "../views/ReportingView.vue";
+import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
+import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
+import HeiView from "../views/CHED/Hei/HeiView.vue";
+import AddHeiView from "../views/CHED/Hei/AddHeiView.vue";
+import RqatView from "../views/CHED/Rqat/RqatView.vue";
+import AddRQATView from "../views/CHED/Rqat/AddRQATView.vue";
+import EmployeesView from "../views/CHED/Employees/EmployeesView.vue";
+import AddEmployeeView from "../views/CHED/Employees/AddEmployeeView.vue";
+import EvaluationInsView from "../views/CHED/Evaluation/EvaluationInsView.vue";
+import EvalFileView from "../views/CHED/Evaluation/EvalFileView.vue";
+import AddEvaluationInsView from "../views/CHED/Evaluation/AddEvaluationInsView.vue";
+import ReportingView from "../views/CHED/Reporting/ReportingView.vue";
 import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
@@ -22,8 +22,7 @@ import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
 import NotFound404 from "../views/errors/404.vue";
-import NotFoundPage from '../views/NotFoundPage.vue'
-import StatusApplication from '../views/Application/StatusApplication.vue'
+import StatusApplication from '../views/Application/StatusApplication.vue';
 
 
 const routes = [
@@ -33,13 +32,8 @@ const routes = [
     component: LandingView,
   },
   {
-    path: '/:catchAll(.*)',
-    name: 'NotFoundPage',
-    component: NotFoundPage,
-  },
-  {
     path: "/capp",
-    component: ViewLayout,
+    component: CHEDViewLayout,
     beforeEnter: () => {
       if (Parse.User.current().get("user_type") === "hei") {
         return { name: '403' }
@@ -49,7 +43,7 @@ const routes = [
       {
         path: "/home",
         name: "home",
-        component: HomeView,
+        component: CHED_HomeView,
       },
       {
         path: "/application",
