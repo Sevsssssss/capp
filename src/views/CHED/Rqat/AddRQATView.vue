@@ -92,7 +92,6 @@
             </div>
         </form>
     </div>
-    <!-- Add AFFILIATION -->
     <input type="checkbox" id="createAffilication" class="modal-toggle">
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -111,6 +110,8 @@
         </div>
     </div>
 </div>
+<!-- Add AFFILIATION -->
+
 </template>
 
 <script>
@@ -214,6 +215,12 @@ export default {
 
                 try {
                     await newRQAT.save();
+                    if(confirm("Account added. Would you like to add another account?")){
+                        document.location.reload();
+                    }
+                    else{
+                        this.$router.push("/rqat");
+                    }
                 } catch (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
