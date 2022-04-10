@@ -92,22 +92,22 @@
             </div>
         </form>
     </div>
-</div>
-<!-- Add AFFILIATION -->
-<input type="checkbox" id="createAffilication" class="modal-toggle">
-<div class="modal">
-    <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">ADD HEI AFFILIATION</div>
-        <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
-        <form>
-            <div class="mb-6">
-                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">HEI AFFILIATION</label>
-                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter affliation">
+    <!-- Add AFFILIATION -->
+    <input type="checkbox" id="createAffilication" class="modal-toggle">
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD HEI AFFILIATION</div>
+            <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">HEI AFFILIATION</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter affliation">
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="createAffilication" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
             </div>
-        </form>
-        <div class="modal-action">
-            <label for="createAffilication" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-            <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
         </div>
     </div>
 </div>
@@ -123,7 +123,7 @@ import {
 
 export default {
     name: "AddRQATView",
-    
+
     data() {
         return {
             showModal: false,
@@ -172,7 +172,7 @@ export default {
         };
     },
     methods: {
-        ToggleshowModal(){
+        ToggleshowModal() {
             this.showModal = !this.showModal;
         },
         validationStatus: function (validation) {

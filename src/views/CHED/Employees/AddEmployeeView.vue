@@ -15,7 +15,7 @@
                     <label class="label">
                         <span class="label-text">Last Name</span>
                     </label>
-                    <input type="text" placeholder="Last Name" :class="{'input-error': validationStatus(v$.lastname)}" class="input input-bordered w-full" v-model="v$.lastname.$model"/>
+                    <input type="text" placeholder="Last Name" :class="{'input-error': validationStatus(v$.lastname)}" class="input input-bordered w-full" v-model="v$.lastname.$model" />
                     <label class="label">
                         <span class="label-text-alt" :class="{'text-error': validationStatus(v$.lastname)}" v-if="validationStatus(v$.lastname)"> Lastname is Required</span>
                     </label>
@@ -25,10 +25,10 @@
                     <label class="label">
                         <span class="label-text">First Name</span>
                     </label>
-                    <input type="text" placeholder="First Name" :class="{'input-error': validationStatus(v$.firstname)}" class="input input-bordered w-full" v-model="v$.firstname.$model"/>
+                    <input type="text" placeholder="First Name" :class="{'input-error': validationStatus(v$.firstname)}" class="input input-bordered w-full" v-model="v$.firstname.$model" />
                     <label class="label">
                         <span class="label-text-alt" :class="{'text-error': validationStatus(v$.firstname)}" v-if="validationStatus(v$.firstname)">
-                        Firstname is Required</span>
+                            Firstname is Required</span>
                     </label>
                 </div>
 
@@ -36,10 +36,10 @@
                     <label class="label">
                         <span class="label-text">M.I.</span>
                     </label>
-                    <input type="text" placeholder="M.I." :class="{'input-error': validationStatus(v$.midinit)}" class="input input-bordered w-full" v-model="v$.midinit.$model"/>
+                    <input type="text" placeholder="M.I." :class="{'input-error': validationStatus(v$.midinit)}" class="input input-bordered w-full" v-model="v$.midinit.$model" />
                     <label class="label">
                         <span class="label-text-alt" :class="{'text-error': validationStatus(v$.midinit)}" v-if="validationStatus(v$.midinit)">
-                        Required</span>
+                            Required</span>
                     </label>
                 </div>
             </div>
@@ -47,9 +47,9 @@
                 <label class="label">
                     <span class="label-text">Username</span>
                 </label>
-                <input type="text" placeholder="Enter username" :class="{'input-error': validationStatus(v$.username)}" class="input input-bordered w-full" v-model="v$.username.$model"/>
+                <input type="text" placeholder="Enter username" :class="{'input-error': validationStatus(v$.username)}" class="input input-bordered w-full" v-model="v$.username.$model" />
                 <label class="label">
-                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.username)}" v-if="validationStatus(v$.username)">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.username)}" v-if="validationStatus(v$.username)">
                         Username is Required</span>
                 </label>
             </div>
@@ -57,9 +57,9 @@
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
-                <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.contactnum)}" class="input input-bordered w-full" v-model="v$.contactnum.$model"/>
+                <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.contactnum)}" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
                 <label class="label">
-                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.contactnum)}" v-if="validationStatus(v$.contactnum)">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.contactnum)}" v-if="validationStatus(v$.contactnum)">
                         Contact Number is Required</span>
                 </label>
             </div>
@@ -67,7 +67,7 @@
                 <div class="form-control w-full pr-2">
                     <label class="label">
                         <span class="label-text">Designation:</span>
-                       <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
                             Add Designation? <label for="createEmType" href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create</label>
                         </div>
                     </label>
@@ -99,22 +99,22 @@
             </div>
         </form>
     </div>
-</div>
-<!-- Add Employee Type -->
-<input type="checkbox" id="createEmType" class="modal-toggle">
-<div class="modal">
-    <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">ADD DESIGNATION</div>
-        <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
-        <form>
-            <div class="mb-6">
-                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Designation</label>
-                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation">
+    <!-- Add Employee Type -->
+    <input type="checkbox" id="createEmType" class="modal-toggle">
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD DESIGNATION</div>
+            <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Designation</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation">
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="createEmType" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
             </div>
-        </form>
-        <div class="modal-action">
-            <label for="createEmType" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-            <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
         </div>
     </div>
 </div>
@@ -125,9 +125,8 @@ import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
     required,
-    
-} from "@vuelidate/validators";
 
+} from "@vuelidate/validators";
 
 export default {
     name: "AddEmployeeView",
@@ -170,9 +169,7 @@ export default {
             contactnum: "",
             emp_designation: "DIRECTOR",
             access_type: "ADMIN",
-            
 
-         
         };
     },
     validations() {
@@ -201,7 +198,7 @@ export default {
         };
     },
     methods: {
-        ToggleshowModal(){
+        ToggleshowModal() {
             this.showModal = !this.showModal;
         },
         validationStatus: function (validation) {
@@ -220,17 +217,15 @@ export default {
             if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "") {
                 has_error = 1;
             }
-            
-            
-         
+
             if (has_error < 1) {
                 var password = '';
                 var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 var charactersLength = characters.length;
-                for ( var i = 0; i < 8; i++ ) {
+                for (var i = 0; i < 8; i++) {
                     password += characters.charAt(Math.floor(Math.random() * charactersLength));
                 }
-                var employeeName ={
+                var employeeName = {
                     "lastname": this.lastname,
                     "firstname": this.firstname,
                     "middleinitial": this.midinit,
@@ -243,11 +238,10 @@ export default {
                 newEmployee.set("access_type", this.access_type);
                 newEmployee.set("designation", this.emp_designation);
                 newEmployee.set("user_type", "employee");
-                
-                try{
+
+                try {
                     await newEmployee.save();
-                }
-                catch(error){
+                } catch (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
 
@@ -275,9 +269,8 @@ export default {
     margin-left: 10px;
     margin-right: 10px;
 }
-.text-error{
+
+.text-error {
     color: red;
 }
 </style>
-
-
