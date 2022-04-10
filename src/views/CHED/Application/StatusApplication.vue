@@ -1,43 +1,45 @@
 <template>
-<div>
   <div>
     <div>
       <div>
-        <div class="m-3">
-          <div class="flex flex-row justify-between">
-            <div class="flex flex-col p-4 text-left space-y-2">
-              <span class="text-2xl font-semibold uppercase">{{
-                HeiName
-              }}</span>
-              <div class="font-normal text-sm uppercase">
-                APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
+        <div>
+          <div class="m-3">
+            <div class="flex flex-row justify-between">
+              <div class="flex flex-col p-4 text-left space-y-2">
+                <span class="text-2xl font-semibold uppercase">{{
+                  HeiName
+                }}</span>
+                <div class="font-normal text-sm uppercase">
+                  APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <div class="text-left p-4 pr-6 space-y-2">
+                  <div class="font-semibold text-md uppercase">
+                    APPLICATION STATUS - <span class=""> {{ status }}</span>
+                  </div>
+                  <div class="font-semibold text-sm">
+                    Date Applied:
+                    <span class="font-normal">{{ dateApplied }}</span>
+                  </div>
+                </div>
+                <!-- <p>ID Number: {{id}}</p> -->
               </div>
             </div>
-            <div class="flex flex-col">
-              <div class="text-left p-4 pr-6 space-y-2">
-                <div class="font-semibold text-md uppercase">
-                  APPLICATION STATUS - <span class=""> {{ status }}</span>
+            <hr />
+            <div class="py-4 px-4">
+              <div class="flex justify-start space-x-4">
+                <div class="font-semibold text-sm">
+                  Point Person: <span class="font-normal">{{ rep }}</span>
                 </div>
                 <div class="font-semibold text-sm">
-                  Date Applied:
-                  <span class="font-normal">{{ dateApplied }}</span>
+                  Email: <span class="font-normal">{{ email }}</span>
                 </div>
-              </div>
-              <!-- <p>ID Number: {{id}}</p> -->
-            </div>
-          </div>
-          <hr />
-          <div class="py-4 px-4">
-            <div class="flex justify-start space-x-4">
-              <div class="font-semibold text-sm">
-                Point Person: <span class="font-normal">{{ rep }}</span>
-              </div>
-              <div class="font-semibold text-sm">
-                Email: <span class="font-normal">{{ email }}</span>
               </div>
             </div>
           </div>
         </div>
+        
       </div>
       <div v-if="status === 'FOR APPROVAL'">
         <ForApproval></ForApproval>
@@ -52,7 +54,7 @@
         <ForIssuance></ForIssuance>
       </div>
       <div v-else-if="status === 'COMPLETED'">
-        <ForCompletedView></ForCompletedView>
+        <ForCompleted></ForCompleted>
       </div>
       <div class="space-x-6 py-8 px-3 flex justify-center">
         <button
@@ -68,54 +70,70 @@
           data-dismiss-target="#alert-additional-content-1"
           aria-label="Close"
         >
-          Dismiss
+          <div v-if="status != 'COMPLETED'">Dismiss</div>
+          <div v-else>Back</div>
         </button>
         <div v-if="status === 'FOR APPROVAL'">
-          <ForApproval></ForApproval>
+          <label
+            for="for-approval"
+            class="
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
+            "
+          >
+            Submit</label
+          >
         </div>
-    </div>
-</div>
-<div v-if="status === 'FOR APPROVAL'">
-    <ForApproval></ForApproval>
-</div>
-<div v-else-if="status === 'FOR REVISION'">
-    <ForRevision></ForRevision>
-</div>
-<div v-else-if="status === 'FOR EVALUATION'">
-    <ForEvaluation></ForEvaluation>
-</div>
-<div v-else-if="status === 'FOR ISSUANCE'">
-    <ForIssuance></ForIssuance>
-</div>
-<div v-else-if="status === 'COMPLETED'">
-    <ForCompleted></ForCompleted>
-</div>
-<div class="space-x-6 py-8 px-3 flex justify-center">
-    <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
-        <div v-if="status != 'COMPLETED'">
-            Dismiss
+        <div v-else-if="status === 'FOR REVISION'">
+          <label
+            for="for-approval"
+            class="
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
+            "
+          >
+            Re-Submit</label
+          >
         </div>
-        <div v-else>
-            Back
+        <div v-else-if="status === 'FOR EVALUATION'">
+          <label
+            for="for-evaluation"
+            class="
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
+            "
+          >
+            Evaluate</label
+          >
         </div>
-    </button>
-    <div v-if="status === 'FOR APPROVAL'">
-        <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            Submit</label>
-    </div>
-    <div v-if="status === 'FOR REVISION'">
-        <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            Re-Submit</label>
-    </div>
-    <div v-else-if="status === 'FOR EVALUATION'">
-        <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            Evaluate</label>
-    </div>
-    <div v-else-if="status === 'FOR ISSUANCE'">
-        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            Complete</label>
-    </div>
-    <!-- <div v-else-if="status === 'COMPLETED'">
+        <div v-else-if="status === 'FOR ISSUANCE'">
+          <label
+            for=""
+            class="
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
+            "
+          >
+            Complete</label
+          >
+        </div>
+        <!-- <div v-else-if="status === 'COMPLETED'">
         <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             BACK</label>
     </div> -->
@@ -224,7 +242,8 @@
           >
         </div>
       </div>
-      </div>
+    </div>
+  </div>
 </template>
 
 <script>

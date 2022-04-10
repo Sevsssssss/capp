@@ -57,7 +57,7 @@
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
-                <input type="email" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
+                <input type="text" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
                 <label class="label">
                         <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
                         Email is Required</span>
@@ -229,7 +229,7 @@ export default {
             const newEmployee = new Parse.User();
             var has_error = 0;
 
-            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "") {
+            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "" || this.email == "") {
                 has_error = 1;
             }
 

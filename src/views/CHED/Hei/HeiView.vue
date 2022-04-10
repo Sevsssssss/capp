@@ -297,7 +297,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisPriv;
@@ -318,7 +318,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisState;
@@ -340,7 +340,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisLocal;
@@ -361,7 +361,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisOthers;
@@ -384,7 +384,7 @@ export default {
                 HeiName: hei.get("hei_name"),
                 address: hei.get("address"),
                 type: hei.get("hei_type"),
-                email: "test",
+                email: hei.get("email"),
             }, );
         }
         this.totalEntries = querResult.length;

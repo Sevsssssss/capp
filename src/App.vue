@@ -25,7 +25,7 @@ Parse.initialize(
 // user.set("contact_num", "09123456789");
 // user.set("username", "CHEDROV");
 // user.set("password", "password");
-// user.set("email", "chedrov@gmai.com");
+// user.set("email", "chedrov@gmail.com");
 // user.set("access_type", "SUPER ADMIN");
 // user.set("designation", "SUPER ADMIN");
 // try {
