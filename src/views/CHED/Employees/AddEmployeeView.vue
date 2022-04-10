@@ -99,7 +99,6 @@
             </div>
         </form>
     </div>
-    <!-- Add Employee Type -->
     <input type="checkbox" id="createEmType" class="modal-toggle">
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -118,6 +117,8 @@
         </div>
     </div>
 </div>
+<!-- Add Employee Type -->
+
 </template>
 
 <script>
@@ -241,7 +242,18 @@ export default {
 
                 try {
                     await newEmployee.save();
+<<<<<<< HEAD
                 } catch (error) {
+=======
+                    if(confirm("Account added. Would you like to add another account?")){
+                        document.location.reload();
+                    }
+                    else{
+                        this.$router.push("/employees");
+                    }
+                }
+                catch(error){
+>>>>>>> 905299dbe10bc79c4da7f65281acc63f282166fc
                     alert("Error: " + error.code + " " + error.message);
                 }
 
