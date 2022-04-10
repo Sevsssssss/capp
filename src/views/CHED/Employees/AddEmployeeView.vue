@@ -1,17 +1,15 @@
 <template>
-<div class="main-page flex justify-center items-center p-10">
-    <div class=" card justify-center items-center space-x-3 bg-brand-white shadow-lg rounded-lg m-3 p-6">
+<div class="main-page flex justify-center items-center p-5">
+    <div class="  card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
-            <div class="flex flex-row">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" /></svg>
-                </div>
-                <h2 class="card-title pl-3">ADD EMPLOYEE ACCOUNT</h2>
+            <div class="flex flex-row space-x-4 text-left justify-start items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
+                </svg>
+                <span class="text-2xl font-semibold text-grey-100">ADD EMPLOYEE ACCOUNT</span>
             </div>
             <div class="line"></div>
-
             <div class="flex flex-row">
                 <div class="form-control w-full pr-4">
                     <label class="label">
@@ -41,12 +39,10 @@
                     <input type="text" placeholder="M.I." :class="{'input-error': validationStatus(v$.midinit)}" class="input input-bordered w-full" v-model="v$.midinit.$model"/>
                     <label class="label">
                         <span class="label-text-alt" :class="{'text-error': validationStatus(v$.midinit)}" v-if="validationStatus(v$.midinit)">
-                        Middle Initial is Required</span>
+                        Required</span>
                     </label>
                 </div>
-
             </div>
-
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Username</span>
@@ -57,7 +53,6 @@
                         Username is Required</span>
                 </label>
             </div>
-
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
@@ -68,12 +63,13 @@
                         Contact Number is Required</span>
                 </label>
             </div>
-
             <div class="flex flex-row">
                 <div class="form-control w-full pr-2">
                     <label class="label">
                         <span class="label-text">Designation:</span>
-                        <span class="label-text"><a>+ Add Designation</a></span>
+                       <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                            Add Designation? <a @click="ToggleshowModal" href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create</a>
+                        </div>
                     </label>
                     <select class="select select-bordered w-full" v-model="v$.emp_designation.$model">
                         <option v-for="designation in designations" :key="designation">
@@ -93,12 +89,35 @@
                     </select>
                 </div>
             </div>
-
-            <div class="flex flex-row pt-5" style="align-self: center;">
-                <button class="btn btn-margin btn-wide btn-outline" @click="$router.go(-1)">Cancel</button>
-                <button class="btn btn-margin btn-wide  bg-brand-darkblue hover:bg-brand-blue" @click="addEmployee()">Add Employee</button>
+            <div class="flex justify-end pt-8 space-x-4">
+                <button class="btn btn-m btn-outline" @click="$router.go(-1)">Cancel</button>
+                <button class="border-none
+                btn btn-m
+                submit
+              bg-brand-darkblue
+              hover:bg-brand-blue" @click="addEmployee()">Add Employee</button>
             </div>
         </form>
+    </div>
+</div>
+<div v-if="showModal" class="backdrop">
+    <div class="alert alert-info shadow-lg rounded-md bg-brand-white w-fit" style="margin: 200px auto;  padding: 20px;">
+        <div class="flex-col items-start space-y-4">
+            <div class="flex space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Are you sure you want to create new designation?</span>
+            </div>
+            <div>
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-4 py-2 mr-2 text-center inline-flex items-center dark:bg-blue-800 dark:hover:bg-blue-900">
+                    Continue
+                </button>
+                <button  @click="showModal = false" type="button" class="text-blue-700 bg-transparent border border-blue-700 hover:bg-white/30 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-4 py-1.5 text-center dark:border-blue-800 dark:text-blue-800 dark:hover:text-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+                    Dismiss
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -116,6 +135,7 @@ export default {
     name: "AddEmployeeView",
     data() {
         return {
+            showModal: false,
             v$: useVuelidate(),
             accessTypes: [{
                     title: "ADMIN",
@@ -183,7 +203,9 @@ export default {
         };
     },
     methods: {
-
+        ToggleshowModal(){
+            this.showModal = !this.showModal;
+        },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },

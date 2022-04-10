@@ -1,6 +1,6 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md ">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -88,10 +88,10 @@
                 </div>
             </div>
             <div class="flex justify-end pt-4 space-x-4">
-                <button class="btn btn-l btn-outline hover:border-none" @click="$router.go(-1)">Cancel</button>
+                <button class="btn btn-m btn-outline" @click="$router.go(-1)">Cancel</button>
                 <button class="
                 border-none
-                btn btn-l
+                btn btn-m
                 submit
               bg-brand-darkblue
               hover:bg-brand-blue
@@ -102,8 +102,8 @@
         </form>
     </div>
 </div>
-<div v-if="showModal" class="flex justify-center items-center">
-    <div class="alert alert-info shadow-lg rounded-md absolute top-60 w-fit bg-blue-100">
+<div v-if="showModal" class="backdrop">
+    <div class="alert alert-info shadow-lg rounded-md bg-brand-white w-fit" style="margin: 200px auto;  padding: 20px;">
         <div class="flex-col items-start space-y-4">
             <div class="flex space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
@@ -123,7 +123,6 @@
     </div>
 </div>
 </template>
-
 <script>
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
@@ -302,4 +301,13 @@ export default {
 .text-error {
     color: red;
 }
+
+.backdrop {
+    top: 0;
+    position: fixed;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+}
+
 </style>
