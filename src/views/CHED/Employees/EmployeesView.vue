@@ -514,9 +514,9 @@ export default {
     var employees = [];
 
     const query = new Parse.Query(Parse.User);
-    
-    query.notEqualTo("access_type", "HEI");
 
+    query.notEqualTo("access_type", "HEI");
+    query.notEqualTo("designation", null);
     const querResult = await query.find();
     for (var i = 0; i < querResult.length; i++) {
       const emp = querResult[i];
@@ -537,6 +537,7 @@ export default {
     }
     this.totalEntries = querResult.length;
     this.tables = employees;
+    
   },
 };
 </script>

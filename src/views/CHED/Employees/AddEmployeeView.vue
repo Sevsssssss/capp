@@ -57,7 +57,7 @@
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
-                <input type="text" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
+                <input type="email" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
                 <label class="label">
                         <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
                         Email is Required</span>
