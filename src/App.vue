@@ -23,12 +23,12 @@ Parse.initialize(
 // user.set("email", "chedrov@gmail.com");
 // user.set("contact_no", "09123456789");
 // user.set("username", "CHEDROV");
-// user.set("password", "chedrov");
+// user.set("password", "c");
 // user.set("employee_type", "super admin");
 // user.set("user_type", "super admin");
 
 // try {
-//    user.signUp();
+//    user.save();
 //   // Hooray! Let them use the app now.
 // } catch (error) {
 //   // Show the error message somewhere and let the user try again.
@@ -117,22 +117,22 @@ Parse.initialize(
 
 
 // RUN THIS CODE TO HAVE A TEMPORARY HEI ACCOUNT
-// const newHEI = new Parse.User();
-// newHEI.set("hei_name", "HEI");
-// newHEI.set("username", "HEI");
-// newHEI.set("password","hei");
-// newHEI.set("email", "hei@gmail.com");
-// newHEI.set("address","hei Address");
-// newHEI.set("number", "09123456789");
-// newHEI.set("inst_code", "7890");
-// newHEI.set("hei_type", "heiType");
-// newHEI.set("user_type", "hei");
+const newHEI = new Parse.User();
+newHEI.set("hei_name", "HEI");
+newHEI.set("username", "HEI");
+newHEI.set("password","hei");
+newHEI.set("email", "hei@gmail.com");
+newHEI.set("address","hei Address");
+newHEI.set("number", "09123456789");
+newHEI.set("inst_code", "7890");
+newHEI.set("hei_type", "heiType");
+newHEI.set("user_type", "hei");
 
-// try {
-//    newHEI.signUp();
-// } catch (error) {
-//   alert("Error: " + error.code + " " + error.message);
-// }
+try {
+   newHEI.save();
+} catch (error) {
+  alert("Error: " + error.code + " " + error.message);
+}
 //RUN THIS CODE TO LOGOUT
 // Parse.User.logOut();
 export default {};
