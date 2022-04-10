@@ -231,10 +231,10 @@ export default {
                     "firstname": this.firstname,
                     "middleinitial": this.midinit,
                 }
-
+                console.log(password);
                 newEmployee.set("name", employeeName);
                 newEmployee.set("username", this.username);
-                newEmployee.set("password", password);
+                newEmployee.set("password", 'password');
                 newEmployee.set("contact_num", this.contactnum);
                 newEmployee.set("access_type", this.access_type);
                 newEmployee.set("designation", this.emp_designation);

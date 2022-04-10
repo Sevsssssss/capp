@@ -1,146 +1,180 @@
 <template>
   <div>
-    <div class="m-3">
-      <div class="flex flex-row justify-between">
-        <div class="flex flex-col p-4 text-left space-y-2">
-          <span class="text-2xl font-semibold uppercase">{{ HeiName }}</span>
-          <div class="font-normal text-sm uppercase">
-            APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
-          </div>
-        </div>
-        <div class="flex flex-col">
-          <div class="text-left p-4 pr-6 space-y-2">
-            <div class="font-semibold text-md uppercase">
-              APPLICATION STATUS - <span class=""> {{ status }}</span>
+    <div>
+      <div>
+        <div class="m-3">
+          <div class="flex flex-row justify-between">
+            <div class="flex flex-col p-4 text-left space-y-2">
+              <span class="text-2xl font-semibold uppercase">{{
+                HeiName
+              }}</span>
+              <div class="font-normal text-sm uppercase">
+                APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
+              </div>
             </div>
-            <div class="font-semibold text-sm">
-              Date Applied: <span class="font-normal">{{ dateApplied }}</span>
+            <div class="flex flex-col">
+              <div class="text-left p-4 pr-6 space-y-2">
+                <div class="font-semibold text-md uppercase">
+                  APPLICATION STATUS - <span class=""> {{ status }}</span>
+                </div>
+                <div class="font-semibold text-sm">
+                  Date Applied:
+                  <span class="font-normal">{{ dateApplied }}</span>
+                </div>
+              </div>
+              <!-- <p>ID Number: {{id}}</p> -->
             </div>
           </div>
-          <!-- <p>ID Number: {{id}}</p> -->
+          <hr />
+          <div class="py-4 px-4">
+            <div class="flex justify-start space-x-4">
+              <div class="font-semibold text-sm">
+                Point Person: <span class="font-normal">{{ rep }}</span>
+              </div>
+              <div class="font-semibold text-sm">
+                Email: <span class="font-normal">{{ email }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <hr />
-      <div class="py-4 px-4">
-        <div class="flex justify-start space-x-4">
-          <div class="font-semibold text-sm">
-            Point Person: <span class="font-normal">{{ rep }}</span>
-          </div>
-          <div class="font-semibold text-sm">
-            Email: <span class="font-normal">{{ email }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="status === 'FOR APPROVAL'">
-      <ForApproval></ForApproval>
-    </div>
-    <div v-else-if="status === 'FOR REVISION'">for REVISION</div>
-    <div v-else-if="status === 'FOR EVALUATION'">
-      <ForEvaluation></ForEvaluation>
-    </div>
-    <div v-else-if="status === 'FOR ISSUANCE'">for ISSUANCE</div>
-    <div class="space-x-6 py-8 px-3 flex justify-center">
-      <button
-        @click="$router.go(-1)"
-        type="button"
-        class="
-          btn
-          text-blue-700
-          bg-transparent
-          border border-blue-700
-          hover:bg-white
-        "
-        data-dismiss-target="#alert-additional-content-1"
-        aria-label="Close"
-      >
-        Dismiss
-      </button>
       <div v-if="status === 'FOR APPROVAL'">
-        <label
-          for="for-approval"
-          class="
-            btn
-            modal-button
-            border-none
-            text-white
-            bg-blue-700
-            hover:bg-blue-800
-          "
-        >
-          Submit</label
-        >
+        <ForApproval></ForApproval>
+      </div>
+      <div v-else-if="status === 'FOR REVISION'">
+        <ForRevision></ForRevision>
       </div>
       <div v-else-if="status === 'FOR EVALUATION'">
-        <label
-          for="for-evaluation"
+        <ForEvaluation></ForEvaluation>
+      </div>
+      <div v-else-if="status === 'FOR ISSUANCE'">
+        <ForIssuance></ForIssuance>
+      </div>
+      <div v-else-if="status === 'COMPLETED'">
+        <ForCompletedView></ForCompletedView>
+      </div>
+      <div class="space-x-6 py-8 px-3 flex justify-center">
+        <button
+          @click="$router.go(-1)"
+          type="button"
           class="
             btn
-            modal-button
-            border-none
-            text-white
-            bg-blue-700
-            hover:bg-blue-800
+            text-blue-700
+            bg-transparent
+            border border-blue-700
+            hover:bg-white
           "
+          data-dismiss-target="#alert-additional-content-1"
+          aria-label="Close"
         >
-          Submit</label
-        >
-      </div>
-    </div>
-
-    <!-- For Approval Modal -->
-    <input type="checkbox" id="for-approval" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">SELECT SUPERVISOR</div>
-        <p class="py-2 text-sm">
-          You've been selected for a chance to get one year of subscription to
-          use Wikipedia for free!
-        </p>
-        <!-- Filter -->
-        <div class="flex flex-row py-6 justify-start items-start">
-          <!-- sort -->
-          <div class="month-sort flex flex-row border rounded-md w-full">
-            <select
-              class="
-                font-normal
-                rounded-md
-                select select-ghost select-sm
-                w-full
-              "
-              style="outline: none"
-              id="application_sort"
-            >
-              <option disabled selected>Select Supervisor</option>
-              <option>Joshua Sarmiento</option>
-              <option>Sev Sarate</option>
-              <option>Duane</option>
-              <option>Jeff</option>
-              <option>Saq</option>
-            </select>
-          </div>
+          Dismiss
+        </button>
+        <div v-if="status === 'FOR APPROVAL'">
+          <ForApproval></ForApproval>
         </div>
-        <div class="modal-action">
+        <div v-if="status === 'FOR REVISION'">
           <label
             for="for-approval"
             class="
-              btn btn-sm
-              pb-6
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
             "
-            >Cancel</label
           >
+            Re-Submit</label
+          >
+        </div>
+        <div v-else-if="status === 'FOR EVALUATION'">
           <label
-            class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none"
-            >Assign</label
+            for="for-evaluation"
+            class="
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
+            "
           >
+            Evaluate</label
+          >
+        </div>
+        <div v-else-if="status === 'FOR ISSUANCE'">
+          <label
+            for=""
+            class="
+              btn
+              modal-button
+              border-none
+              text-white
+              bg-blue-700
+              hover:bg-blue-800
+            "
+          >
+            Complete</label
+          >
+        </div>
+        <!-- <div v-else-if="status === 'COMPLETED'">
+        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            BACK</label>
+    </div> -->
+      </div>
+      <!-- For Approval Modal -->
+      <input type="checkbox" id="for-approval" class="modal-toggle" />
+      <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+          <div class="font-semibold text-md">SELECT SUPERVISOR</div>
+          <p class="py-2 text-sm">
+            You've been selected for a chance to get one year of subscription to
+            use Wikipedia for free!
+          </p>
+          <!-- Filter -->
+          <div class="flex flex-row py-6 justify-start items-start">
+            <!-- sort -->
+            <div class="month-sort flex flex-row border rounded-md w-full">
+              <select
+                class="
+                  font-normal
+                  rounded-md
+                  select select-ghost select-sm
+                  w-full
+                "
+                style="outline: none"
+                id="application_sort"
+              >
+                <option disabled selected>Select Supervisor</option>
+                <option>Joshua Sarmiento</option>
+                <option>Sev Sarate</option>
+                <option>Duane</option>
+                <option>Jeff</option>
+                <option>Saq</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-action">
+            <label
+              for="for-approval"
+              class="
+                btn btn-sm
+                pb-6
+                text-blue-700
+                bg-transparent
+                border border-blue-700
+                hover:bg-white
+              "
+              >Cancel</label
+            >
+            <label
+              class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none"
+              >Assign</label
+            >
+          </div>
         </div>
       </div>
     </div>
-
     <!-- For Evaluation Modal -->
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
@@ -199,12 +233,19 @@
 <script>
 import ForApproval from "../../Application/ForApproval.vue";
 import ForEvaluation from "../../Application/ForEvaluation.vue";
+import ForRevision from "../../Application/ForRevision.vue";
+import ForIssuance from "../../Application/ForIssuance.vue";
+import ForCompletedView from "../../Application/ForCompletedView.vue";
+
 export default {
   props: ["id", "HeiName", "type", "status", "dateApplied", "rep", "email"],
   name: "StatusApplication",
   components: {
     ForApproval,
     ForEvaluation,
+    ForRevision,
+    ForIssuance,
+    ForCompletedView,
   },
   data() {
     return {
