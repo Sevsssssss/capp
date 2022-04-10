@@ -18,7 +18,6 @@
         <div class="flex justify-start space-x-4">
             <div class="font-semibold text-sm">Point Person: <span class="font-normal">{{rep}}</span></div>
             <div class="font-semibold text-sm">Email: <span class="font-normal">{{email}}</span></div>
-
         </div>
     </div>
 </div>
@@ -26,13 +25,16 @@
     <ForApproval></ForApproval>
 </div>
 <div v-else-if="status === 'FOR REVISION'">
-    for REVISION
+    <ForRevision></ForRevision>
 </div>
 <div v-else-if="status === 'FOR EVALUATION'">
     <ForEvaluation></ForEvaluation>
 </div>
 <div v-else-if="status === 'FOR ISSUANCE'">
-    for ISSUANCE
+    <ForIssuance></ForIssuance>
+</div>
+<div v-else-if="status === 'COMPLETED'">
+    <ForCompletedView></ForCompletedView>
 </div>
 <div class="space-x-6 py-8 px-3 flex justify-center">
     <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
@@ -42,12 +44,23 @@
         <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             Submit</label>
     </div>
-    <div v-else-if="status === 'FOR EVALUATION'">
-       <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            Submit</label>
+    <div v-if="status === 'FOR REVISION'">
+        <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Re-Submit</label>
     </div>
+    <div v-else-if="status === 'FOR EVALUATION'">
+        <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Evaluate</label>
+    </div>
+    <div v-else-if="status === 'FOR ISSUANCE'">
+        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Complete</label>
+    </div>
+    <!-- <div v-else-if="status === 'COMPLETED'">
+        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            BACK</label>
+    </div> -->
 </div>
-
 <!-- For Approval Modal -->
 <input type="checkbox" id="for-approval" class="modal-toggle">
 <div class="modal">
@@ -74,7 +87,6 @@
         </div>
     </div>
 </div>
-
 <!-- For Evaluation Modal -->
 <input type="checkbox" id="for-evaluation" class="modal-toggle">
 <div class="modal">
@@ -101,19 +113,26 @@
         </div>
     </div>
 </div>
-
 </template>
 
 <script>
+
 import ForApproval from '../../Application/ForApproval.vue'
 import ForEvaluation from '../../Application/ForEvaluation.vue'
+import ForRevision from '../../Application/ForRevision.vue'
+import ForIssuance from '../../Application/ForIssuance.vue'
+import ForCompletedView from '../../Application/ForCompletedView.vue'
+
 export default {
     props: ['id', 'HeiName', 'type', 'status', 'dateApplied', 'rep', 'email'],
     name: 'StatusApplication',
     components: {
-        ForApproval,
-        ForEvaluation
-    },
+    ForApproval,
+    ForEvaluation,
+    ForRevision,
+    ForIssuance,
+    ForCompletedView,
+},
     data() {
         return {
             // id: this.$route.params.id,
