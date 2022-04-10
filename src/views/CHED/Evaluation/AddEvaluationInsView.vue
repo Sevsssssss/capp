@@ -1,6 +1,26 @@
 <template>
 <!--Header-->
 <div class="" style="margin: 11px">
+    <div>
+
+        <div v-for="a in addCat" :key="a">
+            {{a}}
+            <br> {{a.id}}
+            <div v-for="b in a.subCat" :key="b">
+                <br> {{b}}
+                {{b.id}}
+                <div v-for="c in b" :key="c" class="text-left">
+                    <!-- Category_Id: {{c.id}} <br> Category Name: {{c.name}} <br> Description: {{c.desc}} -->
+                    <div v-for="d in c.subCat" :key="d">
+                        <!-- SUB Category_Id: {{d.id}} <br> SUB Category Name: {{d.name}} <br> SUB Description: {{d.desc}} -->
+                        <div v-for="e in d.item" :key="e">
+                            <!-- Item_Id: {{e.id}} <br> Requirements: {{e.requirement}}  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="overflow-x-auto shadow-lg rounded-lg p-5" style="margin: 11px">
         <div class="flex flex-row" style="justify-content: space-between">
             <div class="form-control mr-3 w-full">
@@ -22,7 +42,7 @@
             </div>
         </div>
         <!-- Body -->
-        <div class="overflow-x-auto rounded-lg"  id="add-cat" v-for="(cat) in addCat" v-bind:key="cat.id" >
+        <div class="overflow-x-auto rounded-lg"  id="add-cat" v-for="(cat) in addCat" v-bind:key="cat" >
             <div class="mx-5 top-row flex flex-row" style="justify-content: space-between">
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
@@ -35,17 +55,17 @@
                     </div>
                 </div>
                 <div class="center" style="margin-top: 35px">
-                    <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none pr-2" @click="toggleModal1">
+                    <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none pr-2" @click="toggleModal1(cat.id)">
                         Add Sub-Category
                     </button>
 
                     <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none">
                         DELETE
                     </button>
-
+                    <br> {{addCat}}
                 </div>
             </div>
-            <div class="overflow-x-auto rounded-lg" id="add-subcat" v-for="(subCat) in addSubCat" v-bind:key="subCat.id">
+            <div class="overflow-x-auto rounded-lg" id="add-subcat" v-for="(subcat) in cat.subCat" v-bind:key="subcat">
                 <div class="px-8 top-row flex flex-row">
                     <div class="flex flex-row">
                         <div class="form-control w-full mr-3">
@@ -75,6 +95,7 @@
                             </svg>
                         </button>
                     </div>
+                    <br> {{subcat}}
                 </div>
             </div>
         </div>
@@ -96,19 +117,46 @@ import {
     required,
     email
 } from "@vuelidate/validators";
-
 export default {
     name: "AddEvalInstView",
     data() {
         return {
             counter: 0,
-            addCat: [{
-                id: "",
-                
-            }],
-            addSubCat: [{
-                id: "",
-            }],
+            cat1: 0,
+            subCat1: 0,
+            addCat: [
+                //{
+                // cat1: [{
+                //     id: 1,
+                //     name: 'Category 1',
+                //     desc: 'This is Category 1',
+                //     subCat: [{
+                //         id: 1,
+                //         name: "This is sub category 1 of category 1",
+                //         desc: "This is the desc of sub cat 1 of cat 1",
+                //         item: [{
+                //             id: 1,
+                //             requirement: "This is a requirement of subcat1 of cat1"
+                //         }],
+                //     }]
+                // }],
+                // cat2: [{
+                //     id: 2,
+                //     name: 'Category 2',
+                //     desc: 'This is Category 2',
+                //     subCat: [{
+                //         id: 1,
+                //         name: "This is sub category 1 of category 2",
+                //         desc: "This is the desc of sub cat 1 of cat 2",
+                //         item: [{
+                //             id: 1,
+                //             requirement: "This is a requirement of subcat1 of cat2"
+                //         }],
+                //     }]
+                // }],
+                //}, 
+            ],
+            addSubCat: [],
             nextAddCatId: "",
             nextaddSubCatId: "",
             v$: useVuelidate(),
@@ -152,12 +200,52 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
-         toggleModal: function() {
-            this.addCat.push({id: this.nextAddCatId++})
-            
-        }, 
-        toggleModal1() {
-            this.addSubCat.push({id: this.nextAddSubCatId++})
+        toggleModal() {
+            this.cat1++;
+            //var cat = 'cat' + this.cat1;
+            this.addCat.push({
+                id: this.cat1,
+                name: '',
+                desc: '',
+                subCat: []
+            }, )
+
+        },
+        toggleModal1(id) {
+            this.subCat1++;
+
+            console.log("COunter: " + this.counter)
+            // console.log(this.addCat[0].subcat)
+            if (this.addCat[this.counter].id == id) {
+                this.addCat.push({
+                    subCat: [{
+                        id: this.subCat1,
+                        name: "",
+                        desc: "",
+                        item: [{
+                            id: "",
+                            requirement: ""
+                        }],
+                    }]
+                })
+                // console.log(this.addCat[3].subCat)
+                
+            }
+            this.counter++;
+            console.log("Counter: " + this.counter)
+            //this.addCat[this.cat1].push('Item' + this.subCat1)
+            // var cat = "subCat"
+            // this.addCat.subCat.push(
+            //     {
+            //             id: "",
+            //             name: "",
+            //             desc: "",
+            //             item: [{
+            //                 id: "",
+            //                 requirement: ""
+            //             }],
+            //         }    
+            // )
         },
     },
 };
