@@ -182,7 +182,7 @@ const routes = [
         meta:{
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
-            { name: 'STATUS'}
+            { name: 'EDIT'}
           ]
         }
       },
