@@ -514,6 +514,7 @@ export default {
     var employees = [];
 
     const query = new Parse.Query(Parse.User);
+    
     query.notEqualTo("access_type", "HEI");
 
     const querResult = await query.find();
