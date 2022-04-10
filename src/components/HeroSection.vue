@@ -218,7 +218,7 @@ export default {
                         }).catch((err) => {
                             throw new Error(`Problem handling something: ${err}.`);
                         });
-                    } else if (user.get("access_type") === "hei") {
+                    } else if (user.get("access_type") === "HEI") {
                         this.$router.push({
                             path: "/HEIhome"
                         }).catch((err) => {

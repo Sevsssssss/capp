@@ -1,4 +1,5 @@
 <template>
+<div>
   <div>
     <div>
       <div>
@@ -72,52 +73,49 @@
         <div v-if="status === 'FOR APPROVAL'">
           <ForApproval></ForApproval>
         </div>
-        <div v-if="status === 'FOR REVISION'">
-          <label
-            for="for-approval"
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Re-Submit</label
-          >
+    </div>
+</div>
+<div v-if="status === 'FOR APPROVAL'">
+    <ForApproval></ForApproval>
+</div>
+<div v-else-if="status === 'FOR REVISION'">
+    <ForRevision></ForRevision>
+</div>
+<div v-else-if="status === 'FOR EVALUATION'">
+    <ForEvaluation></ForEvaluation>
+</div>
+<div v-else-if="status === 'FOR ISSUANCE'">
+    <ForIssuance></ForIssuance>
+</div>
+<div v-else-if="status === 'COMPLETED'">
+    <ForCompleted></ForCompleted>
+</div>
+<div class="space-x-6 py-8 px-3 flex justify-center">
+    <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+        <div v-if="status != 'COMPLETED'">
+            Dismiss
         </div>
-        <div v-else-if="status === 'FOR EVALUATION'">
-          <label
-            for="for-evaluation"
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Evaluate</label
-          >
+        <div v-else>
+            Back
         </div>
-        <div v-else-if="status === 'FOR ISSUANCE'">
-          <label
-            for=""
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Complete</label
-          >
-        </div>
-        <!-- <div v-else-if="status === 'COMPLETED'">
+    </button>
+    <div v-if="status === 'FOR APPROVAL'">
+        <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Submit</label>
+    </div>
+    <div v-if="status === 'FOR REVISION'">
+        <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Re-Submit</label>
+    </div>
+    <div v-else-if="status === 'FOR EVALUATION'">
+        <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Evaluate</label>
+    </div>
+    <div v-else-if="status === 'FOR ISSUANCE'">
+        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Complete</label>
+    </div>
+    <!-- <div v-else-if="status === 'COMPLETED'">
         <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             BACK</label>
     </div> -->
@@ -226,8 +224,7 @@
           >
         </div>
       </div>
-    </div>
-  </div>
+      </div>
 </template>
 
 <script>
@@ -235,7 +232,7 @@ import ForApproval from "../../Application/ForApproval.vue";
 import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
 import ForIssuance from "../../Application/ForIssuance.vue";
-import ForCompletedView from "../../Application/ForCompletedView.vue";
+import ForCompleted from "../../Application/ForCompletedView.vue";
 
 export default {
   props: ["id", "HeiName", "type", "status", "dateApplied", "rep", "email"],
@@ -245,7 +242,7 @@ export default {
     ForEvaluation,
     ForRevision,
     ForIssuance,
-    ForCompletedView,
+    ForCompleted,
   },
   data() {
     return {
