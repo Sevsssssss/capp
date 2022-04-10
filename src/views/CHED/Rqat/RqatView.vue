@@ -92,7 +92,6 @@
 
 <script>
 import Parse from "parse";
-
 // var dataNumber = 10;
 // var page = 0;
 
@@ -112,7 +111,7 @@ export default {
                     title: "HEI",
                 },
                 {
-                    title: "COTACT NUMBER",
+                    title: "CONTACT NUMBER",
                 },
                 {
                     title: "USERNAME",
@@ -187,7 +186,8 @@ export default {
         var rqats = [];
 
         const query = new Parse.Query(Parse.User);
-        query.equalTo("user_type", "rqat");
+        query.equalTo("access_type", "RQAT");
+        query.notEqualTo("hei_affil", null);
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
@@ -201,7 +201,7 @@ export default {
                     ".",
                 hei: rqat.get("hei_affil"),
                 contactNum: rqat.get("contact_num"),
-                username: "test",
+                username: rqat.get("username"),
             });
         }
         this.totalEntries = querResult.length;

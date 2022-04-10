@@ -6,7 +6,6 @@ import '@ocrv/vue-tailwind-pagination/styles'
 import Vuelidate from 'vuelidate'
 import 'flowbite';
 
-
 //I move this line of codes in App.vue
 // import Parse from 'parse'
 // Parse.initialize("capp", "master");

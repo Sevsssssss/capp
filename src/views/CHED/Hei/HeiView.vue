@@ -285,7 +285,7 @@ export default {
                 var heisPriv = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "hei");
+                query.equalTo("access_type", "HEI");
                 query.equalTo("hei_type", "PRIVATE COLLEGES");
 
                 const querResult = await query.find();
@@ -297,7 +297,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisPriv;
@@ -306,7 +306,7 @@ export default {
                 var heisState = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "hei");
+                query.equalTo("access_type", "HEI");
                 query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
 
                 const querResult = await query.find();
@@ -318,7 +318,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisState;
@@ -328,7 +328,7 @@ export default {
                 var heisLocal = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "hei");
+                query.equalTo("access_type", "HEI");
                 query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
 
                 const querResult = await query.find();
@@ -340,7 +340,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisLocal;
@@ -349,7 +349,7 @@ export default {
                 var heisOthers = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "hei");
+                query.equalTo("access_type", "HEI");
                 query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
 
                 const querResult = await query.find();
@@ -361,7 +361,7 @@ export default {
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
                         type: hei.get("hei_type"),
-                        email: "test",
+                        email: hei.get("email"),
                     }, );
                 }
                 this.tables = heisOthers;
@@ -373,7 +373,7 @@ export default {
         var heis = [];
 
         const query = new Parse.Query(Parse.User);
-        query.equalTo("user_type", "hei");
+        query.equalTo("access_type", "HEI");
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
@@ -384,26 +384,26 @@ export default {
                 HeiName: hei.get("hei_name"),
                 address: hei.get("address"),
                 type: hei.get("hei_type"),
-                email: "test",
+                email: hei.get("email"),
             }, );
         }
         this.totalEntries = querResult.length;
         this.tables = heis;
 
         const queryPrivate = new Parse.Query(Parse.User);
-        queryPrivate.equalTo("user_type", "hei");
+        queryPrivate.equalTo("access_type", "HEI");
         queryPrivate.equalTo("hei_type", "PRIVATE COLLEGES");
 
         const queryState = new Parse.Query(Parse.User);
-        queryState.equalTo("user_type", "hei");
+        queryState.equalTo("access_type", "HEI");
         queryState.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
 
         const queryLocal = new Parse.Query(Parse.User);
-        queryLocal.equalTo("user_type", "hei");
+        queryLocal.equalTo("access_type", "HEI");
         queryLocal.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
 
         const queryOthers = new Parse.Query(Parse.User);
-        queryOthers.equalTo("user_type", "hei");
+        queryOthers.equalTo("access_type", "HEI");
         queryOthers.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
 
         this.datas = [{

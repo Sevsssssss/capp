@@ -7,7 +7,6 @@
 </template>
 
 <script>
-
 import Parse from "parse";
 Parse.serverURL = "http://localhost:1337/api";
 Parse.initialize(
@@ -17,18 +16,20 @@ Parse.initialize(
 );
 // RUN THIS CODE TO HAVE A TEMPORARY SUPER ADMIN ACCOUNT
 // const user = new Parse.User();
-// user.set("firstname", "MyFirstName");
-// user.set("middlename", "MyMidName");
-// user.set("lastname", "MyLastName");
-// user.set("email", "chedrov@gmail.com");
-// user.set("contact_no", "09123456789");
+// var employeeName = {
+//   lastname: "Ched",
+//   firstname: "Region V",
+//   middleinitial: "N/A",
+// };
+// user.set("name", employeeName);
+// user.set("contact_num", "09123456789");
 // user.set("username", "CHEDROV");
-// user.set("password", "c");
-// user.set("employee_type", "super admin");
-// user.set("user_type", "super admin");
-
+// user.set("password", "password");
+// user.set("email", "chedrov@gmail.com");
+// user.set("access_type", "SUPER ADMIN");
+// user.set("designation", "SUPER ADMIN");
 // try {
-//    user.save();
+//   user.save();
 //   // Hooray! Let them use the app now.
 // } catch (error) {
 //   // Show the error message somewhere and let the user try again.
@@ -115,24 +116,23 @@ Parse.initialize(
 //   alert("Error: " + error.code + " " + error.message);
 // }
 
-
 // RUN THIS CODE TO HAVE A TEMPORARY HEI ACCOUNT
-const newHEI = new Parse.User();
-newHEI.set("hei_name", "HEI");
-newHEI.set("username", "HEI");
-newHEI.set("password","hei");
-newHEI.set("email", "hei@gmail.com");
-newHEI.set("address","hei Address");
-newHEI.set("number", "09123456789");
-newHEI.set("inst_code", "7890");
-newHEI.set("hei_type", "heiType");
-newHEI.set("user_type", "hei");
+// const newHEI = new Parse.User();
+// newHEI.set("hei_name", "HEI");
+// newHEI.set("username", "HEI");
+// newHEI.set("password","hei");
+// newHEI.set("email", "hei@gmail.com");
+// newHEI.set("address","hei Address");
+// newHEI.set("number", "09123456789");
+// newHEI.set("inst_code", "7890");
+// newHEI.set("hei_type", "heiType");
+// newHEI.set("user_type", "hei");
 
-try {
-   newHEI.save();
-} catch (error) {
-  alert("Error: " + error.code + " " + error.message);
-}
+// try {
+//    newHEI.save();
+// } catch (error) {
+//   alert("Error: " + error.code + " " + error.message);
+// }
 //RUN THIS CODE TO LOGOUT
 // Parse.User.logOut();
 export default {};

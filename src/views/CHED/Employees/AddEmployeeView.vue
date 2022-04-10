@@ -242,9 +242,6 @@ export default {
 
                 try {
                     await newEmployee.save();
-<<<<<<< HEAD
-                } catch (error) {
-=======
                     if(confirm("Account added. Would you like to add another account?")){
                         document.location.reload();
                     }
@@ -253,7 +250,6 @@ export default {
                     }
                 }
                 catch(error){
->>>>>>> 905299dbe10bc79c4da7f65281acc63f282166fc
                     alert("Error: " + error.code + " " + error.message);
                 }
 
