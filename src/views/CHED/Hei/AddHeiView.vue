@@ -77,7 +77,7 @@
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                            Add HEI Type? <a  @click="ToggleshowModal" href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create</a>
+                            Add HEI Type? <label for="createHEI" href="#" class="text-blue-700 hover:underline dark:text-blue-500"><a>Create</a></label>
                         </div>
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_type">
@@ -102,27 +102,29 @@
         </form>
     </div>
 </div>
-<div v-if="showModal" class="backdrop">
-    <div class="alert alert-info shadow-lg rounded-md bg-brand-white w-fit" style="margin: 200px auto;  padding: 20px;">
-        <div class="flex-col items-start space-y-4">
-            <div class="flex space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span>Are you sure you want to create new hei type?</span>
+
+<!-- Add HEI Type -->
+<input type="checkbox" id="createHEI" class="modal-toggle">
+<div class="modal">
+    <div class="modal-box relative rounded-md text-left">
+        <div class="font-semibold text-md">ADD HEI TYPE</div>
+        <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
+        <form>
+            <div class="mb-6">
+                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">HEI TYPE</label>
+                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type">
             </div>
-            <div>
-                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-4 py-2 mr-2 text-center inline-flex items-center dark:bg-blue-800 dark:hover:bg-blue-900">
-                    Continue
-                </button>
-                <button  @click="showModal = false" type="button" class="text-blue-700 bg-transparent border border-blue-700 hover:bg-white/30 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-4 py-1.5 text-center dark:border-blue-800 dark:text-blue-800 dark:hover:text-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
-                    Dismiss
-                </button>
-            </div>
+
+        </form>
+        <div class="modal-action">
+            <label for="createHEI" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+            <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
         </div>
     </div>
 </div>
+
 </template>
+
 <script>
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
@@ -195,7 +197,7 @@ export default {
         };
     },
     methods: {
-        ToggleshowModal(){
+        ToggleshowModal() {
             this.showModal = !this.showModal;
         },
         validationStatus: function (validation) {
@@ -305,9 +307,8 @@ export default {
 .backdrop {
     top: 0;
     position: fixed;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
 }
-
 </style>

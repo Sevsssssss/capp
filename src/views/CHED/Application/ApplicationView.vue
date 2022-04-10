@@ -107,7 +107,9 @@
                                 HeiName: table.HeiName, 
                                 type: table.type, 
                                 status: table.status,
-                                dateApplied: table.dateApplied
+                                dateApplied: table.dateApplied,
+                                rep: table.rep,
+                                email: table.email,
                                 }}">
                                 <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                             </router-link>

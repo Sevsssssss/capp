@@ -22,7 +22,7 @@ import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
 import NotFound404 from "../views/errors/404.vue";
-import StatusApplication from '../views/Application/StatusApplication.vue';
+import StatusApplication from '../views/CHED/Application/StatusApplication.vue';
 
 
 const routes = [
