@@ -211,7 +211,7 @@ export default {
                 newRQAT.set("password", password);
                 newRQAT.set("contact_num", this.contactnum);
                 newRQAT.set("hei_affil", this.hei_affil);
-                newRQAT.set("user_type", "rqat");
+                newRQAT.set("access_type", "RQAT");
 
                 try {
                     await newRQAT.save();

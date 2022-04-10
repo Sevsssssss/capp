@@ -198,7 +198,7 @@ export default {
                 var empDir = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "employee");
+                query.notEqualTo("access_type", "HEI");
                 query.equalTo("designation", "DIRECTOR");
 
                 const querResult = await query.find();
@@ -223,7 +223,7 @@ export default {
                 var empSuper = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "employee");
+                query.notEqualTo("access_type", "HEI");
                 query.equalTo("designation", "EDUCATION SUPERVISOR");
 
                 const querResult = await query.find();
@@ -248,7 +248,7 @@ export default {
                 var empEmp = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "employee");
+                query.notEqualTo("access_type", "HEI");
                 query.equalTo("designation", "CHED EMPLOYEE");
 
                 const querResult = await query.find();
@@ -273,7 +273,7 @@ export default {
                 var empOthers = [];
 
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("user_type", "employee");
+                query.notEqualTo("access_type", "HEI");
                 query.equalTo("designation", "DIRECTOR");
 
                 const querResult = await query.find();
@@ -300,7 +300,7 @@ export default {
         var employees = [];
 
         const query = new Parse.Query(Parse.User);
-        query.equalTo("user_type", "employee");
+        query.notEqualTo("access_type", "HEI");
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {

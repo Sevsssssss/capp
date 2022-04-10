@@ -266,7 +266,7 @@ export default {
                 newHEI.set("number", this.number);
                 newHEI.set("inst_code", this.inst_code);
                 newHEI.set("hei_type", this.hei_type);
-                newHEI.set("user_type", "hei");
+                newHEI.set("access_type", "HEI");
 
                 try {
                     await newHEI.save();

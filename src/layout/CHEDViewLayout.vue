@@ -196,7 +196,7 @@ export default {
     },
   },
   data() {
-    if (Parse.User.current().get("user_type") === "super admin") {
+    if (Parse.User.current().get("access_type") === "SUPER ADMIN") {
       return {
         collapsed: true,
         menu: [
@@ -258,7 +258,7 @@ export default {
           },
         ],
       };
-    } else if (Parse.User.current().get("user_type") === "admin") {
+    } else if (Parse.User.current().get("access_type") === "ADMIN") {
       return {
         collapsed: true,
         menu: [
@@ -298,7 +298,7 @@ export default {
         ],
       };
     } else if (
-      Parse.User.current().get("user_type") === "education supervisor"
+      Parse.User.current().get("access_type") === "EDUCATION SUPERVISOR"
     ) {
       return {
         collapsed: true,
@@ -338,7 +338,7 @@ export default {
           },
         ],
       };
-    } else if (Parse.User.current().get("user_type") === "rqat") {
+    } else if (Parse.User.current().get("access_type") === "RQAT") {
       return {
         collapsed: true,
         menu: [
@@ -368,7 +368,7 @@ export default {
           },
         ],
       };
-    } else if (Parse.User.current().get("user_type") === "reporting") {
+    } else if (Parse.User.current().get("access_type") === "REPORTS") {
       return {
         collapsed: true,
         menu: [

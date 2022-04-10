@@ -168,8 +168,8 @@ export default {
             midinit: "",
             username: "",
             contactnum: "",
-            emp_designation: "DIRECTOR",
-            access_type: "ADMIN",
+            emp_designation: "",
+            access_type: "",
 
         };
     },
@@ -238,7 +238,6 @@ export default {
                 newEmployee.set("contact_num", this.contactnum);
                 newEmployee.set("access_type", this.access_type);
                 newEmployee.set("designation", this.emp_designation);
-                newEmployee.set("user_type", "employee");
 
                 try {
                     await newEmployee.save();
