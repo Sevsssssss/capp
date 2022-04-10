@@ -34,11 +34,16 @@
     <ForIssuance></ForIssuance>
 </div>
 <div v-else-if="status === 'COMPLETED'">
-    <ForCompletedView></ForCompletedView>
+    <ForCompleted></ForCompleted>
 </div>
 <div class="space-x-6 py-8 px-3 flex justify-center">
     <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
-        Dismiss
+        <div v-if="status != 'COMPLETED'">
+            Dismiss
+        </div>
+        <div v-else>
+            Back
+        </div>
     </button>
     <div v-if="status === 'FOR APPROVAL'">
         <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
@@ -121,7 +126,7 @@ import ForApproval from '../../Application/ForApproval.vue'
 import ForEvaluation from '../../Application/ForEvaluation.vue'
 import ForRevision from '../../Application/ForRevision.vue'
 import ForIssuance from '../../Application/ForIssuance.vue'
-import ForCompletedView from '../../Application/ForCompletedView.vue'
+import ForCompleted from '../../Application/ForCompletedView.vue'
 
 export default {
     props: ['id', 'HeiName', 'type', 'status', 'dateApplied', 'rep', 'email'],
@@ -131,7 +136,7 @@ export default {
     ForEvaluation,
     ForRevision,
     ForIssuance,
-    ForCompletedView,
+    ForCompleted,
 },
     data() {
         return {

@@ -55,6 +55,16 @@
             </div>
             <div class="form-control w-full">
                 <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
+                <label class="label">
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label>
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.contactnum)}" class="input input-bordered w-full" v-model="v$.contactnum.$model"/>
@@ -167,6 +177,7 @@ export default {
             lastname: "",
             firstname: "",
             midinit: "",
+            email: "",
             username: "",
             contactnum: "",
             emp_designation: "DIRECTOR",
@@ -185,6 +196,9 @@ export default {
                 required,
             },
             midinit: {
+                required,
+            },
+            email: {
                 required,
             },
             username: {
@@ -238,6 +252,7 @@ export default {
                 }
 
                 newEmployee.set("name", employeeName);
+                newEmployee.set("email", this.email);
                 newEmployee.set("username", this.username);
                 newEmployee.set("password", password);
                 newEmployee.set("contact_num", this.contactnum);

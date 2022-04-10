@@ -88,6 +88,9 @@
                             {{ table.Username }}
                         </td>
                         <td class="px-6 py-4">
+                            {{ table.Email }}
+                        </td>
+                        <td class="px-6 py-4">
                             {{ table.Designation }}
                         </td>
                         <td class="px-6 py-4">
@@ -148,6 +151,9 @@ export default {
                 },
                 {
                     title: "USERNAME",
+                },
+                {
+                    title: "EMAIL",
                 },
                 {
                     title: "DESIGNATION",
