@@ -99,25 +99,26 @@
             </div>
         </form>
     </div>
-</div>
-<!-- Add Employee Type -->
-<input type="checkbox" id="createEmType" class="modal-toggle">
-<div class="modal">
-    <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">ADD DESIGNATION</div>
-        <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
-        <form>
-            <div class="mb-6">
-                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Designation</label>
-                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation">
+    <input type="checkbox" id="createEmType" class="modal-toggle">
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD DESIGNATION</div>
+            <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Designation</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation">
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="createEmType" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
             </div>
-        </form>
-        <div class="modal-action">
-            <label for="createEmType" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-            <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
         </div>
     </div>
 </div>
+<!-- Add Employee Type -->
+
 </template>
 
 <script>
@@ -246,6 +247,12 @@ export default {
                 
                 try{
                     await newEmployee.save();
+                    if(confirm("Account added. Would you like to add another account?")){
+                        document.location.reload();
+                    }
+                    else{
+                        this.$router.push("/employees");
+                    }
                 }
                 catch(error){
                     alert("Error: " + error.code + " " + error.message);
