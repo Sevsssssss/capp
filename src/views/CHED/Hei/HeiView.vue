@@ -116,10 +116,10 @@
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
-                                <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
+                                <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
                             </li>
                             <li>
-                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
+                                <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
                             </li>
                         </ul>
                     </div>
@@ -243,41 +243,6 @@ export default {
                 },
             ],
             tables: [
-                /*{
-                                    InstNo: "56543",
-                                    HeiName: "Ateneo De Naga University",
-                                    address: "Naga City",
-                                    type: "Private Institution",
-                                    email: "ateneodenaga@gbox.adnu.edu.ph",
-                                },
-                                {
-                                    InstNo: "20746",
-                                    HeiName: "Bicol University",
-                                    address: "Legazpi City",
-                                    type: "State University",
-                                    email: "bu@bicol-u.edu.ph",
-                                },
-                                {
-                                    InstNo: "12865",
-                                    HeiName: "Catanduanes State University",
-                                    address: "Virac",
-                                    type: "State University",
-                                    email: "areneo@gbox.adnu.edu.ph",
-                                },
-                                {
-                                    InstNo: "95848",
-                                    HeiName: "Aquinas University of Legazpi",
-                                    address: "Legazpi City",
-                                    type: "Private",
-                                    email: "ust@ust-legazpi.edu.ph",
-                                },
-                                {
-                                    InstNo: "56543",
-                                    HeiName: "Camarines Norte State College",
-                                    address: "Daet",
-                                    type: "State College",
-                                    email: "cnsc@cnsc.edu.ph",
-                                },*/
             ],
             search: '',
             sort_type: "Sort by type",
@@ -292,8 +257,7 @@ export default {
             return this.tables.filter(p => {
                 return p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
             }).slice((this.numPerPage * this.currentpage), (this.currentpage + 1) * this.numPerPage);
-
-        }
+        },
     },
     methods: {
 
@@ -306,10 +270,13 @@ export default {
             }).length;
         },
         prevPage() {
-            this.currentpage -= 1;
+            if(this.currentpage > 0)
+                this.currentpage -= 1;
         },
         nextPage() {
-            this.currentpage += 1;
+            if(((this.currentpage + 1) * this.numPerPage) < this.totalEntries){
+                this.currentpage += 1;
+            }  
         },
         async filterHEI() {
 
