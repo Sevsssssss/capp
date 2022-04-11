@@ -469,7 +469,7 @@ export default {
         query.equalTo("access_type", "HEI");
         query.equalTo("hei_type", "PRIVATE COLLEGES");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
 
@@ -490,7 +490,7 @@ export default {
         query.equalTo("access_type", "HEI");
         query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
 
@@ -511,7 +511,7 @@ export default {
         query.equalTo("access_type", "HEI");
         query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
 
@@ -532,7 +532,7 @@ export default {
         query.equalTo("access_type", "HEI");
         query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
 
@@ -555,7 +555,7 @@ export default {
     const query = new Parse.Query(Parse.User);
     query.equalTo("access_type", "HEI");
 
-    const querResult = await query.find();
+    const querResult = await query.find({ useMasterKey: true });
     for (var i = 0; i < querResult.length; i++) {
       const hei = querResult[i];
 console.log(heis);

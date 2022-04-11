@@ -296,7 +296,7 @@ export default {
       ],
       hei_name: "",
       username: "",
-      email: "",
+      email: null,
       address: "",
       number: "",
       inst_code: "",

@@ -176,7 +176,7 @@ export default {
             lastname: "",
             firstname: "",
             midinit: "",
-            email: "",
+            email: null,
             username: "",
             contactnum: "",
             emp_designation: "",
@@ -229,7 +229,7 @@ export default {
             const newEmployee = new Parse.User();
             var has_error = 0;
 
-            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "" || this.email == "") {
+            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "" || this.email == null) {
                 has_error = 1;
             }
 

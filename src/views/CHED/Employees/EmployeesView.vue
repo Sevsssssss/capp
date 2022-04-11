@@ -381,7 +381,7 @@ export default {
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "DIRECTOR");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
 
@@ -408,7 +408,7 @@ export default {
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "EDUCATION SUPERVISOR");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
 
@@ -435,7 +435,7 @@ export default {
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "CHED EMPLOYEE");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
 
@@ -462,7 +462,7 @@ export default {
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "SUPER ADMIN");
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
 
@@ -487,8 +487,9 @@ export default {
 
         const query = new Parse.Query(Parse.User);
         query.notEqualTo("access_type", "HEI");
+        query.notEqualTo("designation", null);
 
-        const querResult = await query.find();
+        const querResult = await query.find({ useMasterKey: true });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
 
@@ -517,7 +518,7 @@ export default {
 
     query.notEqualTo("access_type", "HEI");
     query.notEqualTo("designation", null);
-    const querResult = await query.find();
+    const querResult = await query.find({ useMasterKey: true });
     for (var i = 0; i < querResult.length; i++) {
       const emp = querResult[i];
 
