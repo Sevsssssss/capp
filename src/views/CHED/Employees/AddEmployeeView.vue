@@ -57,9 +57,9 @@
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
-                <input type="email" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
+                <input type="email" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model" />
                 <label class="label">
-                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
+                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
                         Email is Required</span>
                 </label>
             </div>
@@ -91,7 +91,11 @@
                 <div class="form-control w-full pl-2">
                     <label class="label">
                         <span class="label-text">Access Type:</span>
+                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                            Add Access Type? <label for="createAccessType" href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create</label>
+                        </div>
                     </label>
+
                     <select class="select select-bordered w-full" v-model="v$.access_type.$model">
                         <option v-for="accessType in accessTypes" :key="accessType">
                             <div class="accessType">{{ accessType.title }}</div>
@@ -140,9 +144,55 @@
         </div>
         </div>
     </div>
+
+    <input type="checkbox" id="createAccessType" class="modal-toggle">
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD ACCESS TYPES</div>
+            <p class="py-2 text-sm">Input the name and choose its priviliges.</p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Access Tpye:</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name">
+                    <div class="font-medium text-sm mt-2 ">Privileges:</div>
+                    <div class="form-control flex mt-1 flex-row">
+                        <label class="flex flex-row  cursor-pointer">
+                            <input type="checkbox" class="checkbox">
+                            <div class="label-text ml-1" style="align-self: center">Application</div>
+                        </label>
+                         <label class="flex flex-row ml-2 cursor-pointer">
+                            <input type="checkbox" class="checkbox">
+                            <div class="label-text ml-1" style="align-self: center">HEIs Account</div>
+                        </label>
+                        <label class="flex flex-row ml-2 cursor-pointer">
+                            <input type="checkbox" class="checkbox">
+                            <div class="label-text ml-1" style="align-self: center">RQAT Account</div>
+                        </label>
+                    </div>
+                    <div class="form-control flex mt-1 flex-row">
+                        <label class="flex flex-row  cursor-pointer">
+                            <input type="checkbox" class="checkbox">
+                            <div class="label-text ml-1" style="align-self: center">Employees</div>
+                        </label>
+                         <label class="flex flex-row ml-2 cursor-pointer">
+                            <input type="checkbox" class="checkbox">
+                            <div class="label-text ml-1" style="align-self: center">Evaluation Ins.</div>
+                        </label>
+                        <label class="flex flex-row ml-2 cursor-pointer">
+                            <input type="checkbox" class="checkbox">
+                            <div class="label-text ml-1" style="align-self: center">Reporting</div>
+                        </label>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="createEmType" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Add Employee Type -->
-
 </template>
 
 <script>
@@ -272,14 +322,12 @@ export default {
 
                 try {
                     await newEmployee.save();
-                    if(confirm("Account added. Would you like to add another account?")){
+                    if (confirm("Account added. Would you like to add another account?")) {
                         document.location.reload();
-                    }
-                    else{
+                    } else {
                         this.$router.push("/employees");
                     }
-                }
-                catch(error){
+                } catch (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
 

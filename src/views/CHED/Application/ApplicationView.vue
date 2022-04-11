@@ -27,6 +27,7 @@
                     <div class="month-sort flex flex-row">
                         <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="application_sort">
                             <option disabled selected>Sort by type</option>
+                            <option>For All</option>
                             <option>For Approval</option>
                             <option>For Revision</option>
                             <option>For Issuance</option>
