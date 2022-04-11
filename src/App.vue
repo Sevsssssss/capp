@@ -14,6 +14,7 @@ Parse.initialize(
   ";9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o",
   "master"
 );
+Parse.masterKey = "master"
 // RUN THIS CODE TO HAVE A TEMPORARY SUPER ADMIN ACCOUNT
 // const user = new Parse.User();
 // var employeeName = {

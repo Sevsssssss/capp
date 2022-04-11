@@ -135,6 +135,7 @@
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
+    email,
     required,
 
 } from "@vuelidate/validators";
@@ -176,6 +177,7 @@ export default {
             lastname: "",
             firstname: "",
             midinit: "",
+            email: "",
             username: "",
             contactnum: "",
             emp_designation: "DIRECTOR",
@@ -198,6 +200,10 @@ export default {
                 required,
             },
             contactnum: {
+                required,
+            },
+            email: {
+                email,
                 required,
             },
             emp_designation: {
@@ -225,7 +231,7 @@ export default {
             const newEmployee = new Parse.User();
             var has_error = 0;
 
-            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "") {
+            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "" || this.email == null) {
                 has_error = 1;
             }
 
