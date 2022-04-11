@@ -42,9 +42,9 @@
         <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             Submit</label>
     </div>
-    <div v-else-if="status === 'FOR EVALUATION'">
+    <div v-if="status === 'FOR EVALUATION'" >
        <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            Submit</label>
+            Evaluate</label>
     </div>
 </div>
 
@@ -173,6 +173,9 @@ export default {
             ],
         }
     },
+    methods: {
+        
+    }
 }
 </script>
 
