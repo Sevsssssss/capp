@@ -264,16 +264,16 @@ export default {
       v$: useVuelidate(),
       heis: [
         {
-          title: "STATE UNIVERSITIES AND COLLEGES",
+          title: "ADNU",
         },
         {
-          title: "LOCAL UNIVERSITIES AND COLLEGES",
+          title: "BISCAST",
         },
         {
-          title: "PRIVATE COLLEGES",
+          title: "UNC",
         },
         {
-          title: "OTHER GOVERNMENT SCHOOLS",
+          title: "USI",
         },
       ],
       lastname: "",

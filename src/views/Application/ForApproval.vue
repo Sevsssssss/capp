@@ -18,10 +18,10 @@
                         {{table.file}}
                     </td>
                     <td class="px-6 py-4">
-                        <input type="radio"  :id="'approved ' + table.id" :value="'approved ' + table.id" class="radio" v-model="statusShow">
+                        <input type="radio" :name="table.id" :id="table.id" :value="'approved-' + table.id" class="radio" :v-model="statusShow">
                     </td>
                     <td class="px-6 py-4">
-                        <input type="radio" :id="'disapproved ' + table.id" :value="'disapproved ' + table.id" class="radio" v-model="statusShow">
+                        <input type="radio" :name="table.id" :id="table.id" :value="'disapproved-' + table.id" class="radio" :v-model="statusShow">
                     </td>
                     <td class="px-6 py-4">
                         <textarea id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
@@ -35,11 +35,12 @@
 
 <script>
 export default {
- data() {
+    data() {
         return {
             // id: this.$route.params.id,
             show: false,
-            statusShow: '',
+            statusShow: null,
+            el: document.body,
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -95,7 +96,7 @@ export default {
             search: '',
         }
     },
-     computed: {
+    computed: {
         searchHEI() {
             return this.tables.filter(p => {
                 return p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1;

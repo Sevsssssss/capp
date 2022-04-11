@@ -80,7 +80,7 @@
             <span class="label-text">Email</span>
           </label>
           <input
-            type="text"
+            type="email"
             placeholder="Enter Email"
             :class="{ 'input-error': validationStatus(v$.email) }"
             class="input input-bordered w-full"
