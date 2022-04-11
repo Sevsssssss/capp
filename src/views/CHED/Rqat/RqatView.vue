@@ -20,15 +20,28 @@
                     </div>
                 </div>
             </div>
-            <!-- button -->
-            <div class="h-fit pr-5 pt-3 items-center">
-                <button @click="addRQAT()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                    </svg>
-                    <div class="pl-2">Add RQAT</div>
-                </button>
+            <div class="flex flex-row">
+                
+                <!-- button -->
+                <div class="h-fit pt-3 items-center">
+                    <button @click="csvRQAT()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                       <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload CSV</div>
+                    </button>
+                </div>
+                <!-- button -->
+                <div class="h-fit pr-5 pt-3 items-center">
+                    <button @click="addRQAT()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                        </svg>
+                        <div class="pl-2">Add RQAT</div>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Table body -->
@@ -173,13 +186,13 @@ export default {
             }).length;
         },
         prevPage() {
-            if(this.currentpage > 0)
+            if (this.currentpage > 0)
                 this.currentpage -= 1;
         },
         nextPage() {
-            if(((this.currentpage + 1) * this.numPerPage) < this.totalEntries){
+            if (((this.currentpage + 1) * this.numPerPage) < this.totalEntries) {
                 this.currentpage += 1;
-            }  
+            }
         },
     },
     mounted: async function () {
