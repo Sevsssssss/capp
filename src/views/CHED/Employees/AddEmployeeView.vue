@@ -120,10 +120,24 @@
                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation">
                 </div>
             </form>
-            <div class="modal-action">
-                <label for="createEmType" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
-            </div>
+                    <div class="modal-action">
+          <label
+            for="createEmType"
+            class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            >Cancel</label
+          >
+          <label
+            class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"
+            >Submit</label
+          >
+        </div>
         </div>
     </div>
 </div>

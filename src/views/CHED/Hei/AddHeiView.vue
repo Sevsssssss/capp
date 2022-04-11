@@ -248,7 +248,7 @@
             for="createHEI"
             class="
               btn btn-sm
-              pb-6
+              rounded-md
               text-blue-700
               bg-transparent
               border border-blue-700
@@ -257,7 +257,7 @@
             >Cancel</label
           >
           <label
-            class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none"
+            class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"
             >Submit</label
           >
         </div>
