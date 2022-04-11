@@ -186,11 +186,11 @@
                             {{ table.email }}
                         </td>
                         <td class="px-6 py-4">
-                            <div class="hover:text-brand-red/60">
+                            <label for="deleteFunc" class="hover:text-brand-red/60">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                 </svg>
-                            </div>
+                            </label>
                         </td>
                     </tr>
                 </tbody>
@@ -257,6 +257,26 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Account</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
             </div>
         </div>
     </div>
