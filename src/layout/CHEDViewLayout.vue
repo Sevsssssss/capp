@@ -36,7 +36,7 @@
         "
       >
         <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
-        <div
+        <nav
           class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm"
           style="background-color: white"
         >
@@ -50,7 +50,7 @@
               <span class="name">{{ breadcrumb.name }}</span>
             </li>
           </ul>
-        </div>
+        </nav>
         <div
           class="main-content h-screen bg-grey-700"
           style="padding-top: 100px"
