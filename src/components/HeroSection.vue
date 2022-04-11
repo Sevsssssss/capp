@@ -1,6 +1,7 @@
 <template>
 <div class="text-brand-white">
-    <section class="h-screen hero bg-cover bg-fixed bg-center">
+    <section class="h-screen herobg bg-cover bg-fixed bg-center">
+
         <div class="
           flex
           xxl:flex-row
@@ -38,7 +39,7 @@
                     <div class="">
                         <img src="../assets/img/CHED_logo.png" alt="ChedLogo" width="90px" height="90px" />
                     </div>
-                    <div class="">
+                    <div class="" style="align-self:center;">
                         <div class="font-semibold body-small xxs:leading-tight">
                             REPUBLIC OF THE PHILIPPINES
                         </div>
@@ -78,22 +79,9 @@
                     </div>
                 </div>
             </div>
+
             <!-- Section for Login -->
-            <div class="
-            flex-col
-            xxl:relative
-            xl:relative
-            md:absolute
-            xs:absolute
-            xxs:absolute
-            xxl:space-y-10
-            xl:space-y-10
-            md:space-y-8
-            sm:space-y-8
-            xs:space-y-6
-            xxs:space-y-4
-            w-full
-            max-w-md
+            <div :class="{ 'animate__animated animate__slideInRight': validate2() }" class=" flex-col xxl:relative xl:relative md:absolute xs:absolute xxs:absolute xxl:space-y-10 xl:space-y-10 md:space-y-8 sm:space-y-8 xs:space-y-6 xxs:space-y-4 w-full max-w-md
             mt-10
             bg-brand-white
             hover:shadow-grey-200
@@ -106,7 +94,7 @@
                     </svg>
                 </div>
                 <!-- Text -->
-                <form @submit.prevent="Login" class="
+                <form v-on:submit.prevent="Login" class="
               flex-col
               xxl:space-y-5
               xl:space-y-5
@@ -125,13 +113,13 @@
                     <div class="">
                         <span class="text-brand-darkblue font-bold label-xl">Sign In</span>
                         <p class="text-sm xxs:leading-tight text-grey-200">
-                            Provide the HEIs credentials
+                            Provide your credentials
                         </p>
                     </div>
                     <div class="xxl:pb-20 xl:pb-20 sm:pb-10 xxs:pb-10">
                         <div class="mb-6">
                             <label for="username" class="block mb-2 label-s font-semibold text-grey-200">Username</label>
-                            <input v-model="username" type="text" id="usaname" class="
+                            <input v-model="v$.username.$model" :class="{ 'input-error animate__animated animate__headShake': validationStatus(v$.username) }" type="text" id="username" class="
                     xxl:input-md
                     md:input-md
                     xxs:input-sm
@@ -145,11 +133,16 @@
                     block
                     w-full
                     p-2.5
-                  " placeholder="Enter username" required="" />
+                  " placeholder="Enter username" />
+                            <label class="label">
+                                <span class="label-text-alt" :class="{ 'text-error animate__animated animate__headShake': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
+                                    {{usernameErr}}</span>
+                            </label>
                         </div>
                         <div class="mb-6">
                             <label for="password" class="block mb-2 label-s font-semibold text-grey-200">Password</label>
-                            <input v-model="password" type="password" id="password" class="
+                            <input v-model="v$.password.$model" :class="{ 'input-error animate__animated animate__headShake': validationStatus(v$.password) }" type="password" id="password" class="
+
                     xxl:input-md
                     md:input-md
                     xxs:input-sm
@@ -162,11 +155,16 @@
                     block
                     w-full
                     p-2.5
-                  " placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" required="" />
+                  " placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
+                            <label class="label">
+                                <span class="label-text-alt" :class="{ 'text-error animate__animated animate__headShake': validationStatus(v$.password) }" v-if="validationStatus(v$.password)">
+                                    {{passwordErr}}</span>
+                            </label>
                         </div>
                         <div class="flex-row space-x-2 space-y-2">
-                            <button type="submit" class="
+                            <button for="my-modal-6" id="my-modal-6" type="submit" class="
                     btn btn-primary
+
                     border-none
                     font-semibold
                     shadow
@@ -181,27 +179,66 @@
                 </form>
             </div>
         </div>
+        
+        
+        <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
+            <div class="modal-box">
+                <div class="text-brand-darkblue font-bold label-xl">Invalid Credentials</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+
+                        Please ensure to provide the correct account credentials.
+                        Should you need assistance. Please contact CHED at chedrov@chedrov.gov.ph
+                    </p>
+                <div class="modal-action">
+                    <label for="my-modal-6" class="btn">Ok</label>
+                </div>
+            </div>
+        </div>
     </section>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 </div>
 </template>
 
 <script>
+
 import Parse from "parse";
+import useVuelidate from "@vuelidate/core";
+import {
+    required
+} from "@vuelidate/validators";
+
 export default {
     name: "HeroSection",
     components: {},
     data() {
         return {
+            v$: useVuelidate(),
             showModal: false,
+            showErr: false,
             title: "CHED APPLICATION MANAGEMENT SYSTEM",
             Info: "Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur!",
             username: "",
             password: "",
+            usernameErr: "Please Enter your Email",
+            passwordErr: "Please Enter your Password",
+        };
+    },
+    validations() {
+        return {
+            username: {
+                required,
+            },
+            password: {
+                required,
+            },
         };
     },
     methods: {
-        scrollToTop(){
-          window.scrollTo(0, 0);
+        scrollToTop() {
+            window.scrollTo(0, 0);
         },
         async Login() {
             Parse.User.logIn(this.username, this.password)
@@ -213,21 +250,37 @@ export default {
                         user.get("access_type") === "RQAT" ||
                         user.get("access_type") === "REPORTS"
                     ) {
-                        this.$router.push({
-                            path: "/home"
-                        }).catch((err) => {
-                            throw new Error(`Problem handling something: ${err}.`);
-                        });
+                        this.$router
+                            .push({
+                                path: "/home",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
                     } else if (user.get("access_type") === "HEI") {
-                        this.$router.push({
-                            path: "/HEIhome"
-                        }).catch((err) => {
-                            throw new Error(`Problem handling something: ${err}.`);
-                        });
+                        this.$router
+                            .push({
+                                path: "/HEIhome",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
                     }
                 })
                 .catch((err) => {
-                    alert(err);
+                    //alert(err.code);
+                    //200 username/email is required.
+                    //101 Invalid username/password.
+                    if (err.code == '101') {
+                        //alert("Invalid Account");
+                        this.showErr = !this.showErr;
+                    }
+                    this.v$.$touch();
+                    
+                    if (!this.v$.$pending || !this.v$.$error) {
+                        return;
+                    }
+
                 });
         },
         toggleModal() {
@@ -240,22 +293,37 @@ export default {
                     user.get("access_type") === "RQAT" ||
                     user.get("access_type") === "REPORTS"
                 ) {
-                    this.$router.push({
-                        path: "/home"
-                    }).catch((err) => {
-                        throw new Error(`Problem handling something: ${err}.`);
-                    });
+                    this.$router
+                        .push({
+                            path: "/home",
+                        })
+                        .catch((err) => {
+                            throw new Error(`Problem handling something: ${err}.`);
+                        });
                 } else if (user.get("access_type") === "HEI") {
-                    this.$router.push({
-                        path: "/HEIhome"
-                    }).catch((err) => {
-                        throw new Error(`Problem handling something: ${err}.`);
-                    });
+                    this.$router
+                        .push({
+                            path: "/HEIhome",
+                        })
+                        .catch((err) => {
+                            throw new Error(`Problem handling something: ${err}.`);
+                        });
                 }
             } else {
                 this.showModal = !this.showModal;
             }
         },
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+
+        validate(){
+            return this.showErr;
+        },
+
+        validate2(){
+            return this.showModal;
+        }
         // closeModal() {
         //     this.$emit('close')
         // }

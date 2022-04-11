@@ -108,7 +108,7 @@
     border-radius: 5px;
   }
 
-  .hero {
+  .herobg {
     background-image: url("../assets/img/Hero.png");
     place-items: normal;
   }
