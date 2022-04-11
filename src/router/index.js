@@ -4,8 +4,11 @@ import CHEDViewLayout from "../layout/CHEDViewLayout.vue";
 import HEIViewLayout from "../layout/HEIViewLayout.vue";
 import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
+
 import HeiView from "../views/CHED/Hei/HeiView.vue";
+import UploadCSV from '../views/CHED/Hei/UploadCSV.vue'
 import AddHeiView from "../views/CHED/Hei/AddHeiView.vue";
+
 import RqatView from "../views/CHED/Rqat/RqatView.vue";
 import AddRQATView from "../views/CHED/Rqat/AddRQATView.vue";
 import EmployeesView from "../views/CHED/Employees/EmployeesView.vue";
@@ -23,7 +26,6 @@ import Parse from 'parse';
 import Forbidden403 from "../views/errors/403.vue";
 import NotFound404 from "../views/errors/404.vue";
 import StatusApplication from '../views/CHED/Application/StatusApplication.vue';
-
 
 const routes = [
   {
@@ -95,6 +97,22 @@ const routes = [
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
             { name: 'ADD HEI ACCOUNT'}
+          ]
+        }
+      },
+      {
+        path: "/hei/upload",
+        name: "uploadCSV",
+        component: UploadCSV,
+        beforeEnter: () => {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
+            return { name: '403' }
+          }
+        },
+        meta:{
+          breadcrumb: [
+            { name: 'HEI', link: '/hei' },
+            { name: 'UPLOAD CSV'}
           ]
         }
       },
