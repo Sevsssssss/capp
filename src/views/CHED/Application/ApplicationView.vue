@@ -38,7 +38,7 @@
                 </div>
             </div>
             <!-- button -->
-            <!-- <div class="h-fit pr-5 pt-3 items-center">
+            <div class="h-fit pr-5 pt-3 items-center">
                 <button type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -46,7 +46,7 @@
                     </svg>
                     <div class="pl-2">Add Application Type</div>
                 </button>
-            </div> -->
+            </div>
         </div>
         <!-- Table body -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

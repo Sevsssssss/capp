@@ -157,6 +157,7 @@ import ClipboardLine from "@/assets/sidebar_icons/clipboard-line.svg";
 import GroupLine from "@/assets/sidebar_icons/group-line.svg";
 import FileChartOutline from "@/assets/sidebar_icons/file-chart-line.svg";
 import TeamLine from "@/assets/sidebar_icons/team-line.svg";
+import SettingsLine from "@/assets/sidebar_icons/settings-5-line.svg";
 
 export default {
   name: "ViewLayout",
@@ -254,6 +255,14 @@ export default {
             icon: {
               element: "img",
               attributes: { src: FileChartOutline },
+            },
+          },
+          {
+            href: "/settings",
+            title: "Settings",
+            icon: {
+              element: "img",
+              attributes: { src: SettingsLine },
             },
           },
         ],

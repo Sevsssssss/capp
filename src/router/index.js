@@ -21,6 +21,7 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
+import SettingsView from '../views/CHED/SuperAdmin/SettingsView.vue';
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
@@ -227,6 +228,16 @@ const routes = [
         meta:{
           breadcrumb: [
             {name: 'REPORTING'},
+          ]
+        }
+      },
+      {
+        path: "/settings",
+        name: "settings",
+        component: SettingsView,
+        meta:{
+          breadcrumb: [
+            {name: 'Settings'},
           ]
         }
       },
