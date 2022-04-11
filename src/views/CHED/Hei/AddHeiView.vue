@@ -1,314 +1,463 @@
 <template>
-<div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md ">
-        <form v-on:submit.prevent="submit" class="card-body">
-            <div class="flex flex-row space-x-4 text-left justify-start items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
-                </svg>
-                <span class="text-2xl font-semibold text-grey-100">ADD HEI ACCOUNT</span>
-            </div>
-            <div class="line"></div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">HEI Name</span>
-                </label>
-                <input type="text" placeholder="Enter HEI’s name" :class="{'input-error': validationStatus(v$.hei_name)}" class="input  input-bordered w-full" v-model="v$.hei_name.$model" />
-                <label class="label">
-                    <span v-if="validationStatus(v$.hei_name)" :class="{'text-error': validationStatus(v$.hei_name)}" class="label-text-alt"> HEI Name is Required</span>
-                </label>
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Username</span>
-                </label>
-                <input type="text" placeholder="Enter username" :class="{'input-error': validationStatus(v$.username)}" class="input input-bordered w-full" v-model="v$.username.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.username)}" v-if="validationStatus(v$.username)">
-                        Username is Required</span>
-                </label>
-            </div>
+  <div class="main-page flex justify-center items-center p-5">
+    <div
+      class="
+        card
+        over
+        p-4
+        w-fit
+        bg-white
+        rounded-lg
+        border border-gray-200
+        shadow-md
+      "
+    >
+      <form v-on:submit.prevent="submit" class="card-body">
+        <div
+          class="flex flex-row space-x-4 text-left justify-start items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+          >
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path
+              d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z"
+            />
+          </svg>
+          <span class="text-2xl font-semibold text-grey-100"
+            >ADD HEI ACCOUNT</span
+          >
+        </div>
+        <div class="line"></div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">HEI Name</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Enter HEI’s name"
+            :class="{ 'input-error': validationStatus(v$.hei_name) }"
+            class="input input-bordered w-full"
+            v-model="v$.hei_name.$model"
+          />
+          <label class="label">
+            <span
+              v-if="validationStatus(v$.hei_name)"
+              :class="{ 'text-error': validationStatus(v$.hei_name) }"
+              class="label-text-alt"
+            >
+              HEI Name is Required</span
+            >
+          </label>
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Username</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Enter username"
+            :class="{ 'input-error': validationStatus(v$.username) }"
+            class="input input-bordered w-full"
+            v-model="v$.username.$model"
+          />
+          <label class="label">
+            <span
+              class="label-text-alt"
+              :class="{ 'text-error': validationStatus(v$.username) }"
+              v-if="validationStatus(v$.username)"
+            >
+              Username is Required</span
+            >
+          </label>
+        </div>
 
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Email</span>
-                </label>
-                <input type="text" placeholder="Enter Email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
-                        Email is Required</span>
-                </label>
-            </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            :class="{ 'input-error': validationStatus(v$.email) }"
+            class="input input-bordered w-full"
+            v-model="v$.email.$model"
+          />
+          <label class="label">
+            <span
+              class="label-text-alt"
+              :class="{ 'text-error': validationStatus(v$.email) }"
+              v-if="validationStatus(v$.email)"
+            >
+              Email is Required</span
+            >
+          </label>
+        </div>
 
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Address</span>
-                </label>
-                <input type="text" placeholder="Enter address" :class="{'input-error': validationStatus(v$.address)}" class="input input-bordered w-full" v-model="v$.address.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.address)}" v-if="validationStatus(v$.address)">
-                        Address is Required</span>
-                </label>
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Contact Number</span>
-                </label>
-                <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.number)}" class="input input-bordered w-full" v-model="v$.number.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{'text-error': validationStatus(v$.number)}" v-if="validationStatus(v$.number)">
-                        Contact Number is Required</span>
-                </label>
-            </div>
-            <div class="flex flex-row justify-between">
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Institutional Code</span>
-                    </label>
-                    <input type="text" placeholder="Enter Code" :class="{'input-error': validationStatus(v$.inst_code)}" class="input input-bordered" style="width: 170px" v-model="v$.inst_code.$model" />
-                    <label class="label">
-                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.inst_code)}" v-if="validationStatus(v$.inst_code)">
-                            Institutional Code is Required</span>
-                    </label>
-                </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Address</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Enter address"
+            :class="{ 'input-error': validationStatus(v$.address) }"
+            class="input input-bordered w-full"
+            v-model="v$.address.$model"
+          />
+          <label class="label">
+            <span
+              class="label-text-alt"
+              :class="{ 'text-error': validationStatus(v$.address) }"
+              v-if="validationStatus(v$.address)"
+            >
+              Address is Required</span
+            >
+          </label>
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Contact Number</span>
+          </label>
+          <input
+            type="text"
+            placeholder="09*********"
+            :class="{ 'input-error': validationStatus(v$.number) }"
+            class="input input-bordered w-full"
+            v-model="v$.number.$model"
+          />
+          <label class="label">
+            <span
+              class="label-text-alt"
+              :class="{ 'text-error': validationStatus(v$.number) }"
+              v-if="validationStatus(v$.number)"
+            >
+              Contact Number is Required</span
+            >
+          </label>
+        </div>
+        <div class="flex flex-row justify-between">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Institutional Code</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Enter Code"
+              :class="{ 'input-error': validationStatus(v$.inst_code) }"
+              class="input input-bordered"
+              style="width: 170px"
+              v-model="v$.inst_code.$model"
+            />
+            <label class="label">
+              <span
+                class="label-text-alt"
+                :class="{ 'text-error': validationStatus(v$.inst_code) }"
+                v-if="validationStatus(v$.inst_code)"
+              >
+                Institutional Code is Required</span
+              >
+            </label>
+          </div>
 
-                <div class="form-control w-full pl-4">
-                    <label class="label">
-                        <span class="label-text">HEI Type:</span>
-                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                            Add HEI Type? <label for="createHEI" href="#" class="text-blue-700 hover:underline dark:text-blue-500"><a>Create</a></label>
-                        </div>
-                    </label>
-                    <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                        <option v-for="hei in heis" :key="hei">
-                            <div class="hei-name">{{ hei.title }}</div>
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex justify-end pt-4 space-x-4">
-                <button class="btn btn-m btn-outline" @click="$router.go(-1)">Cancel</button>
-                <button class="
-                border-none
-                btn btn-m
-                submit
+          <div class="form-control w-full pl-4">
+            <label class="label">
+              <span class="label-text">HEI Type:</span>
+              <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                Add HEI Type?
+                <label
+                  for="createHEI"
+                  href="#"
+                  class="text-blue-700 hover:underline dark:text-blue-500"
+                  ><a>Create</a></label
+                >
+              </div>
+            </label>
+            <select
+              class="select select-bordered w-full font-normal"
+              v-model="hei_type"
+            >
+              <option v-for="hei in heis" :key="hei">
+                <div class="hei-name">{{ hei.title }}</div>
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end pt-4 space-x-4">
+          <button class="btn btn-m btn-outline" @click="$router.go(-1)">
+            Cancel
+          </button>
+          <button
+            class="
+              border-none
+              btn btn-m
+              submit
               bg-brand-darkblue
               hover:bg-brand-blue
-            " @click="addHEI()">
-                    Add HEI
-                </button>
-            </div>
-        </form>
+            "
+            @click="addHEI()"
+          >
+            Add HEI
+          </button>
+        </div>
+      </form>
     </div>
-</div>
-
-<!-- Add HEI Type -->
-<input type="checkbox" id="createHEI" class="modal-toggle">
-<div class="modal">
-    <div class="modal-box relative rounded-md text-left">
+    <input type="checkbox" id="createHEI" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative rounded-md text-left">
         <div class="font-semibold text-md">ADD HEI TYPE</div>
-        <p class="py-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit lore</p>
+        <p class="py-2 text-sm">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
+        </p>
         <form>
-            <div class="mb-6">
-                <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">HEI TYPE</label>
-                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type">
-            </div>
-
+          <div class="mb-6">
+            <label
+              for="base-input"
+              class="
+                block
+                mb-2
+                text-sm
+                font-medium
+                text-gray-900
+                dark:text-gray-300
+              "
+              >HEI TYPE</label
+            >
+            <input
+              type="text"
+              id="base-input"
+              class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              "
+              placeholder="Enter HEI Type"
+            />
+          </div>
         </form>
         <div class="modal-action">
-            <label for="createHEI" class="btn btn-sm pb-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-            <label class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
+          <label
+            for="createHEI"
+            class="
+              btn btn-sm
+              pb-6
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            >Cancel</label
+          >
+          <label
+            class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none"
+            >Submit</label
+          >
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
+  <!-- Add HEI Type -->
 </template>
 
 <script>
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
-import {
-    required,
-    email,
-} from "@vuelidate/validators";
+import { required, email } from "@vuelidate/validators";
 
 export default {
-    name: "AddHeiView",
+  name: "AddHeiView",
 
-    data() {
-        return {
-            showModal: false,
-            v$: useVuelidate(),
-            heis: [{
-                    title: "STATE UNIVERSITIES AND COLLEGES",
-                },
-                {
-                    title: "LOCAL UNIVERSITIES AND COLLEGES",
-                },
-                {
-                    title: "PRIVATE COLLEGES",
-                },
-                {
-                    title: "OTHER GOVERNMENT SCHOOLS",
-                },
-            ],
-            hei_name: "",
-            username: "",
-            email: "",
-            address: "",
-            number: "",
-            inst_code: "",
-            hei_type: "STATE UNIVERSITIES AND COLLEGES",
+  data() {
+    return {
+      showModal: false,
+      v$: useVuelidate(),
+      heis: [
+        {
+          title: "STATE UNIVERSITIES AND COLLEGES",
+        },
+        {
+          title: "LOCAL UNIVERSITIES AND COLLEGES",
+        },
+        {
+          title: "PRIVATE COLLEGES",
+        },
+        {
+          title: "OTHER GOVERNMENT SCHOOLS",
+        },
+      ],
+      hei_name: "",
+      username: "",
+      email: null,
+      address: "",
+      number: "",
+      inst_code: "",
+      hei_type: "STATE UNIVERSITIES AND COLLEGES",
 
-            hei_nameError: "",
-            usernameError: "",
-            emailError: "",
-            addressError: "",
-            numberError: "",
-            inst_codeError: "",
-            hei_typeError: "",
-        };
+      hei_nameError: "",
+      usernameError: "",
+      emailError: "",
+      addressError: "",
+      numberError: "",
+      inst_codeError: "",
+      hei_typeError: "",
+    };
+  },
+  validations() {
+    return {
+      hei_name: {
+        required,
+      },
+      username: {
+        required,
+      },
+      email: {
+        required,
+        email,
+      },
+      address: {
+        required,
+      },
+      number: {
+        required,
+      },
+      inst_code: {
+        required,
+      },
+      hei_type: {
+        required,
+      },
+    };
+  },
+  methods: {
+    ToggleshowModal() {
+      this.showModal = !this.showModal;
     },
-    validations() {
-        return {
-            hei_name: {
-                required,
-            },
-            username: {
-                required,
-            },
-            email: {
-                required,
-                email,
-            },
-            address: {
-                required,
-            },
-            number: {
-                required,
-            },
-            inst_code: {
-                required,
-            },
-            hei_type: {
-                required,
-            },
-        };
-    },
-    methods: {
-        ToggleshowModal() {
-            this.showModal = !this.showModal;
-        },
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
-        },
-
-        submit: function () {
-            this.v$.$touch();
-            if (!this.v$.$pending || !this.v$.$error) return;
-        },
-
-        async addHEI() {
-            console.log("Hello")
-            // this.v$.$validate();
-            // if(!this.v$.$error){
-            //     alert('Yey')
-            // }else{
-            //     alert('nay')
-            // }
-
-            const newHEI = new Parse.User();
-            console.log("Hello2")
-            var has_error = 0;
-            //var error_text = "Account not created due to the following reasons:\n";
-
-            if (this.hei_name == "") {
-                has_error = 1;
-                //error_text += "HEI Name is empty\n"
-                this.hei_nameError = "HEI Name is Required";
-            }
-            if (this.username == "") {
-                has_error = 1;
-                //error_text += "Username is empty\n"
-                this.usernameError = "Username is Required";
-            }
-            if (this.address == "") {
-                has_error = 1;
-                //error_text += "Address is empty\n"
-                this.addressError = "Address is Required";
-            }
-            if (this.number == "") {
-                has_error = 1;
-                //error_text += "Contact Number is empty\n"
-                this.numberError = "Contact Number is Required";
-            }
-            if (this.inst_code == "") {
-                has_error = 1;
-                //error_text += "Institution Code is empty\n"
-                this.inst_codeError = "Institution Code is Required";
-            }
-
-            if (has_error < 1) {
-                var password = '';
-                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                var charactersLength = characters.length;
-                for (var i = 0; i < 8; i++) {
-                    password += characters.charAt(Math.floor(Math.random() * charactersLength));
-                }
-
-                newHEI.set("hei_name", this.hei_name);
-                newHEI.set("username", this.username);
-                newHEI.set("password", password);
-                newHEI.set("email", this.email);
-                newHEI.set("address", this.address);
-                newHEI.set("number", this.number);
-                newHEI.set("inst_code", this.inst_code);
-                newHEI.set("hei_type", this.hei_type);
-                newHEI.set("user_type", "hei");
-
-                try {
-                    await newHEI.save();
-                } catch (error) {
-                    alert("Error: " + error.code + " " + error.message);
-                }
-
-            }
-        },
-
+    validationStatus: function (validation) {
+      return typeof validation !== "undefined" ? validation.$error : false;
     },
 
-    components: {},
+    submit: function () {
+      this.v$.$touch();
+      if (!this.v$.$pending || !this.v$.$error) return;
+    },
+
+    async addHEI() {
+      console.log("Hello");
+      // this.v$.$validate();
+      // if(!this.v$.$error){
+      //     alert('Yey')
+      // }else{
+      //     alert('nay')
+      // }
+
+      const newHEI = new Parse.User();
+      console.log("Hello2");
+      var has_error = 0;
+      //var error_text = "Account not created due to the following reasons:\n";
+
+      if (this.hei_name == "") {
+        has_error = 1;
+        //error_text += "HEI Name is empty\n"
+        this.hei_nameError = "HEI Name is Required";
+      }
+      if (this.username == "") {
+        has_error = 1;
+        //error_text += "Username is empty\n"
+        this.usernameError = "Username is Required";
+      }
+      if (this.address == "") {
+        has_error = 1;
+        //error_text += "Address is empty\n"
+        this.addressError = "Address is Required";
+      }
+      if (this.number == "") {
+        has_error = 1;
+        //error_text += "Contact Number is empty\n"
+        this.numberError = "Contact Number is Required";
+      }
+      if (this.inst_code == "") {
+        has_error = 1;
+        //error_text += "Institution Code is empty\n"
+        this.inst_codeError = "Institution Code is Required";
+      }
+
+      if (has_error < 1) {
+        var password = "";
+        var characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var charactersLength = characters.length;
+        for (var i = 0; i < 8; i++) {
+          password += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+          );
+        }
+        console.log(password);
+        newHEI.set("hei_name", this.hei_name);
+        newHEI.set("username", this.username);
+        newHEI.set("password", "password");
+        newHEI.set("email", this.email);
+        newHEI.set("address", this.address);
+        newHEI.set("number", this.number);
+        newHEI.set("inst_code", this.inst_code);
+        newHEI.set("hei_type", this.hei_type);
+        newHEI.set("access_type", "HEI");
+
+        try {
+          await newHEI.save();
+          if (
+            confirm("Account added. Would you like to add another account?")
+          ) {
+            document.location.reload();
+          } else {
+            this.$router.push("/hei");
+          }
+        } catch (error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      }
+    },
+  },
+
+  components: {},
 };
 </script>
 
 <style>
 .main-page {
-    align-items: center;
+  align-items: center;
 }
 
 .add-hei {
-    width: 783px;
+  width: 783px;
 }
 
 .line {
-    border-width: 1px;
+  border-width: 1px;
 }
 
 .btn-margin {
-    margin-left: 10px;
-    margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .text-error {
-    color: red;
+  color: red;
 }
 
 .backdrop {
-    top: 0;
-    position: fixed;
-    background: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
+  top: 0;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
 }
 </style>

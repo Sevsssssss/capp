@@ -55,6 +55,16 @@
             </div>
             <div class="form-control w-full">
                 <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" placeholder="Enter email" :class="{'input-error': validationStatus(v$.email)}" class="input input-bordered w-full" v-model="v$.email.$model"/>
+                <label class="label">
+                        <span class="label-text-alt" :class="{'text-error': validationStatus(v$.email)}" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label>
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{'input-error': validationStatus(v$.contactnum)}" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
@@ -99,7 +109,6 @@
             </div>
         </form>
     </div>
-    <!-- Add Employee Type -->
     <input type="checkbox" id="createEmType" class="modal-toggle">
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -118,12 +127,15 @@
         </div>
     </div>
 </div>
+<!-- Add Employee Type -->
+
 </template>
 
 <script>
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
+    email,
     required,
 
 } from "@vuelidate/validators";
@@ -165,6 +177,7 @@ export default {
             lastname: "",
             firstname: "",
             midinit: "",
+            email: "",
             username: "",
             contactnum: "",
             emp_designation: "DIRECTOR",
@@ -187,6 +200,10 @@ export default {
                 required,
             },
             contactnum: {
+                required,
+            },
+            email: {
+                email,
                 required,
             },
             emp_designation: {
@@ -214,7 +231,7 @@ export default {
             const newEmployee = new Parse.User();
             var has_error = 0;
 
-            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "") {
+            if (this.lastname == "" || this.firstname == "" || this.midinit == "" || this.username == "" || this.contactnum == "" || this.email == null) {
                 has_error = 1;
             }
 
@@ -241,7 +258,14 @@ export default {
 
                 try {
                     await newEmployee.save();
-                } catch (error) {
+                    if(confirm("Account added. Would you like to add another account?")){
+                        document.location.reload();
+                    }
+                    else{
+                        this.$router.push("/employees");
+                    }
+                }
+                catch(error){
                     alert("Error: " + error.code + " " + error.message);
                 }
 

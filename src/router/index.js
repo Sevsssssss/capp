@@ -35,7 +35,7 @@ const routes = [
     path: "/capp",
     component: CHEDViewLayout,
     beforeEnter: () => {
-      if (Parse.User.current().get("user_type") === "hei") {
+      if (Parse.User.current().get("access_type") === "hei") {
         return { name: '403' }
       }
     },
@@ -72,7 +72,7 @@ const routes = [
         name: "hei",
         component: HeiView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin") {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
         },
@@ -87,7 +87,7 @@ const routes = [
         name: "addhei",
         component: AddHeiView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin") {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
         },
@@ -103,7 +103,7 @@ const routes = [
         name: "rqat",
         component: RqatView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin") {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
         },
@@ -118,7 +118,7 @@ const routes = [
         name: "addrqat",
         component: AddRQATView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin") {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
         },
@@ -134,7 +134,7 @@ const routes = [
         name: "employees",
         component: EmployeesView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin") {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
         },
@@ -149,7 +149,7 @@ const routes = [
         name: "addemployee",
         component: AddEmployeeView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin") {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
         },
@@ -165,7 +165,7 @@ const routes = [
         name: "evaluationins",
         component: EvaluationInsView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin" && Parse.User.current().get("user_type") !== "admin" && Parse.User.current().get("user_type") !== "education supervisor"){
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN" && Parse.User.current().get("access_type") !== "ADMIN" && Parse.User.current().get("access_type") !== "EDUCATION SUPERVISOR"){
             return { name: '403' }
           }
         },
@@ -191,7 +191,7 @@ const routes = [
         name: "addevaluationins",
         component: AddEvaluationInsView,
         beforeEnter: () => {
-          if (Parse.User.current().get("user_type") !== "super admin" && Parse.User.current().get("user_type") !== "admin" && Parse.User.current().get("user_type") !== "education supervisor"){
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN" && Parse.User.current().get("access_type") !== "ADMIN" && Parse.User.current().get("access_type") !== "EDUCATION SUPERVISOR"){
             return { name: '403' }
           }
         },
@@ -218,7 +218,7 @@ const routes = [
     path: "/HEIPage",
     component: HEIViewLayout,
     beforeEnter: () => {
-      if (Parse.User.current().get("user_type") !== "hei") {
+      if (Parse.User.current().get("access_type") !== "HEI") {
         return { name: '403' }
       }
     },

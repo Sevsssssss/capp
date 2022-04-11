@@ -20,15 +20,28 @@
                     </div>
                 </div>
             </div>
-            <!-- button -->
-            <div class="h-fit pr-5 pt-3 items-center">
-                <button @click="addRQAT()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                    </svg>
-                    <div class="pl-2">Add RQAT</div>
-                </button>
+            <div class="flex flex-row">
+                
+                <!-- button -->
+                <div class="h-fit pt-3 items-center">
+                    <button @click="csvRQAT()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                       <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload CSV</div>
+                    </button>
+                </div>
+                <!-- button -->
+                <div class="h-fit pr-5 pt-3 items-center">
+                    <button @click="addRQAT()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                        </svg>
+                        <div class="pl-2">Add RQAT</div>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Table body -->
@@ -76,10 +89,10 @@
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
-                                <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
+                                <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="prevPage()">Previous</a>
                             </li>
                             <li>
-                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
+                                <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" @click="nextPage()">Next</a>
                             </li>
                         </ul>
                     </div>
@@ -92,7 +105,6 @@
 
 <script>
 import Parse from "parse";
-
 // var dataNumber = 10;
 // var page = 0;
 
@@ -112,7 +124,7 @@ export default {
                     title: "HEI",
                 },
                 {
-                    title: "COTACT NUMBER",
+                    title: "CONTACT NUMBER",
                 },
                 {
                     title: "USERNAME",
@@ -140,43 +152,7 @@ export default {
                     num: 300,
                 },
             ],
-            tables: [
-                /*{
-                                            InstNo: "56543",
-                                            HeiName: "Ateneo De Naga University",
-                                            address: "Naga City",
-                                            type: "Private Institution",
-                                            email: "ateneodenaga@gbox.adnu.edu.ph",
-                                        },
-                                        {
-                                            InstNo: "20746",
-                                            HeiName: "Bicol University",
-                                            address: "Legazpi City",
-                                            type: "State University",
-                                            email: "bu@bicol-u.edu.ph",
-                                        },
-                                        {
-                                            InstNo: "12865",
-                                            HeiName: "Catanduanes State University",
-                                            address: "Virac",
-                                            type: "State University",
-                                            email: "areneo@gbox.adnu.edu.ph",
-                                        },
-                                        {
-                                            InstNo: "95848",
-                                            HeiName: "Aquinas University of Legazpi",
-                                            address: "Legazpi City",
-                                            type: "Private",
-                                            email: "ust@ust-legazpi.edu.ph",
-                                        },
-                                        {
-                                            InstNo: "56543",
-                                            HeiName: "Camarines Norte State College",
-                                            address: "Daet",
-                                            type: "State College",
-                                            email: "cnsc@cnsc.edu.ph",
-                                        },*/
-            ],
+            tables: [],
             search: "",
         };
     },
@@ -210,17 +186,21 @@ export default {
             }).length;
         },
         prevPage() {
-            this.currentpage -= 1;
+            if (this.currentpage > 0)
+                this.currentpage -= 1;
         },
         nextPage() {
-            this.currentpage += 1;
+            if (((this.currentpage + 1) * this.numPerPage) < this.totalEntries) {
+                this.currentpage += 1;
+            }
         },
     },
     mounted: async function () {
         var rqats = [];
 
         const query = new Parse.Query(Parse.User);
-        query.equalTo("user_type", "rqat");
+        query.equalTo("access_type", "RQAT");
+        query.notEqualTo("hei_affil", null);
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
@@ -234,7 +214,7 @@ export default {
                     ".",
                 hei: rqat.get("hei_affil"),
                 contactNum: rqat.get("contact_num"),
-                username: "test",
+                username: rqat.get("username"),
             });
         }
         this.totalEntries = querResult.length;

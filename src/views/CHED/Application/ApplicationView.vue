@@ -1,11 +1,11 @@
 <template>
 <div v-if="!tables.length" style="height: 100%">
-    <NoDataAvail names="ApplicationView"/>
+    <NoDataAvail names="ApplicationView" />
 </div>
 <div v-else class="px-3 py-2">
-     <!-- component for showing the cards with the datas for application -->
+    <!-- component for showing the cards with the datas for application -->
     <DataCards :datas="datas" />
-        <div class="overflow-x-auto shadow-lg rounded-lg m-2">
+    <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
         <div class="flex flex-row justify-between items-center">
             <!-- Search -->
@@ -25,7 +25,7 @@
                 <div class="flex flex-row ">
                     <!-- sort -->
                     <div class="month-sort flex flex-row">
-                        <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="application_sort" >
+                        <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="application_sort">
                             <option disabled selected>Sort by type</option>
                             <option>For Approval</option>
                             <option>For Revision</option>
@@ -73,14 +73,13 @@
                         <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {{ table.type }}
                         </td>
-                        
                         <td class="px-6 py-4">
                             {{ table.program }}
                         </td>
                         <td class="px-6 py-4">
                             {{ table.dateApplied }}
                         </td>
-                       <td class="px-6 py-4">
+                        <td class="px-6 py-4">
                             <!-- :class="'homeIcon.' + data.color" -->
                             <div v-if="table.status === 'FOR APPROVAL'" class="btn-sm1 rounded-md p-2 font-normal approval">
                                 {{ table.status }}
@@ -111,11 +110,9 @@
                                 rep: table.rep,
                                 email: table.email,
                                 }}">
-                                <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                             </router-link>
-
                         </td>
-                        
                     </tr>
                 </tbody>
             </table>
@@ -143,6 +140,7 @@
     </div>
 </div>
 </template>
+
 <script>
 import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
@@ -155,16 +153,24 @@ export default {
     data() {
         return {
             search: '',
-            headers: [
-                {title: "HEI",},
-                {title: "TYPE",},
-                {title: "PROGRAM",},
-                {title: "DATE APPLIED",},
-                {title: "STATUS",},
+            headers: [{
+                    title: "HEI",
+                },
+                {
+                    title: "TYPE",
+                },
+                {
+                    title: "PROGRAM",
+                },
+                {
+                    title: "DATE APPLIED",
+                },
+                {
+                    title: "STATUS",
+                },
             ],
 
-            datas: [
-                {
+            datas: [{
                     title: "FOR APPROVAL",
                     num: 300,
                     color: "orange",
@@ -260,13 +266,12 @@ export default {
         }
     },
     methods: {
-        statusChecker(status) {
-            if (status != "COMPLETED") {
-                return true;
-            }
-        }
+        // statusChecker(status) {
+        //     if (status != "COMPLETED") {
+        //         return true;
+        //     }
+        // },
     },
-    
 };
 </script>
 
