@@ -80,36 +80,6 @@ export default {
       cat1: 0,
       subCat1: 0,
       addCat: [
-        //{
-        // cat1: [{
-        //     id: 1,
-        //     name: 'Category 1',
-        //     desc: 'This is Category 1',
-        //     subCat: [{
-        //         id: 1,
-        //         name: "This is sub category 1 of category 1",
-        //         desc: "This is the desc of sub cat 1 of cat 1",
-        //         item: [{
-        //             id: 1,
-        //             requirement: "This is a requirement of subcat1 of cat1"
-        //         }],
-        //     }]
-        // }],
-        // cat2: [{
-        //     id: 2,
-        //     name: 'Category 2',
-        //     desc: 'This is Category 2',
-        //     subCat: [{
-        //         id: 1,
-        //         name: "This is sub category 1 of category 2",
-        //         desc: "This is the desc of sub cat 1 of cat 2",
-        //         item: [{
-        //             id: 1,
-        //             requirement: "This is a requirement of subcat1 of cat2"
-        //         }],
-        //     }]
-        // }],
-        //},
       ],
       addSubCat: [],
       v$: useVuelidate(),
@@ -133,7 +103,7 @@ export default {
       const ApplicationType = Parse.Object.extend("ApplicationTypes");
       const newApplicationType = new ApplicationType();
 
-      newApplicationType.set("applicationTypeName", this.applicationTypeName);
+      newApplicationType.set("applicationTypeName", this.applicationTypeName.toUpperCase());
       newApplicationType.set("applicationReqs", this.addCat);
 
       try {
