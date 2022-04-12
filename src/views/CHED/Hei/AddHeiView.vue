@@ -190,17 +190,17 @@
           <button class="btn btn-m btn-outline" @click="$router.go(-1)">
             Cancel
           </button>
-          <button
-            class="
+          
+          <button for="my-modal-6" id="my-modal-6" type="submit" class="
               border-none
               btn btn-m
               submit
               bg-brand-darkblue
               hover:bg-brand-blue
             "
-            @click="addHEI()"
+            @click="modal()"
           >
-            Add HEI
+            Add HEI 
           </button>
         </div>
       </form>
@@ -263,6 +263,26 @@
         </div>
       </div>
     </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
+            <div class="modal-box">
+                <div class="text-brand-darkblue font-bold label-xl">Add Hei Account</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+
+                       Are you sure you want to add this account?
+                    </p>
+                <div class="modal-action">
+                    <label for="my-modal-6"  class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            " >Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI()">Continue</label>
+                </div>
+            </div>
+        </div>
   </div>
 
   <!-- Add HEI Type -->
@@ -279,6 +299,7 @@ export default {
   data() {
     return {
       showModal: false,
+      showModal1: false,
       v$: useVuelidate(),
       heis: [
         {
@@ -349,8 +370,41 @@ export default {
       this.v$.$touch();
       if (!this.v$.$pending || !this.v$.$error) return;
     },
+    validate(){
+      console.log(this.showModal1)
+      return this.showModal1;
+            
+    },
 
-    async addHEI() {
+    async addHEI(){
+       const newHEI = new Parse.User();
+        newHEI.set("hei_name", this.hei_name);
+        newHEI.set("username", this.username);
+        newHEI.set("password", "password");
+        newHEI.set("email", this.email);
+        newHEI.set("address", this.address);
+        newHEI.set("number", this.number);
+        newHEI.set("inst_code", this.inst_code);
+        newHEI.set("hei_type", this.hei_type);
+        newHEI.set("access_type", "HEI");
+
+         try {
+          await newHEI.save();
+          this.$router.push("/hei");
+          console.log(this.showModal1)
+          // if (
+          //   confirm("Account added. Would you like to add another account?")
+          // ) {
+          //   document.location.reload();
+          // } else {
+          //   this.$router.push("/hei");
+          // }
+        } catch (error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+       
+    },
+    modal() {
       console.log("Hello");
       // this.v$.$validate();
       // if(!this.v$.$error){
@@ -359,7 +413,7 @@ export default {
       //     alert('nay')
       // }
 
-      const newHEI = new Parse.User();
+      
       console.log("Hello2");
       var has_error = 0;
       //var error_text = "Account not created due to the following reasons:\n";
@@ -391,38 +445,18 @@ export default {
       }
 
       if (has_error < 1) {
-        var password = "";
-        var characters =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var charactersLength = characters.length;
-        for (var i = 0; i < 8; i++) {
-          password += characters.charAt(
-            Math.floor(Math.random() * charactersLength)
-          );
-        }
-        console.log(password);
-        newHEI.set("hei_name", this.hei_name);
-        newHEI.set("username", this.username);
-        newHEI.set("password", "password");
-        newHEI.set("email", this.email);
-        newHEI.set("address", this.address);
-        newHEI.set("number", this.number);
-        newHEI.set("inst_code", this.inst_code);
-        newHEI.set("hei_type", this.hei_type);
-        newHEI.set("access_type", "HEI");
-
-        try {
-          await newHEI.save();
-          if (
-            confirm("Account added. Would you like to add another account?")
-          ) {
-            document.location.reload();
-          } else {
-            this.$router.push("/hei");
-          }
-        } catch (error) {
-          alert("Error: " + error.code + " " + error.message);
-        }
+        // var password = "";
+        // var characters =
+        //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        // var charactersLength = characters.length;
+        // for (var i = 0; i < 8; i++) {
+        //   password += characters.charAt(
+        //     Math.floor(Math.random() * charactersLength)
+        //   );
+        // }
+        
+        this.showModal1 = !this.showModal1;
+       
       }
     },
   },
