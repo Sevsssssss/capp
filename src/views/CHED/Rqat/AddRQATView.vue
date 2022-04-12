@@ -160,7 +160,7 @@
             </label>
             <select
               class="select select-bordered w-full font-normal"
-              v-model="v$.hei_affil.$model"
+              v-model="hei_affil"
             >
               <option v-for="hei in heis" :key="hei">
                 <div class="hei-name">{{ hei.title }}</div>
@@ -264,24 +264,15 @@ export default {
       v$: useVuelidate(),
       heis: [
         {
-          title: "ADNU",
-        },
-        {
-          title: "BISCAST",
-        },
-        {
-          title: "UNC",
-        },
-        {
-          title: "USI",
-        },
+          title: "None",
+        }
       ],
       lastname: "",
       firstname: "",
       midinit: "",
       username: "",
       contactnum: "",
-      hei_affil: "STATE UNIVERSITIES AND COLLEGES",
+      hei_affil: "None",
     };
   },
   validations() {
@@ -371,6 +362,22 @@ export default {
       }
     },
   },
+  mounted: async function () {
+        var heis = [];
+
+        const query = new Parse.Query(Parse.User);
+        query.equalTo("access_type", "HEI");
+
+        const querResult = await query.find();
+        heis.push({title: "None"});
+        for (var i = 0; i < querResult.length; i++) {
+            const hei = querResult[i];
+            heis.push({
+                title: hei.get("hei_name"),
+            });
+        }
+        this.heis = heis;
+    },
   components: {},
 };
 </script>
