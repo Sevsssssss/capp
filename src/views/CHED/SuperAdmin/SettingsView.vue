@@ -467,7 +467,7 @@ import Parse from "parse";
 // var page = 0;
 
 export default {
-    name: "EmployeesView",
+    name: "SettingsView",
     data() {
         return {
             currentpage: 0,
