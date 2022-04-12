@@ -90,10 +90,11 @@
 }
 
 @layer components {
-  .btn-sm {
-    padding: 12px 24px;
+  .btn-small {
+    padding: 10px 24px;
     font-size: 14px;
     border-radius: 5px;
+    color: #FFFFFF
   }
 
   .btn-m {

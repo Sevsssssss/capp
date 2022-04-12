@@ -11,12 +11,15 @@
             </thead>
             <tbody>
                 <tr v-for="table in searchHEI" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class=" px-6 py-4  font-medium text-gray-900 dark:text-white text-wrap break-words">
+                    <th scope="row" class="px-6 py-4 flex flex-col font-medium text-gray-900 dark:text-white text-wrap break-words">
                         {{table.credential}}
+                        <div class=" mt-2">
+                            File: <span class="text-blue-400">{{table.file}}</span>
+                        </div>
                     </th>
-                    <td class="px-6 py-4 text-blue-400">
+                    <!-- <td class="px-6 py-4 flex text-blue-400">
                         {{table.file}}
-                    </td>
+                    </td> -->
                     <td class="px-6 py-4">
                         <input type="radio" :name="table.id" :id="table.id" :value="'approved-' + table.id" class="radio" :v-model="statusShow">
                     </td>
@@ -43,9 +46,6 @@ export default {
             el: document.body,
             headers: [{
                     title: "CREDENTIALS",
-                },
-                {
-                    title: "FILES",
                 },
                 {
                     title: "APPROVED",
