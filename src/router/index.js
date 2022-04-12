@@ -48,6 +48,11 @@ const routes = [
         path: "/home",
         name: "home",
         component: CHED_HomeView,
+        meta:{
+          breadcrumb: [
+            {name: 'Dashboard'},
+          ]
+        }
       },
       {
         path: "/application",
