@@ -175,7 +175,7 @@
               for="for-approval"
               class="
                 btn btn-sm
-                pb-6
+                rounded-md
                 text-blue-700
                 bg-transparent
                 border border-blue-700
@@ -184,7 +184,7 @@
               >Cancel</label
             >
             <label
-              class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none"
+              class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none"
               >Assign</label
             >
           </div>
@@ -228,7 +228,7 @@
             for="for-evaluation"
             class="
               btn btn-sm
-              pb-6
+              rounded-md
               text-blue-700
               bg-transparent
               border border-blue-700
@@ -237,7 +237,7 @@
             >Cancel</label
           >
           <label
-            class="btn btn-sm pb-6 bg-blue-700 hover:bg-blue-800 border-none"
+            class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none"
             >Assign</label
           >
         </div>
