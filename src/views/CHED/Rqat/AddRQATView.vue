@@ -173,15 +173,15 @@
           <button class="btn btn-m btn-outline" @click="$router.go(-1)">
             Cancel
           </button>
-          <button
-            class="
+
+          <button for="my-modal-6" id="my-modal-6" type="submit" class="
               border-none
               btn btn-m
               submit
               bg-brand-darkblue
               hover:bg-brand-blue
             "
-            @click="addRQAT()"
+            @click="modal()"
           >
             Add RQAT
           </button>
@@ -246,6 +246,26 @@
         </div>
       </div>
     </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
+            <div class="modal-box">
+                <div class="text-brand-darkblue font-bold label-xl">Add RQAT Account</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+
+                       Are you sure you want to add this account?
+                    </p>
+                <div class="modal-action">
+                    <label for="my-modal-6"  class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            " >Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addRQAT()">Continue</label>
+                </div>
+            </div>
+    </div>
   </div>
   <!-- Add AFFILIATION -->
 </template>
@@ -261,6 +281,7 @@ export default {
   data() {
     return {
       showModal: false,
+      showModal1: false,
       v$: useVuelidate(),
       heis: [
         {
@@ -310,8 +331,48 @@ export default {
       if (!this.v$.$pending || !this.v$.$error) return;
     },
 
-    async addRQAT() {
-      const newRQAT = new Parse.User();
+    validate(){
+      
+      return this.showModal1;
+            
+    },
+
+    
+  async addRQAT() {
+        const newRQAT = new Parse.User();
+
+        var rqatName = {
+          lastname: this.lastname,
+          firstname: this.firstname,
+          middleinitial: this.midinit,
+        };
+
+        newRQAT.set("name", rqatName);
+        newRQAT.set("username", this.username);
+        newRQAT.set("password", "password");
+        newRQAT.set("contact_num", this.contactnum);
+        newRQAT.set("hei_affil", this.hei_affil);
+        newRQAT.set("access_type", "RQAT");
+
+        
+
+        try {
+          await newRQAT.save();
+          this.$router.push("/rqat");
+          // if (
+          //   confirm("Account added. Would you like to add another account?")
+          // ) {
+          //   document.location.reload();
+          // } else {
+          //   this.$router.push("/rqat");
+          // }
+
+        } catch (error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      
+    },
+    modal() {
       var has_error = 0;
 
       if (
@@ -323,45 +384,23 @@ export default {
       ) {
         has_error = 1;
       }
-
+      
       if (has_error < 1) {
-        var password = "";
-        var characters =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var charactersLength = characters.length;
-        for (var i = 0; i < 8; i++) {
-          password += characters.charAt(
-            Math.floor(Math.random() * charactersLength)
-          );
-        }
-        var rqatName = {
-          lastname: this.lastname,
-          firstname: this.firstname,
-          middleinitial: this.midinit,
-        };
-        console.log(password);
-        newRQAT.set("name", rqatName);
-        newRQAT.set("username", this.username);
-        newRQAT.set("password", "password");
-        newRQAT.set("contact_num", this.contactnum);
-        newRQAT.set("hei_affil", this.hei_affil);
-        newRQAT.set("access_type", "RQAT");
-
-        try {
-          await newRQAT.save();
-          if (
-            confirm("Account added. Would you like to add another account?")
-          ) {
-            document.location.reload();
-          } else {
-            this.$router.push("/rqat");
-          }
-        } catch (error) {
-          alert("Error: " + error.code + " " + error.message);
-        }
+        // var password = "";
+        // var characters =
+        //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        // var charactersLength = characters.length;
+        // for (var i = 0; i < 8; i++) {
+        //   password += characters.charAt(
+        //     Math.floor(Math.random() * charactersLength)
+        //   );
+        // }
+        
+        this.showModal1 = !this.showModal1;
       }
     },
   },
+  
   mounted: async function () {
         var heis = [];
 
