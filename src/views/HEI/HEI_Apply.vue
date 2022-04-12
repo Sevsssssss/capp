@@ -152,7 +152,6 @@
             <hr />
           </div>
           <div class="">
-            <!-- INITIAL PERMIT -->
             <div>
               <div class="grid grid-cols-2 place-items-center gap-4 py-5">
                 <div v-for="i in reqs" :key="i" class="w-80 form-control">

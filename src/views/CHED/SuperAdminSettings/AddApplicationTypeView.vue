@@ -22,7 +22,7 @@
               border-none
               p-2
             "
-            @click="toggleModal"
+            @click="addRequirement"
           >
             Add Requirement
           </button>
@@ -31,20 +31,20 @@
       <!-- Body -->
       <div
         class="overflow-x-auto rounded-lg"
-        v-for="cat in addCat"
-        v-bind:key="cat"
-        :id="cat.id"
+        v-for="req in appReqs"
+        v-bind:key="req"
+        :id="req.id"
       >
         <div class="ml-5" style="justify-content: space-between">
           <div class="flex flex-row">
             <div class="form-control w-full mr-3">
               <label class="label"
-                ><span class="label-text">Requirement {{ cat.id }}</span></label
+                ><span class="label-text">Requirement {{ req.id }}</span></label
               ><input
                 type="text"
-                placeholder="Enter Criteria Name"
+                placeholder="Enter Requirement Name"
                 class="input input-bordered"
-                v-model="cat.applicationReq"
+                v-model="req.applicationReq"
               /><label class="label"> <!--v-if--></label>
             </div>
           </div>
@@ -77,11 +77,7 @@ export default {
   data() {
     return {
       counter: 0,
-      cat1: 0,
-      subCat1: 0,
-      addCat: [
-      ],
-      addSubCat: [],
+      appReqs: [],
       v$: useVuelidate(),
       applicationTypeName: "",
       applicationReq: "",
@@ -104,7 +100,7 @@ export default {
       const newApplicationType = new ApplicationType();
 
       newApplicationType.set("applicationTypeName", this.applicationTypeName.toUpperCase());
-      newApplicationType.set("applicationReqs", this.addCat);
+      newApplicationType.set("applicationReqs", this.appReqs);
 
       try {
         await newApplicationType.save();
@@ -120,52 +116,12 @@ export default {
     validationStatus: function (validation) {
       return typeof validation !== "undefined" ? validation.$error : false;
     },
-    toggleModal() {
-      this.cat1++;
-      //var cat = 'cat' + this.cat1;
-      this.addCat.push({
-        id: this.cat1,
+    addRequirement() {
+      this.counter++;
+      this.appReqs.push({
+        id: this.counter,
         applicationReq: "",
       });
-    },
-    toggleModal1(id) {
-      this.subCat1++;
-
-      console.log("COunter: " + this.counter);
-      // console.log(this.addCat[0].subcat)
-      if (this.addCat[this.counter].id == id) {
-        this.addCat.push({
-          subCat: [
-            {
-              id: this.subCat1,
-              name: "",
-              desc: "",
-              item: [
-                {
-                  id: "",
-                  requirement: "",
-                },
-              ],
-            },
-          ],
-        });
-        // console.log(this.addCat[3].subCat)
-      }
-      this.counter++;
-      console.log("Counter: " + this.counter);
-      //this.addCat[this.cat1].push('Item' + this.subCat1)
-      // var cat = "subCat"
-      // this.addCat.subCat.push(
-      //     {
-      //             id: "",
-      //             name: "",
-      //             desc: "",
-      //             item: [{
-      //                 id: "",
-      //                 requirement: ""
-      //             }],
-      //         }
-      // )
     },
   },
 };
