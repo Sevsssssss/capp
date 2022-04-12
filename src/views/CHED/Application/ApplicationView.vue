@@ -141,7 +141,6 @@
     </div>
 </div>
 </template>
-
 <script>
 import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
@@ -205,7 +204,7 @@ export default {
                     rep: "Aiden Gibbs",
                     email: "aadnu@adnu.edu.ph",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "2022-06-10",
                     status: "FOR APPROVAL",
                 },
                 {
@@ -216,7 +215,7 @@ export default {
                     address: "Legazpi City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "2022-06-10",
                     status: "FOR REVISION",
                 },
                 {
@@ -227,7 +226,7 @@ export default {
                     address: "Virac",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "2022-06-10",
                     status: "FOR EVALUATION",
                 },
                 {
@@ -238,7 +237,7 @@ export default {
                     address: "Legazpi City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "2022-06-10",
                     status: "FOR ISSUANCE",
                 },
                 {
@@ -249,7 +248,7 @@ export default {
                     address: "Naga City",
                     type: "Initial Offering",
                     program: "BSIT",
-                    dateApplied: "June 8, 2015",
+                    dateApplied: "2022-06-10",
                     status: "COMPLETED",
                 },
             ],
@@ -264,7 +263,8 @@ export default {
             } else {
                 return this.tables;
             }
-        }
+        },
+
     },
     methods: {
         // statusChecker(status) {
