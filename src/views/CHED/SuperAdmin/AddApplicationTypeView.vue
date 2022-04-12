@@ -125,6 +125,7 @@ export default {
     methods: {
         saveAppType(){
             for(var i = 0; i < this.cat1; i++){
+                console.log(this.addCat);
                 console.log(this.addCat[i].name);
             }
         },

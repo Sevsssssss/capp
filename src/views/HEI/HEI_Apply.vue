@@ -63,44 +63,44 @@
                     <!-- INITIAL PERMIT -->
                     <div v-if="selected === 'Initial Permit'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i.item" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
                                 </label>
-                                <input class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" id="user_avatar" type="file" accept=".pdf,.doc">
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent"  type="file" accept=".pdf,.doc">
                             </div>
                         </div>
                     </div>
                     <!-- RENEWAL -->
                     <div v-else-if="selected === 'Renewal'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i.item" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
                                 </label>
-                                <input class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" id="user_avatar" type="file" accept=".pdf,.doc">
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent"  type="file" accept=".pdf,.doc">
                             </div>
                         </div>
                     </div>
                     <!-- COMPLIANCE -->
                     <div v-else-if="selected === 'Compliance'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i.item" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
                                 <label class="label text-left">
-                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.id}}. {{i.item}} </span>
                                 </label>
-                                <input class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" id="user_avatar" type="file" accept=".pdf,.doc">
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent"  type="file" accept=".pdf,.doc">
                             </div>
                         </div>
                     </div>
                     <!-- GOVERNMENT RECOGNITION -->
                     <div v-else-if="selected === 'Government Recognition'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i.item" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
                                 </label>
-                                <input class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" id="user_avatar" type="file" accept=".pdf,.doc">
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent"  type="file" accept=".pdf,.doc">
                             </div>
                         </div>
                     </div>
@@ -171,13 +171,13 @@
                                         <label class="label">
                                             <span class="label-text">Faculty</span>
                                         </label>
-                                        <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                        <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help"  type="file" accept=".pdf,.doc">
                                     </div>
                                     <div class="mb-3 w-64">
                                         <label class="label">
                                             <span class="label-text">Support Faculty</span>
                                         </label>
-                                        <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept=".pdf,.doc">
+                                        <input class="block w-full  text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer dark:text-grey-300 focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help"  type="file" accept=".pdf,.doc">
                                     </div>
                                 </div>
 
@@ -225,18 +225,23 @@ export default {
                 },
             ],
             descol1: [{
+                    id: 1,
                     item: 'Articles of Incorporation and By-Laws, Copy of original Ordinance approving establishment, Copy of the Charter',
                 },
                 {
+                    id: 2,
                     item: 'Ownership of School Building',
                 },
                 {
+                    id: 3,
                     item: 'Pictures of School Buildings, offices and other facilities',
                 },
                 {
+                    id: 4,
                     item: 'Copy(ies) of Transfer of Certificate(s) Title (TCT)',
                 },
                 {
+                    id: 5,
                     item: 'Campus Development and Landscaping Plan',
                 },
 
