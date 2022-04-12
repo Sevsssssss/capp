@@ -66,15 +66,7 @@
                 <div class="flex flex-row">
                     <!-- button -->
                     <div class="h-fit pr-5 pt-3 items-center">
-                        <label type="button" for="createAccessType" class="
-                  flex
-                  items-center
-                  text-white
-                  bg-brand-darkblue
-                  hover:bg-blue-800
-                  focus:ring-4 focus:ring-blue-300
-                  font-medium
-                  rounded-lg
+                        <label type="button" for="createAccessType" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium           rounded-lg
                   text-sm
                   px-3
                   py-2.5
@@ -120,7 +112,14 @@
                   ">
                             Access Type Name
                         </td>
-                        <td>edit</td>
+                        <td class="px-6 py-4 text-right">
+                            <a @click="viewEvalIns" href="#" class="
+                      font-medium
+                      text-blue-600
+                      dark:text-blue-500
+                      hover:underline
+                    ">Edit</a>
+                        </td>
                         <td class="px-6 py-4 flex flex-row">
                             <div class="hover:text-brand-red/60">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
@@ -468,7 +467,7 @@ import Parse from "parse";
 // var page = 0;
 
 export default {
-    name: "EmployeesView",
+    name: "SettingsView",
     data() {
         return {
             currentpage: 0,
