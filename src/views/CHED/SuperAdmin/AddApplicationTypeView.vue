@@ -18,7 +18,7 @@
             <div class="ml-5" style="justify-content: space-between">
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
-                        <label class="label"><span class="label-text">Requirement {{cat.id}}</span></label><input type="text" placeholder="Enter Criteria Name" class="input input-bordered" /><label class="label">
+                        <label class="label"><span class="label-text">Requirement {{cat.id}}</span></label><input type="text" placeholder="Enter Criteria Name" class="input input-bordered" v-model="cat.name" /><label class="label">
                             <!--v-if--></label>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
         <div class="table-footer flex flex-row" style="justify-content: center">
             <div class="flex flex-row pt-5">
                 <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button>
-                <button class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
+                <button class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue" @click="saveAppType">
                     Create
                 </button>
             </div>
@@ -123,6 +123,11 @@ export default {
         };
     },
     methods: {
+        saveAppType(){
+            for(var i = 0; i < this.cat1; i++){
+                console.log(this.addCat[i].name);
+            }
+        },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
