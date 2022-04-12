@@ -60,7 +60,7 @@
                     <hr>
                 </div>
                 <div class="">
-                    <!-- INITIAL PERMI -->
+                    <!-- INITIAL PERMIT -->
                     <div v-if="selected === 'Initial Permit'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
                             <div v-for="i in descol1" :key="i.item" class="w-80 form-control">

@@ -4,7 +4,7 @@
     <div class="overflow-x-auto shadow-lg rounded-lg p-5" style="margin: 11px">
         <div class="flex flex-row" style="justify-content: space-between">
             <div class="form-control mr-3 w-full">
-                <label class="label"><span class="label-text">Application Type Name:</span></label><input type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" /><label class="label">
+                <label class="label"><span class="label-text">Application Type Name:</span></label><input type="text" placeholder="Enter Application Type Name" class="input input-bordered w-full max-w-xs" /><label class="label">
                     <!--v-if--></label>
             </div>
             <div class="flex flex-row center" style="margin-top: 20px">
@@ -14,7 +14,7 @@
             </div>
         </div>
         <!-- Body -->
-        <div class="overflow-x-auto rounded-lg"  id="add-cat" v-for="(cat) in addCat" v-bind:key="cat" >
+        <div class="overflow-x-auto rounded-lg" v-for="(cat) in addCat" v-bind:key="cat"  :id="cat.id" >
             <div class="ml-5" style="justify-content: space-between">
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
@@ -132,8 +132,6 @@ export default {
             this.addCat.push({
                 id: this.cat1,
                 name: '',
-                desc: '',
-                subCat: []
             }, )
 
         },
