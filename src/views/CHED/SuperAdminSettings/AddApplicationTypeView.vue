@@ -130,7 +130,7 @@ export default {
   methods: {
     async saveAppType() {
 
-      const ApplicationType = Parse.Object.extend("ApplicationType");
+      const ApplicationType = Parse.Object.extend("ApplicationTypes");
       const newApplicationType = new ApplicationType();
 
       newApplicationType.set("applicationTypeName", this.applicationTypeName);
