@@ -155,80 +155,7 @@
             </div>
         </div>
     </div>
-    <input type="checkbox" id="createAccessType" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD ACCESS TYPES</div>
-            <p class="py-2 text-sm">Input the name and choose its priviliges.</p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Access Tpye:</label>
-                    <input type="text" id="base-input" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="atname" />
-                    <div class="font-medium text-sm mt-2">Privileges:</div>
-                    <div class="form-control flex mt-1 flex-row">
-                        <label class="flex flex-row cursor-pointer">
-                            <input type="checkbox" class="checkbox" value="application" v-model="checkedAccessTypes" />
-                            <div class="label-text ml-1" style="align-self: center">
-                                Application
-                            </div>
-                        </label>
-                        <label class="flex flex-row ml-2 cursor-pointer">
-                            <input type="checkbox" class="checkbox" value="heis_account" v-model="checkedAccessTypes" />
-                            <div class="label-text ml-1" style="align-self: center">
-                                HEIs Account
-                            </div>
-                        </label>
-                        <label class="flex flex-row ml-2 cursor-pointer">
-                            <input type="checkbox" class="checkbox" value="rqat_account" v-model="checkedAccessTypes" />
-                            <div class="label-text ml-1" style="align-self: center">
-                                RQAT Account
-                            </div>
-                        </label>
-                    </div>
-                    <div class="form-control flex mt-1 flex-row">
-                        <label class="flex flex-row cursor-pointer">
-                            <input type="checkbox" class="checkbox" value="employees" v-model="checkedAccessTypes" />
-                            <div class="label-text ml-1" style="align-self: center">
-                                Employees
-                            </div>
-                        </label>
-                        <label class="flex flex-row ml-2 cursor-pointer">
-                            <input type="checkbox" class="checkbox" value="evaluation_ins" v-model="checkedAccessTypes" />
-                            <div class="label-text ml-1" style="align-self: center">
-                                Evaluation Ins.
-                            </div>
-                        </label>
-                        <label class="flex flex-row ml-2 cursor-pointer">
-                            <input type="checkbox" class="checkbox" value="reporting" v-model="checkedAccessTypes" />
-                            <div class="label-text ml-1" style="align-self: center">
-                                Reporting
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createAccessType" class="
-              btn btn-sm
-              p-6
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label class="btn btn-sm p-6 bg-blue-700 hover:bg-blue-800 border-none" @click="addAccessType()">Submit</label>
-            </div>
-        </div>
-    </div>
+    
 </div>
 </template>
 
@@ -273,24 +200,6 @@ export default {
         },
     },
     methods: {
-        addAccessType() {
-            const accessType = Parse.Object.extend("Access_Types");
-            const newAccessType = new accessType();
-
-            newAccessType
-                .save({
-                    name: this.atname,
-                    privileges: this.checkedAccessTypes,
-                })
-                .then(
-                    (newAccessType) => {
-                        console.log("New Access Type Added:" + newAccessType.id);
-                    },
-                    (error) => {
-                        alert("Access Type Adding Failed: " + error);
-                    }
-                );
-        },
         addAppType() {
             this.$router.push("/app-settings/add");
         },
