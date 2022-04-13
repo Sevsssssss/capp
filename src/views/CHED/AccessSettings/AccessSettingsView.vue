@@ -62,9 +62,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b">
+                <tr v-for="i in tables" :key="i" class="bg-white border-b">
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        Access Type Name
+                       {{i.Name}}
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                       {{i.Privileges}}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
@@ -191,7 +194,7 @@ export default {
                     title: "ACCESS TYPE",
                 },
                 {
-                    title: "",
+                    title: "Privileges",
                 },
             ],
             tables: [],
@@ -216,7 +219,7 @@ export default {
     },
     methods: {
         addAccessType() {
-            const accessType = Parse.Object.extend("Access_Types");
+            const accessType = Parse.Object.extend("AccessTypes");
             const newAccessType = new accessType();
 
             newAccessType
@@ -251,31 +254,31 @@ export default {
         },
     },
     mounted: async function () {
-        var applicationTypesTable = [];
+        var accessTypesTable = [];
 
-        const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
-        const query = new Parse.Query(ApplicationTypes);
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
-            const appType = querResult[i];
-            var appReqs = "";
-            for (var x = 0; x < appType.get("applicationReqs").length; x++) {
-                var appReqsIndex = appType.get("applicationReqs")[x];
-                if (appReqs === "") {
-                    appReqs = appReqs + appReqsIndex.applicationReq;
+            const accessType = querResult[i];
+            var accessPriv = "";
+            for (var x = 0; x < accessType.get("privileges").length; x++) {
+                var accessPrivIndex = accessType.get("privileges")[x];
+                if (accessPriv === "") {
+                    accessPriv = accessPriv + accessPrivIndex;
                 } else {
-                    appReqs = appReqs + ", " + appReqsIndex.applicationReq;
+                    accessPriv = accessPriv + ", " + accessPrivIndex;
                 }
             }
 
-            applicationTypesTable.push({
-                Name: appType.get("applicationTypeName"),
-                Requirements: appReqs,
+            accessTypesTable.push({
+                Name: accessType.get("name"),
+                Privileges: accessPriv,
             });
         }
         this.totalEntries = querResult.length;
-        this.tables = applicationTypesTable;
+        this.tables = accessTypesTable;
         // console.log(this.tables);
     },
 };
