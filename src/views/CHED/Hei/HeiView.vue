@@ -4,7 +4,7 @@
 </div>
 <div v-else class="p-3">
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
-        <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
+        <div class="bg-brand-white shadow-md rounded-md m-2 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
                 <div class="flex flex-row">
                     <div :class="'homeIcon ' + data.color" class="mr-3">
