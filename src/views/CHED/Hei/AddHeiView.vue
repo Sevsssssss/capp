@@ -1,16 +1,7 @@
 <template>
   <div class="main-page flex justify-center items-center p-5">
     <div
-      class="
-        card
-        over
-        p-4
-        w-fit
-        bg-white
-        rounded-lg
-        border border-gray-200
-        shadow-md
-      "
+      class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md"
     >
       <form v-on:submit.prevent="submit" class="card-body">
         <div
@@ -190,17 +181,15 @@
           <button class="btn btn-m btn-outline" @click="$router.go(-1)">
             Cancel
           </button>
-          
-          <button for="my-modal-6" id="my-modal-6" type="submit" class="
-              border-none
-              btn btn-m
-              submit
-              bg-brand-darkblue
-              hover:bg-brand-blue
-            "
+
+          <button
+            for="my-modal-6"
+            id="my-modal-6"
+            type="submit"
+            class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue"
             @click="modal()"
           >
-            Add HEI 
+            Add HEI
           </button>
         </div>
       </form>
@@ -216,29 +205,13 @@
           <div class="mb-6">
             <label
               for="base-input"
-              class="
-                block
-                mb-2
-                text-sm
-                font-medium
-                text-gray-900
-                dark:text-gray-300
-              "
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >HEI TYPE</label
             >
             <input
               type="text"
               id="base-input"
-              class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              "
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter HEI Type"
             />
           </div>
@@ -246,14 +219,7 @@
         <div class="modal-action">
           <label
             for="createHEI"
-            class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            "
+            class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white"
             >Cancel</label
           >
           <label
@@ -263,26 +229,32 @@
         </div>
       </div>
     </div>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
-            <div class="modal-box">
-                <div class="text-brand-darkblue font-bold label-xl">Add Hei Account</div>
-                <p class="text-sm xxs:leading-tight text-grey-200">
-
-                       Are you sure you want to add this account?
-                    </p>
-                <div class="modal-action">
-                    <label for="my-modal-6"  class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " >Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI()">Continue</label>
-                </div>
-            </div>
+    <div
+      :class="{ 'modal-open ': validate() }"
+      class="modal modal-bottom sm:modal-middle"
+    >
+      <div class="modal-box">
+        <div class="text-brand-darkblue font-bold label-xl">
+          Add Hei Account
         </div>
+        <p class="text-sm xxs:leading-tight text-grey-200">
+          Are you sure you want to add this account?
+        </p>
+        <div class="modal-action">
+          <label
+            for="my-modal-6"
+            class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white"
+            >Cancel</label
+          >
+          <label
+            for="my-modal-6"
+            class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"
+            @click="addHEI()"
+            >Continue</label
+          >
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Add HEI Type -->
@@ -370,39 +342,37 @@ export default {
       this.v$.$touch();
       if (!this.v$.$pending || !this.v$.$error) return;
     },
-    validate(){
-      console.log(this.showModal1)
+    validate() {
+      console.log(this.showModal1);
       return this.showModal1;
-            
     },
 
-    async addHEI(){
-       const newHEI = new Parse.User();
-        newHEI.set("hei_name", this.hei_name);
-        newHEI.set("username", this.username);
-        newHEI.set("password", "password");
-        newHEI.set("email", this.email);
-        newHEI.set("address", this.address);
-        newHEI.set("number", this.number);
-        newHEI.set("inst_code", this.inst_code);
-        newHEI.set("hei_type", this.hei_type);
-        newHEI.set("access_type", "HEI");
+    async addHEI() {
+      const newHEI = new Parse.User();
+      newHEI.set("hei_name", this.hei_name);
+      newHEI.set("username", this.username);
+      newHEI.set("password", "password");
+      newHEI.set("email", this.email);
+      newHEI.set("address", this.address);
+      newHEI.set("number", this.number);
+      newHEI.set("inst_code", this.inst_code);
+      newHEI.set("hei_type", this.hei_type);
+      newHEI.set("access_type", "HEI");
 
-         try {
-          await newHEI.save();
-          this.$router.push("/hei");
-          console.log(this.showModal1)
-          // if (
-          //   confirm("Account added. Would you like to add another account?")
-          // ) {
-          //   document.location.reload();
-          // } else {
-          //   this.$router.push("/hei");
-          // }
-        } catch (error) {
-          alert("Error: " + error.code + " " + error.message);
-        }
-       
+      try {
+        await newHEI.save();
+        this.$router.push("/hei");
+        console.log(this.showModal1);
+        // if (
+        //   confirm("Account added. Would you like to add another account?")
+        // ) {
+        //   document.location.reload();
+        // } else {
+        //   this.$router.push("/hei");
+        // }
+      } catch (error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
     },
     modal() {
       console.log("Hello");
@@ -413,7 +383,6 @@ export default {
       //     alert('nay')
       // }
 
-      
       console.log("Hello2");
       var has_error = 0;
       //var error_text = "Account not created due to the following reasons:\n";
@@ -454,9 +423,8 @@ export default {
         //     Math.floor(Math.random() * charactersLength)
         //   );
         // }
-        
+
         this.showModal1 = !this.showModal1;
-       
       }
     },
   },
