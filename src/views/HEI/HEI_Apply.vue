@@ -2,9 +2,8 @@
 <section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <div class="p-12">
-
             <div class="">
-                <div class="flex flex-row items-start justify-evenly pt-12">
+                <div class="flex flex-row items-start justify-evenly">
                     <div class="flex-col">
                         <div class="font-semibold text-lg">HIGHER EDUCATION INSTITUTION</div>
                         <hr>
@@ -43,80 +42,90 @@
                     <div class="flex-col">
                         <div class="font-semibold text-lg text-left">UPLOAD HEIs CREDENTIALS</div>
                         <hr>
-                        <div class="space-y-3 pt-3">
-                            <div class="flex flex-row justify-between space-x-4">
-                                <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                                    <div v-for="i in heiReq" :key="i" class="w-80 form-control">
-                                        <label class="label text-left">
-                                            <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.name}}</span>
-                                        </label>
-                                        <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
-                                    </div>
-                                </div>
+                        <div class="grid grid-cols-2  place-items-center gap-4 py-5">
+                            <div v-for="i in heiReq" :key="i" class="w-full form-control">
+                                <label class="label text-left">
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.name}}</span>
+                                </label>
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
                             </div>
                         </div>
+                        <!-- <div class="grid grid-cols-1  place-items-center">
+                            <div v-for="i in heiReq" :key="i" class="w-full form-control">
+                                <label class="label text-left pt-4">
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.name}}</span>
+                                </label>
+                                <input :id="i.id" class="block text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
+                            </div>
+                        </div> -->
                     </div>
                 </div>
+                <br>
                 <!-- Title -->
-                <div class="">
-                    <div class="flex justify-evenly items-center">
+                <div class="px-5">
+                    <div class="flex items-start">
                         <div class="flex">
                             <div class="font-semibold text-lg text-left">APPLY FOR APPLICATION</div>
-                            <div class="dropdown dropdown-start pl-1 pr-16">
-                                <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 stroke-current">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </label>
-                                <div tabindex="0" class="card compact dropdown-content shadow bg-base-100 rounded-box w-80">
-                                    <div v-if="selected === 'Initial Permit'" class="card-body flex justify-center m-4">
-                                        <h2 class="font-semibold text-sm">CREDENTIALS FOR INITIAL PERMIT</h2>
-                                        <ul class="list-disc text-left">
-                                            <li v-for="i in descol1" :key="i.item">
-                                                {{i.item}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div v-if="selected === 'Compliance'" class="card-body flex justify-center m-4">
-                                        <h2 class="font-semibold text-sm">CREDENTIALS FOR COMPLIANCE</h2>
-                                        <ul class="list-disc text-left">
-                                            <li v-for="i in descol1" :key="i.item">
-                                                {{i.item}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div v-if="selected === 'Renewal'" class="card-body flex justify-center m-4">
-                                        <h2 class="font-semibold text-sm">CREDENTIALS FOR RENEWAL</h2>
-                                        <ul class="list-disc text-left">
-                                            <li v-for="i in descol1" :key="i.item">
-                                                {{i.item}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div v-if="selected === 'Government Recognition'" class="card-body flex justify-center m-4">
-                                        <h2 class="font-semibold text-sm">CREDENTIALS FOR GOVERNMENT RECOGNITION</h2>
-                                        <ul class="list-disc text-left">
-                                            <li v-for="i in descol1" :key="i.item">
-                                                {{i.item}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
+                        <div></div>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="flex space-x-2">
                         <div class="flex pb-2">
                             <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64">
                                 <option class="" v-for="i in items" :key="i.v" :value="i.href">{{i.v}}</option>
                             </select>
                         </div>
+                        <div class="dropdown dropdown-start">
+                            <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 stroke-current">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </label>
+                            <div tabindex="0" class="card compact dropdown-content shadow bg-base-100 rounded-box w-80">
+                                <div v-if="selected === 'Initial Permit'" class="card-body flex justify-center m-4">
+                                    <h2 class="font-semibold text-sm">CREDENTIALS FOR INITIAL PERMIT</h2>
+                                    <ul class="list-disc text-left">
+                                        <li v-for="i in descol1" :key="i.item">
+                                            {{i.item}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-if="selected === 'Compliance'" class="card-body flex justify-center m-4">
+                                    <h2 class="font-semibold text-sm">CREDENTIALS FOR COMPLIANCE</h2>
+                                    <ul class="list-disc text-left">
+                                        <li v-for="i in descol1" :key="i.item">
+                                            {{i.item}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-if="selected === 'Renewal'" class="card-body flex justify-center m-4">
+                                    <h2 class="font-semibold text-sm">CREDENTIALS FOR RENEWAL</h2>
+                                    <ul class="list-disc text-left">
+                                        <li v-for="i in descol1" :key="i.item">
+                                            {{i.item}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-if="selected === 'Government Recognition'" class="card-body flex justify-center m-4">
+                                    <h2 class="font-semibold text-sm">CREDENTIALS FOR GOVERNMENT RECOGNITION</h2>
+                                    <ul class="list-disc text-left">
+                                        <li v-for="i in descol1" :key="i.item">
+                                            {{i.item}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <hr>
                 </div>
-                <div class="">
+                <div class="px-5">
                     <!-- INITIAL PERMIT -->
                     <div v-if="selected === 'Initial Permit'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-full form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
                                 </label>
@@ -127,7 +136,7 @@
                     <!-- RENEWAL -->
                     <div v-else-if="selected === 'Renewal'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-full form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
                                 </label>
@@ -138,7 +147,7 @@
                     <!-- COMPLIANCE -->
                     <div v-else-if="selected === 'Compliance'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-full form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.id}}. {{i.item}} </span>
                                 </label>
@@ -149,7 +158,7 @@
                     <!-- GOVERNMENT RECOGNITION -->
                     <div v-else-if="selected === 'Government Recognition'">
                         <div class="grid grid-cols-2  place-items-center gap-4 py-5">
-                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                            <div v-for="i in descol1" :key="i" class="w-full form-control">
                                 <label class="label text-left">
                                     <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
                                 </label>
