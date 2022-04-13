@@ -501,23 +501,24 @@
                 p-2.5
               "
               placeholder="Enter Name"
+              v-model="atname"
             />
             <div class="font-medium text-sm mt-2">Privileges:</div>
             <div class="form-control flex mt-1 flex-row">
               <label class="flex flex-row cursor-pointer">
-                <input type="checkbox" class="checkbox" />
+                <input type="checkbox" class="checkbox" value="application" v-model="checkedAccessTypes"/>
                 <div class="label-text ml-1" style="align-self: center">
                   Application
                 </div>
               </label>
               <label class="flex flex-row ml-2 cursor-pointer">
-                <input type="checkbox" class="checkbox" />
+                <input type="checkbox" class="checkbox" value="heis_account" v-model="checkedAccessTypes"/>
                 <div class="label-text ml-1" style="align-self: center">
                   HEIs Account
                 </div>
               </label>
               <label class="flex flex-row ml-2 cursor-pointer">
-                <input type="checkbox" class="checkbox" />
+                <input type="checkbox" class="checkbox" value="rqat_account" v-model="checkedAccessTypes"/>
                 <div class="label-text ml-1" style="align-self: center">
                   RQAT Account
                 </div>
@@ -525,19 +526,19 @@
             </div>
             <div class="form-control flex mt-1 flex-row">
               <label class="flex flex-row cursor-pointer">
-                <input type="checkbox" class="checkbox" />
+                <input type="checkbox" class="checkbox" value="employees" v-model="checkedAccessTypes"/>
                 <div class="label-text ml-1" style="align-self: center">
                   Employees
                 </div>
               </label>
               <label class="flex flex-row ml-2 cursor-pointer">
-                <input type="checkbox" class="checkbox" />
+                <input type="checkbox" class="checkbox" value="evaluation_ins" v-model="checkedAccessTypes"/>
                 <div class="label-text ml-1" style="align-self: center">
                   Evaluation Ins.
                 </div>
               </label>
               <label class="flex flex-row ml-2 cursor-pointer">
-                <input type="checkbox" class="checkbox" />
+                <input type="checkbox" class="checkbox" value="reporting" v-model="checkedAccessTypes"/>
                 <div class="label-text ml-1" style="align-self: center">
                   Reporting
                 </div>
@@ -560,7 +561,7 @@
           >
           <label
             class="btn btn-sm p-6 bg-blue-700 hover:bg-blue-800 border-none"
-            >Submit</label
+            @click="addAccessType()">Submit</label
           >
         </div>
       </div>
@@ -592,6 +593,8 @@ export default {
       tables: [],
       search: "",
       sort_type: "Sort by Designation",
+      atname:"",
+      checkedAccessTypes:[],
     };
   },
   components: {},
@@ -608,6 +611,22 @@ export default {
     },
   },
   methods: {
+    addAccessType(){
+      const accessType = Parse.Object.extend("Access_Types");
+      const newAccessType = new accessType();
+
+      newAccessType.save({
+        name: this.atname,
+        privileges: this.checkedAccessTypes,
+      })
+      .then(
+        (newAccessType) => {
+          console.log("New Access Type Added:" + newAccessType.id)
+        },
+        (error) => {
+          alert("Access Type Adding Failed: " + error)
+      });  
+    },
     addAppType() {
       this.$router.push("/settings/add/applicationType");
     },
