@@ -135,7 +135,8 @@ import ClipboardLine from "@/assets/sidebar_icons/clipboard-line.svg";
 import GroupLine from "@/assets/sidebar_icons/group-line.svg";
 import FileChartOutline from "@/assets/sidebar_icons/file-chart-line.svg";
 import TeamLine from "@/assets/sidebar_icons/team-line.svg";
-import SettingsLine from "@/assets/sidebar_icons/settings-5-line.svg";
+import FileSettingsLine from "@/assets/sidebar_icons/file-settings-line.svg";
+import AccessTypeLine from "@/assets/sidebar_icons/shield-user-line.svg";
 
 export default {
     name: "ViewLayout",
@@ -249,15 +250,26 @@ export default {
                         },
                     },
                     {
-                        href: "/settings",
-                        title: "Settings",
+                        href: "/app-settings",
+                        title: "Application Types",
                         icon: {
                             element: "img",
                             attributes: {
-                                src: SettingsLine
+                                src: FileSettingsLine
                             },
                         },
                     },
+                    {
+                        href: "/settings",
+                        title: "Access Types",
+                        icon: {
+                            element: "img",
+                            attributes: {
+                                src: AccessTypeLine
+                            },
+                        },
+                    },
+                    
                 ],
             };
         } else if (Parse.User.current().get("access_type") === "ADMIN") {
