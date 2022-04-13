@@ -167,7 +167,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- BUTTONS -->
                 <div class="space-x-6 p-10">
                     <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 ">Cancel</button>

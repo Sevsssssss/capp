@@ -110,7 +110,7 @@
                             {{ table.email }}
                         </td>
                         <td class="px-6 py-4">
-                            <label for="deleteFunc" class="hover:text-brand-red/60">
+                            <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                 </svg>
@@ -165,7 +165,7 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteAccount()">Delete</label>
             </div>
         </div>
     </div>
@@ -174,12 +174,12 @@
 
 <script>
 import NoDataAvail from "@/components//NoDataAvail.vue";
-
 import Parse from "parse";
 export default {
     name: "HeiView",
     data() {
         return {
+            currentDelAcc: "",
             currentpage: 0,
             numPerPage: 10,
             totalEntries: 0,
@@ -307,6 +307,19 @@ export default {
         },
     },
     methods: {
+        selectAcc(instNum){
+            this.currentDelAcc = instNum;
+        },
+        async deleteAccount(){
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("inst_code", this.currentDelAcc);
+
+            const querResult = await acc.find({
+                useMasterKey: true,
+            });
+            const accDel = querResult[0];
+            alert(accDel.get('hei_name'));
+        },
         csvHei() {
             this.$router.push("/hei/upload");
         },
