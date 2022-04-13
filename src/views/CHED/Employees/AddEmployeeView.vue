@@ -106,7 +106,15 @@
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="addEmployee()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="
+                border-none
+                btn btn-m
+                submit
+                bg-brand-darkblue
+                hover:bg-brand-blue
+                "
+                @click="modal()"
+            >
                     Add Employee
                 </button>
             </div>
@@ -127,15 +135,37 @@
             </form>
             <div class="modal-action">
                 <label for="createEmType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
+                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" >Submit</label>
             </div>
         </div>
+    </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
+            <div class="modal-box">
+                <div class="text-brand-darkblue font-bold label-xl">Add Employee Account</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+
+                    Are you sure you want to add this account?
+                    </p>
+                <div class="modal-action">
+                    <label for="my-modal-6"  class="
+                btn btn-sm
+                rounded-md
+                text-blue-700
+                bg-transparent
+                border border-blue-700
+                hover:bg-white
+                " >Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addEmployee()">Continue</label>
+                </div>
+            </div>
     </div>
 </div>
 <!-- Add Employee Type -->
 </template>
 
 <script>
+import VueInstantLoadingSpinner from 'vue-instant-loading-spinner'
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
@@ -145,9 +175,13 @@ import {
 
 export default {
     name: "AddEmployeeView",
+    components: {
+      VueInstantLoadingSpinner
+    },
     data() {
         return {
             showModal: false,
+            showModal1: false,
             v$: useVuelidate(),
             accessTypes: [{
                     title: "ADMIN",
@@ -228,11 +262,51 @@ export default {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
+        validate(){
+            
+            return this.showModal1;
+                
+        },
 
         async addEmployee() {
             const newEmployee = new Parse.User();
-            var has_error = 0;
+            
+            var employeeName = {
+                lastname: this.lastname,
+                firstname: this.firstname,
+                middleinitial: this.midinit,
+            };
 
+            newEmployee.set("name", employeeName);
+            newEmployee.set("username", this.username);
+            newEmployee.set("password", "password");
+            newEmployee.set("email", this.email);
+            newEmployee.set("contact_num", this.contactnum);
+            newEmployee.set("access_type", this.access_type);
+            newEmployee.set("designation", this.emp_designation);
+            newEmployee.set("user_type", "employee");
+
+            try {
+                this.$refs.Spinner.show();
+                setTimeout(function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this), 5000);
+                await newEmployee.save();
+                setTimeout( () => this.$router.push({ path: "/employees"}), 3000);
+                // if (
+                //     confirm("Account added. Would you like to add another account?")
+                // ) {
+                //     document.location.reload();
+                // } else {
+                //     this.$router.push("/employees");
+                // }
+            } catch (error) {
+                alert("Error: " + error.code + " " + error.message);
+                document.location.reload();
+            }
+        },
+        modal() {
+            var has_error = 0;
             if (
                 this.lastname == "" ||
                 this.firstname == "" ||
@@ -245,46 +319,19 @@ export default {
             }
 
             if (has_error < 1) {
-                var password = "";
-                var characters =
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                var charactersLength = characters.length;
-                for (var i = 0; i < 8; i++) {
-                    password += characters.charAt(
-                        Math.floor(Math.random() * charactersLength)
-                    );
-                }
-                var employeeName = {
-                    lastname: this.lastname,
-                    firstname: this.firstname,
-                    middleinitial: this.midinit,
-                };
-
-                newEmployee.set("name", employeeName);
-                newEmployee.set("username", this.username);
-                newEmployee.set("password", password);
-                newEmployee.set("email", this.email);
-                newEmployee.set("contact_num", this.contactnum);
-                newEmployee.set("access_type", this.access_type);
-                newEmployee.set("designation", this.emp_designation);
-                newEmployee.set("user_type", "employee");
-
-                try {
-                    await newEmployee.save();
-                    if (
-                        confirm("Account added. Would you like to add another account?")
-                    ) {
-                        document.location.reload();
-                    } else {
-                        this.$router.push("/employees");
-                    }
-                } catch (error) {
-                    alert("Error: " + error.code + " " + error.message);
-                }
+                // var password = "";
+                // var characters =
+                //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                // var charactersLength = characters.length;
+                // for (var i = 0; i < 8; i++) {
+                //     password += characters.charAt(
+                //         Math.floor(Math.random() * charactersLength)
+                //     );
+                //}
+                this.showModal1 = !this.showModal1;
             }
-        },
+        }
     },
-    components: {},
 };
 </script>
 

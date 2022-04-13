@@ -122,12 +122,13 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
             <div class="modal-box">
                 <div class="text-brand-darkblue font-bold label-xl">Add RQAT Account</div>
                 <p class="text-sm xxs:leading-tight text-grey-200">
 
-                       Are you sure you want to add this account?
+                    Are you sure you want to add this account?
                     </p>
                 <div class="modal-action">
                     <label for="my-modal-6"  class="
@@ -147,6 +148,7 @@
 </template>
 
 <script>
+import VueInstantLoadingSpinner from 'vue-instant-loading-spinner'
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
@@ -155,6 +157,9 @@ import {
 
 export default {
     name: "AddRQATView",
+    components: {
+      VueInstantLoadingSpinner
+    },
 
   data() {
     return {
@@ -235,8 +240,12 @@ export default {
         
 
         try {
+          this.$refs.Spinner.show();
+          setTimeout(function () {
+              this.$refs.Spinner.hide();
+          }.bind(this), 5000);
           await newRQAT.save();
-          this.$router.push("/rqat");
+          setTimeout( () => this.$router.push({ path: "/rqat"}), 3000);
           // if (
           //   confirm("Account added. Would you like to add another account?")
           // ) {
@@ -298,7 +307,7 @@ export default {
         }
         this.heis = heis;
     },
-    components: {},
+    
 };
 </script>
 
