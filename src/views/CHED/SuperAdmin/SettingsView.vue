@@ -70,10 +70,12 @@
                             <td class="px-6 py-4 text-right">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </td>
-                            <td class="hover:text-brand-red/60">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
+                            <td>
+                                <label for="deleteAccessType" class="hover:text-brand-red/60">
+                                    <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                    </svg>
+                                </label>
                             </td>
                         </tr>
                     </tbody>
@@ -161,10 +163,13 @@
                             <td class="px-6 py-4 text-right">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </td>
-                            <td class="hover:text-brand-red/60">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
+                            <td>
+                                <label for="deleteApplicationType" class="hover:text-brand-red/60">
+                                    <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                    </svg>
+                                </label>
+
                             </td>
                         </tr>
                     </tbody>
@@ -260,6 +265,36 @@
             <div class="modal-action">
                 <label for="createAccessType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Submit</label>
+            </div>
+        </div>
+    </div>
+    <!-- Access Type -->
+    <input type="checkbox" id="deleteAccessType" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Access Type</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteAccessType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+            </div>
+        </div>
+    </div>
+    <!-- Application Type -->
+    <input type="checkbox" id="deleteApplicationType" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Application Type</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteApplicationType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
             </div>
         </div>
     </div>
