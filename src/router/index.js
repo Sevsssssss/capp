@@ -254,7 +254,7 @@ const routes = [
         component: AddApplicationView,
         meta:{
           breadcrumb: [
-            { name: 'SETTINGS', link: '/settings' },
+            { name: 'APPLICATION SETTINGS', link: '/app-settings' },
             { name: 'ADD APPLICATION TYPE'}
           ]
         }
