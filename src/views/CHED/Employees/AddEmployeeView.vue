@@ -78,9 +78,9 @@
                 <div class="form-control w-full pr-2">
                     <label class="label">
                         <span class="label-text">Designation:</span>
-                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        <div class="text-sm font-medium text-gray-500">
                             Add Designation?
-                            <label for="createEmType" href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create</label>
+                            <label for="createEmType" href="#" class="text-blue-700 hover:underline">Create</label>
                         </div>
                     </label>
                     <select class="select select-bordered w-full" v-model="v$.emp_designation.$model">
@@ -121,7 +121,7 @@
             </p>
             <form>
                 <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Designation</label>
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation" />
                 </div>
             </form>
@@ -263,6 +263,7 @@ export default {
                 newEmployee.set("name", employeeName);
                 newEmployee.set("username", this.username);
                 newEmployee.set("password", password);
+                newEmployee.set("email", this.email);
                 newEmployee.set("contact_num", this.contactnum);
                 newEmployee.set("access_type", this.access_type);
                 newEmployee.set("designation", this.emp_designation);

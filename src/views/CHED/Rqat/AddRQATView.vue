@@ -84,15 +84,24 @@
                 </div>
             </div>
 
-            <div class="flex justify-end pt-8 space-x-4">
-                <button class="btn btn-md btn-outline" @click="$router.go(-1)">
-                    Cancel
-                </button>
-                <button class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="addRQAT()">
-                    Add RQAT
-                </button>
-            </div>
-        </form>
+        <div class="flex justify-end pt-8 space-x-4">
+          <button class="btn btn-m btn-outline" @click="$router.go(-1)">
+            Cancel
+          </button>
+
+          <button for="my-modal-6" id="my-modal-6" type="submit" class="
+              border-none
+              btn btn-m
+              submit
+              bg-brand-darkblue
+              hover:bg-brand-blue
+            "
+            @click="modal()"
+          >
+            Add RQAT
+          </button>
+        </div>
+      </form>
     </div>
     <input type="checkbox" id="createAffilication" class="modal-toggle" />
     <div class="modal">
@@ -113,8 +122,28 @@
             </div>
         </div>
     </div>
-</div>
-<!-- Add AFFILIATION -->
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle ">
+            <div class="modal-box">
+                <div class="text-brand-darkblue font-bold label-xl">Add RQAT Account</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+
+                       Are you sure you want to add this account?
+                    </p>
+                <div class="modal-action">
+                    <label for="my-modal-6"  class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            " >Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addRQAT()">Continue</label>
+                </div>
+            </div>
+    </div>
+  </div>
+  <!-- Add AFFILIATION -->
 </template>
 
 <script>
@@ -127,109 +156,131 @@ import {
 export default {
     name: "AddRQATView",
 
-    data() {
-        return {
-            showModal: false,
-            v$: useVuelidate(),
-            heis: [{
-                title: "None",
-            }, ],
-            lastname: "",
-            firstname: "",
-            midinit: "",
-            username: "",
-            contactnum: "",
-            hei_affil: "None",
+  data() {
+    return {
+      showModal: false,
+      showModal1: false,
+      v$: useVuelidate(),
+      heis: [
+        {
+          title: "None",
+        }
+      ],
+      lastname: "",
+      firstname: "",
+      midinit: "",
+      username: "",
+      contactnum: "",
+      hei_affil: "None",
+    };
+  },
+  validations() {
+    return {
+      lastname: {
+        required,
+      },
+      firstname: {
+        required,
+      },
+      midinit: {
+        required,
+      },
+      username: {
+        required,
+      },
+      contactnum: {
+        required,
+      },
+      hei_affil: {
+        required,
+      },
+    };
+  },
+  methods: {
+    ToggleshowModal() {
+      this.showModal = !this.showModal;
+    },
+    validationStatus: function (validation) {
+      return typeof validation !== "undefined" ? validation.$error : false;
+    },
+
+    submit: function () {
+      this.v$.$touch();
+      if (!this.v$.$pending || !this.v$.$error) return;
+    },
+
+    validate(){
+      
+      return this.showModal1;
+            
+    },
+
+    
+  async addRQAT() {
+        const newRQAT = new Parse.User();
+
+        var rqatName = {
+          lastname: this.lastname,
+          firstname: this.firstname,
+          middleinitial: this.midinit,
         };
+
+        newRQAT.set("name", rqatName);
+        newRQAT.set("username", this.username);
+        newRQAT.set("password", "password");
+        newRQAT.set("contact_num", this.contactnum);
+        newRQAT.set("hei_affil", this.hei_affil);
+        newRQAT.set("access_type", "RQAT");
+
+        
+
+        try {
+          await newRQAT.save();
+          this.$router.push("/rqat");
+          // if (
+          //   confirm("Account added. Would you like to add another account?")
+          // ) {
+          //   document.location.reload();
+          // } else {
+          //   this.$router.push("/rqat");
+          // }
+
+        } catch (error) {
+          alert("Error: " + error.code + " " + error.message);
+          document.location.reload();
+        }
+      
     },
-    validations() {
-        return {
-            lastname: {
-                required,
-            },
-            firstname: {
-                required,
-            },
-            midinit: {
-                required,
-            },
-            username: {
-                required,
-            },
-            contactnum: {
-                required,
-            },
-            hei_affil: {
-                required,
-            },
-        };
+    modal() {
+      var has_error = 0;
+
+      if (
+        this.lastname == "" ||
+        this.firstname == "" ||
+        this.midinit == "" ||
+        this.username == "" ||
+        this.contactnum == ""
+      ) {
+        has_error = 1;
+      }
+      
+      if (has_error < 1) {
+        // var password = "";
+        // var characters =
+        //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        // var charactersLength = characters.length;
+        // for (var i = 0; i < 8; i++) {
+        //   password += characters.charAt(
+        //     Math.floor(Math.random() * charactersLength)
+        //   );
+        // }
+        
+        this.showModal1 = !this.showModal1;
+      }
     },
-    methods: {
-        ToggleshowModal() {
-            this.showModal = !this.showModal;
-        },
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
-        },
-
-        submit: function () {
-            this.v$.$touch();
-            if (!this.v$.$pending || !this.v$.$error) return;
-        },
-
-        async addRQAT() {
-            const newRQAT = new Parse.User();
-            var has_error = 0;
-
-            if (
-                this.lastname == "" ||
-                this.firstname == "" ||
-                this.midinit == "" ||
-                this.username == "" ||
-                this.contactnum == ""
-            ) {
-                has_error = 1;
-            }
-
-            if (has_error < 1) {
-                var password = "";
-                var characters =
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                var charactersLength = characters.length;
-                for (var i = 0; i < 8; i++) {
-                    password += characters.charAt(
-                        Math.floor(Math.random() * charactersLength)
-                    );
-                }
-                var rqatName = {
-                    lastname: this.lastname,
-                    firstname: this.firstname,
-                    middleinitial: this.midinit,
-                };
-                console.log(password);
-                newRQAT.set("name", rqatName);
-                newRQAT.set("username", this.username);
-                newRQAT.set("password", "password");
-                newRQAT.set("contact_num", this.contactnum);
-                newRQAT.set("hei_affil", this.hei_affil);
-                newRQAT.set("access_type", "RQAT");
-
-                try {
-                    await newRQAT.save();
-                    if (
-                        confirm("Account added. Would you like to add another account?")
-                    ) {
-                        document.location.reload();
-                    } else {
-                        this.$router.push("/rqat");
-                    }
-                } catch (error) {
-                    alert("Error: " + error.code + " " + error.message);
-                }
-            }
-        },
-    },
-    mounted: async function () {
+  },
+  
+  mounted: async function () {
         var heis = [];
 
         const query = new Parse.Query(Parse.User);

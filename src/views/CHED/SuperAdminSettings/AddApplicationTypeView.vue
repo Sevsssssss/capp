@@ -40,12 +40,18 @@
             <div class="form-control w-full mr-3">
               <label class="label"
                 ><span class="label-text">Requirement {{ req.id }}</span></label
-              ><input
+              >
+              <div class="flex">
+                  <input
                 type="text"
                 placeholder="Enter Requirement Name"
                 class="input input-bordered"
-                v-model="req.applicationReq"
-              /><label class="label"> <!--v-if--></label>
+                v-model="req.applicationReq" style="flex: 1 1 auto;"
+              /><button class="btn btn-margin btn-outline hover:bg-brand-red/60" @click="removeReq">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M7 6V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5zm6.414 8l1.768-1.768-1.414-1.414L12 12.586l-1.768-1.768-1.414 1.414L10.586 14l-1.768 1.768 1.414 1.414L12 15.414l1.768 1.768 1.414-1.414L13.414 14zM9 4v2h6V4H9z"/></svg>
+          </button>
+              </div>
+              <label class="label"> <!--v-if--></label>
             </div>
           </div>
         </div>
@@ -122,6 +128,9 @@ export default {
         id: this.counter,
         applicationReq: "",
       });
+    },
+    removeReq(){
+        console.log("Hello");
     },
   },
 };

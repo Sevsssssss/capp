@@ -48,7 +48,7 @@
                   "
                 >
                   <svg
-                    class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    class="w-5 h-5 text-gray-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -74,12 +74,6 @@
                     w-80
                     pl-10
                     p-2.5
-                    dark:bg-gray-700
-                    dark:border-gray-600
-                    dark:placeholder-gray-400
-                    dark:text-white
-                    dark:focus:ring-blue-500
-                    dark:focus:border-blue-500
                   "
                   placeholder="Search for items"
                 />
@@ -106,9 +100,7 @@
                   py-2.5
                   mr-2
                   mb-2
-                  dark:bg-blue-600 dark:hover:bg-blue-700
                   focus:outline-none
-                  dark:focus:ring-blue-800
                 "
               >
                 <svg
@@ -131,14 +123,13 @@
         <!-- Table body -->
 
         <table
-          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+          class="w-full text-sm text-left text-gray-500"
         >
           <thead
             class="
               text-xs text-gray-700
               uppercase
               bg-gray-50
-              dark:bg-gray-700 dark:text-gray-400
             "
           >
             <tr>
@@ -153,7 +144,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr class="bg-white border-b">
               <td
                 scope="row"
                 class="
@@ -161,7 +152,6 @@
                   py-4
                   font-medium
                   text-gray-900
-                  dark:text-white
                   whitespace-nowrap
                 "
               >
@@ -174,7 +164,6 @@
                   class="
                     font-medium
                     text-blue-600
-                    dark:text-blue-500
                     hover:underline
                   "
                   >Edit</a
@@ -196,19 +185,19 @@
         <!-- Table Footer -->
         <div class="table-footer flex flex-row justify-between">
           <div class="flex flex-row pl-4 justify-center items-center">
-            <span class="text-sm text-gray-700 dark:text-gray-400">
+            <span class="text-sm text-gray-700">
               Showing
-              <span class="font-semibold text-gray-900 dark:text-white">{{
+              <span class="font-semibold text-gray-900">{{
                 1 + numPerPage * currentpage
               }}</span>
               to
-              <span class="font-semibold text-gray-900 dark:text-white">{{
+              <span class="font-semibold text-gray-900">{{
                 (currentpage + 1) * numPerPage > totalEntries
                   ? totalEntries
                   : (currentpage + 1) * numPerPage
               }}</span>
               of
-              <span class="font-semibold text-gray-900 dark:text-white">{{
+              <span class="font-semibold text-gray-900">{{
                 totalEntries
               }}</span>
               Entries
@@ -230,11 +219,6 @@
                       rounded-l-lg
                       border border-gray-300
                       hover:bg-gray-100 hover:text-gray-700
-                      dark:bg-gray-800
-                      dark:border-gray-700
-                      dark:text-gray-400
-                      dark:hover:bg-gray-700
-                      dark:hover:text-white
                     "
                     @click="prevPage()"
                     >Previous</a
@@ -252,11 +236,6 @@
                       rounded-r-lg
                       border border-gray-300
                       hover:bg-gray-100 hover:text-gray-700
-                      dark:bg-gray-800
-                      dark:border-gray-700
-                      dark:text-gray-400
-                      dark:hover:bg-gray-700
-                      dark:hover:text-white
                     "
                     @click="nextPage()"
                     >Next</a
@@ -288,7 +267,7 @@
                   "
                 >
                   <svg
-                    class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    class="w-5 h-5 text-gray-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -314,12 +293,6 @@
                     w-80
                     pl-10
                     p-2.5
-                    dark:bg-gray-700
-                    dark:border-gray-600
-                    dark:placeholder-gray-400
-                    dark:text-white
-                    dark:focus:ring-blue-500
-                    dark:focus:border-blue-500
                   "
                   placeholder="Search for items"
                 />
@@ -345,9 +318,7 @@
                 py-2.5
                 mr-2
                 mb-2
-                dark:bg-blue-600 dark:hover:bg-blue-700
                 focus:outline-none
-                dark:focus:ring-blue-800
               "
             >
               <svg
@@ -369,14 +340,13 @@
         <!-- Table body -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table
-            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+            class="w-full text-sm text-left text-gray-500"
           >
             <thead
               class="
                 text-xs text-gray-700
                 uppercase
                 bg-gray-50
-                dark:bg-gray-700 dark:text-gray-400
               "
             >
               <tr>
@@ -390,7 +360,7 @@
               <tr
                 v-for="table in searchApplicationType"
                 :key="table"
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                class="bg-white border-b"
               >
                 <th
                   scope="row"
@@ -399,7 +369,6 @@
                     py-4
                     font-medium
                     text-gray-900
-                    dark:text-white
                     whitespace-nowrap
                   "
                 >
@@ -416,7 +385,6 @@
                     class="
                       font-medium
                       text-blue-600
-                      dark:text-blue-500
                       hover:underline
                     "
                     >Edit</a
@@ -438,19 +406,19 @@
           <!-- Table Footer -->
           <div class="table-footer flex flex-row justify-between">
             <div class="flex flex-row pl-4 justify-center items-center">
-              <span class="text-sm text-gray-700 dark:text-gray-400">
+              <span class="text-sm text-gray-700">
                 Showing
-                <span class="font-semibold text-gray-900 dark:text-white">{{
+                <span class="font-semibold text-gray-900">{{
                   1 + numPerPage * currentpage
                 }}</span>
                 to
-                <span class="font-semibold text-gray-900 dark:text-white">{{
+                <span class="font-semibold text-gray-900">{{
                   (currentpage + 1) * numPerPage > totalEntries
                     ? totalEntries
                     : (currentpage + 1) * numPerPage
                 }}</span>
                 of
-                <span class="font-semibold text-gray-900 dark:text-white">{{
+                <span class="font-semibold text-gray-900">{{
                   totalEntries
                 }}</span>
                 Entries
@@ -472,11 +440,6 @@
                         rounded-l-lg
                         border border-gray-300
                         hover:bg-gray-100 hover:text-gray-700
-                        dark:bg-gray-800
-                        dark:border-gray-700
-                        dark:text-gray-400
-                        dark:hover:bg-gray-700
-                        dark:hover:text-white
                       "
                       @click="prevPage()"
                       >Previous</a
@@ -494,11 +457,6 @@
                         rounded-r-lg
                         border border-gray-300
                         hover:bg-gray-100 hover:text-gray-700
-                        dark:bg-gray-800
-                        dark:border-gray-700
-                        dark:text-gray-400
-                        dark:hover:bg-gray-700
-                        dark:hover:text-white
                       "
                       @click="nextPage()"
                       >Next</a
@@ -526,7 +484,6 @@
                 text-sm
                 font-medium
                 text-gray-900
-                dark:text-gray-300
               "
               >Access Tpye:</label
             >
