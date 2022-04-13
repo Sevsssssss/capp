@@ -1,8 +1,8 @@
 <template>
 <div class="m-3">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table class="w-full text-sm text-left text-gray-500 ">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
                         {{ header.title }}
@@ -10,8 +10,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="table in searchHEI" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 flex flex-col font-medium text-gray-900 dark:text-white text-wrap break-words">
+                <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
+                    <th scope="row" class="px-6 py-4 flex flex-col font-medium text-gray-900">
                         {{table.credential}}
                         <div class=" mt-2">
                             File: <span class="text-blue-400">{{table.file}}</span>
@@ -27,7 +27,7 @@
                         <input type="radio" :name="table.id" :id="table.id" :value="'disapproved-' + table.id" class="radio" :v-model="statusShow">
                     </td>
                     <td class="px-6 py-4">
-                        <textarea id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
+                        <textarea id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..."></textarea>
                     </td>
                 </tr>
             </tbody>

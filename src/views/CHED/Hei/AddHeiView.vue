@@ -77,9 +77,9 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
-                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        <div class="text-sm font-medium text-gray-500 ">
                             Add HEI Type?
-                            <label for="createHEI" href="#" class="text-blue-700 hover:underline dark:text-blue-500"><a>Create</a></label>
+                            <label for="createHEI" href="#" class="text-blue-700 hover:underline"><a>Create</a></label>
                         </div>
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_type">
@@ -90,11 +90,11 @@
                 </div>
             </div>
             <div class="flex justify-end pt-4 space-x-4">
-                <button class="btn btn-m btn-outline" @click="$router.go(-1)">
+                <button class="btn btn-md btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal()">
                     Add HEI
                 </button>
             </div>
@@ -109,7 +109,7 @@
             </p>
             <form>
                 <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">HEI TYPE</label>
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 ">HEI TYPE</label>
                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
                 </div>
             </form>
@@ -119,10 +119,11 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
-            <div class="text-brand-darkblue font-bold label-xl">
-                Add Hei Account
+        <div class="modal-box text-left">
+            <div class="font-semibold">
+                ADD HEI ACCOUNT
             </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this account?
@@ -139,6 +140,7 @@
 </template>
 
 <script>
+import VueInstantLoadingSpinner from 'vue-instant-loading-spinner'
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
@@ -148,7 +150,9 @@ import {
 
 export default {
     name: "AddHeiView",
-
+    components: {
+        VueInstantLoadingSpinner
+    },
     data() {
         return {
             showModal: false,
@@ -240,8 +244,13 @@ export default {
             newHEI.set("access_type", "HEI");
 
             try {
+                this.$refs.Spinner.show();
+                setTimeout(function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this), 5000);
                 await newHEI.save();
-                this.$router.push("/hei");
+                setTimeout( () => this.$router.push({ path: "/hei"}), 3000);
+                // this.$router.push("/hei");
                 console.log(this.showModal1);
                 // if (
                 //   confirm("Account added. Would you like to add another account?")
@@ -308,8 +317,6 @@ export default {
             }
         },
     },
-
-    components: {},
 };
 </script>
 

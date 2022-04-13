@@ -1,45 +1,42 @@
 <template>
-<div>
+<div class="m-3">
     <div>
         <div>
-            <div>
-                <div class="m-3">
-                    <div class="flex flex-row justify-between">
-                        <div class="flex flex-col p-4 text-left space-y-2">
-                            <span class="text-2xl font-semibold uppercase">{{
+            <div class="flex flex-row justify-between">
+                <div class="flex flex-col p-4 text-left space-y-2">
+                    <span class="text-2xl font-semibold uppercase">{{
                   HeiName
                 }}</span>
-                            <div class="font-normal text-sm uppercase">
-                                APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
-                            </div>
+                    <div class="font-normal text-sm uppercase">
+                        APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <div class="text-left p-4 pr-6 space-y-2">
+                        <div class="font-semibold text-md uppercase">
+                            APPLICATION STATUS - <span class=""> {{ status }}</span>
                         </div>
-                        <div class="flex flex-col">
-                            <div class="text-left p-4 pr-6 space-y-2">
-                                <div class="font-semibold text-md uppercase">
-                                    APPLICATION STATUS - <span class=""> {{ status }}</span>
-                                </div>
-                                <div class="font-semibold text-sm">
-                                    Date Applied:
-                                    <span class="font-normal">{{ dateApplied }}</span>
-                                </div>
-                            </div>
-                            <!-- <p>ID Number: {{id}}</p> -->
+                        <div class="font-semibold text-sm">
+                            Date Applied:
+                            <span class="font-normal">{{ dateApplied }}</span>
                         </div>
                     </div>
-                    <hr />
-                    <div class="py-4 px-4">
-                        <div class="flex justify-start space-x-4">
-                            <div class="font-semibold text-sm">
-                                Point Person: <span class="font-normal">{{ rep }}</span>
-                            </div>
-                            <div class="font-semibold text-sm">
-                                Email: <span class="font-normal">{{ email }}</span>
-                            </div>
-                        </div>
+                    <!-- <p>ID Number: {{id}}</p> -->
+                </div>
+            </div>
+            <hr />
+            <div class="py-4 px-4">
+                <div class="flex justify-start space-x-4">
+                    <div class="font-semibold text-sm">
+                        Point Person: <span class="font-normal">{{ rep }}</span>
+                    </div>
+                    <div class="font-semibold text-sm">
+                        Email: <span class="font-normal">{{ email }}</span>
                     </div>
                 </div>
             </div>
         </div>
+
         <div v-if="status === 'FOR APPROVAL'">
             <ForApproval></ForApproval>
         </div>

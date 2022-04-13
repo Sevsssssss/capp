@@ -71,9 +71,9 @@
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Select Affiliation:</span>
-                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        <div class="text-sm font-medium text-gray-500">
                             Add HEI Affiliation?
-                            <label for="createAffilication" href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create</label>
+                            <label for="createAffilication" href="#" class="text-blue-700 hover:underline">Create</label>
                         </div>
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_affil">
@@ -85,10 +85,10 @@
             </div>
 
             <div class="flex justify-end pt-8 space-x-4">
-                <button class="btn btn-m btn-outline" @click="$router.go(-1)">
+                <button class="btn btn-md btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="addRQAT()">
+                <button class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="addRQAT()">
                     Add RQAT
                 </button>
             </div>
@@ -103,7 +103,7 @@
             </p>
             <form>
                 <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">HEI AFFILIATION</label>
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI AFFILIATION</label>
                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter affliation" />
                 </div>
             </form>
