@@ -85,7 +85,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import {
-    required,
+    required
 } from "@vuelidate/validators";
 export default {
     name: "AddApplicationView",
@@ -170,8 +170,8 @@ export default {
             }
 
             return {
-                has_error
-            }
+                has_error,
+            };
         },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
@@ -187,7 +187,6 @@ export default {
                 id: this.cat1,
                 name: "",
             });
-
         },
         // popByObject: function(emp) {
         //     const filtersList = this.addCat.filter(element => element !== emp)

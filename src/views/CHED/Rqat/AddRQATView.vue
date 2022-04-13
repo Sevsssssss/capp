@@ -237,7 +237,7 @@ export default {
 
         const querResult = await query.find();
         heis.push({
-            title: "None"
+            title: "None",
         });
         for (var i = 0; i < querResult.length; i++) {
             const hei = querResult[i];

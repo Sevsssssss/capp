@@ -71,7 +71,7 @@
                             <div v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 rounded-md p-2 font-normal evaluation">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 rounded-md  p-2 font-normal issuance">
+                            <div v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
                             </div>
                             <div v-else-if="table.status === 'COMPLETED'" class="btn-sm1 rounded-md p-2 font-normal completed">
@@ -88,7 +88,21 @@
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">
                     <span class="text-sm text-gray-700 dark:text-gray-400">
-                        Showing <span class="font-semibold text-gray-900 dark:text-white">{{1 + (numPerPage * currentpage)}}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{((currentpage + 1) * numPerPage) > totalEntries ? totalEntries : (currentpage + 1) * numPerPage}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{totalEntries}}</span> Entries
+                        Showing
+                        <span class="font-semibold text-gray-900 dark:text-white">{{
+                1 + numPerPage * currentpage
+              }}</span>
+                        to
+                        <span class="font-semibold text-gray-900 dark:text-white">{{
+                (currentpage + 1) * numPerPage > totalEntries
+                  ? totalEntries
+                  : (currentpage + 1) * numPerPage
+              }}</span>
+                        of
+                        <span class="font-semibold text-gray-900 dark:text-white">{{
+                totalEntries
+              }}</span>
+                        Entries
                     </span>
                 </div>
                 <div class="p-2 pr-4">
@@ -108,6 +122,7 @@
     </div>
 </div>
 </template>
+
 <script>
 import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
@@ -115,19 +130,19 @@ export default {
     data() {
         return {
             headers: [{
-                    title: "HEI"
+                    title: "HEI",
                 },
                 {
-                    title: "TYPE"
+                    title: "TYPE",
                 },
                 {
-                    title: "PROGRAM"
+                    title: "PROGRAM",
                 },
                 {
-                    title: "DATE APPLIED"
+                    title: "DATE APPLIED",
                 },
                 {
-                    title: "STATUS"
+                    title: "STATUS",
                 },
             ],
             tables: [{
@@ -189,6 +204,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

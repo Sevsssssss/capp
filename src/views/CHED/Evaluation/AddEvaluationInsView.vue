@@ -2,13 +2,14 @@
 <!--Header-->
 <div class="" style="margin: 11px">
     <div>
-
         <div v-for="a in addCat" :key="a">
-            {{a}}
-            <br> {{a.id}}
+            {{ a }}
+            <br />
+            {{ a.id }}
             <div v-for="b in a.subCat" :key="b">
-                <br> {{b}}
-                {{b.id}}
+                <br />
+                {{ b }}
+                {{ b.id }}
                 <div v-for="c in b" :key="c" class="text-left">
                     <!-- Category_Id: {{c.id}} <br> Category Name: {{c.name}} <br> Description: {{c.desc}} -->
                     <div v-for="d in c.subCat" :key="d">
@@ -42,7 +43,7 @@
             </div>
         </div>
         <!-- Body -->
-        <div class="overflow-x-auto rounded-lg"  id="add-cat" v-for="(cat) in addCat" v-bind:key="cat" >
+        <div class="overflow-x-auto rounded-lg" id="add-cat" v-for="cat in addCat" v-bind:key="cat">
             <div class="mx-5 top-row flex flex-row" style="justify-content: space-between">
                 <div class="flex flex-row">
                     <div class="form-control w-full mr-3">
@@ -62,10 +63,11 @@
                     <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none">
                         DELETE
                     </button>
-                    <br> {{addCat}}
+                    <br />
+                    {{ addCat }}
                 </div>
             </div>
-            <div class="overflow-x-auto rounded-lg" id="add-subcat" v-for="(subcat) in cat.subCat" v-bind:key="subcat">
+            <div class="overflow-x-auto rounded-lg" id="add-subcat" v-for="subcat in cat.subCat" v-bind:key="subcat">
                 <div class="px-8 top-row flex flex-row">
                     <div class="flex flex-row">
                         <div class="form-control w-full mr-3">
@@ -76,26 +78,15 @@
                             <label class="label"><span class="label-text">Item</span></label><textarea class="textarea textarea-bordered" placeholder="Enter requirements" style="height: 150px; width: 800px"></textarea><label class="label">
                                 <!--v-if--></label>
                         </div>
-                        <button type="button" class="
-                  rounded-md
-                  p-2
-                  inline-flex
-                  items-center
-                  justify-center
-                  text-black-400
-                  hover:text-gray-500 hover:bg-gray-100
-                  focus:outline-none
-                  focus:ring-2
-                  focus:ring-inset
-                  focus:ring-indigo-500
-                " style="margin: 35px 0px 15px 10px">
+                        <button type="button" class="rounded-md p-2 inline-flex items-center justify-center text-black-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" style="margin: 35px 0px 15px 10px">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
                             </svg>
                         </button>
                     </div>
-                    <br> {{subcat}}
+                    <br />
+                    {{ subcat }}
                 </div>
             </div>
         </div>
@@ -154,7 +145,7 @@ export default {
                 //         }],
                 //     }]
                 // }],
-                //}, 
+                //},
             ],
             addSubCat: [],
             nextAddCatId: "",
@@ -205,16 +196,15 @@ export default {
             //var cat = 'cat' + this.cat1;
             this.addCat.push({
                 id: this.cat1,
-                name: '',
-                desc: '',
-                subCat: []
-            }, )
-
+                name: "",
+                desc: "",
+                subCat: [],
+            });
         },
         toggleModal1(id) {
             this.subCat1++;
 
-            console.log("COunter: " + this.counter)
+            console.log("COunter: " + this.counter);
             // console.log(this.addCat[0].subcat)
             if (this.addCat[this.counter].id == id) {
                 this.addCat.push({
@@ -224,15 +214,14 @@ export default {
                         desc: "",
                         item: [{
                             id: "",
-                            requirement: ""
-                        }],
-                    }]
-                })
+                            requirement: "",
+                        }, ],
+                    }, ],
+                });
                 // console.log(this.addCat[3].subCat)
-                
             }
             this.counter++;
-            console.log("Counter: " + this.counter)
+            console.log("Counter: " + this.counter);
             //this.addCat[this.cat1].push('Item' + this.subCat1)
             // var cat = "subCat"
             // this.addCat.subCat.push(
@@ -244,12 +233,11 @@ export default {
             //                 id: "",
             //                 requirement: ""
             //             }],
-            //         }    
+            //         }
             // )
         },
     },
 };
 </script>
 
-<style>
-</style>
+<style></style>
