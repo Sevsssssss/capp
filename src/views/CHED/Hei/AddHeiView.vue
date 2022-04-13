@@ -272,7 +272,6 @@ export default {
             newHEI.set("inst_code", this.inst_code);
             newHEI.set("hei_type", this.hei_type);
             newHEI.set("access_type", "HEI");
-
             try {
                 // Show the spinner first 
                 this.$refs.Spinner.show();
