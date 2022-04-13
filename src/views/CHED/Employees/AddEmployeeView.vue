@@ -268,6 +268,7 @@ export default {
                 newEmployee.set("name", employeeName);
                 newEmployee.set("username", this.username);
                 newEmployee.set("password", password);
+                newEmployee.set("email", this.email);
                 newEmployee.set("contact_num", this.contactnum);
                 newEmployee.set("access_type", this.access_type);
                 newEmployee.set("designation", this.emp_designation);
