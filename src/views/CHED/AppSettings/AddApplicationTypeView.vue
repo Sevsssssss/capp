@@ -15,16 +15,13 @@
                             Name is Required</span>
                     </label>
                 </div>
-                <div class="flex flex-row justify-center items-center space-x-4">
-                    <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
-                        Add Category
-                    </button> -->
+                <div :class="{'hide' : !isZero() }"  class="flex flex-row justify-center items-center space-x-4">
                     <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
                         <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                         </svg>
                     </button>
-                    <button data-tip="Remove Requirement" @click="pop" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
+                    <button data-tip="Remove Requirement" @click="pop" class="btn tooltip tooltip-left btn-outline  hover:bg-brand-red/60">
                         <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M19,13H5V11H19V13Z" />
                         </svg>
@@ -47,6 +44,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div :class="{'hide' : isZero() }" class="space-x-4" style="text-align-last: right;">
+                <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
+                        Add Category
+                    </button> -->
+                <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                    </svg>
+                </button>
+                <button data-tip="Remove Requirement" @click="pop" class="btn tooltip tooltip-left btn-outline  hover:bg-brand-red/60">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H5V11H19V13Z" />
+                    </svg>
+                </button>
             </div>
             <!-- Footer -->
             <div class="table-footer flex flex-row" style="justify-content: center">
@@ -79,6 +91,8 @@ export default {
             v$: useVuelidate(),
             applicationTypeName: "",
             applicationReq: "",
+            checker: true,
+            reqNum: 0,
         };
     },
     validations() {
@@ -122,16 +136,31 @@ export default {
             });
         },
         pop() {
-            this.cat1--;
+            if(this.counter > 0){
+                this.counter--;
+            }
             //var cat = 'cat' + this.cat1;
             this.appReqs.pop({
                 id: this.cat1,
                 name: "",
             });
         },
+        isZero(){
+            if(this.counter != 0){
+                this.checker = false;
+                return this.checker;
+            }
+            else {
+                this.checker = true;
+                return this.checker;
+            }
+        }
     },
 };
 </script>
 
 <style>
+.hide {
+    visibility: hidden !important;
+}
 </style>

@@ -1,25 +1,6 @@
 <template>
 <div class="p-3">
-    <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
-        <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
-            <div class="flex flex-col justify-between text-left">
-                <div class="flex flex-row">
-                    <div :class="'homeIcon ' + data.color" class="mr-3">
-                        <svg class="icon" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z" />
-                        </svg>
-                    </div>
-                    <div class="text-sm font-semibold" style="color: #8fa0b9">
-                        {{ data.title }}
-                    </div>
-                </div>
-                <div class="text-2xl text-right font-semibold text-grey-300">
-                    {{ data.num }}
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
@@ -29,18 +10,51 @@
                 <div class="mr-5">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative mt-1">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <div class="
+                  absolute
+                  inset-y-0
+                  left-0
+                  flex
+                  items-center
+                  pl-3
+                  pointer-events-none
+                ">
                             <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
+                        <input v-model="search" type="text" id="search" class="
+                  bg-gray-50
+                  border border-gray-300
+                  text-gray-900 text-sm
+                  rounded-lg
+                  focus:ring-blue-500 focus:border-blue-500
+                  block
+                  w-80
+                  pl-10
+                  p-2.5
+                " placeholder="Search for items" />
                     </div>
                 </div>
             </div>
             <!-- button -->
             <div class="h-fit pr-5 pt-3 items-center">
-                <button @click="addAppType()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">
+                <button @click="addAppType()" type="button" class="
+              flex
+              items-center
+              text-white
+              bg-brand-darkblue
+              hover:bg-blue-800
+              focus:ring-4 focus:ring-blue-300
+              font-medium
+              rounded-lg
+              text-sm
+              px-5
+              py-2.5
+              mr-2
+              mb-2
+              focus:outline-none
+            ">
                     <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="none" d="M0 0h24v24H0z" />
                         <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -70,9 +84,13 @@
                             <div>{{ table.Requirements }}</div>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <!-- <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a> -->
+                            <!-- <router-link :to="{ path: '/app-settings/view', query: { AppType: 'private' }}"> -->
+                            <router-link :to="{ name: 'AppTypeView', params: {  id: table.id, AppType: table.Name }}">
+                                <a href="#" class="font-medium text-blue-600 hover:underline">VIEW</a>
+                            </router-link>
                         </td>
-                        <td class="px-6 py-4 flex flex-row">
+                        <td class="px-6 py-4">
                             <div class="hover:text-brand-red/60">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -107,10 +125,29 @@
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
-                                <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
+                                <a href="#" class="
+                      py-2
+                      px-3
+                      ml-0
+                      leading-tight
+                      text-gray-500
+                      bg-white
+                      rounded-l-lg
+                      border border-gray-300
+                      hover:bg-gray-100 hover:text-gray-700
+                    " @click="prevPage()">Previous</a>
                             </li>
                             <li>
-                                <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
+                                <a href="#" class="
+                      py-2
+                      px-3
+                      leading-tight
+                      text-gray-500
+                      bg-white
+                      rounded-r-lg
+                      border border-gray-300
+                      hover:bg-gray-100 hover:text-gray-700
+                    " @click="nextPage()">Next</a>
                             </li>
                         </ul>
                     </div>
@@ -126,7 +163,16 @@
             <form>
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Access Tpye:</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="atname" />
+                    <input type="text" id="base-input" class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              " placeholder="Enter Name" v-model="atname" />
                     <div class="font-medium text-sm mt-2">Privileges:</div>
                     <div class="form-control flex mt-1 flex-row">
                         <label class="flex flex-row cursor-pointer">
@@ -171,7 +217,14 @@
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createAccessType" class="btn btn-sm p-6 text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="createAccessType" class="
+              btn btn-sm
+              p-6
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
                 <label class="btn btn-sm p-6 bg-blue-700 hover:bg-blue-800 border-none" @click="addAccessType()">Submit</label>
             </div>
         </div>
@@ -253,6 +306,9 @@ export default {
             if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
                 this.currentpage += 1;
             }
+        },
+        viewAppType() {
+            this.$router.push("/app-settings/view");
         },
     },
     mounted: async function () {
