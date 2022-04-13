@@ -260,7 +260,7 @@ export default {
                         },
                     },
                     {
-                        href: "/settings",
+                        href: "/access-settings",
                         title: "Access Types",
                         icon: {
                             element: "img",
