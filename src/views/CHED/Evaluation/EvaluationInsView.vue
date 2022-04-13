@@ -16,13 +16,13 @@
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
                     </div>
                 </div>
             </div>
             <!-- button -->
             <div class="h-fit pr-5 pt-3 items-center">
-                <button @click="addEvalIns()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <button @click="addEvalIns()" type="button" class="btn-table">
                     <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="none" d="M0 0h24v24H0z" />
                         <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -62,7 +62,21 @@
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">
                     <span class="text-sm text-gray-700 dark:text-gray-400">
-                        Showing <span class="font-semibold text-gray-900 dark:text-white">{{1 + (numPerPage * currentpage)}}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{((currentpage + 1) * numPerPage) > totalEntries ? totalEntries : (currentpage + 1) * numPerPage}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{totalEntries}}</span> Entries
+                        Showing
+                        <span class="font-semibold text-gray-900 dark:text-white">{{
+                1 + numPerPage * currentpage
+              }}</span>
+                        to
+                        <span class="font-semibold text-gray-900 dark:text-white">{{
+                (currentpage + 1) * numPerPage > totalEntries
+                  ? totalEntries
+                  : (currentpage + 1) * numPerPage
+              }}</span>
+                        of
+                        <span class="font-semibold text-gray-900 dark:text-white">{{
+                totalEntries
+              }}</span>
+                        Entries
                     </span>
                 </div>
                 <div class="p-2 pr-4">
@@ -90,18 +104,17 @@ export default {
     name: "EvalInstView",
     data() {
         return {
-            search: '',
+            search: "",
             headers: [{
-                    title: "CMO"
+                    title: "CMO",
                 },
                 {
-                    title: "DESCRIPTION"
+                    title: "DESCRIPTION",
                 },
             ],
             tables: [{
                     cmoNo: "1",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-
                 },
                 {
                     cmoNo: "2",
@@ -129,12 +142,15 @@ export default {
         searchEval() {
             if (this.search) {
                 return this.tables.filter((item) => {
-                    return this.search.toLowerCase().split(' ').every(v => item.description.toLowerCase().includes(v))
-                })
+                    return this.search
+                        .toLowerCase()
+                        .split(" ")
+                        .every((v) => item.description.toLowerCase().includes(v));
+                });
             } else {
                 return this.tables;
             }
-        }
+        },
     },
     methods: {
         addEvalIns() {
@@ -142,10 +158,9 @@ export default {
         },
         viewEvalIns() {
             this.$router.push("/evaluationins/view");
-        }
+        },
     },
 };
 </script>
 
-<style>
-</style>
+<style></style>

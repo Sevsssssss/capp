@@ -1,6 +1,7 @@
 <template>
   <section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
+<<<<<<< HEAD
       <div class="p-12">
         <div class="">
           <div class="flex flex-row items-start justify-evenly pt-12">
@@ -32,6 +33,63 @@
                       Point Person is Required</span
                     >
                   </label>
+=======
+        <div class="p-12">
+
+            <div class="">
+                <div class="flex flex-row items-start justify-evenly pt-12">
+                    <div class="flex-col">
+                        <div class="font-semibold text-lg">HIGHER EDUCATION INSTITUTION</div>
+                        <hr>
+                        <div class="space-y-1 pt-3">
+                            <div class="form-control w-full max-w-xs">
+                                <label class="label">
+                                    <span class="text-sm">Point Person</span>
+                                </label>
+                                <input :class="{'input-error': validationStatus(v$.pointPerson)}" v-model="v$.pointPerson.$model" type="text" placeholder="Enter point person" class="input input-bordered w-full max-w-xs">
+                                <label class="label">
+                                    <span v-if="validationStatus(v$.pointPerson)" :class="{'text-error': validationStatus(v$.pointPerson)}" class="label-text-alt"> Point Person is Required</span>
+                                </label>
+                            </div>
+                            <div class="form-control w-full max-w-xs">
+                                <label class="label">
+                                    <span class="label-text">Email Address</span>
+                                </label>
+                                <input :class="{'input-error': validationStatus(v$.email)}" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs">
+                                <label class="label">
+                                    <span v-if="validationStatus(v$.email)" :class="{'text-error': validationStatus(v$.email)}" class="label-text-alt"> Email is Required</span>
+                                </label>
+                            </div>
+                            <div class="form-control w-full max-w-xs">
+                                <label class="label">
+                                    <span class="label-text">Contact Number</span>
+                                </label>
+                                <input :class="{'input-error': validationStatus(v$.phoneNumber)}" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs">
+                                <label class="label">
+                                    <span v-if="validationStatus(v$.phoneNumber)" :class="{'text-error': validationStatus(v$.phoneNumber)}" class="label-text-alt"> Phone Number is Required</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- UPLOAD CREDENTIALS -->
+                    <div class="flex-col">
+                        <div class="font-semibold text-lg text-left">UPLOAD HEIs CREDENTIALS</div>
+                        <hr>
+                        <div class="space-y-3 pt-3">
+                            <div class="flex flex-row justify-between space-x-4">
+                                <div class="grid grid-cols-2  place-items-center gap-4 py-5">
+                                    <div v-for="i in heiReq" :key="i" class="w-80 form-control">
+                                        <label class="label text-left">
+                                            <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.name}}</span>
+                                        </label>
+                                        <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+>>>>>>> a4428694c292923f76679a7d59774e30ad55e31e
                 </div>
                 <div class="form-control w-full max-w-xs">
                   <label class="label">
@@ -54,6 +112,7 @@
                     >
                   </label>
                 </div>
+<<<<<<< HEAD
                 <div class="form-control w-full max-w-xs">
                   <label class="label">
                     <span class="label-text">Contact Number</span>
@@ -78,6 +137,59 @@
                       Phone Number is Required</span
                     >
                   </label>
+=======
+                <div class="">
+                    <!-- INITIAL PERMIT -->
+                    <div v-if="selected === 'Initial Permit'">
+                        <div class="grid grid-cols-2  place-items-center gap-4 py-5">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                                <label class="label text-left">
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
+                                </label>
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RENEWAL -->
+                    <div v-else-if="selected === 'Renewal'">
+                        <div class="grid grid-cols-2  place-items-center gap-4 py-5">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                                <label class="label text-left">
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
+                                </label>
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- COMPLIANCE -->
+                    <div v-else-if="selected === 'Compliance'">
+                        <div class="grid grid-cols-2  place-items-center gap-4 py-5">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                                <label class="label text-left">
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.id}}. {{i.item}} </span>
+                                </label>
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- GOVERNMENT RECOGNITION -->
+                    <div v-else-if="selected === 'Government Recognition'">
+                        <div class="grid grid-cols-2  place-items-center gap-4 py-5">
+                            <div v-for="i in descol1" :key="i" class="w-80 form-control">
+                                <label class="label text-left">
+                                    <span class="text-sm text-ellipsis overflow-hidden" style="white-space: nowrap;">{{i.item}}</span>
+                                </label>
+                                <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="space-x-6 p-10">
+                    <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 ">Cancel</button>
+                    <button type="submit" class="w-40 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 ">Sumit</button>
+>>>>>>> a4428694c292923f76679a7d59774e30ad55e31e
                 </div>
               </div>
             </div>
