@@ -21,7 +21,7 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
-import SettingsView from '../views/CHED/SuperAdminSettings/SettingsView.vue';
+import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import Parse from 'parse';
@@ -254,15 +254,15 @@ const routes = [
         component: AddApplicationView,
         meta:{
           breadcrumb: [
-            { name: 'SETTINGS', link: '/settings' },
+            { name: 'APPLICATION SETTINGS', link: '/app-settings' },
             { name: 'ADD APPLICATION TYPE'}
           ]
         }
       },
       {
-        path: "/settings",
-        name: "settings",
-        component: SettingsView,
+        path: "/access-settings",
+        name: "access-settings",
+        component: AccessSettingsView,
         meta:{
           breadcrumb: [
             {name: 'SETTINGS'},

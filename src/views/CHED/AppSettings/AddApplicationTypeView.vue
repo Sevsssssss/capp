@@ -1,5 +1,5 @@
 <template>
-  <!--Header-->
+<!--Header-->
 <div class="m-5">
     <form v-on:submit.prevent="submit">
         <div class="overflow-x-auto shadow-lg rounded-lg px-8 py-5">
@@ -45,24 +45,6 @@
                                     Criteria name is Required</span>
                             </label>
                         </div>
-                        <!-- <div class="flex">
-                <div class="hover:text-brand-red/60" @click="popByIndex(index)">
-                  <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                  </svg>
-                </div>
-                <div class="hover:text-brand-blue/60" @click="popByObject(cat)">
-                  <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                  </svg>
-                </div>
-              </div> -->
                     </div>
                 </div>
             </div>
@@ -84,60 +66,62 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import {
+    required
+} from "@vuelidate/validators";
 import Parse from 'parse';
 export default {
-  name: "AddEvalInstView",
-  data() {
-    return {
-      counter: 0,
-      appReqs: [],
-      v$: useVuelidate(),
-      applicationTypeName: "",
-      applicationReq: "",
-    };
-  },
-  validations() {
-    return {
-      applicationTypeName: {
-        required,
-      },
-      applicationReq: {
-        required,
-      },
-    };
-  },
-  methods: {
-    async saveAppType() {
-
-      const ApplicationType = Parse.Object.extend("ApplicationTypes");
-      const newApplicationType = new ApplicationType();
-
-      newApplicationType.set("applicationTypeName", this.applicationTypeName.toUpperCase());
-      newApplicationType.set("applicationReqs", this.appReqs);
-
-      try {
-        await newApplicationType.save();
-        if (confirm("Application Type added. Would you like to add another Application Type?")) {
-          document.location.reload();
-        } else {
-          this.$router.push("/settings");
-        }
-      } catch (error) {
-        alert("Error: " + error.code + " " + error.message);
-      }
+    name: "AddEvalInstView",
+    data() {
+        return {
+            counter: 0,
+            appReqs: [],
+            v$: useVuelidate(),
+            applicationTypeName: "",
+            applicationReq: "",
+        };
     },
-    validationStatus: function (validation) {
-      return typeof validation !== "undefined" ? validation.$error : false;
+    validations() {
+        return {
+            applicationTypeName: {
+                required,
+            },
+            applicationReq: {
+                required,
+            },
+        };
     },
-    addRequirement() {
-      this.counter++;
-      this.appReqs.push({
-        id: this.counter,
-        applicationReq: "",
-      });
-    },
-    pop() {
+    methods: {
+        async saveAppType() {
+
+            const ApplicationType = Parse.Object.extend("ApplicationTypes");
+            const newApplicationType = new ApplicationType();
+
+            newApplicationType.set("applicationTypeName", this.applicationTypeName.toUpperCase());
+            newApplicationType.set("applicationReqs", this.appReqs);
+
+            try {
+                await newApplicationType.save();
+                if (confirm("Application Type added. Would you like to add another Application Type?")) {
+                    document.location.reload();
+                } else {
+                    this.$router.push("/settings");
+                }
+            } catch (error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+        },
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        addRequirement() {
+            this.counter++;
+            this.appReqs.push({
+                id: this.counter,
+                applicationReq: "",
+            });
+        },
+        pop() {
             this.cat1--;
             //var cat = 'cat' + this.cat1;
             this.appReqs.pop({
@@ -145,7 +129,7 @@ export default {
                 name: "",
             });
         },
-  },
+    },
 };
 </script>
 
