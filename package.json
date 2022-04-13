@@ -25,6 +25,7 @@
     "tailwindcss": "^3",
     "vue": "^3.2.13",
     "vue-good-table": "^2.21.11",
+    "vue-instant-loading-spinner": "^1.0.0",
     "vue-material-design-icons": "^5.0.0",
     "vue-router": "^4.0.3",
     "vue-sidebar-menu": "^5.2.0",

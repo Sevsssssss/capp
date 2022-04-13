@@ -13,13 +13,12 @@
                     <option>Completed</option>
                 </select>
             </div>
-
         </div>
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
-                        {{header.title}}
+                        {{ header.title }}
                     </th>
                     <th scope="col" class="px-6 py-3">
                         <span class="sr-only">Edit</span>
@@ -27,9 +26,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="table in tables" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                        {{table.dateApplied}}
+                <tr v-for="table in tables" :key="table" class="bg-white border-b hover:bg-gray-50">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{ table.dateApplied }}
                     </th>
                     <td class="px-6 py-4">
                         <div class="">
@@ -40,7 +39,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-4">
-                        {{table.type}}
+                        {{ table.type }}
                     </td>
                     <td class="px-6 py-4">
                         <div v-if="table.status === 'FOR APPROVAL'" class="btn-sm1 p-2 font-normal approval rounded-md">
@@ -61,16 +60,17 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <a v-if="table.status === 'COMPLETED'"></a>
-                        <router-link :to="{ 
-                            name: 'EditHEIapplication', 
-                            params: { 
-                                id: table.id, 
-                                HeiName: table.HeiName, 
-                                type: table.type, 
-                                status: table.status,
-                                dateApplied: table.dateApplied
-                                }}">
-                            <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <router-link :to="{
+                  name: 'EditHEIapplication',
+                  params: {
+                    id: table.id,
+                    HeiName: table.HeiName,
+                    type: table.type,
+                    status: table.status,
+                    dateApplied: table.dateApplied,
+                  },
+                }">
+                            <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                         </router-link>
                     </td>
                 </tr>
@@ -78,35 +78,39 @@
         </table>
     </div>
     <!-- Footer -->
-    <div class="table-footer flex flex-row" style="justify-content: space-between;">
+    <div class="table-footer flex flex-row" style="justify-content: space-between">
         <div class="flex flex-row center">
-            <span class="text-sm text-gray-700 dark:text-gray-400">
-                Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+            <span class="text-sm text-gray-700">
+                Showing
+                <span class="font-semibold text-gray-900">1</span> to
+                <span class="font-semibold text-gray-900">5</span> of
+                <span class="font-semibold text-gray-900">100</span>
+                Entries
             </span>
         </div>
         <div class="p-2">
             <div class="btn-group">
                 <ul class="inline-flex -space-x-px">
                     <li>
-                        <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                        <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
                     </li>
                     <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
                     </li>
                     <li>
-                        <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                        <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700">3</a>
                     </li>
                     <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
                     </li>
                     <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
                     </li>
                     <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </div>
@@ -114,12 +118,13 @@
     </div>
 </div>
 </template>
+
 <script>
 import TableTopLeft from "@/components//TableTopLeft.vue";
 export default {
     name: "ApplicationView",
     components: {
-        TableTopLeft
+        TableTopLeft,
     },
     data() {
         return {
@@ -196,14 +201,16 @@ export default {
     },
     methods: {
         statusChecker(status) {
-            if (status != "COMPLETED" && status != "FOR EVALUATION" && status != "FOR ISSUANCE") {
+            if (
+                status != "COMPLETED" &&
+                status != "FOR EVALUATION" &&
+                status != "FOR ISSUANCE"
+            ) {
                 return true;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

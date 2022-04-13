@@ -26,7 +26,8 @@
         </div>
       </div>
     </div>
-      <!-- Table -->
+    
+
       <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
         <div class="flex flex-row justify-between items-center">
@@ -79,175 +80,175 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-row">
-            <!-- button -->
-            <div class="h-fit pr-5 pt-3 items-center">
-              <label
-                type="button"
-                for="createAccessType"
-                class="
-                  flex
-                  items-center
-                  text-white
-                  bg-brand-darkblue
-                  hover:bg-blue-800
-                  focus:ring-4 focus:ring-blue-300
-                  font-medium
-                  rounded-lg
-                  text-sm
-                  px-3
-                  py-2.5
-                  mr-2
-                  mb-2
-                  focus:outline-none
-                "
+          <!-- button -->
+          <div class="h-fit pr-5 pt-3 items-center">
+            <button
+              @click="addAppType()"
+              type="button"
+              class="
+                flex
+                items-center
+                text-white
+                bg-brand-darkblue
+                hover:bg-blue-800
+                focus:ring-4 focus:ring-blue-300
+                font-medium
+                rounded-lg
+                text-sm
+                px-5
+                py-2.5
+                mr-2
+                mb-2
+                focus:outline-none
+              "
+            >
+              <svg
+                style="fill: white"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
               >
-                <svg
-                  style="fill: white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"
-                  />
-                </svg>
-                <div class="pl-2">Add Access Type</div>
-              </label>
-            </div>
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"
+                />
+              </svg>
+              <div class="pl-2">Add Application Type</div>
+            </button>
           </div>
         </div>
         <!-- Table body -->
-
-        <table
-          class="w-full text-sm text-left text-gray-500"
-        >
-          <thead
-            class="
-              text-xs text-gray-700
-              uppercase
-              bg-gray-50
-            "
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table
+            class="w-full text-sm text-left text-gray-500"
           >
-            <tr>
-              <th
-                scope="col"
-                class="px-6 py-3"
-                v-for="header in headers"
-                :key="header"
+            <thead
+              class="
+                text-xs text-gray-700
+                uppercase
+                bg-gray-50
+              "
+            >
+              <tr>
+                <th scope="col" class="px-6 py-3">APPLICATION TYPE NAME</th>
+                <th scope="col" class="px-6 py-3">
+                  <span class="sr-only">Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="table in searchApplicationType"
+                :key="table"
+                class="bg-white border-b"
               >
-                {{ header.title }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="bg-white border-b">
-              <td
-                scope="row"
-                class="
-                  px-6
-                  py-4
-                  font-medium
-                  text-gray-900
-                  whitespace-nowrap
-                "
-              >
-                Access Type Name
-              </td>
-              <td class="px-6 py-4 text-right">
-                <a
-                  @click="viewEvalIns"
-                  href="#"
+                <th
+                  scope="row"
                   class="
+                    px-6
+                    py-4
                     font-medium
-                    text-blue-600
-                    hover:underline
+                    text-gray-900
+                    whitespace-nowrap
                   "
-                  >Edit</a
                 >
-              </td>
-              <td class="px-6 py-4 flex flex-row">
-                <div class="hover:text-brand-red/60">
-                  <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                  </svg>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- Table Footer -->
-        <div class="table-footer flex flex-row justify-between">
-          <div class="flex flex-row pl-4 justify-center items-center">
-            <span class="text-sm text-gray-700">
-              Showing
-              <span class="font-semibold text-gray-900">{{
-                1 + numPerPage * currentpage
-              }}</span>
-              to
-              <span class="font-semibold text-gray-900">{{
-                (currentpage + 1) * numPerPage > totalEntries
-                  ? totalEntries
-                  : (currentpage + 1) * numPerPage
-              }}</span>
-              of
-              <span class="font-semibold text-gray-900">{{
-                totalEntries
-              }}</span>
-              Entries
-            </span>
-          </div>
-          <div class="p-2 pr-4">
-            <div class="btn-group">
-              <ul class="inline-flex -space-x-px">
-                <li>
+                  {{ table.Name }}
+                </th>
+
+                <td class="px-6 py-4">
+                  <div>{{ table.Requirements }}</div>
+                </td>
+                <td class="px-6 py-4 text-right">
                   <a
-                    href="javascript:void(0)"
+                    @click="viewEvalIns"
+                    href="#"
                     class="
-                      py-2
-                      px-3
-                      ml-0
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-l-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
+                      font-medium
+                      text-blue-600
+                      hover:underline
                     "
-                    @click="prevPage()"
-                    >Previous</a
+                    >Edit</a
                   >
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0)"
-                    class="
-                      py-2
-                      px-3
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-r-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                    "
-                    @click="nextPage()"
-                    >Next</a
-                  >
-                </li>
-              </ul>
+                </td>
+                <td class="px-6 py-4 flex flex-row">
+                  <div class="hover:text-brand-red/60">
+                    <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                      <path
+                        fill="currentColor"
+                        d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                      />
+                    </svg>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Table Footer -->
+          <div class="table-footer flex flex-row justify-between">
+            <div class="flex flex-row pl-4 justify-center items-center">
+              <span class="text-sm text-gray-700">
+                Showing
+                <span class="font-semibold text-gray-900">{{
+                  1 + numPerPage * currentpage
+                }}</span>
+                to
+                <span class="font-semibold text-gray-900">{{
+                  (currentpage + 1) * numPerPage > totalEntries
+                    ? totalEntries
+                    : (currentpage + 1) * numPerPage
+                }}</span>
+                of
+                <span class="font-semibold text-gray-900">{{
+                  totalEntries
+                }}</span>
+                Entries
+              </span>
+            </div>
+            <div class="p-2 pr-4">
+              <div class="btn-group">
+                <ul class="inline-flex -space-x-px">
+                  <li>
+                    <a
+                      href="#"
+                      class="
+                        py-2
+                        px-3
+                        ml-0
+                        leading-tight
+                        text-gray-500
+                        bg-white
+                        rounded-l-lg
+                        border border-gray-300
+                        hover:bg-gray-100 hover:text-gray-700
+                      "
+                      @click="prevPage()"
+                      >Previous</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="
+                        py-2
+                        px-3
+                        leading-tight
+                        text-gray-500
+                        bg-white
+                        rounded-r-lg
+                        border border-gray-300
+                        hover:bg-gray-100 hover:text-gray-700
+                      "
+                      @click="nextPage()"
+                      >Next</a
+                    >
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      
-    
     <input type="checkbox" id="createAccessType" class="modal-toggle" />
     <div class="modal">
       <div class="modal-box relative rounded-md text-left">

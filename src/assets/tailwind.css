@@ -90,6 +90,29 @@
 }
 
 @layer components {
+  .btn-table {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem/* 14px */;
+    line-height: 1.25rem/* 20px */;
+    border-radius: 0.5rem/* 8px */;
+    padding-left: 1.25rem/* 20px */;
+    padding-right: 1.25rem/* 20px */;
+    padding-top: 0.625rem/* 10px */;
+    padding-bottom: 0.625rem/* 10px */;
+    margin-right: 0.5rem/* 8px */;
+    margin-bottom: 0.5rem/* 8px */;
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+    --tw-bg-opacity: 1;
+    background-color: rgb(14 51 133 / var(--tw-bg-opacity));
+    font-weight: 500;
+  }
+  .btn-table:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(30 66 159 / var(--tw-bg-opacity));
+  }
+
   .btn-small {
     padding: 10px 24px;
     font-size: 14px;
@@ -97,13 +120,13 @@
     color: #FFFFFF
   }
 
-  .btn-m {
+  .btn-mid {
     padding: 14px 32px;
     font-size: 16px;
     border-radius: 5px;
   }
 
-  .btn-l {
+  .btn-large {
     padding: 16px 48px;
     font-size: 16px;
     border-radius: 5px;

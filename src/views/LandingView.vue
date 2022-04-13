@@ -27,7 +27,6 @@ export default {
         SendMessageForm,
         FooterLP,
     },
-    methods: {
-    },
+    methods: {},
 };
 </script>

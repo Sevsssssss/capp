@@ -18,7 +18,7 @@
           </p>
         </div>
       </div> -->
-      <!-- FIRST BOX -->
+        <!-- FIRST BOX -->
         <div class="flex flex-col w-full p-8 m-5 bg-brand-white rounded-md shadow-lg justify-evenly">
             <div class="flex flex-row items-center justify-between">
                 <div>
@@ -29,29 +29,23 @@
                 </div>
                 <div class="flex flex-col items-end space-y-1">
                     <div class="text-3xl font-extrabold">12k</div>
-                    <div class="label-s uppercase text-grey-400">Higher Education Institutions</div>
+                    <div class="label-s uppercase text-grey-400">
+                        Higher Education Institutions
+                    </div>
                 </div>
             </div>
-            <hr class="m-3">
+            <hr class="m-3" />
             <div class="">
                 <div class="carousel w-full">
                     <div id="slide1-one" class="carousel-item relative w-full">
-                        <div class=" grid grid-cols-2 w-full divide-x">
+                        <div class="grid grid-cols-2 w-full divide-x">
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    12
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    SUC
-                                </span>
+                                <div class="font-bold text-lg">12</div>
+                                <span class="label-s text-grey-400"> SUC </span>
                             </div>
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    123
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    LUC
-                                </span>
+                                <div class="font-bold text-lg">123</div>
+                                <span class="label-s text-grey-400"> LUC </span>
                             </div>
                         </div>
                         <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
@@ -60,33 +54,24 @@
                         </div>
                     </div>
                     <div id="slide2-one" class="carousel-item relative w-full">
-                        <div class=" grid grid-cols-2 w-full divide-x">
+                        <div class="grid grid-cols-2 w-full divide-x">
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    12
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    PRIVATE
-                                </span>
+                                <div class="font-bold text-lg">12</div>
+                                <span class="label-s text-grey-400"> PRIVATE </span>
                             </div>
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    123
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    OGS
-                                </span>
+                                <div class="font-bold text-lg">123</div>
+                                <span class="label-s text-grey-400"> OGS </span>
                             </div>
                         </div>
-                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0  top-1/4">
-                            <a href="#slide1-one" class=" text-grey-200">❮</a>
-                            <a href="#slide1-one" class=" text-grey-200">❯</a>
+                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
+                            <a href="#slide1-one" class="text-grey-200">❮</a>
+                            <a href="#slide1-one" class="text-grey-200">❯</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-            </div>
+            <div></div>
         </div>
         <!-- SECOND BOX -->
         <div class="flex flex-col w-full p-8 my-5 bg-brand-white rounded-md shadow-lg justify-evenly">
@@ -102,51 +87,38 @@
                     <div class="label-s uppercase text-grey-400">Total Account</div>
                 </div>
             </div>
-            <hr class="m-3">
+            <hr class="m-3" />
             <div class="">
                 <div class="carousel w-full">
                     <div id="slide1-two" class="carousel-item relative w-full">
-                        <div class=" grid grid-cols-2 w-full divide-x">
+                        <div class="grid grid-cols-2 w-full divide-x">
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    12
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    HEIs
-                                </span>
+                                <div class="font-bold text-lg">12</div>
+                                <span class="label-s text-grey-400"> HEIs </span>
                             </div>
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    123
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    RQAT
-                                </span>
+                                <div class="font-bold text-lg">123</div>
+                                <span class="label-s text-grey-400"> RQAT </span>
                             </div>
                         </div>
-                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0  top-1/4">
-                            <a href="#slide2-two" class=" text-grey-200">❮</a>
-                            <a href="#slide2-two" class=" text-grey-200">❯</a>
+                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
+                            <a href="#slide2-two" class="text-grey-200">❮</a>
+                            <a href="#slide2-two" class="text-grey-200">❯</a>
                         </div>
                     </div>
                     <div id="slide2-two" class="carousel-item relative w-full">
                         <div class="w-full">
-                            <div class="font-bold text-lg">
-                                200
-                            </div>
-                            <span class="label-s text-grey-400">
-                                EMPLOYEES
-                            </span>
+                            <div class="font-bold text-lg">200</div>
+                            <span class="label-s text-grey-400"> EMPLOYEES </span>
                         </div>
-                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0  top-1/4">
-                            <a href="#slide1-two" class=" text-grey-200">❮</a>
+                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
+                            <a href="#slide1-two" class="text-grey-200">❮</a>
                             <a href="#slide1-two" class="text-grey-200">❯</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-            </div>
+            <div></div>
         </div>
         <!-- THIRD BOX -->
         <div class="flex flex-col w-full p-8 m-5 bg-brand-white rounded-md shadow-lg justify-evenly">
@@ -157,31 +129,25 @@
                         <path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z" />
                     </svg>
                 </div>
-                 <div class="flex flex-col items-end space-y-1">
+                <div class="flex flex-col items-end space-y-1">
                     <div class="text-3xl font-extrabold">12k</div>
-                    <div class="label-s uppercase text-grey-400">Total Applications</div>
+                    <div class="label-s uppercase text-grey-400">
+                        Total Applications
+                    </div>
                 </div>
             </div>
-            <hr class="m-3">
+            <hr class="m-3" />
             <div class="">
                 <div class="carousel w-full">
                     <div id="slide1-three" class="carousel-item relative w-full">
-                        <div class=" grid grid-cols-2 w-full divide-x">
+                        <div class="grid grid-cols-2 w-full divide-x">
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    12
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    APPROVAL
-                                </span>
+                                <div class="font-bold text-lg">12</div>
+                                <span class="label-s text-grey-400"> APPROVAL </span>
                             </div>
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    123
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    REVISION
-                                </span>
+                                <div class="font-bold text-lg">123</div>
+                                <span class="label-s text-grey-400"> REVISION </span>
                             </div>
                         </div>
                         <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
@@ -190,47 +156,34 @@
                         </div>
                     </div>
                     <div id="slide2-three" class="carousel-item relative w-full">
-                        <div class=" grid grid-cols-2 w-full divide-x">
+                        <div class="grid grid-cols-2 w-full divide-x">
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    12
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    EVALUATION
-                                </span>
+                                <div class="font-bold text-lg">12</div>
+                                <span class="label-s text-grey-400"> EVALUATION </span>
                             </div>
                             <div class="">
-                                <div class="font-bold text-lg">
-                                    123
-                                </div>
-                                <span class="label-s text-grey-400">
-                                    ISSUANCE
-                                </span>
+                                <div class="font-bold text-lg">123</div>
+                                <span class="label-s text-grey-400"> ISSUANCE </span>
                             </div>
                         </div>
-                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0  top-1/4">
-                            <a href="#slide1-three" class=" text-grey-200">❮</a>
-                            <a href="#slide3-three" class=" text-grey-200">❯</a>
+                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
+                            <a href="#slide1-three" class="text-grey-200">❮</a>
+                            <a href="#slide3-three" class="text-grey-200">❯</a>
                         </div>
                     </div>
                     <div id="slide3-three" class="carousel-item relative w-full">
                         <div class="w-full">
-                            <div class="font-bold text-lg">
-                                200
-                            </div>
-                            <span class="label-s text-grey-400">
-                                COMPLETED
-                            </span>
+                            <div class="font-bold text-lg">200</div>
+                            <span class="label-s text-grey-400"> COMPLETED </span>
                         </div>
-                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0  top-1/4">
-                            <a href="#slide2-three" class=" text-grey-200">❮</a>
+                        <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/4">
+                            <a href="#slide2-three" class="text-grey-200">❮</a>
                             <a href="#slide1-three" class="text-grey-200">❯</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-            </div>
+            <div></div>
         </div>
     </div>
 </div>
@@ -243,5 +196,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
