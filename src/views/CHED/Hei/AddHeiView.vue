@@ -94,11 +94,19 @@
                     Cancel
                 </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
                     Add HEI
                 </button>
             </div>
         </form>
+    </div>
+    <!-- <div v-if="!savingSuccessful"></div> -->
+    <div v-if="savingSuccessful" class="absolute top-24 right-5 alert alert-success shadow-lg rounded-md w-auto success" style="position : fixed;">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span class="font-semibold">{{this.text}}</span>
+        </div>
     </div>
     <input type="checkbox" id="createHEI" class="modal-toggle" />
     <div class="modal">
@@ -130,10 +138,22 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">Continue</label>
             </div>
         </div>
     </div>
+    <!-- <div  :class="{ 'modal-open': showaddAgain() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD ANOTHER ACCOUNT</div>
+            <p class="py-2 text-sm">
+                Would you like to add another account?
+            </p>
+            <div class="modal-action">
+                <label for="addAgain" @click="this.$router.push('/hei')" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">CANCEL</label>
+                <label @click="document.location.reload()" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">ADD</label>
+            </div>
+        </div>
+    </div> -->
 </div>
 
 <!-- Add HEI Type -->
@@ -157,6 +177,9 @@ export default {
         return {
             showModal: false,
             showModal1: false,
+            savingSuccessful: false,
+            addAgain: false,
+            text: "Account added!",
             v$: useVuelidate(),
             heis: [{
                     title: "STATE UNIVERSITIES AND COLLEGES",
@@ -217,6 +240,7 @@ export default {
     methods: {
         ToggleshowModal() {
             this.showModal = !this.showModal;
+
         },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
@@ -230,7 +254,13 @@ export default {
             console.log(this.showModal1);
             return this.showModal1;
         },
-
+        showaddAgain() {
+            console.log(this.addAgain);
+            return this.addAgain;
+        },
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
         async addHEI() {
             const newHEI = new Parse.User();
             newHEI.set("hei_name", this.hei_name);
@@ -244,13 +274,22 @@ export default {
             newHEI.set("access_type", "HEI");
 
             try {
+                // Show the spinner first 
                 this.$refs.Spinner.show();
-                setTimeout(function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this), 5000);
-                await newHEI.save();
-                setTimeout( () => this.$router.push({ path: "/hei"}), 3000);
-                // this.$router.push("/hei");
+                setTimeout(async() => {
+                // When the data already added hide the spinner
+                await newHEI.save(),
+                this.$refs.Spinner.hide()
+                }, 5000);
+                // After adding the data show the success UI
+                this.savingSuccessful = true
+                // now 'this' is referencing the Vue object and not the 'setTimeout' scope
+                setTimeout(() => this.savingSuccessful = false, 2000);
+                // Reload the page
+                setTimeout(() => document.location.reload().bind(this), 2000);
+
+                // this.showaddAgain();
+                //this.$router.push("/hei");
                 console.log(this.showModal1);
                 // if (
                 //   confirm("Account added. Would you like to add another account?")
@@ -264,6 +303,7 @@ export default {
             }
         },
         modal() {
+
             console.log("Hello");
             // this.v$.$validate();
             // if(!this.v$.$error){
