@@ -247,6 +247,7 @@ export default {
 
         } catch (error) {
           alert("Error: " + error.code + " " + error.message);
+          document.location.reload();
         }
       
     },

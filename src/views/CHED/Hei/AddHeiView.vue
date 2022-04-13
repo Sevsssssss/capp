@@ -260,7 +260,11 @@ export default {
                 //   this.$router.push("/hei");
                 // }
             } catch (error) {
+                
                 alert("Error: " + error.code + " " + error.message);
+                document.location.reload();
+                
+                
             }
         },
         modal() {
