@@ -121,7 +121,7 @@ export default {
         if (confirm("Application Type added. Would you like to add another Application Type?")) {
           document.location.reload();
         } else {
-          this.$router.push("/settings");
+          this.$router.push("/app-settings");
         }
       } catch (error) {
         alert("Error: " + error.code + " " + error.message);

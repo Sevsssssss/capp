@@ -260,8 +260,8 @@ const routes = [
         }
       },
       {
-        path: "/settings",
-        name: "settings",
+        path: "/access-settings",
+        name: "access-settings",
         component: AccessSettingsView,
         meta:{
           breadcrumb: [
