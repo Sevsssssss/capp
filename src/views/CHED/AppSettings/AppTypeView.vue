@@ -15,7 +15,8 @@
         </div>
         <div class="text-center p-5">
             <div class="font-semibold">
-                REQUIREMENTS FOR APPLICATION OF {{AppType}}
+                REQUIREMENTS FOR APPLICATION OF {{this.$route.query.appTypeName.toUpperCase()}}
+
             </div>
         </div>
         <div class="">
@@ -29,16 +30,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="i in reqs" :key="i" class="bg-white border-b hover:bg-gray-50">
+                        <tr v-for="i in appicationReqs" :key="i" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-6 py-4">
-                            <th>{{ i.req.id }}</th>
+                            <th class="text-center">{{ i.id}}</th>
                             </td>
                             <td class="px-6 py-4">
-                            <th>{{ i.req.applicationReq }}</th>
+                            <th class="text-center">{{ i.name}}</th>
                             </td>
 
                         </tr>
                     </tbody>
+           
                 </table>
             </div>
         </div>
@@ -47,10 +49,31 @@
 </template>
 
 <script>
-// import Parse from "parse";
+import Parse from "parse";
 export default {
-    name: "AppTypeView",
-    components: {},
-    props: ["id", "AppType"],
+  name: "AppTypeView",
+  components: {},
+  data() {
+    return {
+      applicationType: [],
+      appicationReqs: [],
+    };
+  },
+  methods: {},
+  mounted: async function () {
+    const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+    const query = new Parse.Query(ApplicationTypes);
+    query.equalTo("applicationTypeName", this.$route.query.appTypeName);
+
+    const querResult = await query.find();
+    var appReqs = [];
+    for (var x = 0; x < querResult[0].get("applicationReqs").length; x++) {
+      appReqs.push({
+        id: querResult[0].get("applicationReqs")[x].id,
+        name: querResult[0].get("applicationReqs")[x].applicationReq,
+      });
+    }
+    this.appicationReqs = appReqs;
+  },
 };
 </script>
