@@ -162,6 +162,7 @@ import {
     required,
     email
 } from "@vuelidate/validators";
+import emailjs from 'emailjs-com';
 
 export default {
     name: "AddHeiView",
@@ -231,6 +232,18 @@ export default {
         };
     },
     methods: {
+        sendEmail() {
+            var emailParams = {
+                message: "Your account has been created. \n Your account username is " + this.username + "\n Your temporary password is " + this.password,
+                email: this.email,
+            }
+            try {
+                alert(this.email)
+                emailjs.send('service_rax86wc', 'template_nyqa4k6', emailParams, 'wXbhKrnQCwo8bc25m')
+            } catch (error) {
+                console.log(error + " email sending failed")
+            }
+        },
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -265,38 +278,21 @@ export default {
             newHEI.set("hei_type", this.hei_type);
             newHEI.set("access_type", "HEI");
             try {
-                // Get toast interface
-                const toast = useToast();
-
                 // Show the spinner first
-                // this.$refs.Spinner.show();
-                // setTimeout(
-                //     function () {
-                //         this.$refs.Spinner.hide();
-                //     }.bind(this),
-                //     5000
-                // );
-                await newHEI.save().then(() => {
-                    toast("Account Added!", {
-                        type: TYPE.SUCCESS,
-                        timeout: 2000,
-                        position: POSITION.TOP_RIGHT,
-                        hideProgressBar: false,
-                    });
-                });
                 this.$refs.Spinner.show();
-
-                setTimeout(() =>
-                    this.$router.push({
-                        path: "/hei"
-                    }), 1000);
                 setTimeout(
                     function () {
                         this.$refs.Spinner.hide();
                     }.bind(this),
-                    4000
+                    5000
                 );
-
+                await newHEI.save().then(() => {
+                    setTimeout(() => (this.savingSuccessful = true), 2000);
+                });
+                this.sendEmail();
+                setTimeout(() => this.$router.push({
+                    path: "/hei"
+                }), 3000);
             } catch (error) {
                 alert("Error: " + error.code + " " + error.message);
                 document.location.reload();
