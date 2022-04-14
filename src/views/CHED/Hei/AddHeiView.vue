@@ -194,7 +194,7 @@
           <button
             for="my-modal-6"
             id="my-modal-6"
-            type="submit"
+            type="button"
             class="
               border-none
               btn btn-md
@@ -321,8 +321,9 @@
             "
             >Cancel</label
           >
-          <label
+          <button
             for="my-modal-6"
+            type="submit"
             class="
               btn btn-sm
               bg-blue-700
@@ -331,8 +332,8 @@
               border-none
             "
             @click="addHEI(), scrollToTop()"
-            >Continue</label
-          >
+            >Continue
+          </button>
         </div>
       </div>
     </div>
@@ -358,6 +359,7 @@ import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
+import emailjs from 'emailjs-com';
 
 export default {
   name: "AddHeiView",
@@ -388,7 +390,7 @@ export default {
       ],
       hei_name: "",
       username: "",
-      email: null,
+      email: "",
       address: "",
       number: "",
       inst_code: "",
@@ -401,6 +403,7 @@ export default {
       numberError: "",
       inst_codeError: "",
       hei_typeError: "",
+      password:"",
     };
   },
   validations() {
@@ -430,6 +433,18 @@ export default {
     };
   },
   methods: {
+    sendEmail(){
+      var emailParams = {
+        message: "Your account has been created. \n Your account username is " + this.username + "\n Your temporary password is " + this.password,
+        email: this.email,
+      }
+      try {
+        alert(this.email)
+        emailjs.send('service_rax86wc', 'template_nyqa4k6', emailParams, 'wXbhKrnQCwo8bc25m')
+      } catch(error) {
+        console.log(error + " email sending failed")
+      }
+    },
     ToggleshowModal() {
       this.showModal = !this.showModal;
     },
@@ -442,17 +457,16 @@ export default {
       if (!this.v$.$pending || !this.v$.$error) return;
     },
     validate() {
-      console.log(this.showModal1);
       return this.showModal1;
     },
     showaddAgain() {
-      console.log(this.addAgain);
       return this.addAgain;
     },
     scrollToTop() {
       window.scrollTo(0, 0);
     },
     async addHEI() {
+      this.password = "password";
       const newHEI = new Parse.User();
       newHEI.set("hei_name", this.hei_name);
       newHEI.set("username", this.username);
@@ -475,6 +489,7 @@ export default {
         await newHEI.save().then(() =>{
                setTimeout(() => (this.savingSuccessful = true), 2000);
         });
+        this.sendEmail();
         setTimeout(() => this.$router.push({ path: "/hei" }), 3000);
       } catch (error) {
         alert("Error: " + error.code + " " + error.message);
@@ -482,7 +497,6 @@ export default {
       }
     },
     modal() {
-      console.log("Hello");
       // this.v$.$validate();
       // if(!this.v$.$error){
       //     alert('Yey')
@@ -490,7 +504,6 @@ export default {
       //     alert('nay')
       // }
 
-      console.log("Hello2");
       var has_error = 0;
       //var error_text = "Account not created due to the following reasons:\n";
 
