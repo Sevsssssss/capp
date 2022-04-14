@@ -262,10 +262,9 @@ const routes = [
         }
       },
       {
-        path: "/app-settings/view/:AppType",
+        path: "/app-settings/appTypeView",
         name: "AppTypeView",
         component: ApplicationTypeView,
-        props: true,
         meta:{
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
