@@ -58,6 +58,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="searchEval.length == 0" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, the keyword "{{search}}" cannot be found in the database.
+            </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">

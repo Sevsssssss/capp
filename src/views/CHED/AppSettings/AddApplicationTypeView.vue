@@ -93,6 +93,7 @@ export default {
             applicationReq: "",
             checker: true,
             reqNum: 0,
+            error: 0,
         };
     },
     validations() {
