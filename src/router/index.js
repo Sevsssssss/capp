@@ -24,6 +24,7 @@ import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
 import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
+import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
@@ -248,6 +249,7 @@ const routes = [
           ]
         }
       },
+      
       {
         path: "/app-settings/add",
         name: "applicationType",
@@ -256,6 +258,29 @@ const routes = [
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
             { name: 'ADD APPLICATION TYPE'}
+          ]
+        }
+      },
+      {
+        path: "/app-settings/appTypeView",
+        name: "AppTypeView",
+        component: ApplicationTypeView,
+        meta:{
+          breadcrumb: [
+            { name: 'APPLICATION SETTINGS', link: '/app-settings' },
+            { name: 'VIEW'}
+          ]
+        }
+      },
+      {
+        path: "/application/:id",
+        name: "StatusApplication",
+        component: StatusApplication,
+        props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'Application', link: '/application' },
+            { name: 'Status'}
           ]
         }
       },

@@ -95,7 +95,7 @@
         <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box text-left">
                 <div class="font-semibold text-grey-100">
-                    INVALID CREDEMTIALS
+                    INVALID CREDENTIALS
                 </div>
                 <p class="text-sm xxs:leading-tight text-grey-200">
                     Please ensure to provide the correct account credentials. Should you

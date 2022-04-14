@@ -1,159 +1,178 @@
 <template>
   <section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
-      <div class="p-12">
+      <div class="p-5">
         <div class="">
-          <div class="flex flex-row items-start justify-evenly pt-12">
-            <div class="flex-col">
-              <div class="font-semibold text-lg">
-                HIGHER EDUCATION INSTITUTION
+          <div class="flex-col pt-5">
+            <div class="">
+              <div class="flex justify-evenly items-center">
+                <div class="flex">
+                  <div class="font-semibold text-lg text-left">
+                    APPLY FOR APPLICATION
+                  </div>
+                  <div class="dropdown dropdown-start pl-1 pr-16">
+                    <label
+                      tabindex="0"
+                      class="btn btn-circle btn-ghost btn-xs text-info"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        class="w-4 h-4 stroke-current"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                    </label>
+                    <div
+                      tabindex="0"
+                      class="
+                        card
+                        compact
+                        dropdown-content
+                        shadow
+                        bg-base-100
+                        rounded-box
+                        w-80
+                      "
+                    >
+                      <div class="card-body flex justify-center m-4">
+                        <h2 class="font-semibold text-sm">
+                          CREDENTIALS FOR {{ selected }}
+                        </h2>
+                        <ul class="list-disc text-left">
+                          <li v-for="i in reqs" :key="i">
+                            {{ i.req.applicationReq }}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex pb-2">
+                  <select
+                    v-on:change="changeItem($event)"
+                    class="py-2 px-3 rounded-md w-64"
+                  >
+                    <option
+                      class=""
+                      v-for="i in applicationTypes"
+                      :key="i"
+                      :value="i.href"
+                    >
+                      {{ i.appType.get("applicationTypeName") }}
+                    </option>
+                  </select>
+                </div>
               </div>
               <hr />
-              <div class="space-y-1 pt-3">
-                <div class="form-control w-full max-w-xs">
-                  <label class="label">
-                    <span class="text-sm">Point Person</span>
-                  </label>
-                  <input
-                    :class="{ 'input-error': validationStatus(v$.pointPerson) }"
-                    v-model="v$.pointPerson.$model"
-                    type="text"
-                    placeholder="Enter point person"
-                    class="input input-bordered w-full max-w-xs"
-                  />
-                  <label class="label">
-                    <span
-                      v-if="validationStatus(v$.pointPerson)"
-                      :class="{
-                        'text-error': validationStatus(v$.pointPerson),
-                      }"
-                      class="label-text-alt"
-                    >
-                      Point Person is Required</span
-                    >
-                  </label>
-                </div>
-                <div class="form-control w-full max-w-xs">
-                  <label class="label">
-                    <span class="label-text">Email Address</span>
-                  </label>
-                  <input
-                    :class="{ 'input-error': validationStatus(v$.email) }"
-                    v-model="v$.email.$model"
-                    type="email"
-                    placeholder="Enter email address"
-                    class="input input-bordered w-full max-w-xs"
-                  />
-                  <label class="label">
-                    <span
-                      v-if="validationStatus(v$.email)"
-                      :class="{ 'text-error': validationStatus(v$.email) }"
-                      class="label-text-alt"
-                    >
-                      Email is Required</span
-                    >
-                  </label>
-                </div>
-                <div class="form-control w-full max-w-xs">
-                  <label class="label">
-                    <span class="label-text">Contact Number</span>
-                  </label>
-                  <input
-                    :class="{ 'input-error': validationStatus(v$.phoneNumber) }"
-                    v-model="v$.phoneNumber.$model"
-                    maxlength="11"
-                    type="number"
-                    @input="handleUserInput"
-                    placeholder="09*********"
-                    class="input input-bordered w-full max-w-xs"
-                  />
-                  <label class="label">
-                    <span
-                      v-if="validationStatus(v$.phoneNumber)"
-                      :class="{
-                        'text-error': validationStatus(v$.phoneNumber),
-                      }"
-                      class="label-text-alt"
-                    >
-                      Phone Number is Required</span
-                    >
-                  </label>
-                </div>
+            </div>
+            <hr />
+            <div class="flex flex-row items-start justify-evenly p-2">
+              <div class="form-control w-full max-w-xs">
+                <label class="label">
+                  <span class="text-sm">Point Person</span>
+                </label>
+                <input
+                  :class="{ 'input-error': validationStatus(v$.pointPerson) }"
+                  v-model="v$.pointPerson.$model"
+                  type="text"
+                  placeholder="Enter point person"
+                  class="input input-bordered w-full max-w-xs"
+                />
+                <label class="label">
+                  <span
+                    v-if="validationStatus(v$.pointPerson)"
+                    :class="{
+                      'text-error': validationStatus(v$.pointPerson),
+                    }"
+                    class="label-text-alt"
+                  >
+                    Point Person is Required</span
+                  >
+                </label>
+              </div>
+              <div class="form-control w-full max-w-xs">
+                <label class="label">
+                  <span class="label-text">Email Address</span>
+                </label>
+                <input
+                  :class="{ 'input-error': validationStatus(v$.email) }"
+                  v-model="v$.email.$model"
+                  type="email"
+                  placeholder="Enter email address"
+                  class="input input-bordered w-full max-w-xs"
+                />
+                <label class="label">
+                  <span
+                    v-if="validationStatus(v$.email)"
+                    :class="{ 'text-error': validationStatus(v$.email) }"
+                    class="label-text-alt"
+                  >
+                    Email is Required</span
+                  >
+                </label>
+              </div>
+              <div class="form-control w-full max-w-xs">
+                <label class="label">
+                  <span class="label-text">Contact Number</span>
+                </label>
+                <input
+                  :class="{ 'input-error': validationStatus(v$.phoneNumber) }"
+                  v-model="v$.phoneNumber.$model"
+                  maxlength="11"
+                  type="number"
+                  @input="handleUserInput"
+                  placeholder="09*********"
+                  class="input input-bordered w-full max-w-xs"
+                />
+                <label class="label">
+                  <span
+                    v-if="validationStatus(v$.phoneNumber)"
+                    :class="{
+                      'text-error': validationStatus(v$.phoneNumber),
+                    }"
+                    class="label-text-alt"
+                  >
+                    Phone Number is Required</span
+                  >
+                </label>
               </div>
             </div>
           </div>
           <!-- Title -->
-          <div class="">
-            <div class="flex justify-evenly items-center">
-              <div class="flex">
-                <div class="font-semibold text-lg text-left">
-                  APPLY FOR APPLICATION
-                </div>
-                <div class="dropdown dropdown-start pl-1 pr-16">
-                  <label
-                    tabindex="0"
-                    class="btn btn-circle btn-ghost btn-xs text-info"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      class="w-4 h-4 stroke-current"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                  </label>
-                  <div
-                    tabindex="0"
-                    class="
-                      card
-                      compact
-                      dropdown-content
-                      shadow
-                      bg-base-100
-                      rounded-box
-                      w-80
-                    "
-                  >
-                    <div class="card-body flex justify-center m-4">
-                      <h2 class="font-semibold text-sm">
-                        CREDENTIALS FOR {{ selected }}
-                      </h2>
-                      <ul class="list-disc text-left">
-                        <li v-for="i in reqs" :key="i">
-                          {{ i.req.applicationReq }}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="flex pb-2">
-                <select
-                  v-on:change="changeItem($event)"
-                  class="py-2 px-3 rounded-md w-64"
-                >
-                  <option
-                    class=""
-                    v-for="i in applicationTypes"
-                    :key="i"
-                    :value="i.href"
-                  >
-                    {{ i.appType.get("applicationTypeName") }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <hr />
-          </div>
+
           <div class="">
             <div>
-              <div class="grid grid-cols-2 place-items-center gap-4 py-5">
+              <!-- <div class="font-semibold text-lg text-center">REQUIREMENTS</div> -->
+
+              <table class="w-full text-sm text-left text-gray-500">
+                  <thead class="font-semibold text-gray-700 uppercase bg-gray-50">
+                      <tr>
+                        <th class="aoe text-center">Requirements</th>
+                        <th class="text-center">File Upload</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr v-for="i in reqs" :key="i"  class="bg-white border-b hover:bg-gray-50">
+                          <td class="px-6 py-4">
+                            <th>{{ i.req.applicationReq }}</th>
+                          </td>
+                          <td class="px-6 py-4">
+                            <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc"/>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+
+
+            
+              <!-- <div class="grid grid-cols-3 place-items-center gap-4 py-5">
                 <div v-for="i in reqs" :key="i" class="w-80 form-control">
                   <label class="label text-left">
                     <span
@@ -178,7 +197,7 @@
                     accept=".pdf,.doc"
                   />
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -230,6 +249,7 @@
                 focus:outline-none
                 dark:focus:ring-blue-800
               "
+              @click="submitApplication()"
             >
               Submit
             </button>
@@ -271,6 +291,24 @@ export default {
     };
   },
   methods: {
+    submitApplication() {
+        console.log(this.pointPerson + " " + this.email + " " + this.phoneNumber);
+        // const application = Parse.Object.extend("Access_Types");
+        // const newApplication = new application();
+
+        // newApplication.save({
+        //     pointPerson: this.pointPerson,
+        //     email: this.email,
+        //     phoneNumber: this.phoneNumber
+        // })
+        // .then(
+        //     (newApplication) => {
+        //     console.log("New Access Type Added:" + newApplication.id)
+        //     },
+        //     (error) => {
+        //     alert("Access Type Adding Failed: " + error)
+        // });
+    },
     changeItem: function changeItem(event) {
       for (var i = 0; i < this.applicationTypes.length; i++) {
         if (

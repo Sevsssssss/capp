@@ -1,6 +1,15 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
+    <div class="
+        card
+        over
+        p-4
+        w-fit
+        bg-white
+        rounded-lg
+        border border-gray-200
+        shadow-md
+      ">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -77,7 +86,7 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
-                        <div class="text-sm font-medium text-gray-500 ">
+                        <div class="text-sm font-medium text-gray-500">
                             Add HEI Type?
                             <label for="createHEI" href="#" class="text-blue-700 hover:underline"><a>Create</a></label>
                         </div>
@@ -100,14 +109,6 @@
             </div>
         </form>
     </div>
-    <!-- <div v-if="!savingSuccessful"></div> -->
-    <div v-if="savingSuccessful" class="absolute top-24 right-5 alert alert-success shadow-lg rounded-md w-auto success" style="position : fixed;">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <span class="font-semibold">{{this.text}}</span>
-        </div>
-    </div>
     <input type="checkbox" id="createHEI" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -117,8 +118,17 @@
             </p>
             <form>
                 <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 ">HEI TYPE</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI TYPE</label>
+                    <input type="text" id="base-input" class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              " placeholder="Enter HEI Type" />
                 </div>
             </form>
             <div class="modal-action">
@@ -130,15 +140,27 @@
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box text-left">
-            <div class="font-semibold">
-                ADD HEI ACCOUNT
-            </div>
+            <div class="font-semibold">ADD HEI ACCOUNT</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">Continue</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <button for="my-modal-6" type="submit" class="
+              btn btn-sm
+              bg-blue-700
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            " @click="addHEI(), scrollToTop()">Continue
+                </button>
             </div>
         </div>
     </div>
@@ -160,18 +182,23 @@
 </template>
 
 <script>
-import VueInstantLoadingSpinner from 'vue-instant-loading-spinner'
+import {
+    useToast,
+    TYPE,
+    POSITION,
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
     required,
     email
 } from "@vuelidate/validators";
-
+import emailjs from 'emailjs-com';
 export default {
     name: "AddHeiView",
     components: {
-        VueInstantLoadingSpinner
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -196,12 +223,11 @@ export default {
             ],
             hei_name: "",
             username: "",
-            email: null,
+            email: "",
             address: "",
             number: "",
             inst_code: "",
             hei_type: "STATE UNIVERSITIES AND COLLEGES",
-
             hei_nameError: "",
             usernameError: "",
             emailError: "",
@@ -209,6 +235,7 @@ export default {
             numberError: "",
             inst_codeError: "",
             hei_typeError: "",
+            password: "",
         };
     },
     validations() {
@@ -238,30 +265,39 @@ export default {
         };
     },
     methods: {
+        sendEmail() {
+            var emailParams = {
+                message: "Your account has been created. \n Your account username is " + this.username + "\n Your temporary password is " + this.password,
+                email: this.email,
+            }
+            try {
+                alert(this.email)
+                emailjs.send('service_rax86wc', 'template_nyqa4k6', emailParams, 'wXbhKrnQCwo8bc25m')
+            } catch (error) {
+                console.log(error + " email sending failed")
+            }
+        },
         ToggleshowModal() {
             this.showModal = !this.showModal;
-
         },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
-
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
         validate() {
-            console.log(this.showModal1);
             return this.showModal1;
         },
         showaddAgain() {
-            console.log(this.addAgain);
             return this.addAgain;
         },
         scrollToTop() {
             window.scrollTo(0, 0);
         },
         async addHEI() {
+            this.password = "password";
             const newHEI = new Parse.User();
             newHEI.set("hei_name", this.hei_name);
             newHEI.set("username", this.username);
@@ -273,52 +309,56 @@ export default {
             newHEI.set("hei_type", this.hei_type);
             newHEI.set("access_type", "HEI");
             try {
-                // Show the spinner first 
+                // Show the spinner first
+                // this.$refs.Spinner.show();
+                // setTimeout(
+                //     function () {
+                //         this.$refs.Spinner.hide();
+                //     }.bind(this),
+                //     5000
+                // );
+                // await newHEI.save().then(() => {
+                //     setTimeout(() => (this.savingSuccessful = true), 2000);
+                // });
+                // this.sendEmail();
+                // setTimeout(() => this.$router.push({
+                //     path: "/hei"
+                // }), 3000);
+                const toast = useToast();
+                await newHEI.save().then(() => {
+                    toast("Account Added!", {
+                        type: TYPE.SUCCESS,
+                        timeout: 2000,
+                        position: POSITION.TOP_RIGHT,
+                        hideProgressBar: false,
+                    });
+                });
+                this.sendEmail();
                 this.$refs.Spinner.show();
-                setTimeout(async() => {
-                // When the data already added hide the spinner
-                await newHEI.save(),
-                this.$refs.Spinner.hide()
-                }, 5000);
-                // After adding the data show the success UI
-                this.savingSuccessful = true
-                // now 'this' is referencing the Vue object and not the 'setTimeout' scope
-                setTimeout(() => this.savingSuccessful = false, 2000);
-                // Reload the page
-                setTimeout(() => document.location.reload().bind(this), 2000);
 
-                // this.showaddAgain();
-                //this.$router.push("/hei");
-                console.log(this.showModal1);
-                // if (
-                //   confirm("Account added. Would you like to add another account?")
-                // ) {
-                //   document.location.reload();
-                // } else {
-                //   this.$router.push("/hei");
-                // }
+                setTimeout(() =>
+                    this.$router.push({
+                        path: "/hei"
+                    }), 1000);
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    4000)
             } catch (error) {
-                
                 alert("Error: " + error.code + " " + error.message);
                 document.location.reload();
-                
-                
             }
         },
         modal() {
-
-            console.log("Hello");
             // this.v$.$validate();
             // if(!this.v$.$error){
             //     alert('Yey')
             // }else{
             //     alert('nay')
             // }
-
-            console.log("Hello2");
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
-
             if (this.hei_name == "") {
                 has_error = 1;
                 //error_text += "HEI Name is empty\n"
@@ -344,7 +384,6 @@ export default {
                 //error_text += "Institution Code is empty\n"
                 this.inst_codeError = "Institution Code is Required";
             }
-
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
@@ -355,7 +394,6 @@ export default {
                 //     Math.floor(Math.random() * charactersLength)
                 //   );
                 // }
-
                 this.showModal1 = !this.showModal1;
             }
         },

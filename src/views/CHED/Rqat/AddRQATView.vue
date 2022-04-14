@@ -103,6 +103,37 @@
         </div>
       </form>
     </div>
+    <div
+      v-if="savingSuccessful"
+      class="
+        absolute
+        top-24
+        right-5
+        alert alert-success
+        shadow-lg
+        rounded-md
+        w-auto
+        success
+      "
+      style="position: fixed"
+    >
+      <div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="stroke-current flex-shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span class="font-semibold">{{ this.text }}</span>
+      </div>
+    </div>
     <input type="checkbox" id="createAffilication" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -165,6 +196,7 @@ export default {
     return {
       showModal: false,
       showModal1: false,
+      savingSuccessful: false,
       v$: useVuelidate(),
       heis: [
         {
@@ -244,7 +276,9 @@ export default {
           setTimeout(function () {
               this.$refs.Spinner.hide();
           }.bind(this), 5000);
-          await newRQAT.save();
+          await newRQAT.save().then(() =>{
+               setTimeout(() => (this.savingSuccessful = true), 2000);
+        });
           setTimeout( () => this.$router.push({ path: "/rqat"}), 3000);
           // if (
           //   confirm("Account added. Would you like to add another account?")
