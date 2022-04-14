@@ -249,6 +249,7 @@
                 focus:outline-none
                 dark:focus:ring-blue-800
               "
+              @click="submitApplication()"
             >
               Submit
             </button>
@@ -290,6 +291,24 @@ export default {
     };
   },
   methods: {
+    submitApplication() {
+        console.log(this.pointPerson + " " + this.email + " " + this.phoneNumber);
+        // const application = Parse.Object.extend("Access_Types");
+        // const newApplication = new application();
+
+        // newApplication.save({
+        //     pointPerson: this.pointPerson,
+        //     email: this.email,
+        //     phoneNumber: this.phoneNumber
+        // })
+        // .then(
+        //     (newApplication) => {
+        //     console.log("New Access Type Added:" + newApplication.id)
+        //     },
+        //     (error) => {
+        //     alert("Access Type Adding Failed: " + error)
+        // });
+    },
     changeItem: function changeItem(event) {
       for (var i = 0; i < this.applicationTypes.length; i++) {
         if (

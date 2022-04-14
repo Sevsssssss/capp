@@ -280,8 +280,7 @@ export default {
                     toast("Account Added!", {
                         type: TYPE.SUCCESS,
                         timeout: 2000,
-                        position: POSITION.TOP_RIGHT,
-                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT
                     });
                 });
                 this.$refs.Spinner.show();
