@@ -1,6 +1,15 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
+    <div class="
+        card
+        over
+        p-4
+        w-fit
+        bg-white
+        rounded-lg
+        border border-gray-200
+        shadow-md
+      ">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -94,11 +103,35 @@
                     Cancel
                 </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
+                <button for="my-modal-6" id="my-modal-6" type="button" class="
+              border-none
+              btn btn-md
+              submit
+              bg-brand-darkblue
+              hover:bg-blue-800
+            " @click="modal(), scrollToTop()">
                     Add HEI
                 </button>
             </div>
         </form>
+    </div>
+    <!-- <div v-if="!savingSuccessful"></div> -->
+    <div v-if="savingSuccessful" class="
+        absolute
+        top-24
+        right-5
+        alert alert-success
+        shadow-lg
+        rounded-md
+        w-auto
+        success
+      " style="position: fixed">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="font-semibold">{{ this.text }}</span>
+        </div>
     </div>
     <input type="checkbox" id="createHEI" class="modal-toggle" />
     <div class="modal">
@@ -110,25 +143,61 @@
             <form>
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI TYPE</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
+                    <input type="text" id="base-input" class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              " placeholder="Enter HEI Type" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createHEI" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
+                <label for="createHEI" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label class="
+              btn btn-sm
+              bg-blue-700
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            ">Submit</label>
             </div>
         </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box rounded-md text-left">
+        <div class="modal-box text-left">
             <div class="font-semibold">ADD HEI ACCOUNT</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">Continue</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <button for="my-modal-6" type="submit" class="
+              btn btn-sm
+              bg-blue-700
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            " @click="addHEI(), scrollToTop()">Continue
+                </button>
             </div>
         </div>
     </div>
@@ -150,11 +219,6 @@
 </template>
 
 <script>
-import {
-    useToast,
-    TYPE,
-    POSITION,
-} from "vue-toastification";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
@@ -163,7 +227,6 @@ import {
     email
 } from "@vuelidate/validators";
 import emailjs from 'emailjs-com';
-
 export default {
     name: "AddHeiView",
     components: {
@@ -173,7 +236,9 @@ export default {
         return {
             showModal: false,
             showModal1: false,
+            savingSuccessful: false,
             addAgain: false,
+            text: "Account added!",
             v$: useVuelidate(),
             heis: [{
                     title: "STATE UNIVERSITIES AND COLLEGES",
@@ -190,12 +255,11 @@ export default {
             ],
             hei_name: "",
             username: "",
-            email: null,
+            email: "",
             address: "",
             number: "",
             inst_code: "",
             hei_type: "STATE UNIVERSITIES AND COLLEGES",
-
             hei_nameError: "",
             usernameError: "",
             emailError: "",
@@ -203,6 +267,7 @@ export default {
             numberError: "",
             inst_codeError: "",
             hei_typeError: "",
+            password: "",
         };
     },
     validations() {
@@ -250,23 +315,21 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
-
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
         validate() {
-            console.log(this.showModal1);
             return this.showModal1;
         },
         showaddAgain() {
-            console.log(this.addAgain);
             return this.addAgain;
         },
         scrollToTop() {
             window.scrollTo(0, 0);
         },
         async addHEI() {
+            this.password = "password";
             const newHEI = new Parse.User();
             newHEI.set("hei_name", this.hei_name);
             newHEI.set("username", this.username);
@@ -299,18 +362,14 @@ export default {
             }
         },
         modal() {
-            console.log("Hello");
             // this.v$.$validate();
             // if(!this.v$.$error){
             //     alert('Yey')
             // }else{
             //     alert('nay')
             // }
-
-            console.log("Hello2");
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
-
             if (this.hei_name == "") {
                 has_error = 1;
                 //error_text += "HEI Name is empty\n"
@@ -336,7 +395,6 @@ export default {
                 //error_text += "Institution Code is empty\n"
                 this.inst_codeError = "Institution Code is Required";
             }
-
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
@@ -347,7 +405,6 @@ export default {
                 //     Math.floor(Math.random() * charactersLength)
                 //   );
                 // }
-
                 this.showModal1 = !this.showModal1;
             }
         },
