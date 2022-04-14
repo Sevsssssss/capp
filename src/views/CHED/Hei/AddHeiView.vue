@@ -103,35 +103,11 @@
                     Cancel
                 </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="button" class="
-              border-none
-              btn btn-md
-              submit
-              bg-brand-darkblue
-              hover:bg-blue-800
-            " @click="modal(), scrollToTop()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
                     Add HEI
                 </button>
             </div>
         </form>
-    </div>
-    <!-- <div v-if="!savingSuccessful"></div> -->
-    <div v-if="savingSuccessful" class="
-        absolute
-        top-24
-        right-5
-        alert alert-success
-        shadow-lg
-        rounded-md
-        w-auto
-        success
-      " style="position: fixed">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="font-semibold">{{ this.text }}</span>
-        </div>
     </div>
     <input type="checkbox" id="createHEI" class="modal-toggle" />
     <div class="modal">
@@ -156,21 +132,8 @@
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createHEI" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label class="
-              btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            ">Submit</label>
+                <label for="createHEI" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
             </div>
         </div>
     </div>
