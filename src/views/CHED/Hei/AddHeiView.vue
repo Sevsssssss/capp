@@ -195,7 +195,11 @@ import {
     email
 } from "@vuelidate/validators";
 import emailjs from 'emailjs-com';
+
+const toast = useToast();
+
 export default {
+
     name: "AddHeiView",
     components: {
         VueInstantLoadingSpinner,
@@ -271,10 +275,22 @@ export default {
                 email: this.email,
             }
             try {
-                alert(this.email)
-                emailjs.send('service_rax86wc', 'template_nyqa4k6', emailParams, 'wXbhKrnQCwo8bc25m')
+                //alert(this.email)
+                emailjs.send('service_rax86wc', 'template_nyqa4k6', emailParams, 'wXbhKrnQCwo8bc25m').then(() => {
+                    toast("Email sent!", {
+                        type: TYPE.INFO,
+                        timeout: 2000,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                })
             } catch (error) {
-                console.log(error + " email sending failed")
+                toast("Error:" + error.code + "" + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error.message)
             }
         },
         ToggleshowModal() {
@@ -324,30 +340,37 @@ export default {
                 // setTimeout(() => this.$router.push({
                 //     path: "/hei"
                 // }), 3000);
-                const toast = useToast();
+
                 await newHEI.save().then(() => {
                     toast("Account Added!", {
                         type: TYPE.SUCCESS,
                         timeout: 2000,
                         position: POSITION.TOP_RIGHT,
-                        hideProgressBar: false,
+                    });
+                    this.sendEmail().then(() => {
+                        setTimeout(() =>
+                            this.$router.push({
+                                path: "/hei"
+                            }), 1000);
                     });
                 });
-                this.sendEmail();
-                this.$refs.Spinner.show();
-
-                setTimeout(() =>
-                    this.$router.push({
-                        path: "/hei"
-                    }), 1000);
+                this.$refs.Spinner.show()
                 setTimeout(
                     function () {
                         this.$refs.Spinner.hide();
                     }.bind(this),
-                    4000)
+                    2000)
+
             } catch (error) {
-                alert("Error: " + error.code + " " + error.message);
-                document.location.reload();
+                toast("Error:" + error.code + " " + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error.message)
+                // alert("Error: " + error.code + " " + error.message);
+                //document.location.reload();
             }
         },
         modal() {
