@@ -15,7 +15,7 @@
         </div>
         <div class="text-center p-5">
             <div class="font-semibold">
-                REQUIREMENTS FOR APPLICATION OF {{this.$route.query.appTypeName}}
+                REQUIREMENTS FOR APPLICATION OF {{this.$route.query.appTypeName.toUpperCase()}}
 
             </div>
         </div>
