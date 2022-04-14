@@ -166,7 +166,7 @@ import Parse from "parse";
 // var page = 0;
 
 export default {
-    name: "EmployeesView",
+    name: "AppSettingsVIew",
     data() {
         return {
             currentpage: 0,
