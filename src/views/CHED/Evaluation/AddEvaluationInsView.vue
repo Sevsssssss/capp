@@ -104,7 +104,7 @@
           </div>
         </div>
         <div
-          v-for="subcategory in getSubCategories(category)"
+          v-for="subcategory in subCategories"
           :key="subcategory"
           class="overflow-x-auto rounded-lg"
           id="add-subcat"
@@ -248,8 +248,9 @@ export default {
         id: thisCategory.category[0].subcategoryC,
       };
       this.subCategories.push({ subcategory });
+      this.getSubCategories(thisCategory);
     },
-    getSubCategories(thisCategory) {
+     getSubCategories(thisCategory) {
       var categoryId = thisCategory.category[0].id;
       var subcat = [];
 
@@ -258,7 +259,7 @@ export default {
           subcat.push(this.subCategories[i].subcategory[0]);
         }
       }
-      return subcat;
+      this.subCategories = subcat;
     },
   },
 };
