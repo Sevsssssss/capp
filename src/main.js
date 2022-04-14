@@ -19,5 +19,28 @@ createApp(App).use(Toast, {
     maxToasts: 20,
     newestOnTop: true,
     hideProgressBar: false,
+    // Enqueueing prevent Duplicates
+    filterToasts: toasts => {
+        // Keep track of existing types
+        const types = {};
+        return toasts.reduce((aggToasts, toast) => {
+          // Check if type was not seen before
+          if (!types[toast.type]) {
+            aggToasts.push(toast);
+            types[toast.type] = true;
+          }
+          return aggToasts;
+        }, []);
+      },
+    //   filterBeforeCreate: (toast, toasts) => {
+    //     if (toasts.filter(
+    //       t => t.type === toast.type
+    //     ).length !== 0) {
+    //       // Returning false discards the toast
+    //       return false;
+    //     }
+    //     // You can modify the toast if you want
+    //     return toast;
+    //   }
 });
 
