@@ -221,27 +221,6 @@ import Parse from "parse";
 // var page = 0;
 
 export default {
-<<<<<<< HEAD
-    name: "AppSettingsVIew",
-    data() {
-        return {
-            currentpage: 0,
-            numPerPage: 10,
-            totalEntries: 0,
-            headers: [{
-                    title: "ACCESS TYPE",
-                },
-                {
-                    title: "",
-                },
-            ],
-            tables: [],
-            search: "",
-            sort_type: "Sort by Designation",
-            atname: "",
-            checkedAccessTypes: [],
-        };
-=======
   name: "EmployeesView",
   data() {
     return {
@@ -273,7 +252,6 @@ export default {
           this.numPerPage * this.currentpage,
           (this.currentpage + 1) * this.numPerPage
         );
->>>>>>> 7ee9f58e4df77f2658f54a850c1023ece847807d
     },
     // goToAppTypeView2() {
     //   var requirements = [];
