@@ -1,15 +1,6 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="
-        card
-        over
-        p-4
-        w-fit
-        bg-white
-        rounded-lg
-        border border-gray-200
-        shadow-md
-      ">
+    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -119,16 +110,7 @@
             <form>
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI TYPE</label>
-                    <input type="text" id="base-input" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter HEI Type" />
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
                 </div>
             </form>
             <div class="modal-action">
@@ -145,21 +127,9 @@
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <button for="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            " @click="addHEI(), scrollToTop()">Continue
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">
+                    Continue
                 </button>
             </div>
         </div>
@@ -185,7 +155,7 @@
 import {
     useToast,
     TYPE,
-    POSITION,
+    POSITION
 } from "vue-toastification";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
@@ -194,12 +164,11 @@ import {
     required,
     email
 } from "@vuelidate/validators";
-import emailjs from 'emailjs-com';
+import emailjs from "emailjs-com";
 
 const toast = useToast();
 
 export default {
-
     name: "AddHeiView",
     components: {
         VueInstantLoadingSpinner,
@@ -271,18 +240,28 @@ export default {
     methods: {
         sendEmail() {
             var emailParams = {
-                message: "Your account has been created. \n Your account username is " + this.username + "\n Your temporary password is " + this.password,
+                message: "Your account has been created. \n Your account username is " +
+                    this.username +
+                    "\n Your temporary password is " +
+                    this.password,
                 email: this.email,
-            }
+            };
             try {
                 //alert(this.email)
-                emailjs.send('service_rax86wc', 'template_nyqa4k6', emailParams, 'wXbhKrnQCwo8bc25m').then(() => {
-                    toast("Email sent!", {
-                        type: TYPE.INFO,
-                        timeout: 2000,
-                        position: POSITION.TOP_RIGHT,
+                emailjs
+                    .send(
+                        "service_rax86wc",
+                        "template_nyqa4k6",
+                        emailParams,
+                        "wXbhKrnQCwo8bc25m"
+                    )
+                    .then(() => {
+                        toast("Email sent!", {
+                            type: TYPE.INFO,
+                            timeout: 2000,
+                            position: POSITION.TOP_RIGHT,
+                        });
                     });
-                })
             } catch (error) {
                 toast("Error:" + error.code + "" + error.message, {
                     type: TYPE.ERROR,
@@ -290,7 +269,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
         },
         ToggleshowModal() {
@@ -342,25 +321,28 @@ export default {
                 // }), 3000);
 
                 await newHEI.save().then(() => {
-                    toast("Account Added!", {
+                    toast("HEI Account Added!", {
                         type: TYPE.SUCCESS,
                         timeout: 2000,
                         position: POSITION.TOP_RIGHT,
                     });
                     this.sendEmail().then(() => {
-                        setTimeout(() =>
+                        setTimeout(
+                            () =>
                             this.$router.push({
-                                path: "/hei"
-                            }), 1000);
+                                path: "/hei",
+                            }),
+                            1000
+                        );
                     });
                 });
-                this.$refs.Spinner.show()
+                this.$refs.Spinner.show();
                 setTimeout(
                     function () {
                         this.$refs.Spinner.hide();
                     }.bind(this),
-                    2000)
-
+                    2000
+                );
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -368,7 +350,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
                 // alert("Error: " + error.code + " " + error.message);
                 //document.location.reload();
             }
