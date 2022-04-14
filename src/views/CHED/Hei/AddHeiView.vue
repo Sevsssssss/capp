@@ -182,6 +182,11 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION,
+} from "vue-toastification";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
@@ -305,20 +310,41 @@ export default {
             newHEI.set("access_type", "HEI");
             try {
                 // Show the spinner first
+                // this.$refs.Spinner.show();
+                // setTimeout(
+                //     function () {
+                //         this.$refs.Spinner.hide();
+                //     }.bind(this),
+                //     5000
+                // );
+                // await newHEI.save().then(() => {
+                //     setTimeout(() => (this.savingSuccessful = true), 2000);
+                // });
+                // this.sendEmail();
+                // setTimeout(() => this.$router.push({
+                //     path: "/hei"
+                // }), 3000);
+                const toast = useToast();
+                await newHEI.save().then(() => {
+                    toast("Account Added!", {
+                        type: TYPE.SUCCESS,
+                        timeout: 2000,
+                        position: POSITION.TOP_RIGHT,
+                        hideProgressBar: false,
+                    });
+                });
+                this.sendEmail();
                 this.$refs.Spinner.show();
+
+                setTimeout(() =>
+                    this.$router.push({
+                        path: "/hei"
+                    }), 1000);
                 setTimeout(
                     function () {
                         this.$refs.Spinner.hide();
                     }.bind(this),
-                    5000
-                );
-                await newHEI.save().then(() => {
-                    setTimeout(() => (this.savingSuccessful = true), 2000);
-                });
-                this.sendEmail();
-                setTimeout(() => this.$router.push({
-                    path: "/hei"
-                }), 3000);
+                    4000)
             } catch (error) {
                 alert("Error: " + error.code + " " + error.message);
                 document.location.reload();
