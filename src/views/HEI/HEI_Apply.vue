@@ -1,6 +1,7 @@
 <template>
 <section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
+        <form v-on:submit.prevent="submit">
         <div class="p-5">
             <div class="">
                 <div class="flex-col py-5 ">
@@ -38,42 +39,44 @@
                         </div>
                     </div>
                     <!-- <hr /> -->
-                    <div class="flex flex-row items-start justify-evenly px-2 py-4 ">
-                        <div class="form-control w-full max-w-xs mx-4">
-                            <label class="label">
-                                <span class="text-sm">Point Person</span>
-                            </label>
-                            <input :class="{ 'input-error': validationStatus(v$.pointPerson) }" v-model="v$.pointPerson.$model" type="text" placeholder="Enter point person" class="input input-bordered w-full max-w-xs" />
-                            <label class="label">
-                                <span v-if="validationStatus(v$.pointPerson)" :class="{
+                   
+                        <div class="flex flex-row items-start justify-evenly px-2 py-4 ">
+                            <div class="form-control w-full max-w-xs mx-4">
+                                <label class="label">
+                                    <span class="text-sm">Point Person</span>
+                                </label>
+                                <input :class="{ 'input-error': validationStatus(v$.pointPerson) }" v-model="v$.pointPerson.$model" type="text" placeholder="Enter point person" class="input input-bordered w-full max-w-xs" />
+                                <label class="label">
+                                    <span v-if="validationStatus(v$.pointPerson)" :class="{
                       'text-error': validationStatus(v$.pointPerson),
                     }" class="label-text-alt">
-                                    Point Person is Required</span>
-                            </label>
-                        </div>
-                        <div class="form-control w-full max-w-xs">
-                            <label class="label">
-                                <span class="label-text">Email Address</span>
-                            </label>
-                            <input :class="{ 'input-error': validationStatus(v$.email) }" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs" />
-                            <label class="label">
-                                <span v-if="validationStatus(v$.email)" :class="{ 'text-error': validationStatus(v$.email) }" class="label-text-alt">
-                                    Email is Required</span>
-                            </label>
-                        </div>
-                        <div class="form-control w-full max-w-xs mx-4">
-                            <label class="label">
-                                <span class="label-text">Contact Number</span>
-                            </label>
-                            <input :class="{ 'input-error': validationStatus(v$.phoneNumber) }" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs" />
-                            <label class="label">
-                                <span v-if="validationStatus(v$.phoneNumber)" :class="{
+                                        Point Person is Required</span>
+                                </label>
+                            </div>
+                            <div class="form-control w-full max-w-xs">
+                                <label class="label">
+                                    <span class="label-text">Email Address</span>
+                                </label>
+                                <input :class="{ 'input-error': validationStatus(v$.email) }" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs" />
+                                <label class="label">
+                                    <span v-if="validationStatus(v$.email)" :class="{ 'text-error': validationStatus(v$.email) }" class="label-text-alt">
+                                        Email is Required</span>
+                                </label>
+                            </div>
+                            <div class="form-control w-full max-w-xs mx-4">
+                                <label class="label">
+                                    <span class="label-text">Contact Number</span>
+                                </label>
+                                <input :class="{ 'input-error': validationStatus(v$.phoneNumber) }" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs" />
+                                <label class="label">
+                                    <span v-if="validationStatus(v$.phoneNumber)" :class="{
                       'text-error': validationStatus(v$.phoneNumber),
                     }" class="label-text-alt">
-                                    Phone Number is Required</span>
-                            </label>
+                                        Phone Number is Required</span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                    
                 </div>
                 <!-- Title -->
 
@@ -149,6 +152,7 @@
                         Cancel
                     </button>
                     <button type="submit" class="
+                submit
                 w-40
                 text-white
                 bg-blue-700
@@ -166,6 +170,7 @@
                 </div>
             </div>
         </div>
+    </form>
     </div>
 </section>
 </template>
