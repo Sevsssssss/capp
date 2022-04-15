@@ -260,6 +260,30 @@
               placeholder="Enter Name"
               v-model="atname"
             />
+            <div class="font-medium text-sm mt-2">Choose Home Type:</div>
+
+            <label class="flex flex-row cursor-pointer">
+              <input
+                type="radio"
+                id="homeType"
+                value="/home"
+                class="radio"
+                v-model="homeType"
+              />
+              <div class="label-text ml-2" style="align-self: center">
+                CHED Home
+              </div>
+              <input
+                type="radio"
+                id="homeType"
+                value="/HEIhome"
+                class="radio"
+                v-model="homeType"
+              />
+              <div class="label-text ml-2" style="align-self: center">
+                HEI Home
+              </div>
+            </label>
             <div class="font-medium text-sm mt-2">Privileges:</div>
             <div class="form-control flex mt-1 flex-row">
               <label class="flex flex-row cursor-pointer">
@@ -567,6 +591,7 @@ export default {
       sort_type: "Sort by Designation",
       atname: "",
       checkedAccessTypes: [],
+      homeType: "",
     };
   },
   components: {},
@@ -589,6 +614,7 @@ export default {
       try {
         newAccessType.save({
           name: this.atname.toUpperCase(),
+          hometype: this.homeType,
           privileges: this.checkedAccessTypes,
         });
         if (

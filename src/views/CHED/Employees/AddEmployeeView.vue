@@ -372,35 +372,9 @@ export default {
       showModal1: false,
       savingSuccessful: false,
       v$: useVuelidate(),
-      accessTypes: [
-        {
-          title: "ADMIN",
-        },
-        {
-          title: "EDUCATION SUPERVISOR",
-        },
-        {
-          title: "RQAT",
-        },
-        {
-          title: "REPORTS",
-        },
-      ],
+      accessTypes: [],
 
-      designations: [
-        {
-          title: "DIRECTOR",
-        },
-        {
-          title: "EDUCATION SUPERVISOR",
-        },
-        {
-          title: "SECRETARY",
-        },
-        {
-          title: "CHED EMPLOYEE",
-        },
-      ],
+      designations: [],
 
       lastname: "",
       firstname: "",
@@ -408,8 +382,8 @@ export default {
       email: "",
       username: "",
       contactnum: "",
-      emp_designation: "DIRECTOR",
-      access_type: "ADMIN",
+      emp_designation: "",
+      access_type: "",
     };
   },
   validations() {
@@ -441,6 +415,7 @@ export default {
       },
     };
   },
+
   methods: {
     ToggleshowModal() {
       this.showModal = !this.showModal;
@@ -473,7 +448,6 @@ export default {
       newEmployee.set("contact_num", this.contactnum);
       newEmployee.set("access_type", this.access_type);
       newEmployee.set("designation", this.emp_designation);
-      newEmployee.set("user_type", "employee");
 
       try {
         this.$refs.Spinner.show();
@@ -525,6 +499,46 @@ export default {
         this.showModal1 = !this.showModal1;
       }
     },
+  },
+  mounted: async function () {
+    //Designations
+    var designationsTable = [];
+
+    const Designations = Parse.Object.extend("Designations");
+    const query = new Parse.Query(Designations);
+
+    const querResult = await query.find();
+    for (var i = 0; i < querResult.length; i++) {
+      const desig = querResult[i];
+      if (i === 0) {
+        this.emp_designation = desig.get("name");
+      }
+      designationsTable.push({
+        title: desig.get("name"),
+      });
+    }
+    this.totalEntries = querResult.length;
+    this.designations = designationsTable;
+
+    // Access Types
+
+    var accessTypesTable = [];
+
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const acQuery = new Parse.Query(AccessTypes);
+
+    const acQuerResult = await acQuery.find();
+    for (var y = 0; y < acQuerResult.length; y++) {
+      const accType = acQuerResult[y];
+      if (y === 0) {
+        this.access_type = accType.get("name");
+      }
+      accessTypesTable.push({
+        title: accType.get("name"),
+      });
+    }
+    this.totalEntries = querResult.length;
+    this.accessTypes = accessTypesTable;
   },
 };
 </script>
