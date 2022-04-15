@@ -242,7 +242,7 @@
             <label
               for="base-input"
               class="block mb-2 text-sm font-medium text-gray-900"
-              >Access Tpye:</label
+              >Access Type:</label
             >
             <input
               type="text"
@@ -266,21 +266,34 @@
                 <input
                   type="checkbox"
                   class="checkbox"
-                  value="application"
+                  value="/application"
                   v-model="checkedAccessTypes"
                 />
-                <div class="label-text ml-1" style="align-self: center">
+                <div class="label-text ml-2" style="align-self: center">
                   Application
                 </div>
               </label>
+              <label class="flex flex-row cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/application:id"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Application Status
+                </div>
+              </label>
+            </div>
+            <div class="form-control flex mt-1 flex-row">
               <label class="flex flex-row ml-2 cursor-pointer">
                 <input
                   type="checkbox"
                   class="checkbox"
-                  value="heis_account"
+                  value="/hei"
                   v-model="checkedAccessTypes"
                 />
-                <div class="label-text ml-1" style="align-self: center">
+                <div class="label-text ml-2" style="align-self: center">
                   HEIs Account
                 </div>
               </label>
@@ -288,11 +301,46 @@
                 <input
                   type="checkbox"
                   class="checkbox"
-                  value="rqat_account"
+                  value="/hei/add"
                   v-model="checkedAccessTypes"
                 />
-                <div class="label-text ml-1" style="align-self: center">
+                <div class="label-text ml-2" style="align-self: center">
+                  Add HEI
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/hei/upload"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Upload HEI Accounts
+                </div>
+              </label>
+            </div>
+            <div class="form-control flex mt-1 flex-row">
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/rqat"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
                   RQAT Account
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/rqat/add"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Add RQAT
                 </div>
               </label>
             </div>
@@ -301,21 +349,34 @@
                 <input
                   type="checkbox"
                   class="checkbox"
-                  value="employees"
+                  value="/employees"
                   v-model="checkedAccessTypes"
                 />
-                <div class="label-text ml-1" style="align-self: center">
+                <div class="label-text ml-2" style="align-self: center">
                   Employees
                 </div>
               </label>
+              <label class="flex flex-row cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/employees/add"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Add Employees
+                </div>
+              </label>
+            </div>
+            <div class="form-control flex mt-1 flex-row">
               <label class="flex flex-row ml-2 cursor-pointer">
                 <input
                   type="checkbox"
                   class="checkbox"
-                  value="evaluation_ins"
+                  value="/evaluationins"
                   v-model="checkedAccessTypes"
                 />
-                <div class="label-text ml-1" style="align-self: center">
+                <div class="label-text ml-2" style="align-self: center">
                   Evaluation Ins.
                 </div>
               </label>
@@ -323,11 +384,128 @@
                 <input
                   type="checkbox"
                   class="checkbox"
-                  value="reporting"
+                  value="/evaluationins/view"
                   v-model="checkedAccessTypes"
                 />
-                <div class="label-text ml-1" style="align-self: center">
+                <div class="label-text ml-2" style="align-self: center">
+                  Evaluation Ins. View
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/evaluationins/add"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Evaluation Ins. Add
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/reporting"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
                   Reporting
+                </div>
+              </label>
+            </div>
+            <div class="form-control flex mt-1 flex-row">
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/app-settings"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Application Types
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/app-settings/add"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Add Application Type
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/app-settings/appTypeView"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  View Application Type
+                </div>
+              </label>
+            </div>
+            <div class="form-control flex mt-1 flex-row">
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/access-settings"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Access Types
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/designations"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  Designations
+                </div>
+              </label>
+            </div>
+            <div class="font-medium text-sm mt-2">HEI Privileges:</div>
+            <div class="form-control flex mt-1 flex-row">
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/HEIapply"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  HEI Apply
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/HEIapplication"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  HEI Application
+                </div>
+              </label>
+              <label class="flex flex-row ml-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  value="/HEIapplication/:id"
+                  v-model="checkedAccessTypes"
+                />
+                <div class="label-text ml-2" style="align-self: center">
+                  HEI Edit Application
                 </div>
               </label>
             </div>
@@ -370,7 +548,7 @@ import Parse from "parse";
 // var page = 0;
 
 export default {
-  name: "EmployeesView",
+  name: "AccessTypesView",
   data() {
     return {
       currentpage: 0,

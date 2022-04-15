@@ -21,10 +21,12 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
-import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
-import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
+import AccessTypesView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
+import AppTypesView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
+import DesignationsView  from '../views/CHED/Designations/DesignationsView.vue';
+
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
@@ -160,7 +162,8 @@ const routes = [
         path: "/employees",
         name: "employees",
         component: EmployeesView,
-        beforeEnter: () => {
+        beforeEnter: (to) => {
+          console.log(to);
           if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
             return { name: '403' }
           }
@@ -242,7 +245,7 @@ const routes = [
       {
         path: "/app-settings",
         name: "app-settings",
-        component: AppSettingsView,
+        component: AppTypesView,
         meta:{
           breadcrumb: [
             {name: 'APPLICATION SETTINGS'},
@@ -273,24 +276,22 @@ const routes = [
         }
       },
       {
-        path: "/application/:id",
-        name: "StatusApplication",
-        component: StatusApplication,
-        props: true,
+        path: "/access-settings",
+        name: "access-settings",
+        component: AccessTypesView,
         meta:{
           breadcrumb: [
-            { name: 'Application', link: '/application' },
-            { name: 'Status'}
+            {name: 'SETTINGS'},
           ]
         }
       },
       {
-        path: "/access-settings",
-        name: "access-settings",
-        component: AccessSettingsView,
+        path: "/designations",
+        name: "Designations",
+        component: DesignationsView,
         meta:{
           breadcrumb: [
-            {name: 'SETTINGS'},
+            {name: 'DESIGNATIONS'},
           ]
         }
       },
@@ -346,10 +347,6 @@ const routes = [
             { name: 'Edit'}
           ]
         }
-      },
-      {
-        path: '/add-tables',
-        redirect: '/HEIapplication'
       },
     ]
   },
