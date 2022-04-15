@@ -359,6 +359,7 @@ export default {
       }
     },
   },
+  
   mounted: async function () {
     var designationsTable = [];
 
