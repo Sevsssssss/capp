@@ -1,7 +1,7 @@
 <template>
 <section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
-        <form v-on:submit.prevent="submit">
+        <form @submit.prevent="submitApplication">
         <div class="p-5">
             <div class="">
                 <div class="flex-col py-5 ">
@@ -97,7 +97,7 @@
                                     <th>{{ i.req.applicationReq }}</th>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <input :id="i.id" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+                                        <input :id="i.id" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -164,7 +164,7 @@
                 py-2.5
                 mr-2
                 mb-2
-              " @click="submitApplication()">
+              " >
                         Submit
                     </button>
                 </div>
@@ -209,23 +209,31 @@ export default {
         };
     },
     methods: {
-        submitApplication() {
-            console.log(this.pointPerson + " " + this.email + " " + this.phoneNumber);
-            // const application = Parse.Object.extend("Access_Types");
-            // const newApplication = new application();
+        submitApplication(values) {
+            let requirement = null;
+            const file = values.target[4].files[0];
+            console.log(file);
+            console.log(file.name);
+            console.log(file.type);
 
-            // newApplication.save({
-            //     pointPerson: this.pointPerson,
-            //     email: this.email,
-            //     phoneNumber: this.phoneNumber
-            // })
-            // .then(
-            //     (newApplication) => {
-            //     console.log("New Access Type Added:" + newApplication.id)
-            //     },
-            //     (error) => {
-            //     alert("Access Type Adding Failed: " + error)
-            // });
+            const application = Parse.Object.extend("Applications");
+            const newApplication = new application();
+
+            requirement = new Parse.File(file.name, file, file.type);
+
+            newApplication.save({
+                pointPerson: this.pointPerson,
+                email: this.email,
+                phoneNumber: this.phoneNumber,
+                file_1: requirement,
+            })
+            .then(
+                (newApplication) => {
+                console.log("New Access Type Added:" + newApplication.id)
+                },
+                (error) => {
+                alert("Access Type Adding Failed: " + error)
+            });
         },
         changeItem: function changeItem(event) {
             for (var i = 0; i < this.applicationTypes.length; i++) {
