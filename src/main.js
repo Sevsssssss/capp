@@ -19,6 +19,7 @@ createApp(App).use(Toast, {
     maxToasts: 20,
     newestOnTop: true,
     hideProgressBar: false,
+    closeOnClick: false,
     // Enqueueing prevent Duplicates
     filterToasts: toasts => {
         // Keep track of existing types

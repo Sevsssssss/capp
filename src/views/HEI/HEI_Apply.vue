@@ -247,7 +247,7 @@ export default {
                             // console.log("New Access Type Added:" + newApplication.id)
                         },
                         (e) => {
-                            toast("Application Adding Failed: " + e, {
+                            toast("Application Adding Failed: " + e.message, {
                                 type: TYPE.ERROR,
                                 timeout: 3000,  
                                 hideProgressBar: true,
