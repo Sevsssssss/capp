@@ -1,10 +1,18 @@
 <template>
 <div class="m-5">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="flex flex-row space-x-2">
-            <!-- Table -->
-            <TableTopLeft class="px-5"></TableTopLeft>
-            <!-- Sort -->
+        <div class="flex flex-row space-x-4 pl-5 py-4">
+            <div class="">
+                <label for="table-search" class="sr-only">Search</label>
+                <div class="relative mt-1">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
+                </div>
+            </div>
             <div class="dropdown flex">
                 <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none">
                     <option selected>All</option>
@@ -76,56 +84,49 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <!-- Footer -->
-    <div class="table-footer flex flex-row" style="justify-content: space-between">
-        <div class="flex flex-row center">
-            <span class="text-sm text-gray-700">
-                Showing
-                <span class="font-semibold text-gray-900">1</span> to
-                <span class="font-semibold text-gray-900">5</span> of
-                <span class="font-semibold text-gray-900">100</span>
-                Entries
-            </span>
-        </div>
-        <div class="p-2">
-            <div class="btn-group">
-                <ul class="inline-flex -space-x-px">
-                    <li>
-                        <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page" class="py-2 px-3 text-blue-600 bg-blue-50 border border-gray-300 hover:bg-blue-100 hover:text-blue-700">3</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
-                    </li>
-                    <li>
-                        <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
-                    </li>
-                </ul>
+        <!-- Table Footer -->
+        <div class="table-footer flex flex-row justify-between">
+            <div class="flex flex-row pl-4 justify-center items-center">
+                <span class="text-sm text-gray-700">
+                    Showing
+                    <span class="font-semibold text-gray-900">{{
+                1 + numPerPage * currentpage
+              }}</span>
+                    to
+                    <span class="font-semibold text-gray-900">{{
+                (currentpage + 1) * numPerPage > totalEntries
+                  ? totalEntries
+                  : (currentpage + 1) * numPerPage
+              }}</span>
+                    of
+                    <span class="font-semibold text-gray-900">{{
+                totalEntries
+              }}</span>
+                    Entries
+                </span>
+            </div>
+            <div class="p-2 pr-4">
+                <div class="btn-group">
+                    <ul class="inline-flex -space-x-px">
+                        <li>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+    <br>
 </div>
 </template>
 
 <script>
-import TableTopLeft from "@/components//TableTopLeft.vue";
+// import TableTopLeft from "@/components//TableTopLeft.vue";
 export default {
     name: "ApplicationView",
-    components: {
-        TableTopLeft,
-    },
     data() {
         return {
             headers: [{

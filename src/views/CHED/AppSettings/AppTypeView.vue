@@ -24,8 +24,8 @@
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="font-semibold text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Requirements</th>
+                            <th scope="col" class="text-center px-6 py-3">ID</th>
+                            <th class="text-center px-6 py-3">Requirements</th>
 
                         </tr>
                     </thead>

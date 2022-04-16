@@ -144,7 +144,7 @@
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: center">
             <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-outline" @click="submit">Cancel</button><button class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
+                <button class="btn btn-margin btn-outline" >Cancel</button><button @click="saveEvalForm()" class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
                     Create
                 </button>
             </div>
@@ -158,18 +158,13 @@ import useVuelidate from "@vuelidate/core";
 import {
     required
 } from "@vuelidate/validators";
+import Parse from 'parse';
 export default {
     name: "AddEvalInstView",
     data() {
         return {
             v$: useVuelidate(),
-            hei_name: "",
-            cmo_no: "",
-            series: "",
-            description: "",
             categories: [],
-            subCategories: [],
-            items: [],
             categoryId: 0,
             subcategoryId: 0,
             viewSubCatbool: true,
@@ -210,6 +205,28 @@ export default {
     methods: {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        async saveEvalForm() {
+            console.log("save");
+            const EvaluationForm = Parse.Object.extend("EvaluationForms");
+            const newEvaluationForm = new EvaluationForm();
+
+            newEvaluationForm.set("evaluationFormName", this.programName.toUpperCase());
+            newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
+            newEvaluationForm.set("evaluationFormSeries", this.seriesYear.toUpperCase());
+            newEvaluationForm.set("evaluationFormDesc", this.evalDesc.toUpperCase());
+            newEvaluationForm.set("evaluationFormReqs", this.categories);
+
+            try {
+                await newEvaluationForm.save();
+                if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
+                    document.location.reload();
+                } else {
+                    this.$router.push("/evaluationins");
+                }
+            } catch (error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
         },
         //This add a category
         addCategory() {
