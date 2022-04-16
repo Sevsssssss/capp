@@ -1,9 +1,9 @@
 <template>
 <div class="text-brand-white">
     <section class="h-screen herobg bg-cover bg-fixed bg-center">
-        <div class="flex xxl:flex-row xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 xxs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xxs:pl-5 md:pl-4 xxs:items-center xs:items-center md:items-center">
+        <div class="flex xxxl:flex-row xxl:flex-row xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 xxs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xxs:pl-5 md:pl-4 xxs:items-center xs:items-center md:items-center">
             <!-- Section for Logo and tile -->
-            <div class="flex-col space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14 xxs:space-y-12 xl:p-20 md:p-20 sm:p-10 xs:p-10 xxs:p-10">
+            <div class="flex-col space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14 xxs:space-y-12 xl:p-20 xxxl:p-60 md:p-20 sm:p-10 xs:p-10 xxs:p-10">
                 <!-- LOGO -->
                 <div class="flex max-w-md space-x-5 text-left">
                     <div class="">
