@@ -250,6 +250,7 @@ export default {
                 email: this.email,
                 phoneNumber: this.phoneNumber,
                 requirements: reqFiles,
+                applicationType: this.selected,
             })
             .then(
                 (newApplication) => {
