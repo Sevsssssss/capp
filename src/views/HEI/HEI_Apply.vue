@@ -219,42 +219,57 @@ export default {
     methods: {
         submitApplication(values) {
             try {
-                let requirement = null;
-                const file = values.target[4].files[0];
+                var reqFiles = [];
+            let requirement = null;
+            for(var i = 0; i < this.reqs.length; i++){
+                const file = values.target[4 + i].files[0];
+
                 console.log(file);
                 console.log(file.name);
                 console.log(file.type);
 
-                const application = Parse.Object.extend("Applications");
-                const newApplication = new application();
+                requirement = new Parse.File(file.name.replace(/[^a-zA-Z]/g, ""), file, file.type);
 
-                requirement = new Parse.File(file.name, file, file.type);
+                reqFiles.push({
+                    id: i + 1,
+                    file: requirement,
+                });
+            }
+            // const file = values.target[4].files[0];
+            // console.log(file);
+            // console.log(file.name);
+            // console.log(file.type);
 
-                newApplication.save({
-                        pointPerson: this.pointPerson,
-                        email: this.email,
-                        phoneNumber: this.phoneNumber,
-                        file_1: requirement,
-                    })
-                    .then(
-                        (newApplication) => {
-                            toast("Application Added: " + newApplication.id, {
-                                    type: TYPE.SUCCESS,
-                                    timeout: 2000,
-                                    position: POSITION.TOP_RIGHT,
-                                }),
-                            window.location.reload()
-                            // console.log("New Access Type Added:" + newApplication.id)
-                        },
-                        (e) => {
-                            toast("Application Adding Failed: " + e.message, {
-                                type: TYPE.ERROR,
-                                timeout: 3000,  
-                                hideProgressBar: true,
-                                position: POSITION.TOP_RIGHT,
-                            });
-                            // alert("Access Type Adding Failed: " + error)
-                        })
+            const application = Parse.Object.extend("Applications");
+            const newApplication = new application();
+
+            //requirement = new Parse.File(file.name, file, file.type);
+
+            newApplication.save({
+                pointPerson: this.pointPerson,
+                email: this.email,
+                phoneNumber: this.phoneNumber,
+                requirements: reqFiles,
+            })
+            .then(
+                (newApplication) => {
+                    toast("Application Added: " + newApplication.id, {
+                            type: TYPE.SUCCESS,
+                            timeout: 2000,
+                            position: POSITION.TOP_RIGHT,
+                        }),
+                    window.location.reload()
+                    // console.log("New Access Type Added:" + newApplication.id)
+                },
+                (e) => {
+                    toast("Application Adding Failed: " + e.message, {
+                        type: TYPE.ERROR,
+                        timeout: 3000,  
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    // alert("Access Type Adding Failed: " + error)
+                })
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
