@@ -251,6 +251,8 @@ export default {
                 phoneNumber: this.phoneNumber,
                 requirements: reqFiles,
                 applicationType: this.selected,
+                applicationStatus: 'For Approval',
+                createdBy: Parse.User.current().id,
             })
             .then(
                 (newApplication) => {
