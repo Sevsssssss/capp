@@ -47,7 +47,7 @@
                 <tbody>
                     <tr class="bg-white border-b" v-for="table in searchEval" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            {{ table.cmoNo }}
+                            {{ table.programName }}
                         </th>
                         <td class="px-6 py-4">
                             {{ table.description }}
@@ -117,23 +117,23 @@ export default {
                 },
             ],
             tables: [{
-                    cmoNo: "1",
+                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "2",
+                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION",
                     description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "3",
+                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "4",
+                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "5",
+                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
             ],
