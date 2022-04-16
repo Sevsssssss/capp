@@ -2,44 +2,44 @@
 <section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <form @submit.prevent="submitApplication">
-        <div class="p-5">
-            <div class="">
-                <div class="flex-col py-5 ">
-                    <div class="flex justify-between items-center bg-brand-lightblue/5 w-full px-5 py-2 rounded-md">
-                        <div class="flex">
-                            <div class="font-semibold text-lg">
-                                APPLY FOR APPLICATION
-                            </div>
-                            <div class="dropdown dropdown-start pl-1 pr-16">
-                                <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 stroke-current">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </label>
-                                <div tabindex="0" class="card compact dropdown-content shadow bg-base-100 rounded-box w-80">
-                                    <div class="card-body flex justify-center m-4">
-                                        <h2 class="font-semibold text-sm">
-                                            CREDENTIALS FOR {{ selected }}
-                                        </h2>
-                                        <ul class="list-disc text-left">
-                                            <li v-for="i in reqs" :key="i">
-                                                {{ i.req.applicationReq }}
-                                            </li>
-                                        </ul>
+            <div class="p-5">
+                <div class="">
+                    <div class="flex-col py-5 ">
+                        <div class="flex justify-between items-center bg-brand-lightblue/5 w-full px-5 py-2 rounded-md">
+                            <div class="flex">
+                                <div class="font-semibold text-lg">
+                                    APPLY FOR APPLICATION
+                                </div>
+                                <div class="dropdown dropdown-start pl-1 pr-16">
+                                    <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4 stroke-current">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </label>
+                                    <div tabindex="0" class="card compact dropdown-content shadow bg-base-100 rounded-box w-80">
+                                        <div class="card-body flex justify-center m-4">
+                                            <h2 class="font-semibold text-sm">
+                                                CREDENTIALS FOR {{ selected }}
+                                            </h2>
+                                            <ul class="list-disc text-left">
+                                                <li v-for="i in reqs" :key="i">
+                                                    {{ i.req.applicationReq }}
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="flex" style="">
+                                <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64 uppercase text-sm font-semibold">
+                                    <option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
+                                        {{ i.appType.get("applicationTypeName") }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="flex" style="">
-                            <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64 uppercase text-sm font-semibold">
-                                <option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
-                                    {{ i.appType.get("applicationTypeName") }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- <hr /> -->
-                   
+                        <!-- <hr /> -->
+
                         <div class="flex flex-row items-start justify-evenly px-2 py-4 ">
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
@@ -76,34 +76,34 @@
                                 </label>
                             </div>
                         </div>
-                    
-                </div>
-                <!-- Title -->
 
-                <div class="">
-                    <div>
-                        <!-- <div class="font-semibold text-lg text-center">REQUIREMENTS</div> -->
+                    </div>
+                    <!-- Title -->
 
-                        <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="font-semibold text-gray-700 uppercase bg-gray-50">
-                                <tr>
-                                    <th class="aoe text-center">Requirements</th>
-                                    <th class="text-center">File Upload</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="i in reqs" :key="i" class="bg-white border-b hover:bg-gray-50">
-                                    <td class="px-6 py-4">
-                                    <th>{{ i.req.applicationReq }}</th>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <input :id="i.id" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="">
+                        <div>
+                            <!-- <div class="font-semibold text-lg text-center">REQUIREMENTS</div> -->
 
-                        <!-- <div class="grid grid-cols-3 place-items-center gap-4 py-5">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="font-semibold text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th class="aoe text-center">Requirements</th>
+                                        <th class="text-center">File Upload</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="i in reqs" :key="i" class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                        <th>{{ i.req.applicationReq }}</th>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input :id="i.id" ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- <div class="grid grid-cols-3 place-items-center gap-4 py-5">
                 <div v-for="i in reqs" :key="i" class="w-80 form-control">
                   <label class="label text-left">
                     <span
@@ -129,12 +129,12 @@
                   />
                 </div>
               </div> -->
+                        </div>
                     </div>
-                </div>
 
-                <!-- BUTTONS -->
-                <div class="space-x-6 p-10">
-                    <button type="button" class="
+                    <!-- BUTTONS -->
+                    <div class="space-x-6 p-10">
+                        <button type="button" class="
                 w-40
                 py-2.5
                 px-5
@@ -149,9 +149,9 @@
                 border border-gray-200
                 hover:bg-gray-100 hover:text-blue-700
               ">
-                        Cancel
-                    </button>
-                    <button type="submit" class="
+                            Cancel
+                        </button>
+                        <button type="submit" class="
                 submit
                 w-40
                 text-white
@@ -164,24 +164,32 @@
                 py-2.5
                 mr-2
                 mb-2
-              " >
-                        Submit
-                    </button>
+              ">
+                            Submit
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
 </section>
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
 import {
     required,
     email
 } from "@vuelidate/validators";
 import Parse from "parse";
+
+const toast = useToast();
+
 export default {
     data() {
         return {
@@ -210,30 +218,52 @@ export default {
     },
     methods: {
         submitApplication(values) {
-            let requirement = null;
-            const file = values.target[4].files[0];
-            console.log(file);
-            console.log(file.name);
-            console.log(file.type);
+            try {
+                let requirement = null;
+                const file = values.target[4].files[0];
+                console.log(file);
+                console.log(file.name);
+                console.log(file.type);
 
-            const application = Parse.Object.extend("Applications");
-            const newApplication = new application();
+                const application = Parse.Object.extend("Applications");
+                const newApplication = new application();
 
-            requirement = new Parse.File(file.name, file, file.type);
+                requirement = new Parse.File(file.name, file, file.type);
 
-            newApplication.save({
-                pointPerson: this.pointPerson,
-                email: this.email,
-                phoneNumber: this.phoneNumber,
-                file_1: requirement,
-            })
-            .then(
-                (newApplication) => {
-                console.log("New Access Type Added:" + newApplication.id)
-                },
-                (error) => {
-                alert("Access Type Adding Failed: " + error)
-            });
+                newApplication.save({
+                        pointPerson: this.pointPerson,
+                        email: this.email,
+                        phoneNumber: this.phoneNumber,
+                        file_1: requirement,
+                    })
+                    .then(
+                        (newApplication) => {
+                            toast("Application Added: " + newApplication.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 2000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                            window.location.reload()
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Adding Failed: " + e, {
+                                type: TYPE.ERROR,
+                                timeout: 3000,  
+                                hideProgressBar: true,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        })
+            } catch (error) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error)
+            }
         },
         changeItem: function changeItem(event) {
             for (var i = 0; i < this.applicationTypes.length; i++) {
