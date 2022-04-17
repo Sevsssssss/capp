@@ -137,6 +137,7 @@ import FileChartOutline from "@/assets/sidebar_icons/file-chart-line.svg";
 import TeamLine from "@/assets/sidebar_icons/team-line.svg";
 import FileSettingsLine from "@/assets/sidebar_icons/file-settings-line.svg";
 import AccessTypeLine from "@/assets/sidebar_icons/shield-user-line.svg";
+import BookLine from "@/assets/sidebar_icons/book-line.svg";
 
 export default {
     name: "ViewLayout",
@@ -246,6 +247,16 @@ export default {
                             element: "img",
                             attributes: {
                                 src: FileChartOutline
+                            },
+                        },
+                    },
+                    {
+                        href: "/disciplines",
+                        title: "Disciplines",
+                        icon: {
+                            element: "img",
+                            attributes: {
+                                src: BookLine
                             },
                         },
                     },
@@ -382,6 +393,16 @@ export default {
                     {
                         href: "/application",
                         title: "Application",
+                        icon: {
+                            element: "img",
+                            attributes: {
+                                src: FileOutline
+                            },
+                        },
+                    },
+                    {
+                        href: "/rqat-assignment",
+                        title: "Evaluation",
                         icon: {
                             element: "img",
                             attributes: {

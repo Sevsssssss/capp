@@ -1,5 +1,8 @@
 <template>
-<div class="p-3">
+<div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="AppSettingsView" />
+</div>
+<div v-else class="p-3">
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
         <div class="flex flex-row justify-between items-center">
@@ -100,9 +103,9 @@ import Parse from "parse";
 
 // var dataNumber = 10;
 // var page = 0;
-
+import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
-    name: "EmployeesView",
+    name: "AppSettingsView",
     data() {
         return {
             currentpage: 0,
@@ -122,7 +125,7 @@ export default {
             // checkedAccessTypes: [],
         };
     },
-    components: {},
+    components: {NoDataAvail},
     computed: {
         searchApplicationType() {
             return this.tables

@@ -110,30 +110,30 @@ export default {
         return {
             search: "",
             headers: [{
-                    title: "CMO",
+                    title: "PROGRAM NAME",
                 },
                 {
                     title: "DESCRIPTION",
                 },
             ],
             tables: [{
-                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION",
                     description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
             ],
