@@ -391,16 +391,6 @@ export default {
                         },
                     },
                     {
-                        href: "/application",
-                        title: "Application",
-                        icon: {
-                            element: "img",
-                            attributes: {
-                                src: FileOutline
-                            },
-                        },
-                    },
-                    {
                         href: "/rqat-assignment",
                         title: "Evaluation",
                         icon: {
