@@ -118,6 +118,11 @@
 </style>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import Parse from "parse";
 import TopNavigation from "@/components/TopNavigation.vue";
 import {
@@ -138,6 +143,8 @@ import TeamLine from "@/assets/sidebar_icons/team-line.svg";
 import FileSettingsLine from "@/assets/sidebar_icons/file-settings-line.svg";
 import AccessTypeLine from "@/assets/sidebar_icons/shield-user-line.svg";
 import BookLine from "@/assets/sidebar_icons/book-line.svg";
+
+const toast = useToast();
 
 export default {
     name: "ViewLayout",
@@ -161,8 +168,16 @@ export default {
             window.scrollTo(0, 0);
         },
         Logout() {
-            Parse.User.logOut();
-            this.$router.push("/");
+            toast("Logging out..", {
+                type: TYPE.WARNING,
+                closeButton: false,
+                timeout: 2000,
+                position: POSITION.BOTTOM_RIGHT,
+            });
+            setTimeout(() => {
+                Parse.User.logOut();
+                this.$router.push("/");
+            }, 2000);
         },
         updateList() {
             this.breadcrumbs = this.$route.meta.breadcrumb;
@@ -290,7 +305,7 @@ export default {
                             },
                         },
                     },
-                    
+
                 ],
             };
         } else if (Parse.User.current().get("access_type") === "ADMIN") {
