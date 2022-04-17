@@ -67,7 +67,9 @@
                         <td class="px-6 py-4">
                             {{ table.username }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="flex flex-row px-6 py-4">
+                            <button
+                             @click="viewAssignments()" class="font-medium text-blue-600 hover:underline mr-5">View</button>
                             <label for="deleteFunc" class="hover:text-brand-red/60">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -77,6 +79,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="searchRqat.length == 0" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, the keyword "{{search}}" cannot be found in the database.
+            </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">
@@ -204,6 +210,9 @@ export default {
     methods: {
         addRQAT() {
             this.$router.push("/rqat/add");
+        },
+        viewAssignments() {
+            this.$router.push("/rqat-assignment");
         },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {

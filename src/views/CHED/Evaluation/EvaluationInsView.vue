@@ -47,7 +47,7 @@
                 <tbody>
                     <tr class="bg-white border-b" v-for="table in searchEval" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            {{ table.cmoNo }}
+                            {{ table.programName }}
                         </th>
                         <td class="px-6 py-4">
                             {{ table.description }}
@@ -58,6 +58,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="searchEval.length == 0" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, the keyword "{{search}}" cannot be found in the database.
+            </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">
@@ -106,30 +110,30 @@ export default {
         return {
             search: "",
             headers: [{
-                    title: "CMO",
+                    title: "PROGRAM NAME",
                 },
                 {
                     title: "DESCRIPTION",
                 },
             ],
             tables: [{
-                    cmoNo: "1",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "2",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION",
                     description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "3",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "4",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
                 {
-                    cmoNo: "5",
+                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
                     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
                 },
             ],

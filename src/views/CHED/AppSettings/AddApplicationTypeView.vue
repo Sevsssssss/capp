@@ -36,7 +36,7 @@
                             <label class="label">
                                 <span class="label-text">Requirement {{ req.id }}</span>
                             </label>
-                            <input type="text" placeholder="Enter Criteria Name" :class="{ 'input-error': validationStatus(v$.applicationReq) }" class="input input-bordered" v-model="req.applicationReq" />
+                            <input type="text" placeholder="Enter Requirement Name" :class="{ 'input-error': validationStatus(v$.applicationReq) }" class="input input-bordered" v-model="req.applicationReq" />
                             <label class="label">
                                 <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationReq) }" v-if="validationStatus(v$.applicationReq)">
                                     Criteria name is Required</span>
@@ -93,6 +93,7 @@ export default {
             applicationReq: "",
             checker: true,
             reqNum: 0,
+            error: 0,
         };
     },
     validations() {

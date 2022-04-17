@@ -37,16 +37,7 @@
                     </div>
                 </div>
             </div>
-            <!-- button -->
-            <div class="h-fit pr-5 pt-3 items-center">
-                <button type="button" class="btn-table">
-                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                    </svg>
-                    <div class="pl-2">Add Application Type</div>
-                </button>
-            </div>
+
         </div>
         <!-- Table body -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -63,6 +54,7 @@
                 </thead>
                 <tbody>
                     <tr class="bg-white border-b" v-for="table in searchApplication" :key="table">
+
                         <td class="px-6 py-4">
                             <div class="">
                                 <div class="font-semibold text-grey-300">
@@ -116,9 +108,25 @@
                             </router-link>
                         </td>
                     </tr>
+
                 </tbody>
+                <!-- <tbody v-else>
+                    <tr class="bg-white border-b">
+                        <td class="px-6 py-4 text-center">
+                            <div class="">
+                                <div class="font-semibold text-grey-300">
+                                    No Data Found
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody> -->
             </table>
             <!-- Table Footer -->
+            <div v-if="searchApplication.length == 0" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, the keyword "{{search}}" cannot be found in the database.
+            </div>
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">
                     <span class="text-sm text-gray-700">

@@ -25,8 +25,8 @@ import AccessTypesView from '../views/CHED/AccessSettings/AccessSettingsView.vue
 import AppTypesView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
-import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
-
+import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
+import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
@@ -263,6 +263,16 @@ const routes = [
         }
       },
       {
+        path: "/disciplines",
+        name: "disciplines",
+        component: DisciplineView,
+        meta:{
+          breadcrumb: [
+            {name: 'DISCIPLINE SETTINGS'},
+          ]
+        }
+      },
+      {
         path: "/app-settings",
         name: "app-settings",
         component: AppTypesView,
@@ -337,6 +347,16 @@ const routes = [
         meta: {
           breadcrumb: [
             { name: 'DESIGNATIONS' },
+          ]
+        }
+      },
+      {
+        path: "/rqat-assignment",
+        name: "rqat-assignment",
+        component: rqatEvaluationView,
+        meta:{
+          breadcrumb: [
+            {name: 'RQAT EVALUATION'},
           ]
         }
       },
