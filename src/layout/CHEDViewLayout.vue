@@ -269,6 +269,16 @@ export default {
                             },
                         },
                     },
+                    {
+                        href: "/designations",
+                        title: "Designations",
+                        icon: {
+                            element: "img",
+                            attributes: {
+                                src: AccessTypeLine
+                            },
+                        },
+                    },
                     
                 ],
             };

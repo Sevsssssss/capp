@@ -20,8 +20,7 @@
         <div class="w-full content" :class="
           collapsed
             ? 'pl-[290px] transition-width duration-300'
-            : 'pl-[65px] transition-width duration-300'
-        ">
+            : 'pl-[65px] transition-width duration-300'">
             <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
             <nav class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm" style="background-color: white">
                 <ul class="flex text-sm">
@@ -119,6 +118,11 @@
 </style>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import Parse from "parse";
 import TopNavigation from "@/components/TopNavigation.vue";
 import {
@@ -132,6 +136,8 @@ import Logout from "vue-material-design-icons/Logout.vue";
 import FilePlus from "@/assets/sidebar_icons/file-plus.svg";
 import HomeOutline from "@/assets/sidebar_icons/home.svg";
 import FileOutline from "@/assets/sidebar_icons/file.svg";
+
+const toast = useToast();
 
 export default {
     name: "ViewLayout",
@@ -154,8 +160,17 @@ export default {
             window.scrollTo(0, 0);
         },
         Logout() {
-            Parse.User.logOut();
-            this.$router.push("/");
+            toast("Logging out..", {
+                type: TYPE.WARNING,
+                closeButton: false,
+                timeout: 2000,
+                position: POSITION.BOTTOM_RIGHT,
+            });
+            setTimeout(() => {
+                Parse.User.logOut();
+                this.$router.push("/");
+            }, 2000)
+
         },
         updateList() {
             this.breadcrumbs = this.$route.meta.breadcrumb;

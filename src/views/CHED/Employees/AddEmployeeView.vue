@@ -163,137 +163,80 @@ import {
     email,
     required
 } from "@vuelidate/validators";
-import emailjs from 'emailjs-com';
+// import emailjs from 'emailjs-com';
 
 const toast = useToast();
 
 export default {
-    name: "AddEmployeeView",
-    components: {
-        VueInstantLoadingSpinner,
-    },
-    data() {
-        return {
-            showModal: false,
-            showModal1: false,
-            savingSuccessful: false,
-            v$: useVuelidate(),
-            accessTypes: [{
-                    title: "ADMIN",
-                },
-                {
-                    title: "EDUCATION SUPERVISOR",
-                },
-                {
-                    title: "RQAT",
-                },
-                {
-                    title: "REPORTS",
-                },
-            ],
+  name: "AddEmployeeView",
+  components: {
+    VueInstantLoadingSpinner,
+  },
+  data() {
+    return {
+      showModal: false,
+      showModal1: false,
+      savingSuccessful: false,
+      v$: useVuelidate(),
+      accessTypes: [],
 
-            designations: [{
-                    title: "DIRECTOR",
-                },
-                {
-                    title: "EDUCATION SUPERVISOR",
-                },
-                {
-                    title: "SECRETARY",
-                },
-                {
-                    title: "CHED EMPLOYEE",
-                },
-            ],
+      designations: [],
 
-            lastname: "",
-            firstname: "",
-            midinit: "",
-            email: "",
-            username: "",
-            contactnum: "",
-            emp_designation: "DIRECTOR",
-            access_type: "ADMIN",
-        };
-    },
-    validations() {
-        return {
-            lastname: {
-                required,
-            },
-            firstname: {
-                required,
-            },
-            midinit: {
-                required,
-            },
-            username: {
-                required,
-            },
-            contactnum: {
-                required,
-            },
-            email: {
-                email,
-                required,
-            },
-            emp_designation: {
-                required,
-            },
-            access_type: {
-                required,
-            },
-        };
-    },
-    methods: {
-        sendEmail() {
-            var emailParams = {
-                message: "Your account has been created. \n Your account username is " +
-                    this.username +
-                    "\n Your temporary password is " +
-                    this.password,
-                email: this.email,
-            };
-            try {
-                //alert(this.email)
-                emailjs
-                    .send(
-                        "service_rax86wc",
-                        "template_nyqa4k6",
-                        emailParams,
-                        "wXbhKrnQCwo8bc25m"
-                    )
-                    .then(() => {
-                        toast("Email sent!", {
-                            type: TYPE.INFO,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    });
-            } catch (error) {
-                toast("Error:" + error.code + "" + error.message, {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
-        },
-        ToggleshowModal() {
-            this.showModal = !this.showModal;
-        },
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
-        },
+      lastname: "",
+      firstname: "",
+      midinit: "",
+      email: "",
+      username: "",
+      contactnum: "",
+      emp_designation: "",
+      access_type: "",
+    };
+  },
+  validations() {
+    return {
+      lastname: {
+        required,
+      },
+      firstname: {
+        required,
+      },
+      midinit: {
+        required,
+      },
+      username: {
+        required,
+      },
+      contactnum: {
+        required,
+      },
+      email: {
+        email,
+        required,
+      },
+      emp_designation: {
+        required,
+      },
+      access_type: {
+        required,
+      },
+    };
+  },
 
-        submit: function () {
-            this.v$.$touch();
-            if (!this.v$.$pending || !this.v$.$error) return;
-        },
-        validate() {
-            return this.showModal1;
-        },
+  methods: {
+    ToggleshowModal() {
+      this.showModal = !this.showModal;
+    },
+    validationStatus: function (validation) {
+      return typeof validation !== "undefined" ? validation.$error : false;
+    },
+
+    submit: function () {
+      this.v$.$touch();
+      if (!this.v$.$pending || !this.v$.$error) return;
+    },
+    validate() {
+      return this.showModal1;
+    },
 
         async addEmployee() {
             const newEmployee = new Parse.User();
