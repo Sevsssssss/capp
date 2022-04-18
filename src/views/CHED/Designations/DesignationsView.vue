@@ -236,8 +236,8 @@
             <label
               for="base-input"
               class="block mb-2 text-sm font-medium text-gray-900"
-              >Designation: </label
-            >
+              >Designation:
+            </label>
             <input
               type="text"
               id="base-input"
@@ -330,7 +330,7 @@ export default {
       const newDesignation = new designation();
       try {
         newDesignation.save({
-          name: this.designationName.toUpperCase()
+          name: this.designationName.toUpperCase(),
         });
         if (
           confirm(
@@ -359,25 +359,45 @@ export default {
       }
     },
   },
-  
-  mounted: async function () {
-    var designationsTable = [];
 
-    const Designations = Parse.Object.extend("Designations");
-    const query = new Parse.Query(Designations);
+  mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
-    for (var i = 0; i < querResult.length; i++) {
-      const desig = querResult[i];
-
-      designationsTable.push({
-        Name: desig.get('name')
-      });
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
     }
-    this.totalEntries = querResult.length;
-    this.tables = designationsTable;
-    
-    // console.log(this.tables);
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var designationsTable = [];
+
+      const Designations = Parse.Object.extend("Designations");
+      const query = new Parse.Query(Designations);
+
+      const querResult = await query.find();
+      for (var i = 0; i < querResult.length; i++) {
+        const desig = querResult[i];
+
+        designationsTable.push({
+          Name: desig.get("name"),
+        });
+      }
+      this.totalEntries = querResult.length;
+      this.tables = designationsTable;
+
+      // console.log(this.tables);
+    }
   },
 };
 </script>

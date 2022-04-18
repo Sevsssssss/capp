@@ -209,38 +209,6 @@
         </div>
       </form>
     </div>
-    <!-- <div v-if="!savingSuccessful"></div> -->
-    <div
-      v-if="savingSuccessful"
-      class="
-        absolute
-        top-24
-        right-5
-        alert alert-success
-        shadow-lg
-        rounded-md
-        w-auto
-        success
-      "
-      style="position: fixed"
-    >
-      <div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current flex-shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <span class="font-semibold">{{ this.text }}</span>
-      </div>
-    </div>
     <input type="checkbox" id="createHEI" class="modal-toggle" />
     <div class="modal">
       <div class="modal-box relative rounded-md text-left">
@@ -321,8 +289,9 @@
             "
             >Cancel</label
           >
-          <label
+          <button
             for="my-modal-6"
+            type="submit"
             class="
               btn btn-sm
               bg-blue-700
@@ -331,8 +300,9 @@
               border-none
             "
             @click="addHEI(), scrollToTop()"
-            >Continue</label
           >
+            Continue
+          </button>
         </div>
       </div>
     </div>
@@ -354,10 +324,14 @@
 </template>
 
 <script>
+import { useToast, TYPE, POSITION } from "vue-toastification";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
+import emailjs from "emailjs-com";
+
+const toast = useToast();
 
 export default {
   name: "AddHeiView",
@@ -388,12 +362,11 @@ export default {
       ],
       hei_name: "",
       username: "",
-      email: null,
+      email: "",
       address: "",
       number: "",
       inst_code: "",
       hei_type: "STATE UNIVERSITIES AND COLLEGES",
-
       hei_nameError: "",
       usernameError: "",
       emailError: "",
@@ -401,6 +374,7 @@ export default {
       numberError: "",
       inst_codeError: "",
       hei_typeError: "",
+      password: "",
     };
   },
   validations() {
@@ -430,29 +404,62 @@ export default {
     };
   },
   methods: {
+    sendEmail() {
+      var emailParams = {
+        message:
+          "Your account has been created. \n Your account username is " +
+          this.username +
+          "\n Your temporary password is " +
+          this.password,
+        email: this.email,
+      };
+      try {
+        //alert(this.email)
+        emailjs
+          .send(
+            "service_rax86wc",
+            "template_nyqa4k6",
+            emailParams,
+            "wXbhKrnQCwo8bc25m"
+          )
+          .then(() => {
+            toast("Email sent!", {
+              type: TYPE.INFO,
+              timeout: 2000,
+              position: POSITION.TOP_RIGHT,
+            });
+          });
+      } catch (error) {
+        toast("Error:" + error.code + "" + error.message, {
+          type: TYPE.ERROR,
+          timeout: 3000,
+          hideProgressBar: true,
+          position: POSITION.TOP_RIGHT,
+        });
+        console.log(error.message);
+      }
+    },
     ToggleshowModal() {
       this.showModal = !this.showModal;
     },
     validationStatus: function (validation) {
       return typeof validation !== "undefined" ? validation.$error : false;
     },
-
     submit: function () {
       this.v$.$touch();
       if (!this.v$.$pending || !this.v$.$error) return;
     },
     validate() {
-      console.log(this.showModal1);
       return this.showModal1;
     },
     showaddAgain() {
-      console.log(this.addAgain);
       return this.addAgain;
     },
     scrollToTop() {
       window.scrollTo(0, 0);
     },
     async addHEI() {
+      this.password = "password";
       const newHEI = new Parse.User();
       newHEI.set("hei_name", this.hei_name);
       newHEI.set("username", this.username);
@@ -465,35 +472,65 @@ export default {
       newHEI.set("access_type", "HEI");
       try {
         // Show the spinner first
+        // this.$refs.Spinner.show();
+        // setTimeout(
+        //     function () {
+        //         this.$refs.Spinner.hide();
+        //     }.bind(this),
+        //     5000
+        // );
+        // await newHEI.save().then(() => {
+        //     setTimeout(() => (this.savingSuccessful = true), 2000);
+        // });
+        // this.sendEmail();
+        // setTimeout(() => this.$router.push({
+        //     path: "/hei"
+        // }), 3000);
+
+        await newHEI.save().then(() => {
+          toast("HEI Account Added!", {
+            type: TYPE.SUCCESS,
+            timeout: 2000,
+            position: POSITION.TOP_RIGHT,
+          });
+          this.sendEmail().then(() => {
+            setTimeout(
+              () =>
+                this.$router.push({
+                  path: "/hei",
+                }),
+              1000
+            );
+          });
+        });
         this.$refs.Spinner.show();
         setTimeout(
           function () {
             this.$refs.Spinner.hide();
           }.bind(this),
-          5000
+          2000
         );
-        await newHEI.save().then(() =>{
-               setTimeout(() => (this.savingSuccessful = true), 2000);
-        });
-        setTimeout(() => this.$router.push({ path: "/hei" }), 3000);
       } catch (error) {
-        alert("Error: " + error.code + " " + error.message);
-        document.location.reload();
+        toast("Error:" + error.code + " " + error.message, {
+          type: TYPE.ERROR,
+          timeout: 3000,
+          hideProgressBar: true,
+          position: POSITION.TOP_RIGHT,
+        });
+        console.log(error.message);
+        // alert("Error: " + error.code + " " + error.message);
+        //document.location.reload();
       }
     },
     modal() {
-      console.log("Hello");
       // this.v$.$validate();
       // if(!this.v$.$error){
       //     alert('Yey')
       // }else{
       //     alert('nay')
       // }
-
-      console.log("Hello2");
       var has_error = 0;
       //var error_text = "Account not created due to the following reasons:\n";
-
       if (this.hei_name == "") {
         has_error = 1;
         //error_text += "HEI Name is empty\n"
@@ -519,7 +556,6 @@ export default {
         //error_text += "Institution Code is empty\n"
         this.inst_codeError = "Institution Code is Required";
       }
-
       if (has_error < 1) {
         // var password = "";
         // var characters =
@@ -530,10 +566,31 @@ export default {
         //     Math.floor(Math.random() * charactersLength)
         //   );
         // }
-
         this.showModal1 = !this.showModal1;
       }
     },
+  },
+  mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
+
+    const querResult = await query.find();
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var i = 0; i < accType.length; i++) {
+      if (accType[i] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+    }
   },
 };
 </script>

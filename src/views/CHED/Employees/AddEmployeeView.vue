@@ -223,37 +223,6 @@
         </div>
       </form>
     </div>
-    <div
-      v-if="savingSuccessful"
-      class="
-        absolute
-        top-24
-        right-5
-        alert alert-success
-        shadow-lg
-        rounded-md
-        w-auto
-        success
-      "
-      style="position: fixed"
-    >
-      <div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current flex-shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <span class="font-semibold">{{ this.text }}</span>
-      </div>
-    </div>
     <input type="checkbox" id="createEmType" class="modal-toggle" />
     <div class="modal">
       <div class="modal-box relative rounded-md text-left">
@@ -356,10 +325,14 @@
 </template>
 
 <script>
+import { useToast, TYPE, POSITION } from "vue-toastification";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+// import emailjs from 'emailjs-com';
+
+const toast = useToast();
 
 export default {
   name: "AddEmployeeView",
@@ -448,29 +421,40 @@ export default {
       newEmployee.set("contact_num", this.contactnum);
       newEmployee.set("access_type", this.access_type);
       newEmployee.set("designation", this.emp_designation);
+      newEmployee.set("user_type", "employee");
 
       try {
+        await newEmployee.save().then(() => {
+          toast("Employee Account Added!", {
+            type: TYPE.SUCCESS,
+            timeout: 2000,
+            position: POSITION.TOP_RIGHT,
+          });
+          this.sendEmail().then(() => {
+            setTimeout(
+              () =>
+                this.$router.push({
+                  path: "/hei",
+                }),
+              1000
+            );
+          });
+        });
         this.$refs.Spinner.show();
         setTimeout(
           function () {
             this.$refs.Spinner.hide();
           }.bind(this),
-          5000
+          2000
         );
-        await newEmployee.save().then(() => {
-          setTimeout(() => (this.savingSuccessful = true), 2000);
-        });
-        setTimeout(() => this.$router.push({ path: "/employees" }), 3000);
-        // if (
-        //     confirm("Account added. Would you like to add another account?")
-        // ) {
-        //     document.location.reload();
-        // } else {
-        //     this.$router.push("/employees");
-        // }
       } catch (error) {
-        alert("Error: " + error.code + " " + error.message);
-        document.location.reload();
+        toast("Error:" + error.code + " " + error.message, {
+          type: TYPE.ERROR,
+          timeout: 3000,
+          hideProgressBar: true,
+          position: POSITION.TOP_RIGHT,
+        });
+        console.log(error.message);
       }
     },
     modal() {
@@ -501,44 +485,26 @@ export default {
     },
   },
   mounted: async function () {
-    //Designations
-    var designationsTable = [];
-
-    const Designations = Parse.Object.extend("Designations");
-    const query = new Parse.Query(Designations);
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
-    for (var i = 0; i < querResult.length; i++) {
-      const desig = querResult[i];
-      if (i === 0) {
-        this.emp_designation = desig.get("name");
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
       }
-      designationsTable.push({
-        title: desig.get("name"),
-      });
     }
-    this.totalEntries = querResult.length;
-    this.designations = designationsTable;
-
-    // Access Types
-
-    var accessTypesTable = [];
-
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const acQuery = new Parse.Query(AccessTypes);
-
-    const acQuerResult = await acQuery.find();
-    for (var y = 0; y < acQuerResult.length; y++) {
-      const accType = acQuerResult[y];
-      if (y === 0) {
-        this.access_type = accType.get("name");
-      }
-      accessTypesTable.push({
-        title: accType.get("name"),
-      });
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
     }
-    this.totalEntries = querResult.length;
-    this.accessTypes = accessTypesTable;
   },
 };
 </script>

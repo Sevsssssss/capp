@@ -120,7 +120,6 @@
         </div>
       </div>
       <!-- Table body -->
-
       <table class="w-full text-sm text-left text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
@@ -169,6 +168,10 @@
           </tr>
         </tbody>
       </table>
+      <div v-if="searchAccessType.length == 0" class="p-5 font-medium">
+        <!-- NO DATA FOUND {{search}} -->
+        Sorry, the keyword "{{ search }}" cannot be found in the database.
+      </div>
       <!-- Table Footer -->
       <div class="table-footer flex flex-row justify-between">
         <div class="flex flex-row pl-4 justify-center items-center">
@@ -260,278 +263,416 @@
               placeholder="Enter Name"
               v-model="atname"
             />
-            <div class="font-medium text-sm mt-2">Choose Home Type:</div>
+            <div class="font-medium text-sm mt-2">
+              Choose Home Type:
+              <label
+                class="flex flex-row cursor-pointer p-1"
+                style="align-items: center"
+              >
+                <div
+                  class="label-text viewSubCatbool pr-3"
+                  style="align-self: center"
+                >
+                  <input
+                    type="radio"
+                    id="homeType"
+                    value="/home"
+                    class="radio mr-1"
+                    v-model="homeType"
+                  />
+                  CHED Home
+                </div>
+                <div
+                  class="label-text viewSubCatbool"
+                  style="align-self: center"
+                >
+                  <input
+                    type="radio"
+                    id="homeType"
+                    value="/HEIhome"
+                    class="radio mr-1"
+                    v-model="homeType"
+                  />
+                  HEI Home
+                </div>
+              </label>
+            </div>
+            <div v-if="homeType == '/home'" class="font-medium text-sm mt-2">
+              Privileges:
+              <div
+                class="
+                  grid
+                  xxl:grid-cols-3
+                  xl:grid-cols-2
+                  lg:grid-cols-2
+                  text-left
+                "
+              >
+                <label
+                  class="flex flex-row cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/application"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Application
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/application:id"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Application Status
+                  </div>
+                </label>
 
-            <label class="flex flex-row cursor-pointer">
-              <input
-                type="radio"
-                id="homeType"
-                value="/home"
-                class="radio"
-                v-model="homeType"
-              />
-              <div class="label-text ml-2" style="align-self: center">
-                CHED Home
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/hei"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    HEIs Account
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/hei/add"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Add HEI
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/hei/upload"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Upload HEI Accounts
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/rqat"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    RQAT Account
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/rqat/add"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Add RQAT
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/employees"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Employees
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/employees/add"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Add Employees
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/evaluationins"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Evaluation Ins.
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/evaluationins/view"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Evaluation Ins. View
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/evaluationins/add"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Evaluation Ins. Add
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/reporting"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Reporting
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/app-settings"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Application Types
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/app-settings/add"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Add Application Type
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/app-settings/appTypeView"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    View Application Type
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/access-settings"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Access Types
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/designations"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Designations
+                  </div>
+                </label>
               </div>
-              <input
-                type="radio"
-                id="homeType"
-                value="/HEIhome"
-                class="radio"
-                v-model="homeType"
-              />
-              <div class="label-text ml-2" style="align-self: center">
-                HEI Home
+            </div>
+
+            <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
+              HEI Privileges:
+              <div class="form-control flex mt-1 flex-row">
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/HEIapply"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    HEI Apply
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/HEIapplication"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    HEI Application
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/HEIapplication/:id"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    HEI Edit Application
+                  </div>
+                </label>
               </div>
-            </label>
-            <div class="font-medium text-sm mt-2">Privileges:</div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/application"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Application
-                </div>
-              </label>
-              <label class="flex flex-row cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/application:id"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Application Status
-                </div>
-              </label>
-            </div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/hei"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  HEIs Account
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/hei/add"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Add HEI
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/hei/upload"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Upload HEI Accounts
-                </div>
-              </label>
-            </div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/rqat"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  RQAT Account
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/rqat/add"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Add RQAT
-                </div>
-              </label>
-            </div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/employees"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Employees
-                </div>
-              </label>
-              <label class="flex flex-row cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/employees/add"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Add Employees
-                </div>
-              </label>
-            </div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/evaluationins"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Evaluation Ins.
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/evaluationins/view"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Evaluation Ins. View
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/evaluationins/add"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Evaluation Ins. Add
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/reporting"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Reporting
-                </div>
-              </label>
-            </div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/app-settings"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Application Types
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/app-settings/add"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Add Application Type
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/app-settings/appTypeView"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  View Application Type
-                </div>
-              </label>
-            </div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/access-settings"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Access Types
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/designations"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  Designations
-                </div>
-              </label>
-            </div>
-            <div class="font-medium text-sm mt-2">HEI Privileges:</div>
-            <div class="form-control flex mt-1 flex-row">
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/HEIapply"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  HEI Apply
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/HEIapplication"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  HEI Application
-                </div>
-              </label>
-              <label class="flex flex-row ml-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  value="/HEIapplication/:id"
-                  v-model="checkedAccessTypes"
-                />
-                <div class="label-text ml-2" style="align-self: center">
-                  HEI Edit Application
-                </div>
-              </label>
             </div>
           </div>
         </form>
@@ -567,10 +708,8 @@
 
 <script>
 import Parse from "parse";
-
 // var dataNumber = 10;
 // var page = 0;
-
 export default {
   name: "AccessTypesView",
   data() {
@@ -648,32 +787,49 @@ export default {
     },
   },
   mounted: async function () {
-    var accessTypesTable = [];
-
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
-    for (var i = 0; i < querResult.length; i++) {
-      const accessType = querResult[i];
-      var accessPriv = "";
-      for (var x = 0; x < accessType.get("privileges").length; x++) {
-        var accessPrivIndex = accessType.get("privileges")[x];
-        if (accessPriv === "") {
-          accessPriv = accessPriv + accessPrivIndex;
-        } else {
-          accessPriv = accessPriv + ", " + accessPrivIndex;
-        }
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
       }
-
-      accessTypesTable.push({
-        Name: accessType.get("name"),
-        Privileges: accessPriv,
-      });
     }
-    this.totalEntries = querResult.length;
-    this.tables = accessTypesTable;
-    // console.log(this.tables);
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var accessTypesTable = [];
+      const AccessTypes = Parse.Object.extend("AccessTypes");
+      const query = new Parse.Query(AccessTypes);
+      const querResult = await query.find();
+      for (var i = 0; i < querResult.length; i++) {
+        const accessType = querResult[i];
+        var accessPriv = "";
+        for (var x = 0; x < accessType.get("privileges").length; x++) {
+          var accessPrivIndex = accessType.get("privileges")[x];
+          if (accessPriv === "") {
+            accessPriv = accessPriv + accessPrivIndex;
+          } else {
+            accessPriv = accessPriv + ", " + accessPrivIndex;
+          }
+        }
+        accessTypesTable.push({
+          Name: accessType.get("name"),
+          Privileges: accessPriv,
+        });
+      }
+      this.totalEntries = querResult.length;
+      this.tables = accessTypesTable;
+      // console.log(this.tables);
+    }
   },
 };
 </script>

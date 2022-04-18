@@ -82,24 +82,6 @@
             </div>
           </div>
         </div>
-        <!-- button -->
-        <div class="h-fit pr-5 pt-3 items-center">
-          <button type="button" class="btn-table">
-            <svg
-              style="fill: white"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-            >
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path
-                d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"
-              />
-            </svg>
-            <div class="pl-2">Add Application Type</div>
-          </button>
-        </div>
       </div>
       <!-- Table body -->
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -194,15 +176,32 @@
                     },
                   }"
                 >
-                  <a href="#" class="font-medium text-blue-600 hover:underline"
+                  <a
+                    href="500"
+                    class="font-medium text-blue-600 hover:underline"
                     >View</a
                   >
                 </router-link>
               </td>
             </tr>
           </tbody>
+          <!-- <tbody v-else>
+                    <tr class="bg-white border-b">
+                        <td class="px-6 py-4 text-center">
+                            <div class="">
+                                <div class="font-semibold text-grey-300">
+                                    No Data Found
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody> -->
         </table>
         <!-- Table Footer -->
+        <div v-if="searchApplication.length == 0" class="p-5 font-medium">
+          <!-- NO DATA FOUND {{search}} -->
+          Sorry, the keyword "{{ search }}" cannot be found in the database.
+        </div>
         <div class="table-footer flex flex-row justify-between">
           <div class="flex flex-row pl-4 justify-center items-center">
             <span class="text-sm text-gray-700">
@@ -273,7 +272,7 @@
 <script>
 import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
-import Parse from 'parse';
+import Parse from "parse";
 export default {
   name: "ApplicationView",
   components: {
@@ -300,7 +299,6 @@ export default {
           title: "STATUS",
         },
       ],
-
       datas: [
         {
           title: "FOR APPROVAL",
@@ -385,9 +383,6 @@ export default {
           status: "COMPLETED",
         },
       ],
-
-      queryResult: [],
-      hasPermissionResult: false,
     };
   },
   computed: {
@@ -404,24 +399,29 @@ export default {
       }
     },
   },
+  methods: {},
+
   mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);
     query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
-    var flag=0;
-        for (var i = 0; i < accType.length; i++) {
-          if (accType[i] === this.$route.path) {
-            flag = 1;
-          }
-        }
-        if (flag === 0) {
-          this.$router.push('403')
-        } else {
-          console.log('hi')
-        }
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+    }
   },
 };
 </script>

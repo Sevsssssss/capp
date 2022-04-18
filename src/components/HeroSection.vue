@@ -1,9 +1,9 @@
 <template>
 <div class="text-brand-white">
     <section class="h-screen herobg bg-cover bg-fixed bg-center">
-        <div class="flex xxl:flex-row xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 xxs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xxs:pl-5 md:pl-4 xxs:items-center xs:items-center md:items-center">
+        <div class="flex xxxl:flex-row xxl:flex-row xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 xxs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xxs:pl-5 md:pl-4 xxs:items-center xs:items-center md:items-center">
             <!-- Section for Logo and tile -->
-            <div class="flex-col space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14 xxs:space-y-12 xl:p-20 md:p-20 sm:p-10 xs:p-10 xxs:p-10">
+            <div class="flex-col space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14 xxs:space-y-12 xl:p-20 xxxl:p-60 md:p-20 sm:p-10 xs:p-10 xxs:p-10">
                 <!-- LOGO -->
                 <div class="flex max-w-md space-x-5 text-left">
                     <div class="">
@@ -39,11 +39,11 @@
             <!-- Section for Login -->
             <div :class="{ 'animate__animated animate__slideInRight': validate2() }" class="flex-col xxl:relative xl:relative md:absolute xs:absolute xxs:absolute xxl:space-y-10 xl:space-y-10 md:space-y-8 sm:space-y-8 xs:space-y-6 xxs:space-y-4 w-full max-w-md mt-10 bg-brand-white hover:shadow-grey-200 text-black-300 rounded-lg" v-if="showModal">
                 <div class="flex justify-end pt-5 pr-5" @click="showModal = false">
-                   <button type="button">
+                    <button type="button">
                         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="#828282" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                    </svg>
-                   </button>
+                            <path fill="#828282" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                        </svg>
+                    </button>
                 </div>
                 <!-- Text -->
                 <form v-on:submit.prevent="Login" class="flex-col xxl:space-y-5 xl:space-y-5 sm:space-y-2 xxs:space-y-2 text-left xxl:p-5 xl:p-5 sm:p-2 xxsp-2 xxl:mx-16 xl:mx-16 sm:mx-10 xxs:mx-10">
@@ -107,6 +107,7 @@
             </div>
         </div>
     </section>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </div>
 </template>
@@ -114,13 +115,16 @@
 <script>
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
 
 export default {
     name: "HeroSection",
-    components: {},
+    components: {
+        VueInstantLoadingSpinner
+    },
     data() {
         return {
             v$: useVuelidate(),
@@ -159,6 +163,7 @@ export default {
                         user.get("access_type") === "REPORTS"
                     ) {
                         this.$router
+
                             .push({
                                 path: "/home",
                             })
@@ -189,6 +194,7 @@ export default {
                         return;
                     }
                 });
+            
         },
         toggleModal() {
             if (Parse.User.current() !== null) {

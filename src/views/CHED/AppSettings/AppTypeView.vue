@@ -15,7 +15,7 @@
         </div>
         <div class="text-center p-5">
             <div class="font-semibold">
-                REQUIREMENTS FOR APPLICATION OF {{this.$route.query.appTypeName}}
+                REQUIREMENTS FOR APPLICATION OF {{this.$route.query.appTypeName.toUpperCase()}}
 
             </div>
         </div>
@@ -24,8 +24,8 @@
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="font-semibold text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Requirements</th>
+                            <th scope="col" class="text-center px-6 py-3">ID</th>
+                            <th class="text-center px-6 py-3">Requirements</th>
 
                         </tr>
                     </thead>
@@ -61,19 +61,39 @@ export default {
   },
   methods: {},
   mounted: async function () {
-    const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
-    const query = new Parse.Query(ApplicationTypes);
-    query.equalTo("applicationTypeName", this.$route.query.appTypeName);
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
-    var appReqs = [];
-    for (var x = 0; x < querResult[0].get("applicationReqs").length; x++) {
-      appReqs.push({
-        id: querResult[0].get("applicationReqs")[x].id,
-        name: querResult[0].get("applicationReqs")[x].applicationReq,
-      });
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
     }
-    this.appicationReqs = appReqs;
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+      const query = new Parse.Query(ApplicationTypes);
+      query.equalTo("applicationTypeName", this.$route.query.appTypeName);
+
+      const querResult = await query.find();
+      var appReqs = [];
+      for (var x = 0; x < querResult[0].get("applicationReqs").length; x++) {
+        appReqs.push({
+          id: querResult[0].get("applicationReqs")[x].id,
+          name: querResult[0].get("applicationReqs")[x].applicationReq,
+        });
+      }
+      this.appicationReqs = appReqs;
+    }
   },
 };
 </script>

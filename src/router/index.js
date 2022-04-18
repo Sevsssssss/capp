@@ -21,12 +21,13 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
-import AccessTypesView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
-import AppTypesView from '../views/CHED/AppSettings/AppSettingsView.vue';
+import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
+import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
+import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
+// import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
-
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
@@ -43,13 +44,11 @@ const routes = [
   {
     path: "/capp",
     component: CHEDViewLayout,
-
     children: [
       {
         path: "/home",
         name: "home",
         component: CHED_HomeView,
-
         meta: {
           breadcrumb: [
             { name: 'Dashboard' },
@@ -70,12 +69,6 @@ const routes = [
         path: "/application/:id",
         name: "StatusApplication",
         component: StatusApplication,
-        // beforeEnter: (to) => {
-        //   this.hasPermission(to);
-        //   if (!this.hasPermissionResult) {
-        //     return { name: '403' }
-        //   }
-        // },
         props: true,
         meta: {
           breadcrumb: [
@@ -88,7 +81,6 @@ const routes = [
         path: "/hei",
         name: "hei",
         component: HeiView,
-
         meta: {
           breadcrumb: [
             { name: 'HEI' },
@@ -99,7 +91,6 @@ const routes = [
         path: "/hei/add",
         name: "addhei",
         component: AddHeiView,
-
         meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -111,7 +102,6 @@ const routes = [
         path: "/hei/upload",
         name: "uploadCSV",
         component: UploadCSV,
-
         meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -123,7 +113,6 @@ const routes = [
         path: "/rqat",
         name: "rqat",
         component: RqatView,
-
         meta: {
           breadcrumb: [
             { name: 'RQAT' },
@@ -134,7 +123,6 @@ const routes = [
         path: "/rqat/add",
         name: "addrqat",
         component: AddRQATView,
-
         meta: {
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
@@ -146,7 +134,6 @@ const routes = [
         path: "/employees",
         name: "employees",
         component: EmployeesView,
-
         meta: {
           breadcrumb: [
             { name: 'EMPLOYEE' },
@@ -157,7 +144,6 @@ const routes = [
         path: "/employees/add",
         name: "addemployee",
         component: AddEmployeeView,
-
         meta: {
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
@@ -169,7 +155,6 @@ const routes = [
         path: "/evaluationins",
         name: "evaluationins",
         component: EvaluationInsView,
-
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.' },
@@ -180,7 +165,6 @@ const routes = [
         path: "/evaluationins/view",
         name: "evaluationinsfile",
         component: EvalFileView,
-
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -192,7 +176,6 @@ const routes = [
         path: "/evaluationins/add",
         name: "addevaluationins",
         component: AddEvaluationInsView,
-
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -204,7 +187,6 @@ const routes = [
         path: "/reporting",
         name: "reporting",
         component: ReportingView,
-
         meta: {
           breadcrumb: [
             { name: 'REPORTING' },
@@ -214,8 +196,7 @@ const routes = [
       {
         path: "/app-settings",
         name: "app-settings",
-        component: AppTypesView,
-
+        component: AppSettingsView,
         meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS' },
@@ -227,7 +208,6 @@ const routes = [
         path: "/app-settings/add",
         name: "applicationType",
         component: AddApplicationView,
-
         meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
@@ -239,7 +219,6 @@ const routes = [
         path: "/app-settings/appTypeView",
         name: "AppTypeView",
         component: ApplicationTypeView,
-
         meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
@@ -248,10 +227,21 @@ const routes = [
         }
       },
       {
+        path: "/application/:id",
+        name: "StatusApplication",
+        component: StatusApplication,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Application', link: '/application' },
+            { name: 'Status' }
+          ]
+        }
+      },
+      {
         path: "/access-settings",
         name: "access-settings",
-        component: AccessTypesView,
-
+        component: AccessSettingsView,
         meta: {
           breadcrumb: [
             { name: 'SETTINGS' },
@@ -259,13 +249,22 @@ const routes = [
         }
       },
       {
-        path: "/designations",
-        name: "Designations",
-        component: DesignationsView,
-
+        path: "/rqat-assignment",
+        name: "rqat-assignment",
+        component: rqatEvaluationView,
         meta: {
           breadcrumb: [
-            { name: 'DESIGNATIONS' },
+            { name: 'RQAT EVALUATION' },
+          ]
+        }
+      },
+      {
+        path: "/designations",
+        name: "/designations",
+        component: DesignationsView,
+        meta: {
+          breadcrumb: [
+            { name: 'DESIGNATION' },
           ]
         }
       },
@@ -274,13 +273,11 @@ const routes = [
   {
     path: "/HEIPage",
     component: HEIViewLayout,
-
     children: [
       {
         path: "/HEIhome",
         name: "HEIhome",
         component: HEI_Home,
-
         meta: {
           breadcrumb: [
             { name: 'Home' },
@@ -291,7 +288,6 @@ const routes = [
         path: "/HEIapply",
         name: "HEIapply",
         component: HEI_Apply,
-
         meta: {
           breadcrumb: [
             { name: 'Apply' },
@@ -302,7 +298,6 @@ const routes = [
         path: "/HEIapplication",
         name: "HEIapplication",
         component: HEI_Application,
-
         meta: {
           breadcrumb: [
             { name: 'Application' },
@@ -313,7 +308,6 @@ const routes = [
         path: "/HEIapplication/:id",
         name: "EditHEIapplication",
         component: Edit_HEI_Application,
-
         props: true,
         meta: {
           breadcrumb: [
@@ -345,7 +339,6 @@ router.beforeEach((to, from, next) => {
   if (to.name !== 'landing' && Parse.User.current() === null) next({ name: 'landing' })
   else next()
 })
-
 
 export default router
 

@@ -112,7 +112,7 @@
     --tw-bg-opacity: 1;
     background-color: rgb(30 66 159 / var(--tw-bg-opacity));
   }
-
+  
   .btn-small {
     padding: 10px 24px;
     font-size: 14px;
@@ -404,6 +404,11 @@
     vertical-align: middle;
   }
 
+  .rqat-table :where(th, td) {
+    white-space: normal;
+    padding: 5px;
+    vertical-align: middle;
+  }
   
 }
 

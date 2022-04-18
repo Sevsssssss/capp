@@ -1,5 +1,8 @@
 <template>
-  <div class="p-3">
+  <div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="AppSettingsView" />
+  </div>
+  <div v-else class="p-3">
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
       <!-- Table header -->
       <div class="flex flex-row justify-between items-center">
@@ -86,7 +89,7 @@
                 d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"
               />
             </svg>
-            <div class="pl-2">Add Application Type</div>
+            <div class="pl-2">APPLICATION TYPE NAME</div>
           </button>
         </div>
       </div>
@@ -107,45 +110,24 @@
               :key="table"
               class="bg-white border-b"
             >
-              <th
-                scope="row"
-                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900">
                 {{ table.Name }}
               </th>
-              <!-- <th
-                scope="row"
-                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {{ table.Requi }}
-              </th> -->
-<!-- 
-              <td v-for="y in table.appReqs" :key="y" class="px-6 py-4">
-                <div>{{ y.id }}</div>
-              </td> -->
               <td class="px-6 py-4 text-right">
-                <!-- <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a> -->
-                <!-- <router-link :to="{ path: '/app-settings/view', query: { AppType: 'private' }}"> -->
-
                 <a
                   @click="goToAppTypeView(table.Name)"
+                  href="#"
                   class="font-medium text-blue-600 hover:underline"
-                  >VIEW</a
+                  >View</a
                 >
-              </td>
-              <td class="px-6 py-4">
-                <div class="hover:text-brand-red/60">
-                  <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                  </svg>
-                </div>
               </td>
             </tr>
           </tbody>
         </table>
+        <div v-if="searchApplicationType.length == 0" class="p-5 font-medium">
+          <!-- NO DATA FOUND {{search}} -->
+          Sorry, the keyword "{{ search }}" cannot be found in the database.
+        </div>
         <!-- Table Footer -->
         <div class="table-footer flex flex-row justify-between">
           <div class="flex flex-row pl-4 justify-center items-center">
@@ -219,9 +201,9 @@ import Parse from "parse";
 
 // var dataNumber = 10;
 // var page = 0;
-
+import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
-  name: "EmployeesView",
+  name: "AppSettingsView",
   data() {
     return {
       currentpage: 0,
@@ -241,7 +223,7 @@ export default {
       // checkedAccessTypes: [],
     };
   },
-  components: {},
+  components: { NoDataAvail },
   computed: {
     searchApplicationType() {
       return this.tables
@@ -291,41 +273,63 @@ export default {
     goToAppTypeView(tableName) {
       this.$router.push({
         name: "AppTypeView",
-        query: { appTypeName: tableName},
+        query: {
+          appTypeName: tableName,
+        },
       });
     },
   },
   mounted: async function () {
-    var applicationTypesTable = [];
-
-    const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
-    const query = new Parse.Query(ApplicationTypes);
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
-    for (var i = 0; i < querResult.length; i++) {
-      const appType = querResult[i];
-      var appReqs = [];
-      for (var x = 0; x < appType.get("applicationReqs").length; x++) {
-        // var appReqsIndex = [{
-        //     id:appType.get("applicationReqs")[x].id,
-        //     name:appType.get("applicationReqs")[x].applicationReq,
-        // }]
-        appReqs.push({
-          id: appType.get("applicationReqs")[x].id,
-          name: appType.get("applicationReqs")[x].applicationReq,
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var applicationTypesTable = [];
+
+      const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+      const query = new Parse.Query(ApplicationTypes);
+
+      const querResult = await query.find();
+      for (var i = 0; i < querResult.length; i++) {
+        const appType = querResult[i];
+        var appReqs = [];
+        for (var x = 0; x < appType.get("applicationReqs").length; x++) {
+          // var appReqsIndex = [{
+          //     id:appType.get("applicationReqs")[x].id,
+          //     name:appType.get("applicationReqs")[x].applicationReq,
+          // }]
+          appReqs.push({
+            id: appType.get("applicationReqs")[x].id,
+            name: appType.get("applicationReqs")[x].applicationReq,
+          });
+        }
+        //   console.log(appReqsIndex)
+        applicationTypesTable.push({
+          Id: appType.id,
+          Name: appType.get("applicationTypeName"),
+
+          appReqs,
         });
       }
-      //   console.log(appReqsIndex)
-      applicationTypesTable.push({
-        Id: appType.id,
-        Name: appType.get("applicationTypeName"),
-
-        appReqs,
-      });
+      this.totalEntries = querResult.length;
+      this.tables = applicationTypesTable;
+      // console.log(this.tables);
     }
-    this.totalEntries = querResult.length;
-    this.tables = applicationTypesTable;
-    // console.log(this.tables);
   },
 };
 </script>

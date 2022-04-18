@@ -1,4 +1,5 @@
 <template>
+<div>
 <div @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
     <span>Drag or Drop File</span>
     <span>OR</span>
@@ -6,7 +7,7 @@
     <input type="file" id="dropzoneFile" class="dropzoneFile" />
 </div>
 <span class="mt-5 font-semibold">File: <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
-<button class="btn-small mt-4 font-normal bg-brand-darkblue">Submit</button>
+<button class="btn-small mt-4 font-normal bg-brand-darkblue">Submit</button></div>
 </template>
 
 <script>
