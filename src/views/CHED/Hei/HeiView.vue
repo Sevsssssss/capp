@@ -431,7 +431,7 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                if (heisState.length > 0){
+                if (heisLocal.length > 0){
                     this.sort_type_var = false;
                     this.tables = heisLocal;
                 }else{
