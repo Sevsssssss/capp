@@ -324,119 +324,26 @@ export default {
             var month;
             var day;
             var year;
+            var hei_name = "";
 
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
-                query.equalTo("createdBy", Parse.User.current().id);
+                 
 
                 const querResult = await query.find();
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    
-                    month = application.createdAt.getMonth();
-                    day = application.createdAt.getDate();
-                    year = application.createdAt.getFullYear();
-                    storedApplicationsAll.push({
-                        id: i + 1,
-                        rep: application.get("pointPerson"),
-                        email: application.get("email"),
-                        phoneNumber: application.get("phoneNumber"),
-                        type: application.get("applicationType"),
-                        requirements: application.get("requirements"),
-                        dateApplied: months[month] + " " + day + ", " + year,
-                        status: application.get("applicationStatus")
-                    });
-                }
-                this.totalEntries = querResult.length;
-                this.tables = storedApplicationsAll;
-            }
-            else if (this.sort_type == "For Approval") {
-                var storedApplicationsFA = [];
-                const applications = Parse.Object.extend("Applications");
-
-                const query = new Parse.Query(applications);
-                query.equalTo("applicationStatus", "For Approval");
-                query.equalTo("createdBy", Parse.User.current().id);
-
-                const querResult = await query.find();
-
-                for (i = 0; i < querResult.length; i++) {
-                    const application = querResult[i];
-
-                    month = application.createdAt.getMonth();
-                    day = application.createdAt.getDate();
-                    year = application.createdAt.getFullYear();
-                    storedApplicationsFA.push({
-                        id: i + 1,
-                        rep: application.get("pointPerson"),
-                        email: application.get("email"),
-                        phoneNumber: application.get("phoneNumber"),
-                        type: application.get("applicationType"),
-                        requirements: application.get("requirements"),
-                        dateApplied: months[month] + " " + day + ", " + year,
-                        status: application.get("applicationStatus")
-                    });
-                }
-                this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFA;
-            }
-            else if (this.sort_type == "For Revision") {
-                var storedApplicationsFR = [];
-                const applications = Parse.Object.extend("Applications");
-
-                const query = new Parse.Query(applications);
-                query.equalTo("applicationStatus", "For Revision");
-                query.equalTo("createdBy", Parse.User.current().id);
-
-                const querResult = await query.find();
-                
-
-                for (i = 0; i < querResult.length; i++) {
-                    const application = querResult[i];
-
-                    month = application.createdAt.getMonth();
-                    day = application.createdAt.getDate();
-                    year = application.createdAt.getFullYear();
-                    storedApplicationsFR.push({
-                        id: i + 1,
-                        rep: application.get("pointPerson"),
-                        email: application.get("email"),
-                        phoneNumber: application.get("phoneNumber"),
-                        type: application.get("applicationType"),
-                        requirements: application.get("requirements"),
-                        dateApplied: months[month] + " " + day + ", " + year,
-                        status: application.get("applicationStatus")
-                    });
-                }
-                this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFR;
-            }
-            else if (this.sort_type == "Completed") {
-                var storedApplicationsC = [];
-                const applications = Parse.Object.extend("Applications");
-
-                const query = new Parse.Query(applications);
-                query.equalTo("applicationStatus", "Completed");
-                query.equalTo("createdBy", Parse.User.current().id);
-
-                const querResult = await query.find();
-
-                
-
-                for (i = 0; i < querResult.length; i++) {
-                    const application = querResult[i];
-
                     const user = new Parse.Query(Parse.User);
-                    user.equalTo("access_type", "HEI");
-                    user.equalTo("id", application.get("createdBy"));
-                    const userResult = await user.find();
+                    user.equalTo("objectId", application.get("createdBy"));
 
-                    const hei = userResult[0];
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
 
                     month = application.createdAt.getMonth();
                     day = application.createdAt.getDate();
@@ -451,7 +358,127 @@ export default {
                         dateApplied: months[month] + " " + day + ", " + year,
                         status: application.get("applicationStatus"),
                         program: "BSIT",
-                        HeiName: hei.get("hei_name"),
+                        HeiName: hei_name,
+                    });
+                }
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsAll;
+            }
+            else if (this.sort_type == "For Approval") {
+                var storedApplicationsFA = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Approval");
+                 
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsC.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                    });
+                }
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsFA;
+            }
+            else if (this.sort_type == "For Revision") {
+                var storedApplicationsFR = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Revision");
+                
+
+                const querResult = await query.find();
+                
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsC.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                    });
+                }
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsFR;
+            }
+            else if (this.sort_type == "Completed") {
+                var storedApplicationsC = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "Completed");
+                 
+
+                const querResult = await query.find();
+
+                
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsC.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
                     });
                 }
                 this.totalEntries = querResult.length;
