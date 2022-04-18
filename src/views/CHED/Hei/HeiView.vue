@@ -364,6 +364,7 @@ export default {
                     const hei = querResult[i];
 
                     heisPriv.push({
+                        id: hei.id,
                         InstNo: hei.get("inst_code"),
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
@@ -395,6 +396,7 @@ export default {
                     const hei = querResult[i];
 
                     heisState.push({
+                        id: hei.id,
                         InstNo: hei.get("inst_code"),
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
@@ -424,6 +426,7 @@ export default {
                     const hei = querResult[i];
 
                     heisLocal.push({
+                        id: hei.id,
                         InstNo: hei.get("inst_code"),
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
@@ -452,6 +455,7 @@ export default {
                     const hei = querResult[i];
 
                     heisOthers.push({
+                        id: hei.id,
                         InstNo: hei.get("inst_code"),
                         HeiName: hei.get("hei_name"),
                         address: hei.get("address"),
@@ -483,7 +487,9 @@ export default {
         for (var i = 0; i < querResult.length; i++) {
             const hei = querResult[i];
             console.log(heis);
+            console.log(hei.id);
             heis.push({
+                id: hei.id,
                 InstNo: hei.get("inst_code"),
                 HeiName: hei.get("hei_name"),
                 address: hei.get("address"),
