@@ -243,16 +243,6 @@ const routes = [
         }
       },
       {
-        path: "/disciplines",
-        name: "disciplines",
-        component: DisciplineView,
-        meta:{
-          breadcrumb: [
-            {name: 'DISCIPLINE SETTINGS'},
-          ]
-        }
-      },
-      {
         path: "/app-settings",
         name: "app-settings",
         component: AppSettingsView,
