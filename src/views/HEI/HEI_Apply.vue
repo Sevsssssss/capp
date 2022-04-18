@@ -233,6 +233,8 @@ export default {
                 reqFiles.push({
                     id: i + 1,
                     file: requirement,
+                    status: "",
+                    comment: "",
                 });
             }
             // const file = values.target[4].files[0];
