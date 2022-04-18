@@ -292,7 +292,6 @@ export default {
             window.scrollTo(0, 0);
         },
         async addHEI() {
-<<<<<<< HEAD
             this.password = "password";
             const newHEI = new Parse.User();
             newHEI.set("hei_name", this.hei_name);
@@ -305,9 +304,6 @@ export default {
             newHEI.set("hei_type", this.hei_type);
             newHEI.set("access_type", "HEI");
             newHEI.set("hasTransactions", false);
-=======
-            this.$refs.Spinner.show();
->>>>>>> a444618ca033e49787298d8e6d596878f6dd7ced
             try {
                 this.password = "password";
                 const newHEI = new Parse.User();

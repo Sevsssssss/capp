@@ -269,7 +269,7 @@
             "
             >Cancel</label
           >
-          <label
+          <label for="my-modal-6" id="my-modal-6" type="submit"
             class="
               btn btn-sm
               bg-blue-700
@@ -277,11 +277,25 @@
               hover:bg-blue-800
               border-none
             "
-            @click="addAccessType()"
+            @click="modal()"
             >Submit</label
           >
         </div>
       </div>
+    </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box" >
+            <div class="text-brand-darkblue font-bold label-xl">
+                Grant Access 
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to grant access?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addAccessType()">Continue</label>
+            </div>
+        </div>
     </div>
   </div>
 </template>
@@ -296,6 +310,7 @@ export default {
   name: "DesignationsView",
   data() {
     return {
+      showModal1: false,
       currentpage: 0,
       numPerPage: 10,
       totalEntries: 0,
@@ -325,6 +340,12 @@ export default {
     },
   },
   methods: {
+    validate() {
+        return this.showModal1;
+    },
+    modal(){
+        this.showModal1 = !this.showModal1;
+    },
     addAccessType() {
       const designation = Parse.Object.extend("Designations");
       const newDesignation = new designation();
