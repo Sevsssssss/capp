@@ -176,7 +176,7 @@ export default {
         },
     },
     data() {
-        if (Parse.User.current().get("access_type") === "SUPER ADMIN") {
+        if (Parse.User.current().get("access_type") === "SUPER ADMIN" || Parse.User.current().get("access_type") === "SAMPLE") {
             return {
                 collapsed: true,
                 menu: [{

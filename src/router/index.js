@@ -34,6 +34,7 @@ import NotFound404 from "../views/errors/404.vue";
 import StatusApplication from '../views/CHED/Application/StatusApplication.vue';
 
 const routes = [
+
   {
     path: "/",
     name: "landing",
@@ -48,11 +49,7 @@ const routes = [
         path: "/home",
         name: "home",
         component: CHED_HomeView,
-        beforeEnter: (to) => {
-          if (!checkHomeType(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'Dashboard' },
@@ -63,11 +60,6 @@ const routes = [
         path: "/application",
         name: "application",
         component: ApplicationView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
         meta: {
           breadcrumb: [
             { name: 'Application' },
@@ -78,11 +70,12 @@ const routes = [
         path: "/application/:id",
         name: "StatusApplication",
         component: StatusApplication,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+        // beforeEnter: (to) => {
+        //   this.hasPermission(to);
+        //   if (!this.hasPermissionResult) {
+        //     return { name: '403' }
+        //   }
+        // },
         props: true,
         meta: {
           breadcrumb: [
@@ -95,11 +88,7 @@ const routes = [
         path: "/hei",
         name: "hei",
         component: HeiView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'HEI' },
@@ -110,11 +99,7 @@ const routes = [
         path: "/hei/add",
         name: "addhei",
         component: AddHeiView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -126,11 +111,7 @@ const routes = [
         path: "/hei/upload",
         name: "uploadCSV",
         component: UploadCSV,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -142,11 +123,7 @@ const routes = [
         path: "/rqat",
         name: "rqat",
         component: RqatView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'RQAT' },
@@ -157,11 +134,7 @@ const routes = [
         path: "/rqat/add",
         name: "addrqat",
         component: AddRQATView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
@@ -173,11 +146,7 @@ const routes = [
         path: "/employees",
         name: "employees",
         component: EmployeesView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'EMPLOYEE' },
@@ -188,11 +157,7 @@ const routes = [
         path: "/employees/add",
         name: "addemployee",
         component: AddEmployeeView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
@@ -204,11 +169,7 @@ const routes = [
         path: "/evaluationins",
         name: "evaluationins",
         component: EvaluationInsView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.' },
@@ -219,11 +180,7 @@ const routes = [
         path: "/evaluationins/view",
         name: "evaluationinsfile",
         component: EvalFileView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -235,11 +192,7 @@ const routes = [
         path: "/evaluationins/add",
         name: "addevaluationins",
         component: AddEvaluationInsView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -251,11 +204,7 @@ const routes = [
         path: "/reporting",
         name: "reporting",
         component: ReportingView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'REPORTING' },
@@ -266,11 +215,7 @@ const routes = [
         path: "/app-settings",
         name: "app-settings",
         component: AppTypesView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS' },
@@ -282,11 +227,7 @@ const routes = [
         path: "/app-settings/add",
         name: "applicationType",
         component: AddApplicationView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
@@ -298,11 +239,7 @@ const routes = [
         path: "/app-settings/appTypeView",
         name: "AppTypeView",
         component: ApplicationTypeView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
@@ -314,11 +251,7 @@ const routes = [
         path: "/access-settings",
         name: "access-settings",
         component: AccessTypesView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'SETTINGS' },
@@ -329,11 +262,7 @@ const routes = [
         path: "/designations",
         name: "Designations",
         component: DesignationsView,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'DESIGNATIONS' },
@@ -345,21 +274,13 @@ const routes = [
   {
     path: "/HEIPage",
     component: HEIViewLayout,
-    beforeEnter: (to) => {
-      if (!checkHomeType(to)) {
-        return { name: '403' }
-      }
-    },
+
     children: [
       {
         path: "/HEIhome",
         name: "HEIhome",
         component: HEI_Home,
-        beforeEnter: (to) => {
-          if (!checkHomeType(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'Home' },
@@ -370,11 +291,7 @@ const routes = [
         path: "/HEIapply",
         name: "HEIapply",
         component: HEI_Apply,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'Apply' },
@@ -385,11 +302,7 @@ const routes = [
         path: "/HEIapplication",
         name: "HEIapplication",
         component: HEI_Application,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         meta: {
           breadcrumb: [
             { name: 'Application' },
@@ -400,11 +313,7 @@ const routes = [
         path: "/HEIapplication/:id",
         name: "EditHEIapplication",
         component: Edit_HEI_Application,
-        beforeEnter: (to) => {
-          if (!hasPermission(to)) {
-            return { name: '403' }
-          }
-        },
+
         props: true,
         meta: {
           breadcrumb: [
@@ -438,87 +347,6 @@ router.beforeEach((to, from, next) => {
 })
 
 
-function hasPermission(to) {
-  console.log('hi');
-  const at = getAccessType();
-  // for (var i = 0; i < at.get('privileges').length; i++) {
-  //   if (at[0].get('privileges')[i] === to.path) {
-
-  //     console.log('yes')
-  //     t();
-  //   }
-
-  // }
-  at.then((at) => {
-    var accType = at[0].get('privileges');
-    // console.log(accType);
-    for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === to.path) {
-
-        return true;
-        // t();
-      }
-
-    }
-    return false;
-  })
-  console.log(to);
-  // f();
-  // console.log(to.path)
-  // function t(){
-  //   return true;
-  // }
-  // function f(){
-  //   return false;
-  // }
-
-}
-
-async function getAccessType() {
-  const AccessTypes = Parse.Object.extend("AccessTypes");
-  const query = new Parse.Query(AccessTypes);
-  query.equalTo('name', Parse.User.current().get('access_type'))
-
-  const querResult = await query.find();
-  return querResult;
-}
-// var o ='';
-async function checkHomeType(to) {
-  console.log('OHAYU')
-  const AccessTypes = Parse.Object.extend("AccessTypes");
-  const query = new Parse.Query(AccessTypes);
-  query.equalTo('name', Parse.User.current().get('access_type'))
-
-  // const querResult = await query.find();
-  await query.find().then((hometype) => {
-    if (hometype[0].get('hometype') === to.path) {
-      console.log('he')
-      return true;
-    } else {
-      console.log('ehh')
-      return false;
-    }
-  })
-
-
-}
-
-// function checkHomeType(to){
-//   var name = to.path;
-//   const AccessTypes = Parse.Object.extend("AccessTypes");
-//   const query = new Parse.Query(AccessTypes);
-//   query.equalTo('name', Parse.User.current().get('access_type'))
-
-//   query.find().then((querResult, this.name) => {
-//     if (querResult[0].get('hometype') === to.path) {
-//       return true;
-//     }
-//     else {
-//       return false;
-//     }
-//   })
-
-// }
-
 export default router
+
 
