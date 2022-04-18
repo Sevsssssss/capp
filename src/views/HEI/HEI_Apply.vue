@@ -32,13 +32,9 @@
                             </div>
                             <div class="flex" style="">
                                 <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64 uppercase text-sm font-semibold">
-                                    <!--<option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
+                                    <option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
                                         {{ i.appType.get("applicationTypeName") }}
-                                    </option> -->
-                                    <option>Apply for Initial Permit</option>
-                                    <option>Apply for Renewal</option>
-                                    <option>Apply for Compliance</option>
-                                    <option>Apply for Government Recognition</option>
+                                    </option> 
                                 </select>
                             </div>
                         </div>
