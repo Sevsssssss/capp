@@ -19,9 +19,8 @@
         </sidebar-menu>
         <div class="w-full content" :class="
           collapsed
-            ? 'pl-[290px]  transition-width duration-300'
-            : 'pl-[65px] transition-width duration-300'
-        ">
+            ? 'pl-[290px] transition-width duration-300'
+            : 'pl-[65px] transition-width duration-300'">
             <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
             <nav class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm" style="background-color: white">
                 <ul class="flex text-sm">
@@ -217,6 +216,7 @@ export default {
             return {
                 showModal1: false,
                 collapsed: true,
+                breadcrumbs: [],
                 menu: [{
                         href: "/home",
                         title: "Home",
@@ -333,6 +333,7 @@ export default {
         } else if (Parse.User.current().get("access_type") === "ADMIN") {
             return {
                 collapsed: true,
+                breadcrumbs: [],
                 menu: [{
                         href: "/home",
                         title: "Home",
@@ -381,6 +382,7 @@ export default {
         ) {
             return {
                 collapsed: true,
+                breadcrumbs: [],
                 menu: [{
                         href: "/home",
                         title: "Home",
@@ -427,6 +429,7 @@ export default {
         } else if (Parse.User.current().get("access_type") === "RQAT") {
             return {
                 collapsed: true,
+                breadcrumbs: [],
                 menu: [{
                         href: "/home",
                         title: "Home",
@@ -462,6 +465,7 @@ export default {
         } else if (Parse.User.current().get("access_type") === "REPORTS") {
             return {
                 collapsed: true,
+                breadcrumbs: [],
                 menu: [{
                         href: "/home",
                         title: "Home",

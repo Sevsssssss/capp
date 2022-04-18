@@ -92,7 +92,7 @@
                         </th> -->
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="sort_type_var == false">
                     <tr class="bg-white border-b" v-for="table in searchHEI" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
                             {{ table.InstNo }}
@@ -122,6 +122,10 @@
             <div v-if="searchHEI.length == 0" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
                 Sorry, the keyword "{{search}}" cannot be found in the database.
+            </div>
+            <div v-if="sort_type_var == true" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, the keyword "{{sort_type}}" cannot be found in the database.
             </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
@@ -290,6 +294,7 @@ export default {
             tables: [],
             search: "",
             sort_type: "Sort by type",
+            sort_type_var: false,
         };
     },
     components: {
@@ -366,7 +371,15 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                this.tables = heisPriv;
+                if (heisPriv.length > 0){
+                    this.sort_type_var = false;
+                    this.tables = heisPriv;
+                }else{
+                    this.sort_type_var = true;
+                }
+                
+                
+
             }
             if (this.sort_type == "State Univeristies") {
                 var heisState = [];
@@ -389,7 +402,13 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                this.tables = heisState;
+                if (heisState.length > 0){
+                    this.sort_type_var = false;
+                    this.tables = heisState;
+                }else{
+                    this.sort_type_var = true;
+                }
+                
             }
             if (this.sort_type == "Local Universities") {
                 var heisLocal = [];
@@ -412,7 +431,12 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                this.tables = heisLocal;
+                if (heisState.length > 0){
+                    this.sort_type_var = false;
+                    this.tables = heisLocal;
+                }else{
+                    this.sort_type_var = true;
+                }
             }
             if (this.sort_type == "Others") {
                 var heisOthers = [];
@@ -435,7 +459,14 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                this.tables = heisOthers;
+                if (heisOthers.length > 0){
+                    this.sort_type_var = false;
+                    this.tables = heisOthers;
+                }else{
+                    this.sort_type_var = true;
+                }
+                
+                
             }
         },
     },
