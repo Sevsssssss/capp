@@ -255,6 +255,7 @@ export default {
             newEmployee.set("access_type", this.access_type);
             newEmployee.set("designation", this.emp_designation);
             newEmployee.set("user_type", "employee");
+            newEmployee.set("hasTransactions", false);
 
             try {
                 await newEmployee.save().then(() => {

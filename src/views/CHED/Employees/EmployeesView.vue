@@ -259,6 +259,7 @@ export default {
                     const emp = querResult[i];
 
                     empDir.push({
+                        id: emp.id,
                         Name: emp.get("name")["lastname"] +
                             ", " +
                             emp.get("name")["firstname"] +
@@ -287,6 +288,7 @@ export default {
                     const emp = querResult[i];
 
                     empSuper.push({
+                        id: emp.id,
                         Name: emp.get("name")["lastname"] +
                             ", " +
                             emp.get("name")["firstname"] +
@@ -315,6 +317,7 @@ export default {
                     const emp = querResult[i];
 
                     empEmp.push({
+                        id: emp.id,
                         Name: emp.get("name")["lastname"] +
                             ", " +
                             emp.get("name")["firstname"] +
@@ -343,6 +346,7 @@ export default {
                     const emp = querResult[i];
 
                     empOthers.push({
+                        id: emp.id,
                         Name: emp.get("name")["lastname"] +
                             ", " +
                             emp.get("name")["firstname"] +
@@ -371,6 +375,7 @@ export default {
                     const emp = querResult[i];
 
                     empAll.push({
+                        id: emp.id,
                         Name: emp.get("name")["lastname"] +
                             ", " +
                             emp.get("name")["firstname"] +
@@ -401,6 +406,7 @@ export default {
             const emp = querResult[i];
 
             employees.push({
+                id: emp.id,
                 Name: emp.get("name")["lastname"] +
                     ", " +
                     emp.get("name")["firstname"] +

@@ -241,6 +241,7 @@ export default {
         for (var i = 0; i < querResult.length; i++) {
             const rqat = querResult[i];
             rqats.push({
+                id: rqat.id,
                 rqatName: rqat.get("name")["lastname"] +
                     ", " +
                     rqat.get("name")["firstname"] +
