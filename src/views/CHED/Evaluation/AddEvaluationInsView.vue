@@ -144,7 +144,7 @@
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: center">
             <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-outline" >Cancel</button><button @click="saveEvalForm()" class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
+                <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button><button @click="saveEvalForm()" class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
                     Create
                 </button>
             </div>
