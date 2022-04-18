@@ -67,8 +67,8 @@
                 <div class="flex flex-row pl-4 justify-center items-center">
                     <span class="text-sm text-gray-700">
                         Showing
-                        <span class="font-semibold text-gray-900">{{
-                1 + numPerPage * currentpage
+                        <span class="font-semibold text-gray-900">{{totalEntries > 0 ?
+                1 + numPerPage * currentpage: 0
               }}</span>
                         to
                         <span class="font-semibold text-gray-900">{{
@@ -103,11 +103,14 @@
 
 <script>
 import NoDataAvail from "@/components//NoDataAvail.vue";
+import Parse from "parse";
 
 export default {
     name: "EvalInstView",
     data() {
         return {
+            currentpage: 0,
+            numPerPage: 10,
             search: "",
             headers: [{
                     title: "PROGRAM NAME",
@@ -116,26 +119,27 @@ export default {
                     title: "DESCRIPTION",
                 },
             ],
-            tables: [{
-                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                },
-                {
-                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION",
-                    description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                },
-                {
-                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                    description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                },
-                {
-                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                    description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                },
-                {
-                    programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                    description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                },
+            tables: [
+                // {
+                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                //     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                // },
+                // {
+                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION",
+                //     description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                // },
+                // {
+                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                //     description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                // },
+                // {
+                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                //     description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                // },
+                // {
+                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+                //     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+                // },
             ],
         };
     },
@@ -163,6 +167,32 @@ export default {
         viewEvalIns() {
             this.$router.push("/evaluationins/view");
         },
+        prevPage() {
+            if (this.currentpage > 0) this.currentpage -= 1;
+        },
+        nextPage() {
+            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+                this.currentpage += 1;
+            }
+        },
+    },
+    mounted: async function () {
+        var storedEvalInstruments = [];
+        const instruments = Parse.Object.extend("EvaluationForms");
+        const query = new Parse.Query(instruments);
+        const querResult = await query.find();
+
+        for (var i = 0; i < querResult.length; i++) {
+            const evalInst = querResult[i];
+
+            storedEvalInstruments.push({
+                programName: evalInst.get("evaluationFormName"),
+                description: evalInst.get("evaluationFormDesc"),
+            });
+        }
+        this.totalEntries = querResult.length;
+        this.tables = storedEvalInstruments;
+
     },
 };
 </script>
