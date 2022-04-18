@@ -7,7 +7,7 @@
                 <MenuOpen class="h-6" /></template>
             <template v-slot:footer>
                 <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
-                    <button @click="Logout(), scrollToTop()" class="flex space-x-1 justify-center items-center text-blue-500">
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="flex space-x-1 justify-center items-center text-blue-500" @click="modal()">
                         <Logout class="h-6" />
                         <span class="text-sm hover:font-semibold">Logout</span>
                     </button>
@@ -32,6 +32,20 @@
             </nav>
             <div class="main-content h-screen bg-grey-700" style="padding-top: 100px">
                 <router-view />
+            </div>
+        </div>
+    </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">
+                Logout Account
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to logout?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">NO</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"  @click="Logout(), scrollToTop()">YES</label>
             </div>
         </div>
     </div>
@@ -167,6 +181,12 @@ export default {
         scrollToTop() {
             window.scrollTo(0, 0);
         },
+        validate() {
+            return this.showModal1;
+        },
+        modal(){
+            this.showModal1 = !this.showModal1;
+        },
         Logout() {
             toast("Logging out..", {
                 type: TYPE.WARNING,
@@ -190,10 +210,12 @@ export default {
                 this.$router.push(this.breadcrumbs[pRouteTo].link);
             }
         },
+        
     },
     data() {
         if (Parse.User.current().get("access_type") === "SUPER ADMIN") {
             return {
+                showModal1: false,
                 collapsed: true,
                 menu: [{
                         href: "/home",
