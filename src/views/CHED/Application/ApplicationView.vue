@@ -131,8 +131,8 @@
                 <div class="flex flex-row pl-4 justify-center items-center">
                     <span class="text-sm text-gray-700">
                         Showing
-                        <span class="font-semibold text-gray-900">{{
-                1 + numPerPage * currentpage
+                        <span class="font-semibold text-gray-900">{{totalEntries > 0 ?
+                1 + numPerPage * currentpage: 0
               }}</span>
                         to
                         <span class="font-semibold text-gray-900">{{

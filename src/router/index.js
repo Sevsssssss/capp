@@ -26,7 +26,11 @@ import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
+<<<<<<< HEAD
 // import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
+=======
+//import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
+>>>>>>> c03e5ba706be642837a1a8212d920702c343853b
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
 import Parse from 'parse';
 
