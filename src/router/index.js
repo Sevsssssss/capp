@@ -309,11 +309,21 @@ const routes = [
       },
       {
         path: "/designations",
-        name: "/designations",
+        name: "designations",
         component: DesignationsView,
         meta:{
           breadcrumb: [
             {name: 'DESIGNATION'},
+          ]
+        }
+      },
+      {
+        path: "/disciplines",
+        name: "disciplines",
+        component: DisciplineView,
+        meta:{
+          breadcrumb: [
+            {name: 'DISCIPLINES'},
           ]
         }
       },
