@@ -26,7 +26,7 @@ import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
-// import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
+import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
 import Parse from 'parse';
 

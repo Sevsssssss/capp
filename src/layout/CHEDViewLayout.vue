@@ -195,6 +195,7 @@ export default {
         if (Parse.User.current().get("access_type") === "SUPER ADMIN") {
             return {
                 collapsed: true,
+                breadcrumbs: [],
                 menu: [{
                         href: "/home",
                         title: "Home",
