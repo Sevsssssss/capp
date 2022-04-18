@@ -8,25 +8,40 @@
         {{category.id}}
         {{category.subcategory.length}}
     </div>
-    <div class="overflow-x-auto shadow-lg rounded-lg p-5" style="margin: 11px">
+    <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-5" style="margin: 11px">
         <div class="flex flex-row" style="justify-content: space-between">
             <div class="form-control mr-3 w-full">
                 <label class="label">
                     <span class="label-text">Program*</span>
                 </label>
-                <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter Program" :class="{ 'input-error': validationStatus(v$.programName) }" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.programName) }" v-if="validationStatus(v$.programName)">
+                        Program is Required</span>
+                </label>
             </div>
             <div class="form-control mr-3 w-full">
                 <label class="label">
                     <span class="label-text">CMO No.*</span>
                 </label>
-                <input v-model="cmoNo" type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="cmoNo" type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter CMO No." :class="{ 'input-error': validationStatus(v$.cmoNo) }" class="input input-bordered w-full max-w-xs" v-model="v$.cmoNo.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.cmoNo) }" v-if="validationStatus(v$.cmoNo)">
+                        CMO No. is Required</span>
+                </label>
             </div>
             <div class="form-control mr-3 w-full">
                 <label class="label">
                     <span class="label-text">Series*</span>
                 </label>
-                <input v-model="seriesYear" type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="seriesYear" type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter Series Year" :class="{ 'input-error': validationStatus(v$.seriesYear) }" class="input input-bordered w-full max-w-xs" v-model="v$.seriesYear.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.seriesYear) }" v-if="validationStatus(v$.seriesYear)">
+                        Series Year is Required</span>
+                </label>    
             </div>
             <div class="flex flex-row center" style="margin-top: 20px">
                 <button class="
@@ -44,7 +59,12 @@
             <label class="label">
                 <span class="label-text">Description*</span>
             </label>
-            <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea>
+            <!-- <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea> -->
+            <textarea type="text" placeholder="Enter Description" :class="{ 'input-error': validationStatus(v$.evalDesc) }" class="textarea textarea-bordered w-full" v-model="v$.evalDesc.$model" />
+            <label class="label">
+                <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.evalDesc) }" v-if="validationStatus(v$.evalDesc)">
+                    Description is Required</span>
+            </label>
         </div>
         <!-- Body -->
         <!-- category in categories" :key="category means it accesses the cateogies array which contains every category. -->
@@ -144,9 +164,25 @@
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: center">
             <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button><button @click="saveEvalForm()" class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
+                <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button>
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
                     Create
                 </button>
+            </div>
+        </div>
+    </form>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add Evaluation Instrument
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this Evaluation Instrument?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="saveEvalForm()">Continue</label>
             </div>
         </div>
     </div>
@@ -154,6 +190,7 @@
 </template>
 
 <script>
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import useVuelidate from "@vuelidate/core";
 import {
     required
@@ -161,8 +198,10 @@ import {
 import Parse from 'parse';
 export default {
     name: "AddEvalInstView",
+    components: VueInstantLoadingSpinner,
     data() {
         return {
+            showModal1: false,
             v$: useVuelidate(),
             categories: [],
             categoryId: 0,
@@ -178,13 +217,16 @@ export default {
     },
     validations() {
         return {
-            cmo_no: {
+            programName:{
                 required,
             },
-            series: {
+            cmoNo: {
                 required,
             },
-            description: {
+            seriesYear: {
+                required,
+            },
+            evalDesc: {
                 required,
             },
             category: {
@@ -206,8 +248,43 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        validate() {
+            return this.showModal1;
+        },
+
+        modal() {
+            var has_error = 0;
+
+            if (
+                this.programName == "" ||
+                this.cmoNo == "" ||
+                this.seriesYear == "" ||
+                this.evalDesc == "" 
+            ) {
+                has_error = 1;
+            }
+
+            if (has_error < 1) {
+                // var password = "";
+                // var characters =
+                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                // var charactersLength = characters.length;
+                // for (var i = 0; i < 8; i++) {
+                //   password += characters.charAt(
+                //     Math.floor(Math.random() * charactersLength)
+                //   );
+                // }
+
+                this.showModal1 = !this.showModal1;
+            }
+        },
         async saveEvalForm() {
             console.log("save");
+
             const EvaluationForm = Parse.Object.extend("EvaluationForms");
             const newEvaluationForm = new EvaluationForm();
 
@@ -219,11 +296,13 @@ export default {
 
             try {
                 await newEvaluationForm.save();
+                
                 if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
                     document.location.reload();
                 } else {
                     this.$router.push("/evaluationins");
                 }
+
             } catch (error) {
                 alert("Error: " + error.code + " " + error.message);
             }
