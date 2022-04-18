@@ -1,5 +1,8 @@
 <template>
-<section class="min-h-screen">
+<div v-if="!applicationType" style="height: 100%">
+    <NoDataAvail names="HEIapply" />
+</div>
+<section v-else class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <form @submit.prevent="submitApplication">
             <div class="p-5">
@@ -182,6 +185,7 @@ import {
     POSITION
 } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
+import NoDataAvail from "@/components//NoDataAvail.vue";
 import {
     required,
     email
@@ -191,6 +195,8 @@ import Parse from "parse";
 const toast = useToast();
 
 export default {
+    name: 'HEIapply',
+    components: { NoDataAvail,},
     data() {
         return {
             v$: useVuelidate(),
@@ -260,7 +266,7 @@ export default {
                 (newApplication) => {
                     toast("Application Added: " + newApplication.id, {
                             type: TYPE.SUCCESS,
-                            timeout: 2000,
+                            timeout: 3000,
                             position: POSITION.TOP_RIGHT,
                         }),
                     window.location.reload()
@@ -269,7 +275,7 @@ export default {
                 (e) => {
                     toast("Application Adding Failed: " + e.message, {
                         type: TYPE.ERROR,
-                        timeout: 3000,  
+                        timeout: 5000,  
                         hideProgressBar: true,
                         position: POSITION.TOP_RIGHT,
                     });
