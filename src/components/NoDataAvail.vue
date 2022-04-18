@@ -316,7 +316,7 @@ export default {
             this.$router.push("/employees/add");
         },
         addEvalIns() {
-            this.$router.push("/employees/add");
+            this.$router.push("/evaluationins/add");
         },
         addAppType() {
             this.$router.push("/app-settings/add");
