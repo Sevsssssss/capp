@@ -258,6 +258,7 @@ export default {
             newRQAT.set("contact_num", this.contactnum);
             newRQAT.set("hei_affil", this.hei_affil);
             newRQAT.set("access_type", "RQAT");
+            newRQAT.set("hasTransactions", false);
 
             try {
                 await newRQAT.save().then(() => {
