@@ -488,12 +488,14 @@ export default {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);
+    const queryResult = await query.find();
     query.equalTo("name", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
     var flag = 0;
     for (var y = 0; y < accType.length; y++) {
+      // this.accessTypes.push({title: accType[y].get('name')})
       if (accType[y] === this.$route.path) {
         flag = 1;
       }
@@ -504,6 +506,19 @@ export default {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      for(var e = 0; e < queryResult.length; e++) {
+        this.accessTypes.push({title: queryResult[e].get('name')})
+      }
+      this.access_type = queryResult[0].get('name');
+
+      const Designations = Parse.Object.extend("Designations");
+      const queryD = new Parse.Query(Designations);
+
+      const queryResultDesig = await queryD.find();
+      for (var w = 0; w < queryResultDesig.length; w++) {
+        this.designations.push({title: queryResultDesig[w].get('name')})
+      }
+      this.emp_designation = queryResultDesig[0].get('name');
     }
   },
 };

@@ -1,5 +1,9 @@
 <template>
-  <div class="p-3">
+  <div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="AccessTypesView" />
+  </div>
+
+  <div v-else class="p-3">
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
       <div
         class="bg-brand-white shadow-md rounded-md m-3 p-4"
@@ -298,7 +302,7 @@
               </label>
             </div>
             <div v-if="homeType == '/home'" class="font-medium text-sm mt-2">
-              Privileges:
+              CHED Privileges:
               <div
                 class="
                   grid
@@ -409,6 +413,23 @@
                     style="align-self: center"
                   >
                     RQAT Account
+                  </div>
+                </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/rqat-assignment"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    RQAT Evaluation
                   </div>
                 </label>
                 <label
@@ -615,6 +636,23 @@
                     Designations
                   </div>
                 </label>
+                <label
+                  class="flex flex-row viewSubCatbool cursor-pointer p-1"
+                  style="align-items: center"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox mr-1"
+                    value="/disciplines"
+                    v-model="checkedAccessTypes"
+                  />
+                  <div
+                    class="label-text viewSubCatbool"
+                    style="align-self: center"
+                  >
+                    Disciplines
+                  </div>
+                </label>
               </div>
             </div>
 
@@ -708,6 +746,7 @@
 
 <script>
 import Parse from "parse";
+import NoDataAvail from "@/components//NoDataAvail.vue";
 // var dataNumber = 10;
 // var page = 0;
 export default {
@@ -733,7 +772,7 @@ export default {
       homeType: "",
     };
   },
-  components: {},
+  components: { NoDataAvail },
   computed: {
     searchAccessType() {
       return this.tables

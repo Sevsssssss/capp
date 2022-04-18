@@ -31,7 +31,7 @@
         class="w-full content"
         :class="
           collapsed
-            ? 'pl-[290px]  transition-width duration-300'
+            ? 'pl-[290px] transition-width duration-300'
             : 'pl-[65px] transition-width duration-300'
         "
       >
@@ -62,6 +62,7 @@
   </div>
 </template>
 
+
 <style>
 .v-sidebar-menu {
   z-index: 10;
@@ -69,11 +70,9 @@
   padding-top: 150px;
   background-color: theme("colors.brand.white");
 }
-
 .v-sidebar-menu .vsm--scroll {
   width: calc(100% + 29px);
 }
-
 .v-sidebar-menu .vsm--toggle-btn {
   width: auto;
   height: auto;
@@ -85,22 +84,18 @@
   background-color: theme("colors.brand.darkblue");
   border-radius: 5px 0 0 5px;
 }
-
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
   left: 0;
   border-radius: 0 0 0 0;
   transform: rotate(180deg);
 }
-
 .v-sidebar-menu .vsm--mobile-bg {
   background-color: theme("colors.grey.500");
 }
-
 .v-sidebar-menu.vsm_collapsed .vsm--link_active {
   background-color: theme("colors.grey.500");
   color: theme("colors.blue.500");
 }
-
 .v-sidebar-menu .vsm--link {
   /* font-family: theme("fontFamily.body"); */
   padding: 5px 10px 5px 10px;
@@ -108,34 +103,28 @@
   margin-bottom: 5px;
   color: theme("colors.grey.300");
 }
-
 .v-sidebar-menu .vsm--link:hover {
   background-color: theme("colors.grey.600");
 }
-
 .v-sidebar-menu .vsm--link_active {
   background-color: theme("colors.grey.600");
   color: theme("colors.blue.500");
   box-shadow: none !important;
 }
-
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
   background-color: transparent;
   width: 30px;
   height: 30px;
   padding-left: 4px;
 }
-
 .v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
   background-color: transparent;
   padding-left: 8px;
 }
-
 .hide {
   left: -100%;
   transition: all 0.5s ease-in-out;
 }
-
 .footer {
   vertical-align: middle;
 }
@@ -215,7 +204,7 @@ export default {
 
       const querResult = await query.find();
       var userPriv = querResult[0].get("privileges");
-      if (userPriv.find(e => e === "/application")) {
+      if (userPriv.find((e) => e === "/application")) {
         this.menu.push({
           href: "/application",
           title: "Application",
@@ -227,7 +216,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/hei")) {
+      if (userPriv.find((e) => e === "/hei")) {
         this.menu.push({
           href: "/hei",
           title: "HEIs Account",
@@ -239,7 +228,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/rqat")) {
+      if (userPriv.find((e) => e === "/rqat")) {
         this.menu.push({
           href: "/rqat",
           title: "RQAT Account",
@@ -251,7 +240,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/employees")) {
+      if (userPriv.find((e) => e === "/employees")) {
         this.menu.push({
           href: "/employees",
           title: "Employees",
@@ -263,7 +252,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/evaluationins")) {
+      if (userPriv.find((e) => e === "/evaluationins")) {
         this.menu.push({
           href: "/evaluationins",
           title: "Evaluation Ins.",
@@ -275,7 +264,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/reporting")) {
+      if (userPriv.find((e) => e === "/reporting")) {
         this.menu.push({
           href: "/reporting",
           title: "Reporting",
@@ -287,19 +276,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/disciplines")) {
-        this.menu.push({
-          href: "/disciplines",
-          title: "Disciplines",
-          icon: {
-            element: "img",
-            attributes: {
-              src: BookLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find(e => e === "/app-settings")) {
+      if (userPriv.find((e) => e === "/app-settings")) {
         this.menu.push({
           href: "/app-settings",
           title: "Application Types",
@@ -311,7 +288,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/access-settings")) {
+      if (userPriv.find((e) => e === "/access-settings")) {
         this.menu.push({
           href: "/access-settings",
           title: "Access Types",
@@ -323,7 +300,7 @@ export default {
           },
         });
       }
-      if (userPriv.find(e => e === "/designations")) {
+      if (userPriv.find((e) => e === "/designations")) {
         this.menu.push({
           href: "/designations",
           title: "Designations",
@@ -335,7 +312,18 @@ export default {
           },
         });
       }
-
+      if (userPriv.find((e) => e === "/disciplines")) {
+        this.menu.push({
+          href: "/disciplines",
+          title: "Disciplines",
+          icon: {
+            element: "img",
+            attributes: {
+              src: BookLine,
+            },
+          },
+        });
+      }
       this.updateList();
     }
   },
