@@ -95,13 +95,7 @@
                             <router-link :to="{
                     name: 'StatusApplication',
                     params: {
-                      id: table.id,
-                      HeiName: table.HeiName,
-                      type: table.type,
-                      status: table.status,
-                      dateApplied: table.dateApplied,
-                      rep: table.rep,
-                      email: table.email,
+                      appID: table.appID
                     },
                   }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
@@ -359,6 +353,7 @@ export default {
                         status: application.get("applicationStatus"),
                         program: "BSIT",
                         HeiName: hei_name,
+                        appID: application.id,
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -398,6 +393,7 @@ export default {
                         status: application.get("applicationStatus"),
                         program: "BSIT",
                         HeiName: hei_name,
+                        appID: application.id,
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -438,6 +434,7 @@ export default {
                         status: application.get("applicationStatus"),
                         program: "BSIT",
                         HeiName: hei_name,
+                        appID: application.id,
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -479,6 +476,7 @@ export default {
                         status: application.get("applicationStatus"),
                         program: "BSIT",
                         HeiName: hei_name,
+                        appID: application.id,
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -519,6 +517,7 @@ export default {
                 status: application.get("applicationStatus"),
                 program: "BSIT",
                 HeiName: hei_name,
+                appID: application.id,
             });
         }
         this.totalEntries = querResult.length;
