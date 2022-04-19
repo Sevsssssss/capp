@@ -160,14 +160,14 @@
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="atname" />
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <select class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option  v-for="discipline in disciplines" :key="discipline" >{{discipline}}</option>
+                    <select class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
+                        <option  v-for="discipline in disciplines" :key="discipline" :value="discipline.id" >{{discipline.name}}</option>
                     </select>
                 </div>
             </form>
             <div class="modal-action">
                 <label for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addProgram()">Submit</label>
             </div>
         </div>
     </div>
@@ -213,7 +213,9 @@ export default {
             search: "",
             disciplineName: "",
             programs: [],
-            disciplines: [1],
+            disciplines: [],
+            atname: "",
+            selectedDiscipline: "",
         };
     },
     components: {NoDataAvail},
@@ -245,6 +247,20 @@ export default {
                     disciplineName: this.disciplineName,
                 });
                 alert("New Discipline Added: " + newDiscipline.id)
+            } catch (error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+        },
+        addProgram(){
+            const programs = Parse.Object.extend("Programs");
+            const newProgram = new programs;
+
+            try {
+                newProgram.save({
+                    programName: this.atname,
+                    programDiscipline: this.selectedDiscipline,
+                });
+                alert("New Discipline Added: " + this.atname)
             } catch (error) {
                 alert("Error: " + error.code + " " + error.message);
             }
@@ -288,31 +304,31 @@ export default {
         },
     },
     mounted: async function () {
-        var accessTypesTable = [];
 
-        const AccessTypes = Parse.Object.extend("AccessTypes");
-        const query = new Parse.Query(AccessTypes);
+        var disciplineTable = [];
+        var disciplinesNames = [];
+
+        const disciplines = Parse.Object.extend("Disciplines");
+        const query = new Parse.Query(disciplines);
 
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
-            const accessType = querResult[i];
-            var accessPriv = "";
-            for (var x = 0; x < accessType.get("privileges").length; x++) {
-                var accessPrivIndex = accessType.get("privileges")[x];
-                if (accessPriv === "") {
-                    accessPriv = accessPriv + accessPrivIndex;
-                } else {
-                    accessPriv = accessPriv + ", " + accessPrivIndex;
-                }
-            }
-
-            accessTypesTable.push({
-                Name: accessType.get("name"),
-                Privileges: accessPriv,
+            const discipline = querResult[i];
+            
+            disciplineTable.push({
+                Name: discipline.get("disciplineName"),
+                Programs: [
+                    "BS IT",
+                    "BS CS"
+                ],
+            });
+            disciplinesNames.push({
+                id: discipline.id,
+                name: discipline.get("disciplineName"),
             });
         }
-        this.totalEntries = querResult.length;
-        this.tables = accessTypesTable;
+        this.disciplines = disciplinesNames;
+        this.tables = disciplineTable;
         // console.log(this.tables);
     },
 };
