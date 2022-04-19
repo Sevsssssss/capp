@@ -148,7 +148,21 @@
             </form>
             <div class="modal-action">
                 <label for="createDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addDiscipline()">Submit</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+            </div>
+        </div>
+    </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left" >
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add Discipline
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this discipline?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addDiscipline()">Continue</label>
             </div>
         </div>
     </div>
