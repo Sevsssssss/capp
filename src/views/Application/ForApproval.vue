@@ -14,17 +14,17 @@
                     <th scope="row" class="px-6 py-4 flex flex-col font-medium text-gray-900">
                         {{table.credential}}
                         <div class=" mt-2">
-                            File: <span class="text-blue-400">{{table.file}}</span>
+                            File: <a :href="table.file" target="_blank" class="text-blue-400">View File</a>
                         </div>
                     </th>
                     <!-- <td class="px-6 py-4 flex text-blue-400">
                         {{table.file}}
                     </td> -->
                     <td class="px-6 py-4">
-                        <input type="radio" :name="table.id" :id="table.id" :value="'approved-' + table.id" class="radio" :v-model="statusShow">
+                        <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1]">
                     </td>
                     <td class="px-6 py-4">
-                        <input type="radio" :name="table.id" :id="table.id" :value="'disapproved-' + table.id" class="radio" :v-model="statusShow">
+                        <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1]">
                     </td>
                     <td class="px-6 py-4">
                         <textarea id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..."></textarea>
@@ -33,16 +33,26 @@
             </tbody>
         </table>
     </div>
+    <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+        <div>Dismiss</div>
+    </button>
+    
+    <label @click="submitChanges()" for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+        Submit</label>
+            
 </div>
 </template>
 
 <script>
+import Parse from "parse";
 export default {
+    props: ["appID"],
+    name: "ForApproval",
     data() {
         return {
             // id: this.$route.params.id,
             show: false,
-            statusShow: null,
+            statusShow: [],
             el: document.body,
             headers: [{
                     title: "CREDENTIALS",
@@ -102,6 +112,60 @@ export default {
                 return p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
             });
         }
+    },
+    methods: {
+        async submitChanges() {
+            const applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(applications);
+            query.equalTo("objectId", this.appID);
+
+            const application = await query.first();
+
+            var requirements = [];
+
+            
+            for(var i = 0; i < this.statusShow.length; i++) {
+                requirements.push({
+                    id: application.get("requirements")[i].id,
+                    file: application.get("requirements")[i].file,
+                    status: this.statusShow[i],
+                });
+            }
+
+            application.set("requirements", requirements);
+            application.set("applicationStatus", "For Evaluation");
+            
+            application.save().then((application) => {
+                console.log("Object Updated: " + application.id);
+            })
+        },
+    },
+
+    mounted: async function () {
+        var storedApplications = [];
+        const applications = Parse.Object.extend("Applications");
+        const query = new Parse.Query(applications);
+        query.equalTo("objectId", this.appID);
+
+        const application = await query.first();
+
+        const applicationTypes = Parse.Object.extend("ApplicationTypes");
+        const appTypeQuery = new Parse.Query(applicationTypes);
+        appTypeQuery.equalTo("applicationTypeName", application.get("applicationType"));
+
+        const applicationType = await appTypeQuery.first();
+        for(var i = 0; i < application.get("requirements").length; i++){
+            this.statusShow.push("");
+            storedApplications.push({
+                id: application.get("requirements")[i].id,
+                credential: applicationType.get("applicationReqs")[i].applicationReq,
+                file: application.get("requirements")[i].file.url(),
+            });
+        }
+
+        
+        this.tables = storedApplications;
+
     },
 
 }
