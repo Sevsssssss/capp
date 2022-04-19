@@ -8,15 +8,22 @@ import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
 import HeiView from "../views/CHED/Hei/HeiView.vue";
 import UploadCSV from '../views/CHED/Hei/UploadCSV.vue'
 import AddHeiView from "../views/CHED/Hei/AddHeiView.vue";
+import EditHeiView from "../views/CHED/Hei/EditHeiView.vue"
 
 import RqatView from "../views/CHED/Rqat/RqatView.vue";
 import AddRQATView from "../views/CHED/Rqat/AddRQATView.vue";
+import EditRQATView from "../views/CHED/Rqat/EditRQATView.vue"
+
 import EmployeesView from "../views/CHED/Employees/EmployeesView.vue";
 import AddEmployeeView from "../views/CHED/Employees/AddEmployeeView.vue";
+import EditEmployeeView from "../views/CHED/Employees/EditEmployeeView.vue";
+
 import EvaluationInsView from "../views/CHED/Evaluation/EvaluationInsView.vue";
 import EvalFileView from "../views/CHED/Evaluation/EvalFileView.vue";
 import AddEvaluationInsView from "../views/CHED/Evaluation/AddEvaluationInsView.vue";
+
 import ReportingView from "../views/CHED/Reporting/ReportingView.vue";
+
 import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
@@ -130,6 +137,22 @@ const routes = [
         }
       },
       {
+        path: "/hei/edit",
+        name: "edithei",
+        component: EditHeiView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
+            return { name: '403' }
+          }
+        },
+        meta:{
+          breadcrumb: [
+            { name: 'HEI', link: '/hei' },
+            { name: 'EDIT HEI ACCOUNT'}
+          ]
+        }
+      },
+      {
         path: "/hei/upload",
         name: "uploadCSV",
         component: UploadCSV,
@@ -177,6 +200,22 @@ const routes = [
         }
       },
       {
+        path: "/rqat/edit",
+        name: "editrqat",
+        component: EditRQATView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
+            return { name: '403' }
+          }
+        },
+        meta:{
+          breadcrumb: [
+            { name: 'RQAT', link: '/rqat' },
+            { name: 'EDIT RQAT ACCOUNT'}
+          ]
+        }
+      },
+      {
         path: "/employees",
         name: "employees",
         component: EmployeesView,
@@ -204,6 +243,22 @@ const routes = [
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
             { name: 'ADD EMPLOYEE ACCOUNT'}
+          ]
+        }
+      },
+      {
+        path: "/employees/edit",
+        name: "editemployee",
+        component: EditEmployeeView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
+            return { name: '403' }
+          }
+        },
+        meta:{
+          breadcrumb: [
+            { name: 'EMPLOYEE', link: '/employees' },
+            { name: 'EDIT EMPLOYEE ACCOUNT'}
           ]
         }
       },

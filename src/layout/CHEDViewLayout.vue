@@ -34,17 +34,31 @@
             </div>
         </div>
     </div>
-    <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
-            <div class="text-brand-darkblue font-bold label-xl">
+        <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Account</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+            </div>
+        </div>
+    </div>
+    <div :class="{ 'modal-open ': validate1() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">
                 Logout Account
             </div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
+            <p class="py-2 text-sm">
                 Are you sure you want to logout?
             </p>
             <div class="modal-action">
-                <label for="my-modal-7" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">NO</label>
-                <label for="my-modal-7" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"  @click="Logout(), scrollToTop()">YES</label>
+                <label for="my-modal-7" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-7" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"  @click="Logout(), scrollToTop()">Logout</label>
             </div>
         </div>
     </div>

@@ -360,41 +360,22 @@ export default {
             // }
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
-            if (this.hei_name == "") {
+             if (
+                this.hei_name == "" ||
+                this.usernameError == "" ||
+                this.addressError == "" ||
+                this.numberError == "" ||
+                this.inst_codeError == ""
+            ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
                 has_error = 1;
-                //error_text += "HEI Name is empty\n"
-                this.hei_nameError = "HEI Name is Required";
-            }
-            if (this.username == "") {
-                has_error = 1;
-                //error_text += "Username is empty\n"
-                this.usernameError = "Username is Required";
-            }
-            if (this.address == "") {
-                has_error = 1;
-                //error_text += "Address is empty\n"
-                this.addressError = "Address is Required";
-            }
-            if (this.number == "") {
-                has_error = 1;
-                //error_text += "Contact Number is empty\n"
-                this.numberError = "Contact Number is Required";
-            }
-            if (this.inst_code == "") {
-                has_error = 1;
-                //error_text += "Institution Code is empty\n"
-                this.inst_codeError = "Institution Code is Required";
             }
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
                 this.showModal1 = !this.showModal1;
             }
         },

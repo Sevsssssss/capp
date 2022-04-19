@@ -7,10 +7,9 @@
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
                 </svg>
-                <span class="text-2xl font-semibold text-grey-100">ADD RQAT ACCOUNT</span>
+                <span class="text-2xl font-semibold text-grey-100">UPDATE EMPLOYEE ACCOUNT</span>
             </div>
             <div class="line"></div>
-
             <div class="flex flex-row">
                 <div class="form-control w-full pr-4">
                     <label class="label">
@@ -33,6 +32,7 @@
                             Firstname is Required</span>
                     </label>
                 </div>
+
                 <div class="form-control" style="width: 200px">
                     <label class="label">
                         <span class="label-text">M.I.</span>
@@ -40,11 +40,10 @@
                     <input type="text" placeholder="M.I." :class="{ 'input-error': validationStatus(v$.midinit) }" class="input input-bordered w-full" v-model="v$.midinit.$model" />
                     <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.midinit) }" v-if="validationStatus(v$.midinit)">
-                            Middle Initial is Required</span>
+                            Required</span>
                     </label>
                 </div>
             </div>
-
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Username</span>
@@ -55,7 +54,16 @@
                         Username is Required</span>
                 </label>
             </div>
-
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" placeholder="Enter email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label>
+            </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
@@ -66,71 +74,57 @@
                         Contact Number is Required</span>
                 </label>
             </div>
-
-            <div class="flex justify-end">
-                <div class="form-control w-full">
+            <div class="flex flex-row">
+                <div class="form-control w-full pr-2">
                     <label class="label">
-                        <span class="label-text">Select Affiliation:</span>
-                        <div class="text-sm font-medium text-gray-500">
-                            Add HEI Affiliation?
-                            <label for="createAffilication" href="#" class="text-blue-700 hover:underline">Create</label>
-                        </div>
+                        <span class="label-text">Designation:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" v-model="hei_affil">
-                        <option v-for="hei in heis" :key="hei">
-                            <div class="hei-name">{{ hei.title }}</div>
+                    <select class="select select-bordered w-full" v-model="v$.emp_designation.$model">
+                        <option v-for="designation in designations" :key="designation">
+                            <div class="designation">{{ designation.title }}</div>
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-control w-full pl-2">
+                    <label class="label">
+                        <span class="label-text">Access Type:</span>
+                    </label>
+
+                    <select class="select select-bordered w-full" v-model="v$.access_type.$model">
+                        <option v-for="accessType in accessTypes" :key="accessType">
+                            <div class="accessType">{{ accessType.title }}</div>
                         </option>
                     </select>
                 </div>
             </div>
-
             <div class="flex justify-end pt-8 space-x-4">
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-
                 <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
-                    Add RQAT
+                    Update Employee
                 </button>
             </div>
         </form>
     </div>
-    <input type="checkbox" id="createAffilication" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD HEI AFFILIATION</div>
-            <p class="py-2 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
-            </p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI AFFILIATION</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter affliation" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createAffilication" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
-            </div>
-        </div>
-    </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box text-left">
-            <div class="font-semibold">ADD RQAT ACCOUNT</div>
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add Employee Account
+            </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addRQAT(), scrollToTop()">
-                    Continue
-                </button>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addEmployee()">Continue</label>
             </div>
         </div>
     </div>
 </div>
-<!-- Add AFFILIATION -->
+<!-- Add Employee Type -->
 </template>
 
 <script>
@@ -143,31 +137,36 @@ import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
+    email,
     required
 } from "@vuelidate/validators";
-import emailjs from 'emailjs-com';
+// import emailjs from 'emailjs-com';
+
 const toast = useToast();
+
 export default {
-    name: "AddRQATView",
+    name: "AddEmployeeView",
     components: {
         VueInstantLoadingSpinner,
     },
-
     data() {
         return {
             showModal: false,
             showModal1: false,
             savingSuccessful: false,
             v$: useVuelidate(),
-            heis: [{
-                title: "None",
-            }, ],
+            accessTypes: [],
+
+            designations: [],
+
             lastname: "",
             firstname: "",
             midinit: "",
+            email: "",
             username: "",
             contactnum: "",
-            hei_affil: "None",
+            emp_designation: "",
+            access_type: "",
         };
     },
     validations() {
@@ -187,46 +186,20 @@ export default {
             contactnum: {
                 required,
             },
-            hei_affil: {
+            email: {
+                email,
+                required,
+            },
+            emp_designation: {
+                required,
+            },
+            access_type: {
                 required,
             },
         };
     },
+
     methods: {
-        sendEmail() {
-            var emailParams = {
-                message: "Your account has been created. \n Your account username is " +
-                    this.username +
-                    "\n Your temporary password is " +
-                    this.password,
-                email: this.email,
-            };
-            try {
-                //alert(this.email)
-                emailjs
-                    .send(
-                        "service_rax86wc",
-                        "template_nyqa4k6",
-                        emailParams,
-                        "wXbhKrnQCwo8bc25m"
-                    )
-                    .then(() => {
-                        toast("Email sent!", {
-                            type: TYPE.INFO,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    });
-            } catch (error) {
-                toast("Error:" + error.code + "" + error.message, {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
-        },
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -238,41 +211,52 @@ export default {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
-
         validate() {
             return this.showModal1;
         },
+        async addEmployee() {
+            const newEmployee = new Parse.User();
 
-        async addRQAT() {
-            this.$refs.Spinner.show();
+            var employeeName = {
+                lastname: this.lastname,
+                firstname: this.firstname,
+                middleinitial: this.midinit,
+            };
+
+            newEmployee.set("name", employeeName);
+            newEmployee.set("username", this.username);
+            newEmployee.set("password", "password");
+            newEmployee.set("email", this.email);
+            newEmployee.set("contact_num", this.contactnum);
+            newEmployee.set("access_type", this.access_type);
+            newEmployee.set("designation", this.emp_designation);
+            newEmployee.set("user_type", "employee");
+            newEmployee.set("hasTransactions", false);
+
             try {
-                const newRQAT = new Parse.User();
-                var rqatName = {
-                    lastname: this.lastname,
-                    firstname: this.firstname,
-                    middleinitial: this.midinit,
-                };
-                newRQAT.set("name", rqatName);
-                newRQAT.set("username", this.username);
-                newRQAT.set("password", "password");
-                newRQAT.set("contact_num", this.contactnum);
-                newRQAT.set("hei_affil", this.hei_affil);
-                newRQAT.set("access_type", "RQAT");
-                newRQAT.set("hasTransactions", false);
-
-                await newRQAT.save()
-                    .then(() => {
-                        toast("RQAT Account Added!", {
-                                type: TYPE.SUCCESS,
-                                timeout: 3000,
-                                position: POSITION.TOP_RIGHT,
-                            }),
-                            // this.sendEmail()
-                            setTimeout(() => this.$router.push({
-                                path: "/rqat"
-                            }), 2000);
+                await newEmployee.save().then(() => {
+                    toast("Employee Account Added!", {
+                        type: TYPE.SUCCESS,
+                        timeout: 2000,
+                        position: POSITION.TOP_RIGHT,
                     });
-
+                    this.sendEmail().then(() => {
+                        setTimeout(
+                            () =>
+                            this.$router.push({
+                                path: "/hei",
+                            }),
+                            1000
+                        );
+                    });
+                });
+                this.$refs.Spinner.show();
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    2000
+                );
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -282,65 +266,33 @@ export default {
                 });
                 console.log(error.message);
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
         },
         modal() {
             var has_error = 0;
-
             if (
                 this.lastname == "" ||
                 this.firstname == "" ||
                 this.midinit == "" ||
                 this.username == "" ||
-                this.contactnum == ""
+                this.contactnum == "" ||
+                this.email == null
             ) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
                 has_error = 1;
             }
 
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                 // var charactersLength = characters.length;
                 // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
-
+                //     password += characters.charAt(
+                //         Math.floor(Math.random() * charactersLength)
+                //     );
+                //}
                 this.showModal1 = !this.showModal1;
             }
         },
-    },
-
-    mounted: async function () {
-        var heis = [];
-
-        const query = new Parse.Query(Parse.User);
-        query.equalTo("access_type", "HEI");
-
-        const querResult = await query.find();
-        heis.push({
-            title: "None",
-        });
-        for (var i = 0; i < querResult.length; i++) {
-            const hei = querResult[i];
-            heis.push({
-                title: hei.get("hei_name"),
-            });
-        }
-        this.heis = heis;
     },
 };
 </script>
