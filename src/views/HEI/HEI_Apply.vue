@@ -1,5 +1,5 @@
 <template>
-<section class="min-h-screen">
+<section  class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <form @submit.prevent="submitApplication">
             <div class="p-5">
@@ -34,7 +34,7 @@
                                 <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64 uppercase text-sm font-semibold">
                                     <option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
                                         {{ i.appType.get("applicationTypeName") }}
-                                    </option>
+                                    </option> 
                                 </select>
                             </div>
                         </div>
@@ -182,6 +182,7 @@ import {
     POSITION
 } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
+// import NoDataAvail from "@/components//NoDataAvail.vue";
 import {
     required,
     email
@@ -191,6 +192,8 @@ import Parse from "parse";
 const toast = useToast();
 
 export default {
+    name: 'HEIapply',
+    // components: { NoDataAvail,},
     data() {
         return {
             v$: useVuelidate(),
@@ -260,7 +263,7 @@ export default {
                 (newApplication) => {
                     toast("Application Added: " + newApplication.id, {
                             type: TYPE.SUCCESS,
-                            timeout: 2000,
+                            timeout: 3000,
                             position: POSITION.TOP_RIGHT,
                         }),
                     window.location.reload()
@@ -269,7 +272,7 @@ export default {
                 (e) => {
                     toast("Application Adding Failed: " + e.message, {
                         type: TYPE.ERROR,
-                        timeout: 3000,  
+                        timeout: 5000,  
                         hideProgressBar: true,
                         position: POSITION.TOP_RIGHT,
                     });

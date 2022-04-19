@@ -292,19 +292,20 @@ export default {
             window.scrollTo(0, 0);
         },
         async addHEI() {
-            this.password = "password";
-            const newHEI = new Parse.User();
-            newHEI.set("hei_name", this.hei_name);
-            newHEI.set("username", this.username);
-            newHEI.set("password", "password");
-            newHEI.set("email", this.email);
-            newHEI.set("address", this.address);
-            newHEI.set("number", this.number);
-            newHEI.set("inst_code", this.inst_code);
-            newHEI.set("hei_type", this.hei_type);
-            newHEI.set("access_type", "HEI");
-            newHEI.set("hasTransactions", false);
+            this.$refs.Spinner.show();
             try {
+                this.password = "password";
+                const newHEI = new Parse.User();
+                newHEI.set("hei_name", this.hei_name);
+                newHEI.set("username", this.username);
+                newHEI.set("password", "password");
+                newHEI.set("email", this.email);
+                newHEI.set("address", this.address);
+                newHEI.set("number", this.number);
+                newHEI.set("inst_code", this.inst_code);
+                newHEI.set("hei_type", this.hei_type);
+                newHEI.set("access_type", "HEI");
+                newHEI.set("hasTransactions", false);
                 // Show the spinner first
                 // this.$refs.Spinner.show();
                 // setTimeout(
@@ -320,30 +321,18 @@ export default {
                 // setTimeout(() => this.$router.push({
                 //     path: "/hei"
                 // }), 3000);
-
-                await newHEI.save().then(() => {
-                    toast("HEI Account Added!", {
-                        type: TYPE.SUCCESS,
-                        timeout: 2000,
-                        position: POSITION.TOP_RIGHT,
-                    });
-                    this.sendEmail().then(() => {
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/hei",
+                await newHEI.save()
+                    .then(() => {
+                        toast("HEI Account Added!", {
+                                type: TYPE.SUCCESS,
+                                timeout: 3000,
+                                position: POSITION.TOP_RIGHT,
                             }),
-                            1000
-                        );
+                            // this.sendEmail()
+                            setTimeout(() => this.$router.push({
+                                path: "/hei"
+                            }), 2000);
                     });
-                });
-                this.$refs.Spinner.show();
-                setTimeout(
-                    function () {
-                        this.$refs.Spinner.hide();
-                    }.bind(this),
-                    2000
-                );
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -355,6 +344,12 @@ export default {
                 // alert("Error: " + error.code + " " + error.message);
                 //document.location.reload();
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         modal() {
             // this.v$.$validate();

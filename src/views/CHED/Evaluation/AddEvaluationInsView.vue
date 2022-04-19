@@ -1,55 +1,68 @@
 <template>
 <!--Header-->
-<div class="" style="margin: 11px">
-
-    {{categories}}
-    <br>
+<div class="m-3">
+    <!-- {{ categories }}
+    <br/>
     <div v-for="category in categories" :key="category">
-        {{category.id}}
-        {{category.subcategory.length}}
-    </div>
-    <div class="overflow-x-auto shadow-lg rounded-lg p-5" style="margin: 11px">
-        <div class="flex flex-row" style="justify-content: space-between">
-            <div class="form-control mr-3 w-full">
+        {{ category.id }}
+        {{ category.subcategory.length }}
+    </div> -->
+    <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full">
+        <div class="flex w-full items-end justify-between">
+            <div class="form-control w-full pr-3">
                 <label class="label">
                     <span class="label-text">Program*</span>
                 </label>
-                <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter Program" :class="{ 'input-error': validationStatus(v$.programName) }" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.programName) }" v-if="validationStatus(v$.programName)">
+                        Program is Required</span>
+                </label>
             </div>
-            <div class="form-control mr-3 w-full">
+            <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">CMO No.*</span>
                 </label>
-                <input v-model="cmoNo" type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="cmoNo" type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter CMO No." :class="{ 'input-error': validationStatus(v$.cmoNo) }" class="input input-bordered w-full max-w-xs" v-model="v$.cmoNo.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.cmoNo) }" v-if="validationStatus(v$.cmoNo)">
+                        CMO No. is Required</span>
+                </label>
             </div>
-            <div class="form-control mr-3 w-full">
+            <div class="form-control ml-3 w-full">
                 <label class="label">
                     <span class="label-text">Series*</span>
                 </label>
-                <input v-model="seriesYear" type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="seriesYear" type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter Series Year" :class="{ 'input-error': validationStatus(v$.seriesYear) }" class="input input-bordered w-full max-w-xs" v-model="v$.seriesYear.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.seriesYear) }" v-if="validationStatus(v$.seriesYear)">
+                        Series Year is Required</span>
+                </label>
             </div>
-            <div class="flex flex-row center" style="margin-top: 20px">
-                <button class="
-              btn btn-margin
-              bg-brand-darkblue
-              hover:bg-brand-blue
-              border-none
-              p-2
-            " @click="addCategory()">
+            <div class="pl-5 w-auto">
+                <button class="btn bg-brand-darkblue hover:bg-brand-blue  border-none" @click="addCategory()">
                     Add Category
                 </button>
             </div>
         </div>
-        <div class="form-control mr-3 w-full">
+        <div class="form-control w-full pt-2">
             <label class="label">
                 <span class="label-text">Description*</span>
             </label>
-            <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea>
+            <!-- <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea> -->
+            <textarea type="text" placeholder="Enter Description" :class="{ 'input-error': validationStatus(v$.evalDesc) }" class="textarea textarea-bordered w-full" v-model="v$.evalDesc.$model" />
+            <label class="label">
+                <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.evalDesc) }" v-if="validationStatus(v$.evalDesc)">
+                    Description is Required</span>
+            </label>
         </div>
         <!-- Body -->
         <!-- category in categories" :key="category means it accesses the cateogies array which contains every category. -->
         <div v-for="category in categories" :key="category" class="overflow-x-auto rounded-lg" id="add-cat">
-            <div class="flex flex-row px-2" style="justify-content: space-between">
+            <div class="flex flex-row justify-between items-end">
                 <!-- <button v-if="category.subcategory.length == 0 || viewSubCat() == false" style="align-self: flex-end; margin-bottom: 10px;" @click="showSubCat()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="35" height="35">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -60,83 +73,81 @@
                         <path fill="none" d="M0 0h24v24H0z" />
                         <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" /></svg>
                 </button> -->
-                <div class="flex flex-row" style="justify-content: space-between; flex: 1 1 auto;">
-                    <div class="flex flex-row" style="flex: 1 1 auto;">
-                        <div class="form-control w-full mr-3">
-                            <label class="label">
-                                <span class="label-text">Category*</span>
-                            </label>
-                            <input v-model="category.Category" type="text" placeholder="Enter Criteria Name" class="input input-bordered w-full " />
-                        </div>
-                        <div class="form-control w-full mr-5">
-                            <label class="label">
-                                <span class="label-text">Description</span>
-                            </label>
-                            <textarea v-model="category.Desc" class="textarea textarea-bordered" placeholder="Enter Description" style="height: 48px; width: 100%"></textarea>
-                        </div>
+                <div class="flex flex-row w-full pt-2">
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Category*</span>
+                        </label>
+                        <input v-model="category.Category" type="text" placeholder="Enter Criteria Name" class="input input-bordered w-full" />
                     </div>
-                </div>
-                <div style="align-self:center; margin-top: 35px">
-                    <button data-tip="Remove Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeCategory(category.id)">
+                    <div class="form-control w-full pl-4">
+                        <label class="label">
+                            <span class="label-text">Description</span>
+                        </label>
+                        <textarea v-model="category.Desc" class="textarea textarea-bordered" placeholder="Enter Description" style="height: 48px; width: 100%"></textarea>
+        </div>
+</div>
+<div class="pl-4">
+    <button data-tip="Remove Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeCategory(category.id)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+        </svg>
+    </button>
+</div>
+</div>
+<div class="flex flex-row pt-10 justify-between items-center">
+    <div class="font-semibold">SUB-CATEGORY</div>
+    <div class="">
+        <button class="btn bg-brand-darkblue hover:bg-brand-blue border-none" @click="addSubCategory(category.subcategory)">
+            Add Sub-Category
+        </button>
+    </div>
+</div>
+<!-- v-for="subcategory in category.subcategory" :key="subcategory" means it accesses each subcategory in the subcategory array inside each category in the categories array -->
+<div v-for="subcategory in category.subcategory" :key="subcategory" class="overflow-x-auto rounded-lg" id="add-subcat">
+    <div v-if="viewSubCat()">
+        <div class="">
+            <label class="label"><span class="label-text">Sub Category</span></label>
+            <div class="form-control w-full flex flex-row" style="justify-content: space-between">
+                <input v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="input input-bordered w-full mr-4 flex" />
+                <div class="flex flex-row justify-center items-center">
+                    <!-- Delete Sub-Category -->
+                    <button data-tip="Remove Sub-Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeSubCategory(subcategory.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" /></svg>
+                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                        </svg>
+
                     </button>
                 </div>
             </div>
-            <div class="flex flex-row pt-2 center" style="justify-content: space-between">
-                <div class="px-7">
-                    SUB-CATEGORY
-                </div>
-                <div class="mt-5" style="text-align: right;">
-                    <button class="btn mx-2 bg-brand-darkblue hover:bg-brand-blue border-none " @click="addSubCategory(category.subcategory)">
-                        Add Sub-Category
-                    </button>
-                </div>
+        </div>
+        <div class="flex flex-row pt-5 justify-between">
+            <div class="label">ITEMS:</div>
+            <div>
+                <button data-tip="Add Item" @click="addItem(subcategory.items)" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-brand-blue border-none mr-2">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                    </svg>
+                </button>
+                <button data-tip="Remove Item" @click="pop(subcategory.items)" class="btn tooltip tooltip-left btn-outline hover:bg-brand-red/60">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H5V11H19V13Z" />
+                    </svg>
+                </button>
             </div>
-            <!-- v-for="subcategory in category.subcategory" :key="subcategory" means it accesses each subcategory in the subcategory array inside each category in the categories array -->
-            <div v-for="subcategory in category.subcategory" :key="subcategory" class="overflow-x-auto rounded-lg" id="add-subcat">
-                <div v-if="viewSubCat()">
-                    <div class="px-8">
-                        <label class="label"><span class="label-text">Sub Category</span></label>
-                        <div class="form-control w-full mr-3 flex flex-row" style="justify-content: space-between;">
+        </div>
 
-                            <input v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="input input-bordered w-full mr-5 " style="flex: 1 1 auto;" />
-                            <div class="flex flex-row justify-center items-center space-x-4">
-
-                                <button data-tip="Remove Sub-Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeSubCategory(subcategory.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" /></svg>
-                                    <!-- Delete Sub-Category -->
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-row pt-5 px-10 center" style="justify-content: space-between">
-                        <div class="">
-                            ITEMS:
-                        </div>
-                        <div>
-                            <button data-tip="Add Item" @click="addItem(subcategory.items)" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none mr-2">
-                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                                </svg>
-                            </button>
-                            <button data-tip="Remove Item" @click="pop(subcategory.items)" class="btn tooltip tooltip-left btn-outline  hover:bg-brand-red/60">
-                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,13H5V11H19V13Z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- v-for="item in subcategory.items" :key="item" means it accesses the items in the items array inside the subcategory array which is inside the categories array. -->
-                    <div v-for="item in subcategory.items" :key="item" class="my-3">
-                        <div class="flex flex-row px-10">
-                            <label class="label"><span class="label-text">Item {{item.id}}</span></label>
-                            <input v-model="item.Item" type="text" placeholder="Enter Item Name" class="input input-bordered w-full " style="flex: 1 1 auto;" />
-                        </div>
+        <!-- v-for="item in subcategory.items" :key="item" means it accesses the items in the items array inside the subcategory array which is inside the categories array. -->
+        <div v-for="item in subcategory.items" :key="item" class="my-4">
+            <div class="flex flex-row items-start">
+                <label class="label flex space-x-1 text-sm font-semibold pr-2">
+                    <span>Item:</span>
+                    <span>{{ item.id }}</span>
+                </label>
+                <textarea v-model="item.Item" type="text" placeholder="Enter Item Name" class="textarea textarea-bordered w-full flex" />
+                </div>
                     </div>
                 </div>
             </div>
@@ -144,9 +155,25 @@
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: center">
             <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-outline" >Cancel</button><button @click="saveEvalForm()" class="btn btn-margin submit bg-brand-darkblue hover:bg-brand-blue">
+                <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button>
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
                     Create
                 </button>
+            </div>
+        </div>
+    </form>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add Evaluation Instrument
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this Evaluation Instrument?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="saveEvalForm()">Continue</label>
             </div>
         </div>
     </div>
@@ -154,15 +181,26 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import useVuelidate from "@vuelidate/core";
 import {
     required
 } from "@vuelidate/validators";
-import Parse from 'parse';
+import Parse from "parse";
+
+const toast = useToast();
+
 export default {
     name: "AddEvalInstView",
+    components: VueInstantLoadingSpinner,
     data() {
         return {
+            showModal1: false,
             v$: useVuelidate(),
             categories: [],
             categoryId: 0,
@@ -173,18 +211,20 @@ export default {
             cmoNo: "",
             seriesYear: "",
             evalDesc: "",
-
         };
     },
     validations() {
         return {
-            cmo_no: {
+            programName: {
                 required,
             },
-            series: {
+            cmoNo: {
                 required,
             },
-            description: {
+            seriesYear: {
+                required,
+            },
+            evalDesc: {
                 required,
             },
             category: {
@@ -206,26 +246,91 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        validate() {
+            return this.showModal1;
+        },
+
+        modal() {
+            var has_error = 0;
+
+            if (
+                this.programName == "" ||
+                this.cmoNo == "" ||
+                this.seriesYear == "" ||
+                this.evalDesc == ""
+            ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+
+            if (has_error < 1) {
+                // var password = "";
+                // var characters =
+                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                // var charactersLength = characters.length;
+                // for (var i = 0; i < 8; i++) {
+                //   password += characters.charAt(
+                //     Math.floor(Math.random() * charactersLength)
+                //   );
+                // }
+                this.showModal1 = !this.showModal1;
+            }
+        },
         async saveEvalForm() {
-            console.log("save");
-            const EvaluationForm = Parse.Object.extend("EvaluationForms");
-            const newEvaluationForm = new EvaluationForm();
-
-            newEvaluationForm.set("evaluationFormName", this.programName.toUpperCase());
-            newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
-            newEvaluationForm.set("evaluationFormSeries", this.seriesYear.toUpperCase());
-            newEvaluationForm.set("evaluationFormDesc", this.evalDesc.toUpperCase());
-            newEvaluationForm.set("evaluationFormReqs", this.categories);
-
             try {
+                console.log("save");
+
+                const EvaluationForm = Parse.Object.extend("EvaluationForms");
+                const newEvaluationForm = new EvaluationForm();
+
+                newEvaluationForm.set(
+                    "evaluationFormName",
+                    this.programName.toUpperCase()
+                );
+                newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
+                newEvaluationForm.set(
+                    "evaluationFormSeries",
+                    this.seriesYear.toUpperCase()
+                );
+                newEvaluationForm.set("evaluationFormDesc", this.evalDesc.toUpperCase());
+                newEvaluationForm.set("evaluationFormReqs", this.categories);
+
+                // await newEvaluationForm.save();
+                // console.log(newEvaluationForm.save())
+
                 await newEvaluationForm.save();
-                if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
-                    document.location.reload();
-                } else {
-                    this.$router.push("/evaluationins");
-                }
+                toast("Evaluation Added", {
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    }),
+                    // window.location.reload()
+                    setTimeout(() => {
+                        this.$router.push("/evaluationins")
+                    }, 2000);
+                // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
+                //     document.location.reload();
+                // } else {
+                //     this.$router.push("/evaluationins");
+                // }
             } catch (error) {
-                alert("Error: " + error.code + " " + error.message);
+                // "Please fill out the required information"
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error.message)
             }
         },
         //This add a category
@@ -244,7 +349,7 @@ export default {
         removeCategory(id) {
             console.log(this.categories.length);
             for (var i = 0; i < this.categories.length; i++) {
-                console.log(i, id, );
+                console.log(i, id);
                 console.log(this.categories[i]);
                 if (this.categories[i].id === id) {
                     console.log("true");
@@ -265,13 +370,15 @@ export default {
             thisCategory.push({
                 id: this.subcategoryId,
                 items: [],
-            })
+            });
         },
         //This removes a subcategory inside of a category
         removeSubCategory(id) {
             for (var i = 0; i < this.categories.length; i++) {
-                for (var subCat = 0; subCat < this.categories[i].subcategory.length; subCat++) {
-                    console.log(this.categories[i].subcategory[subCat].id)
+                for (
+                    var subCat = 0; subCat < this.categories[i].subcategory.length; subCat++
+                ) {
+                    console.log(this.categories[i].subcategory[subCat].id);
                     if (this.categories[i].subcategory[subCat].id === id) {
                         this.categories[i].subcategory.splice(subCat, 1);
                         subCat--;
@@ -286,7 +393,7 @@ export default {
             thisCategory.push({
                 id: itemId,
                 //Add Item Here
-            })
+            });
         },
         //This removes an Item from the Items Array of a Subcategory
         pop(thisCategory) {
