@@ -294,7 +294,7 @@ export default {
                 newDiscipline.save({
                     disciplineName: this.disciplineName,
                 });
-                alert("New Discipline Added: " + newDiscipline.id)
+                alert("New Discipline Added: " + this.disciplineName)
             } catch (error) {
                 alert("Error: " + error.code + " " + error.message);
             }
