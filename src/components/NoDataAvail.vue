@@ -267,7 +267,8 @@ export default {
             atname: "",
             checkedAccessTypes: [],
             homeType: "",
-        };
+            disciplineName: "",
+        }
     },
     methods: {
         addHei() {
@@ -330,7 +331,7 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = accessTypesTable;
-            // console.log(this.tables);
+             console.log(this.tables);
         },
     },
 };

@@ -1,12 +1,12 @@
 <template>
 <!--Header-->
 <div class="m-3">
-    <!-- {{ categories }}
-    <br/>
+    {{ categories }}
+    <br />
     <div v-for="category in categories" :key="category">
         {{ category.id }}
         {{ category.subcategory.length }}
-    </div> -->
+    </div>
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full">
         <div class="flex w-full items-end justify-between">
             <div class="form-control w-full pr-3">
@@ -256,12 +256,76 @@ export default {
 
         modal() {
             var has_error = 0;
+            var subcat = 0;
+            var items = 0;
+
+            for (var i = 0; i < this.categories.length; i++) {
+                console.log(this.categories[i].id);
+                console.log("SUBCAT:" + this.categories[i].subcategory.length);
+                if (this.categories[i].subcategory.length == 0) {
+                    subcat = 0;
+                } else {
+                    for (var x = 0; x < this.categories[i].subcategory.length; x++) {
+                        console.log("ITEMS:" + this.categories[i].subcategory[x].items.length);
+                        console.log("name:" + this.categories[i].subcategory[x].Subcategory);
+                        if (this.categories[i].subcategory[x].Subcategory != null) {
+
+                            subcat = 0;
+                            console.log("EYY");
+                            console.log(this.categories[i].subcategory[x].Subcategory.length);
+                            if (this.categories[i].subcategory[x].items.length == 0) {
+                                items = 0;
+                            } else {
+                                for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
+                                    console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
+                                    if (this.categories[i].subcategory[x].items[y].Item != null) {
+                                        console.log("EYYS");
+                                        items = 0;
+                                    } else {
+                                        console.log("EdsYY");
+                                        items = 1;
+                                    }
+                                    if (this.categories[i].subcategory[x].items[y].Item.length == 0) {
+                                        console.log("EYdasdasY");
+                                        items = 1;
+                                    }
+                                }
+                                // items = 1;
+                                // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
+                            }
+                        } else {
+                            subcat = 1;
+                            console.log("HELL")
+
+                        }
+                        if (this.categories[i].subcategory[x].Subcategory.length == 0) {
+                            subcat = 1;
+                            console.log("dEYY");
+                        }
+
+                        // if (this.categories[i].subcategory[x].items.length == 0) {
+                        //     items = 0;
+                        // } else {
+                        // for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
+                        //     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
+                        //     if (this.categories[i].subcategory[x].Subcategory != null) {
+                        //         items = 0;
+                        //     } else {
+                        //         items = 1;
+                        //     }
+                        // }
+                        // }
+                    }
+                }
+            }
 
             if (
                 this.programName == "" ||
                 this.cmoNo == "" ||
                 this.seriesYear == "" ||
-                this.evalDesc == ""
+                this.evalDesc == "" ||
+                subcat == 1 ||
+                items == 1
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -370,6 +434,7 @@ export default {
             thisCategory.push({
                 id: this.subcategoryId,
                 items: [],
+                Subcategory: "",
             });
         },
         //This removes a subcategory inside of a category
@@ -392,6 +457,7 @@ export default {
             var itemId = thisCategory.length + 1;
             thisCategory.push({
                 id: itemId,
+                Item: "",
                 //Add Item Here
             });
         },
