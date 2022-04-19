@@ -70,7 +70,7 @@
         </div>
     </form>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
+        <div class="modal-box relative rounded-md text-left">
             <div class="text-brand-darkblue font-bold label-xl">
                 Add RQAT Account
             </div>
@@ -79,7 +79,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
             </div>
         </div>
     </div>
