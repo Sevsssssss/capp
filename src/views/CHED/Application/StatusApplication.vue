@@ -37,19 +37,19 @@
             </div>
         </div>
 
-        <div v-if="status === 'FOR APPROVAL'">
+        <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
             <ForApproval></ForApproval>
         </div>
-        <div v-else-if="status === 'FOR REVISION'">
+        <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
             <ForRevision></ForRevision>
         </div>
-        <div v-else-if="status === 'FOR EVALUATION'">
+        <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
             <ForEvaluation></ForEvaluation>
         </div>
-        <div v-else-if="status === 'FOR ISSUANCE'">
+        <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
             <ForIssuance></ForIssuance>
         </div>
-        <div v-else-if="status === 'COMPLETED'">
+        <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>
         </div>
         <div class="space-x-6 py-8 px-3 flex justify-center">
