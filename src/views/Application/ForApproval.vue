@@ -33,42 +33,43 @@
             </tbody>
         </table>
     </div>
-    <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
-        <div>Dismiss</div>
-    </button>
-    
-    <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-        Submit</label>
+    <div class="flex flex-row center pt-10">
+        <div class="pr-5">
+            <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+                <div>Dismiss</div>
+            </button>
+        </div>
+
+        <div>
+            <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Submit</label>
+        </div>
+    </div>
 
     <input type="checkbox" id="for-approval" class="modal-toggle" />
-        <div class="modal">
-            <div class="modal-box relative rounded-md text-left">
-                <div class="font-semibold text-md">SELECT SUPERVISOR</div>
-                <p class="py-2 text-sm">
-                    You've been selected for a chance to get one year of subscription to
-                    use Wikipedia for free!
-                </p>
-                <!-- Filter -->
-                <div class="flex flex-row py-6 justify-start items-start">
-                    <!-- sort -->
-                    <div class="month-sort flex flex-row border rounded-md w-full">
-                        <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" :v-model="selectedRQAT">
-                            <option disabled selected>Select RQAT</option>
-                            <option>Joshua Sarmiento</option>
-                            <option>Sev Sarate</option>
-                            <option>Duane</option>
-                            <option>Jeff</option>
-                            <option>Saq</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                    <label @click="submitChanges" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">SELECT SUPERVISOR</div>
+            <p class="py-2 text-sm">
+                You've been selected for a chance to get one year of subscription to
+                use Wikipedia for free!
+            </p>
+            <!-- Filter -->
+            <div class="flex flex-row py-6 justify-start items-start">
+                <!-- sort -->
+                <div class="month-sort flex flex-row border rounded-md w-full">
+                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" :v-model="selectedRQAT">
+                        <option v-for="rqat in rqats" :key="rqat">{{rqat.name}}</option>
+                    </select>
                 </div>
             </div>
+            <div class="modal-action">
+                <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label @click="submitChanges" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+            </div>
         </div>
-            
+    </div>
+
 </div>
 </template>
 
@@ -77,13 +78,17 @@ import Parse from "parse";
 export default {
     props: ["appID"],
     name: "ForApproval",
-    
+
     data() {
         return {
             // id: this.$route.params.id,
             show: false,
             statusShow: [],
             comment: [],
+            rqats: [{
+                id: 1,
+                name: "Maging Sino ka Man",
+            }, ],
             selectedRQAT: "",
             el: document.body,
             headers: [{
@@ -155,8 +160,7 @@ export default {
 
             var requirements = [];
 
-            
-            for(var i = 0; i < this.statusShow.length; i++) {
+            for (var i = 0; i < this.statusShow.length; i++) {
                 console.log(this.comment[i])
                 requirements.push({
                     id: application.get("requirements")[i].id,
@@ -169,7 +173,7 @@ export default {
             application.set("requirements", requirements);
             application.set("applicationStatus", "For Evaluation");
             application.set("selectedRQAT", this.selectedRQAT);
-            
+
             application.save().then((application) => {
                 console.log("Object Updated: " + application.id);
             })
@@ -192,7 +196,7 @@ export default {
         appTypeQuery.equalTo("applicationTypeName", application.get("applicationType"));
 
         const applicationType = await appTypeQuery.first();
-        for(var i = 0; i < application.get("requirements").length; i++){
+        for (var i = 0; i < application.get("requirements").length; i++) {
             this.statusShow.push("");
             this.comment.push("");
             storedApplications.push({
@@ -202,7 +206,6 @@ export default {
             });
         }
 
-        
         this.tables = storedApplications;
 
     },
