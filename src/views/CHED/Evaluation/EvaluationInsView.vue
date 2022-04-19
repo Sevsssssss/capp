@@ -53,7 +53,7 @@
                             {{ table.description }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a @click="viewEvalIns" href="#" class="font-medium text-blue-600">Edit</a>
+                            <a href="#" @click="viewEvalIns" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                         </td>
                     </tr>
                 </tbody>

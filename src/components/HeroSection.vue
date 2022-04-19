@@ -1,7 +1,7 @@
 <template>
-<div class="text-brand-white">
+<div class="">
     <section class="h-screen herobg bg-cover bg-fixed bg-center">
-        <div class="flex xxxl:flex-row xxl:flex-row xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 xxs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xxs:pl-5 md:pl-4 xxs:items-center xs:items-center md:items-center">
+        <div class="text-brand-white flex xxxl:flex-row xxl:flex-row xl:flex-row xs:flex-col space-x-10 sm:space-x-2 xs:space-x-0 xxs:space-x-0 pl-10 sm:pl-10 xs:pl-0 xxs:pl-5 md:pl-4 xxs:items-center xs:items-center md:items-center">
             <!-- Section for Logo and tile -->
             <div class="flex-col space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14 xxs:space-y-12 xl:p-20 xxxl:p-60 md:p-20 sm:p-10 xs:p-10 xxs:p-10">
                 <!-- LOGO -->
@@ -91,18 +91,17 @@
                 </form>
             </div>
         </div>
-
-        <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-            <div class="modal-box text-left">
-                <div class="font-semibold text-grey-100">
+        <div :class="{ 'modal-open ': validate() }" class="modal">
+            <div class="modal-box relative rounded-md text-left bg-black-100">
+                <div class="font-semibold text-md">
                     INVALID CREDENTIALS
                 </div>
-                <p class="text-sm xxs:leading-tight text-grey-200">
+                <p class="py-2 text-sm">
                     Please ensure to provide the correct account credentials. Should you
                     need assistance. Please contact CHED at <span class="text-blue-500">chedrov@chedrov.gov.ph</span>
                 </p>
                 <div class="modal-action">
-                    <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800">Ok</label>
+                    <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Continue</label>
                 </div>
             </div>
         </div>
