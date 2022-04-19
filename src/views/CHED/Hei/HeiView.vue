@@ -109,7 +109,6 @@
                         <td class="px-6 py-4">
                             {{ table.email }}
                         </td>
-<<<<<<< HEAD
                         <td class="px-6 py-4">
                             <div class="flex space-x-4 items-end justify-end">
                                 <a href="#" @click="$router.replace({path: '/hei/edit'})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -121,16 +120,6 @@
                                     </label>
                                 </div>
                             </div>
-=======
-                        <td class="flex flex-row center px-6 py-4" style="align-items: center;">
-
-                            <button @click="goToEditHeiView(table.id)" class="font-medium text-blue-600 hover:underline mr-5">Edit</button>
-                            <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
-                            </label>
->>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
                         </td>
                     </tr>
                 </tbody>
@@ -332,19 +321,6 @@ export default {
         },
     },
     methods: {
-<<<<<<< HEAD
-=======
-
-        goToEditHeiView(heiID) {
-            this.$router.push({
-                name: "EditHeiView",
-                query: {
-                    id: heiID
-                },
-            });
-        },
-
->>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
         selectAcc(instNum) {
             this.currentDelAcc = instNum;
         },
