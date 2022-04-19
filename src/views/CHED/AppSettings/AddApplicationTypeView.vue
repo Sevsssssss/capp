@@ -10,10 +10,10 @@
                     </label>
                     <input type="text" placeholder="Enter Application Type Name" :class="{ 'input-error': validationStatus(v$.applicationTypeName) }" class="input input-bordered w-full max-w-xs" v-model="v$.applicationTypeName.$model" />
                     <!-- <label class="label"></label> -->
-                    <label class="label">
+                    <!--<label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationTypeName) }" v-if="validationStatus(v$.applicationTypeName)">
                             Application Type Name is Required</span>
-                    </label>
+                    </label>-->
                 </div>
                 <div :class="{'hide' : !isZero() }"  class="flex flex-row justify-center items-center space-x-4">
                     <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
@@ -87,11 +87,19 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
 import {
     required
 } from "@vuelidate/validators";
 import Parse from 'parse';
+
+const toast = useToast();
+
 export default {
     name: "AddEvalInstView",
     data() {
@@ -131,6 +139,12 @@ export default {
         modal(){
             var has_error = 0;
             if (this.applicationTypeName == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
                 has_error = 1;
             }
             if (has_error < 1) {

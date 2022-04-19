@@ -180,10 +180,10 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD ACCESS TYPES</div>
             <p class="py-2 text-sm">Input the name and choose its priviliges.</p>
-            <form>
+            <form v-on:submit.prevent="submit">
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Access Type:</label>
-                    <input type="text" id="base-input" class="
+                    <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="
                 bg-gray-50
                 border border-gray-300
                 text-gray-900 text-sm
@@ -192,7 +192,7 @@
                 block
                 w-full
                 p-2.5
-              " placeholder="Enter Name" v-model="atname" />
+              " placeholder="Enter Name" v-model="v$.atname.$model" />
                     <div class="font-medium text-sm mt-2">
                         Choose Home Type:
                         <label class="flex flex-row cursor-pointer p-1" style="align-items: center;">
@@ -384,6 +384,17 @@
 
 <script>
 import Parse from "parse";
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import {
+    required
+} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+
+const toast = useToast();
 // import NoDataAvail from "@/components//NoDataAvail.vue";
 // var dataNumber = 10;
 // var page = 0;
@@ -392,6 +403,7 @@ export default {
     data() {
         return {
             showModal1: false,
+            v$: useVuelidate(),
             currentpage: 0,
             numPerPage: 10,
             totalEntries: 0,
@@ -410,6 +422,13 @@ export default {
             homeType: "",
         };
     },
+    validations() {
+        return {
+            atname: {
+                required,
+            },
+        };
+    },
     // components: {NoDataAvail},
     computed: {
         searchAccessType() {
@@ -424,11 +443,30 @@ export default {
         },
     },
     methods: {
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
         validate() {
             return this.showModal1;
         },
         modal(){
-            this.showModal1 = !this.showModal1;
+            var has_error = 0;
+            if (this.atname == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showModal1 = !this.showModal1;
+            }
         },
         addAccessType() {
             const accessType = Parse.Object.extend("AccessTypes");
