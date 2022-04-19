@@ -1,5 +1,5 @@
 <template>
-<section  class="min-h-screen">
+<section class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <form @submit.prevent="submitApplication">
             <div class="p-5">
@@ -34,13 +34,13 @@
                                 <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64 uppercase text-sm font-semibold">
                                     <option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
                                         {{ i.appType.get("applicationTypeName") }}
-                                    </option> 
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <!-- <hr /> -->
 
-                        <div class="flex flex-row items-start justify-evenly px-2 py-4 ">
+                        <div class="flex flex-row items-start justify-evenly px-2 pt-4">
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="text-sm">Point Person</span>
@@ -75,6 +75,14 @@
                                         Phone Number is Required</span>
                                 </label>
                             </div>
+                        </div>
+                        <div class="items-start justify-evenly px-10 pb-4">
+                            <label class="label">
+                                <span class="label-text">Program:</span>
+                            </label>
+                            <select class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option v-for="program in programs" :key="program">{{program.name}}</option>
+                            </select>
                         </div>
 
                     </div>
@@ -203,6 +211,10 @@ export default {
             selected: "",
             applicationTypes: [],
             reqs: [],
+            programs: [{
+                id: 1,
+                name: "Bachelor of Science in Information Technology"
+            }],
         };
     },
     validations() {
@@ -223,61 +235,61 @@ export default {
         submitApplication(values) {
             try {
                 var reqFiles = [];
-            let requirement = null;
-            for(var i = 0; i < this.reqs.length; i++){
-                const file = values.target[4 + i].files[0];
+                let requirement = null;
+                for (var i = 0; i < this.reqs.length; i++) {
+                    const file = values.target[4 + i].files[0];
 
-                console.log(file);
-                console.log(file.name);
-                console.log(file.type);
+                    console.log(file);
+                    console.log(file.name);
+                    console.log(file.type);
 
-                requirement = new Parse.File(file.name.replace(/[^a-zA-Z]/g, ""), file, file.type);
+                    requirement = new Parse.File(file.name.replace(/[^a-zA-Z]/g, ""), file, file.type);
 
-                reqFiles.push({
-                    id: i + 1,
-                    file: requirement,
-                    status: "",
-                    comment: "",
-                });
-            }
-            // const file = values.target[4].files[0];
-            // console.log(file);
-            // console.log(file.name);
-            // console.log(file.type);
-
-            const application = Parse.Object.extend("Applications");
-            const newApplication = new application();
-
-            //requirement = new Parse.File(file.name, file, file.type);
-
-            newApplication.save({
-                pointPerson: this.pointPerson,
-                email: this.email,
-                phoneNumber: this.phoneNumber,
-                requirements: reqFiles,
-                applicationType: this.selected,
-                applicationStatus: 'For Approval',
-                createdBy: Parse.User.current().id,
-            })
-            .then(
-                (newApplication) => {
-                    toast("Application Added: " + newApplication.id, {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        }),
-                    window.location.reload()
-                    // console.log("New Access Type Added:" + newApplication.id)
-                },
-                (e) => {
-                    toast("Application Adding Failed: " + e.message, {
-                        type: TYPE.ERROR,
-                        timeout: 5000,  
-                        hideProgressBar: true,
-                        position: POSITION.TOP_RIGHT,
+                    reqFiles.push({
+                        id: i + 1,
+                        file: requirement,
+                        status: "",
+                        comment: "",
                     });
-                    // alert("Access Type Adding Failed: " + error)
-                })
+                }
+                // const file = values.target[4].files[0];
+                // console.log(file);
+                // console.log(file.name);
+                // console.log(file.type);
+
+                const application = Parse.Object.extend("Applications");
+                const newApplication = new application();
+
+                //requirement = new Parse.File(file.name, file, file.type);
+
+                newApplication.save({
+                        pointPerson: this.pointPerson,
+                        email: this.email,
+                        phoneNumber: this.phoneNumber,
+                        requirements: reqFiles,
+                        applicationType: this.selected,
+                        applicationStatus: 'For Approval',
+                        createdBy: Parse.User.current().id,
+                    })
+                    .then(
+                        (newApplication) => {
+                            toast("Application Added: " + newApplication.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                                window.location.reload()
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Adding Failed: " + e.message, {
+                                type: TYPE.ERROR,
+                                timeout: 5000,
+                                hideProgressBar: true,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        })
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
