@@ -7,12 +7,20 @@
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
                 </svg>
+<<<<<<< HEAD
                 <span class="text-2xl font-semibold text-grey-100">UPDATE HEI ACCOUNT</span>
+=======
+                <span class="text-2xl font-semibold text-grey-100">ADD HEI ACCOUNT</span>
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
             </div>
             <div class="line"></div>
             <div class="form-control w-full">
                 <label class="label">
+<<<<<<< HEAD
                     <span class="label-text">HEI Name</span>
+=======
+                    <span class="label-text">HEI Name {{this.$route.query}}</span>
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
                 </label>
                 <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
                 <label class="label">
@@ -77,6 +85,13 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
+<<<<<<< HEAD
+=======
+                        <div class="text-sm font-medium text-gray-500">
+                            Add HEI Type?
+                            <label for="createHEI" href="#" class="text-blue-700 hover:underline"><a>Create</a></label>
+                        </div>
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_type">
                         <option v-for="hei in heis" :key="hei">
@@ -91,17 +106,49 @@
                 </button>
 
                 <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
+<<<<<<< HEAD
                     Update HEI
+=======
+                    Add HEI
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
                 </button>
             </div>
         </form>
     </div>
+<<<<<<< HEAD
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box text-left">
             <div class="font-semibold">UPDATE HEI ACCOUNT</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to update this account?
+=======
+    <input type="checkbox" id="createHEI" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD HEI TYPE</div>
+            <p class="py-2 text-sm">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
+            </p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI TYPE</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="createHEI" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
+            </div>
+        </div>
+    </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box text-left">
+            <div class="font-semibold">ADD HEI ACCOUNT</div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this account?
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
@@ -147,6 +194,10 @@ const toast = useToast();
 
 export default {
     name: "EditHeiView",
+<<<<<<< HEAD
+=======
+    props: ["id"],
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
     components: {
         VueInstantLoadingSpinner,
     },
@@ -269,6 +320,7 @@ export default {
             window.scrollTo(0, 0);
         },
         async addHEI() {
+<<<<<<< HEAD
             this.$refs.Spinner.show();
             try {
                 this.password = "password";
@@ -283,6 +335,21 @@ export default {
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", "HEI");
                 newHEI.set("hasTransactions", false);
+=======
+            this.password = "password";
+            const newHEI = new Parse.User();
+            newHEI.set("hei_name", this.hei_name);
+            newHEI.set("username", this.username);
+            newHEI.set("password", "password");
+            newHEI.set("email", this.email);
+            newHEI.set("address", this.address);
+            newHEI.set("number", this.number);
+            newHEI.set("inst_code", this.inst_code);
+            newHEI.set("hei_type", this.hei_type);
+            newHEI.set("access_type", "HEI");
+            newHEI.set("hasTransactions", false);
+            try {
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
                 // Show the spinner first
                 // this.$refs.Spinner.show();
                 // setTimeout(
@@ -298,6 +365,7 @@ export default {
                 // setTimeout(() => this.$router.push({
                 //     path: "/hei"
                 // }), 3000);
+<<<<<<< HEAD
                 await newHEI.save()
                     .then(() => {
                         toast("HEI Account Added!", {
@@ -310,6 +378,32 @@ export default {
                                 path: "/hei"
                             }), 2000);
                     });
+=======
+
+                await newHEI.save().then(() => {
+                    toast("HEI Account Added!", {
+                        type: TYPE.SUCCESS,
+                        timeout: 2000,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    this.sendEmail().then(() => {
+                        setTimeout(
+                            () =>
+                            this.$router.push({
+                                path: "/hei",
+                            }),
+                            1000
+                        );
+                    });
+                });
+                this.$refs.Spinner.show();
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    2000
+                );
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -321,12 +415,15 @@ export default {
                 // alert("Error: " + error.code + " " + error.message);
                 //document.location.reload();
             }
+<<<<<<< HEAD
             setTimeout(
                 function () {
                     this.$refs.Spinner.hide();
                 }.bind(this),
                 2000
             );
+=======
+>>>>>>> 5514f10eb9bcaedf6085c86fb10f8793266c21e2
         },
         modal() {
             // this.v$.$validate();

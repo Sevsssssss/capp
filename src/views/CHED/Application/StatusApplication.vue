@@ -61,34 +61,6 @@
     </div> -->
         </div>
         <!-- For Approval Modal -->
-        <input type="checkbox" id="for-approval" class="modal-toggle" />
-        <div class="modal">
-            <div class="modal-box relative rounded-md text-left">
-                <div class="font-semibold text-md">SELECT SUPERVISOR</div>
-                <p class="py-2 text-sm">
-                    You've been selected for a chance to get one year of subscription to
-                    use Wikipedia for free!
-                </p>
-                <!-- Filter -->
-                <div class="flex flex-row py-6 justify-start items-start">
-                    <!-- sort -->
-                    <div class="month-sort flex flex-row border rounded-md w-full">
-                        <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort">
-                            <option disabled selected>Select Supervisor</option>
-                            <option>Joshua Sarmiento</option>
-                            <option>Sev Sarate</option>
-                            <option>Duane</option>
-                            <option>Jeff</option>
-                            <option>Saq</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                    <label class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- For Evaluation Modal -->
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
@@ -115,7 +87,7 @@
             </div>
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                <label @click="submitChanges()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
             </div>
         </div>
     </div>

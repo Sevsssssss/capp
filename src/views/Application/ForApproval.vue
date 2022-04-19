@@ -27,7 +27,7 @@
                         <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1]">
                     </td>
                     <td class="px-6 py-4">
-                        <textarea id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..."></textarea>
+                        <textarea id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id - 1]"></textarea>
                     </td>
                 </tr>
             </tbody>
@@ -37,8 +37,37 @@
         <div>Dismiss</div>
     </button>
     
-    <label @click="submitChanges()" for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+    <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
         Submit</label>
+
+    <input type="checkbox" id="for-approval" class="modal-toggle" />
+        <div class="modal">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">SELECT SUPERVISOR</div>
+                <p class="py-2 text-sm">
+                    You've been selected for a chance to get one year of subscription to
+                    use Wikipedia for free!
+                </p>
+                <!-- Filter -->
+                <div class="flex flex-row py-6 justify-start items-start">
+                    <!-- sort -->
+                    <div class="month-sort flex flex-row border rounded-md w-full">
+                        <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" :v-model="selectedRQAT">
+                            <option disabled selected>Select RQAT</option>
+                            <option>Joshua Sarmiento</option>
+                            <option>Sev Sarate</option>
+                            <option>Duane</option>
+                            <option>Jeff</option>
+                            <option>Saq</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label @click="submitChanges" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                </div>
+            </div>
+        </div>
             
 </div>
 </template>
@@ -48,11 +77,14 @@ import Parse from "parse";
 export default {
     props: ["appID"],
     name: "ForApproval",
+    
     data() {
         return {
             // id: this.$route.params.id,
             show: false,
             statusShow: [],
+            comment: [],
+            selectedRQAT: "",
             el: document.body,
             headers: [{
                     title: "CREDENTIALS",
@@ -125,20 +157,26 @@ export default {
 
             
             for(var i = 0; i < this.statusShow.length; i++) {
+                console.log(this.comment[i])
                 requirements.push({
                     id: application.get("requirements")[i].id,
                     file: application.get("requirements")[i].file,
                     status: this.statusShow[i],
+                    comment: this.comment[i],
                 });
             }
 
             application.set("requirements", requirements);
             application.set("applicationStatus", "For Evaluation");
+            application.set("selectedRQAT", this.selectedRQAT);
             
             application.save().then((application) => {
                 console.log("Object Updated: " + application.id);
             })
         },
+        checkBox() {
+            console.log(this.comment);
+        }
     },
 
     mounted: async function () {
@@ -156,6 +194,7 @@ export default {
         const applicationType = await appTypeQuery.first();
         for(var i = 0; i < application.get("requirements").length; i++){
             this.statusShow.push("");
+            this.comment.push("");
             storedApplications.push({
                 id: application.get("requirements")[i].id,
                 credential: applicationType.get("applicationReqs")[i].applicationReq,
