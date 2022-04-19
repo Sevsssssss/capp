@@ -292,18 +292,7 @@ export default {
             window.scrollTo(0, 0);
         },
         async addHEI() {
-            this.password = "password";
-            const newHEI = new Parse.User();
-            newHEI.set("hei_name", this.hei_name);
-            newHEI.set("username", this.username);
-            newHEI.set("password", "password");
-            newHEI.set("email", this.email);
-            newHEI.set("address", this.address);
-            newHEI.set("number", this.number);
-            newHEI.set("inst_code", this.inst_code);
-            newHEI.set("hei_type", this.hei_type);
-            newHEI.set("access_type", "HEI");
-            newHEI.set("hasTransactions", false);
+            this.$refs.Spinner.show();
             try {
                 this.password = "password";
                 const newHEI = new Parse.User();
