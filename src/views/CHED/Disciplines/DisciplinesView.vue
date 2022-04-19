@@ -79,10 +79,13 @@
                         {{ i.Name }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ i.Privileges }}
+                        {{ i.programs }}
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                    <td class="py-4 text-right">
+                        <label for="editDisciplines" class="font-medium text-blue-600 hover:underline">Edit Disciplines</label>
+                    </td>
+                    <td class="py-4 text-right">
+                        <label for="editPrograms" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
                     </td>
                     <td class="px-6 py-4 flex flex-row">
                         <div class="hover:text-brand-red/60">
@@ -163,6 +166,26 @@
             </div>
         </div>
     </div>
+
+    <!-- edit -->
+    <input type="checkbox" id="editDisciplines" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD A DISCIPLINE</div>
+            <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="disciplineName" />
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="editDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addDiscipline()">Submit</label>
+            </div>
+        </div>
+    </div>
+
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -184,20 +207,32 @@
             </div>
         </div>
     </div>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box relative rounded-md text-left" >
-            <div class="text-brand-darkblue font-bold label-xl">
-                Add Program
-            </div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this program?
-            </p>
+
+     <input type="checkbox" id="editPrograms" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD A PROGRAM</div>
+            <p class="py-2 text-sm">Input the Program Name and the Designated Discipline.</p>
+            <form>
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="atname" />
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
+                    <select class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
+                        <!-- Discipline must be Disabled only programs can be edited -->
+                        <option disabled v-for="discipline in disciplines" :key="discipline" :value="discipline.id" >{{discipline.name}}</option>
+                    </select>
+                </div>
+            </form>
             <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addProgram()">Continue</label>
+                <label for="editPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addProgram()">Submit</label>
             </div>
         </div>
     </div>
+
+
+    
 </div>
 </template>
 
@@ -225,7 +260,12 @@ export default {
             tables: [],
             search: "",
             disciplineName: "",
-            programs: [],
+            programs: [
+                {
+                    id: 1,
+                    name: "Bachelor of Science in Information Technology, Bachelor of Science in Computer Science, Bachelor of Science in Information Systems"
+                }
+            ],
             disciplines: [],
             atname: "",
             selectedDiscipline: "",
