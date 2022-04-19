@@ -130,7 +130,7 @@
             </div>
             <div v-if="sort_type_var == true" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
-                Sorry, the keyword "{{sort_type}}" cannot be found in the database.
+                Sorry, there is no data with the type of "{{sort_type}}" in the database.
             </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
