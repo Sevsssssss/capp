@@ -1,8 +1,8 @@
 <template>
-<div v-if="!applicationType" style="height: 100%">
+<!-- <div v-if="!applicationType" style="height: 100%">
     <NoDataAvail names="HEIapply" />
-</div>
-<section v-else class="min-h-screen">
+</div> -->
+<section  class="min-h-screen">
     <div class="m-5 shadow-lg rounded-lg bg-brand-white">
         <form @submit.prevent="submitApplication">
             <div class="p-5">
@@ -185,7 +185,7 @@ import {
     POSITION
 } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
-import NoDataAvail from "@/components//NoDataAvail.vue";
+// import NoDataAvail from "@/components//NoDataAvail.vue";
 import {
     required,
     email
@@ -196,7 +196,7 @@ const toast = useToast();
 
 export default {
     name: 'HEIapply',
-    components: { NoDataAvail,},
+    // components: { NoDataAvail,},
     data() {
         return {
             v$: useVuelidate(),
