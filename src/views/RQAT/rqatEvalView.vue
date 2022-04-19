@@ -3,7 +3,6 @@
     <NoDataAvail names="ApplicationView" />
 </div>
 <div v-else class="px-3 py-2">
-
     <div class=" grid xxl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-2 p-4" v-for="table in tables" :key="table">
             <div class="flex flex-col justify-between text-left">

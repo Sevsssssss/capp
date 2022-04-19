@@ -239,6 +239,7 @@ export default {
     },
 
         async addEmployee() {
+            try {
             const newEmployee = new Parse.User();
 
             var employeeName = {
@@ -257,7 +258,7 @@ export default {
             newEmployee.set("user_type", "employee");
             newEmployee.set("hasTransactions", false);
 
-            try {
+            
                 await newEmployee.save().then(() => {
                     toast("Employee Account Added!", {
                         type: TYPE.SUCCESS,
