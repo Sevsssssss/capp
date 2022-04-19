@@ -276,7 +276,7 @@ const routes = [
         }
       },
       {
-        path: "/application/:id",
+        path: "/application/:appID",
         name: "StatusApplication",
         component: StatusApplication,
         props: true,

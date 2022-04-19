@@ -38,7 +38,7 @@
         </div>
 
         <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
-            <ForApproval></ForApproval>
+            <ForApproval :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
             <ForRevision></ForRevision>
@@ -53,26 +53,8 @@
             <ForCompleted></ForCompleted>
         </div>
         <div class="space-x-6 py-8 px-3 flex justify-center">
-            <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
-                <div v-if="status != 'COMPLETED'">Dismiss</div>
-                <div v-else>Back</div>
-            </button>
-            <div v-if="status === 'FOR APPROVAL'">
-                <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                    Submit</label>
-            </div>
-            <div v-else-if="status === 'FOR REVISION'">
-                <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                    Re-Submit</label>
-            </div>
-            <div v-else-if="status === 'FOR EVALUATION'">
-                <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                    Evaluate</label>
-            </div>
-            <div v-else-if="status === 'FOR ISSUANCE'">
-                <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                    Complete</label>
-            </div>
+        
+     
             <!-- <div v-else-if="status === 'COMPLETED'">
         <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             BACK</label>
@@ -146,9 +128,10 @@ import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
 import ForIssuance from "../../Application/ForIssuance.vue";
 import ForCompleted from "../../Application/ForCompletedView.vue";
+import Parse from "parse";
 
 export default {
-    props: ["id", "HeiName", "type", "status", "dateApplied", "rep", "email"],
+    props: ["appID"],
     name: "StatusApplication",
     components: {
         ForApproval,
@@ -162,6 +145,11 @@ export default {
             // id: this.$route.params.id,
             show: false,
             statusShow: "",
+            status: "",
+            rep: "",
+            email: "",
+            type: "",
+            dateApplied: "",
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -215,6 +203,31 @@ export default {
                 },
             ],
         };
+    },
+    mounted: async function () {
+        var storedApplications = [];
+        const applications = Parse.Object.extend("Applications");
+        const query = new Parse.Query(applications);
+        query.equalTo("objectId", this.appID);
+
+        const application = await query.first({
+            useMasterKey: true,
+        });
+
+        this.status = application.get("applicationStatus");
+        this.type = application.get("applicationType");
+        this.email = application.get("email");
+        this.rep = application.get("pointPerson");
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+        'November', 'December'];
+        var month = application.createdAt.getMonth();
+        var day = application.createdAt.getDate();
+        var year = application.createdAt.getFullYear();
+        this.dateApplied = months[month] + " " + day + ", " + year;
+
+        
+        this.tables = storedApplications;
+
     },
 };
 </script>

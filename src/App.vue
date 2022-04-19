@@ -16,26 +16,26 @@ Parse.initialize(
 );
 Parse.masterKey = "master"
 // RUN THIS CODE TO HAVE A TEMPORARY SUPER ADMIN ACCOUNT
-const user = new Parse.User();
-var employeeName = {
-  lastname: "Ched",
-  firstname: "Region V",
-  middleinitial: "N/A",
-};
-user.set("name", employeeName);
-user.set("contact_num", "09123456789");
-user.set("username", "CHEDROV");
-user.set("password", "password");
-user.set("email", "chedrov@gmail.com");
-user.set("access_type", "SUPER ADMIN");
-user.set("designation", "SUPER ADMIN");
-try {
-  user.save();
-  // Hooray! Let them use the app now.
-} catch (error) {
-  // Show the error message somewhere and let the user try again.
-  alert("Error: " + error.code + " " + error.message);
-}
+// const user = new Parse.User();
+// var employeeName = {
+//   lastname: "Ched",
+//   firstname: "Region V",
+//   middleinitial: "N/A",
+// };
+// user.set("name", employeeName);
+// user.set("contact_num", "09123456789");
+// user.set("username", "CHEDROV");
+// user.set("password", "password");
+// user.set("email", "chedrov@gmail.com");
+// user.set("access_type", "SUPER ADMIN");
+// user.set("designation", "SUPER ADMIN");
+// try {
+//   user.save();
+//   // Hooray! Let them use the app now.
+// } catch (error) {
+//   // Show the error message somewhere and let the user try again.
+//   alert("Error: " + error.code + " " + error.message);
+// }
 
 export default {};
 </script>

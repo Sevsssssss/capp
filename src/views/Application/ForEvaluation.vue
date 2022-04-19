@@ -21,6 +21,11 @@
             </tbody>
         </table>
     </div>
+    <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+        <div>Dismiss</div>
+    </button>
+    <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            Evaluate</label>
 </div>
 </template>
 
