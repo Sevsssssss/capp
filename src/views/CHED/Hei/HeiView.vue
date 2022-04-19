@@ -110,14 +110,7 @@
                             {{ table.email }}
                         </td>
                         <td class="flex flex-row center px-6 py-4" style="align-items: center;">
-                            <!-- <router-link :to="{
-                    name: 'StatusApplication',
-                    params: {
-                      id: table.id,
-                    },
-                  }">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                            </router-link> -->
+
                             <button @click="goToEditHeiView(table.id)" class="font-medium text-blue-600 hover:underline mr-5">Edit</button>
                             <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
