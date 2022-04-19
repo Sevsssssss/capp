@@ -7,7 +7,7 @@
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
                 </svg>
-                <span class="text-2xl font-semibold text-grey-100">ADD HEI ACCOUNT</span>
+                <span class="text-2xl font-semibold text-grey-100">UPDATE HEI ACCOUNT</span>
             </div>
             <div class="line"></div>
             <div class="form-control w-full">
@@ -77,10 +77,6 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
-                        <div class="text-sm font-medium text-gray-500">
-                            Add HEI Type?
-                            <label for="createHEI" href="#" class="text-blue-700 hover:underline"><a>Create</a></label>
-                        </div>
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_type">
                         <option v-for="hei in heis" :key="hei">
@@ -95,36 +91,17 @@
                 </button>
 
                 <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
-                    Add HEI
+                    Update HEI
                 </button>
             </div>
         </form>
     </div>
-    <input type="checkbox" id="createHEI" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD HEI TYPE</div>
-            <p class="py-2 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
-            </p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI TYPE</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createHEI" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
-            </div>
-        </div>
-    </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box text-left">
-            <div class="font-semibold">ADD HEI ACCOUNT</div>
+            <div class="font-semibold">UPDATE HEI ACCOUNT</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this account?
+                Are you sure you want to update this account?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
@@ -169,7 +146,7 @@ import emailjs from "emailjs-com";
 const toast = useToast();
 
 export default {
-    name: "AddHeiView",
+    name: "EditHeiView",
     components: {
         VueInstantLoadingSpinner,
     },
@@ -360,22 +337,41 @@ export default {
             // }
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
-             if (
-                this.hei_name == "" ||
-                this.usernameError == "" ||
-                this.addressError == "" ||
-                this.numberError == "" ||
-                this.inst_codeError == ""
-            ) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
+            if (this.hei_name == "") {
                 has_error = 1;
+                //error_text += "HEI Name is empty\n"
+                this.hei_nameError = "HEI Name is Required";
+            }
+            if (this.username == "") {
+                has_error = 1;
+                //error_text += "Username is empty\n"
+                this.usernameError = "Username is Required";
+            }
+            if (this.address == "") {
+                has_error = 1;
+                //error_text += "Address is empty\n"
+                this.addressError = "Address is Required";
+            }
+            if (this.number == "") {
+                has_error = 1;
+                //error_text += "Contact Number is empty\n"
+                this.numberError = "Contact Number is Required";
+            }
+            if (this.inst_code == "") {
+                has_error = 1;
+                //error_text += "Institution Code is empty\n"
+                this.inst_codeError = "Institution Code is Required";
             }
             if (has_error < 1) {
+                // var password = "";
+                // var characters =
+                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                // var charactersLength = characters.length;
+                // for (var i = 0; i < 8; i++) {
+                //   password += characters.charAt(
+                //     Math.floor(Math.random() * charactersLength)
+                //   );
+                // }
                 this.showModal1 = !this.showModal1;
             }
         },
