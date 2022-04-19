@@ -306,21 +306,7 @@ export default {
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", "HEI");
                 newHEI.set("hasTransactions", false);
-                // Show the spinner first
-                // this.$refs.Spinner.show();
-                // setTimeout(
-                //     function () {
-                //         this.$refs.Spinner.hide();
-                //     }.bind(this),
-                //     5000
-                // );
-                // await newHEI.save().then(() => {
-                //     setTimeout(() => (this.savingSuccessful = true), 2000);
-                // });
-                // this.sendEmail();
-                // setTimeout(() => this.$router.push({
-                //     path: "/hei"
-                // }), 3000);
+
                 await newHEI.save()
                     .then(() => {
                         toast("HEI Account Added!", {

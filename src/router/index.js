@@ -21,6 +21,7 @@ import EditEmployeeView from "../views/CHED/Employees/EditEmployeeView.vue";
 import EvaluationInsView from "../views/CHED/Evaluation/EvaluationInsView.vue";
 import EvalFileView from "../views/CHED/Evaluation/EvalFileView.vue";
 import AddEvaluationInsView from "../views/CHED/Evaluation/AddEvaluationInsView.vue";
+import EditEvaluationsView from "../views/CHED/Evaluation/EditEvaluationsView.vue"
 
 import ReportingView from "../views/CHED/Reporting/ReportingView.vue";
 
@@ -301,6 +302,22 @@ const routes = [
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
             { name: 'ADD EVALUATION INs.'}
+          ]
+        }
+      },
+      {
+        path: "/evaluationins/edit",
+        name: "editevaluationins",
+        component: EditEvaluationsView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN" && Parse.User.current().get("access_type") !== "ADMIN" && Parse.User.current().get("access_type") !== "EDUCATION SUPERVISOR"){
+            return { name: '403' }
+          }
+        },
+        meta:{
+          breadcrumb: [
+            { name: 'EVALUATION Ins.', link: '/evaluationins' },
+            { name: 'EDIT EVALUATION INs.'}
           ]
         }
       },

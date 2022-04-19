@@ -236,6 +236,19 @@ export default {
         modal(){
             this.showModal1 = !this.showModal1;
         },
+        addDiscipline() {
+            const disciplines = Parse.Object.extend("Disciplines");
+            const newDiscipline = new disciplines;
+
+            try {
+                newDiscipline.save({
+                    disciplineName: this.disciplineName,
+                });
+                alert("New Discipline Added: " + newDiscipline.id)
+            } catch (error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+        },
         addAccessType() {
             const accessType = Parse.Object.extend("AccessTypes");
             const newAccessType = new accessType();

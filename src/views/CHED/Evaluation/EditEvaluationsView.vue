@@ -157,7 +157,7 @@
             <div class="flex flex-row pt-5">
                 <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button>
                 <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
-                    Create
+                    Update
                 </button>
             </div>
         </div>
