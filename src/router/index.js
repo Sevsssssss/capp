@@ -112,6 +112,23 @@ const routes = [
           ]
         }
       },
+
+      {
+        path: "/hei/edit/:id",
+        name: "edithei",
+        component: AddHeiView,
+        beforeEnter: () => {
+          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
+            return { name: '403' }
+          }
+        },
+        meta:{
+          breadcrumb: [
+            { name: 'HEI', link: '/hei' },
+            { name: 'EDIT HEI ACCOUNT'}
+          ]
+        }
+      },
       {
         path: "/hei/upload",
         name: "uploadCSV",

@@ -1,9 +1,9 @@
 <template>
-<div v-if="!tables.length" style="height: 100%">
+<!-- <div v-if="!tables.length" style="height: 100%">
     <NoDataAvail names="AccessTypesView" />
-</div>
+</div> -->
 
-<div v-else class="p-3">
+<div  class="p-3">
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
@@ -370,7 +370,7 @@
 
 <script>
 import Parse from "parse";
-import NoDataAvail from "@/components//NoDataAvail.vue";
+// import NoDataAvail from "@/components//NoDataAvail.vue";
 // var dataNumber = 10;
 // var page = 0;
 export default {
@@ -395,7 +395,7 @@ export default {
             homeType: "",
         };
     },
-    components: {NoDataAvail},
+    // components: {NoDataAvail},
     computed: {
         searchAccessType() {
             return this.tables

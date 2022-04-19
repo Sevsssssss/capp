@@ -303,6 +303,7 @@ export default {
             atname: "",
             checkedAccessTypes: [],
             homeType: "",
+            disciplineName: "",
         }
     },
     methods: {
@@ -366,7 +367,7 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = accessTypesTable;
-            // console.log(this.tables);
+             console.log(this.tables);
         },
     },
 };

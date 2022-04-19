@@ -110,7 +110,15 @@
                             {{ table.email }}
                         </td>
                         <td class="flex flex-row center px-6 py-4" style="align-items: center;">
-                            <button @click="editHEI(table.id)" class="font-medium text-blue-600 hover:underline mr-5">Edit</button>
+                            <!-- <router-link :to="{
+                    name: 'StatusApplication',
+                    params: {
+                      id: table.id,
+                    },
+                  }">
+                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            </router-link> -->
+                            <button @click="goToEditHeiView(table.id)" class="font-medium text-blue-600 hover:underline mr-5">Edit</button>
                             <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -317,10 +325,20 @@ export default {
         },
     },
     methods: {
-        selectAcc(instNum){
+
+        goToEditHeiView(heiID) {
+            this.$router.push({
+                name: "EditHeiView",
+                query: {
+                    id: heiID
+                },
+            });
+        },
+
+        selectAcc(instNum) {
             this.currentDelAcc = instNum;
         },
-        async deleteAccount(){
+        async deleteAccount() {
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
 
@@ -373,14 +391,12 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                if (heisPriv.length > 0){
+                if (heisPriv.length > 0) {
                     this.sort_type_var = false;
                     this.tables = heisPriv;
-                }else{
+                } else {
                     this.sort_type_var = true;
                 }
-                
-                
 
             }
             if (this.sort_type == "State Univeristies") {
@@ -405,13 +421,13 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                if (heisState.length > 0){
+                if (heisState.length > 0) {
                     this.sort_type_var = false;
                     this.tables = heisState;
-                }else{
+                } else {
                     this.sort_type_var = true;
                 }
-                
+
             }
             if (this.sort_type == "Local Universities") {
                 var heisLocal = [];
@@ -435,10 +451,10 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                if (heisLocal.length > 0){
+                if (heisLocal.length > 0) {
                     this.sort_type_var = false;
                     this.tables = heisLocal;
-                }else{
+                } else {
                     this.sort_type_var = true;
                 }
             }
@@ -464,14 +480,13 @@ export default {
                         email: hei.get("email"),
                     });
                 }
-                if (heisOthers.length > 0){
+                if (heisOthers.length > 0) {
                     this.sort_type_var = false;
                     this.tables = heisOthers;
-                }else{
+                } else {
                     this.sort_type_var = true;
                 }
-                
-                
+
             }
         },
     },
