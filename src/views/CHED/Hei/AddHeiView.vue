@@ -305,6 +305,7 @@ export default {
                 newHEI.set("inst_code", this.inst_code);
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", "HEI");
+                newHEI.set("hasTransactions", false);
                 // Show the spinner first
                 // this.$refs.Spinner.show();
                 // setTimeout(

@@ -12,7 +12,7 @@
                     <!-- <label class="label"></label> -->
                     <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationTypeName) }" v-if="validationStatus(v$.applicationTypeName)">
-                            Name is Required</span>
+                            Application Type Name is Required</span>
                     </label>
                 </div>
                 <div :class="{'hide' : !isZero() }"  class="flex flex-row justify-center items-center space-x-4">
@@ -36,11 +36,7 @@
                             <label class="label">
                                 <span class="label-text">Requirement {{ req.id }}</span>
                             </label>
-                            <input type="text" placeholder="Enter Requirement Name" :class="{ 'input-error': validationStatus(v$.applicationReq) }" class="input input-bordered" v-model="req.applicationReq" />
-                            <label class="label">
-                                <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationReq) }" v-if="validationStatus(v$.applicationReq)">
-                                    Criteria name is Required</span>
-                            </label>
+                            <input type="text" placeholder="Enter Requirement Name" class="input input-bordered"/>
                         </div>
                     </div>
                 </div>
@@ -66,13 +62,27 @@
                     <button class="btn btn-margin btn-outline" @click="$router.go(-1)">
                         Cancel
                     </button>
-                    <button class="btn btn-md submit bg-brand-darkblue hover:bg-blue-700 border-none" @click="saveAppType()" type="submit">
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
                         Create
                     </button>
                 </div>
             </div>
         </div>
     </form>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add RQAT Account
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this account?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -86,6 +96,7 @@ export default {
     name: "AddEvalInstView",
     data() {
         return {
+            showModal1: false,
             counter: 0,
             appReqs: [],
             v$: useVuelidate(),
@@ -107,6 +118,25 @@ export default {
         };
     },
     methods: {
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        validate() {
+            return this.showModal1;
+        },
+        modal(){
+            var has_error = 0;
+            if (this.applicationTypeName == "") {
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showModal1 = !this.showModal1;
+            }
+        },
         async saveAppType() {
 
             const ApplicationType = Parse.Object.extend("ApplicationTypes");
@@ -125,9 +155,6 @@ export default {
             } catch (error) {
                 alert("Error: " + error.code + " " + error.message);
             }
-        },
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
         },
         addRequirement() {
             this.counter++;

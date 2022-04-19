@@ -7,26 +7,40 @@
         {{ category.id }}
         {{ category.subcategory.length }}
     </div> -->
-    <div class="overflow-x-auto shadow-lg rounded-lg p-8 w-full">
-
+    <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full">
         <div class="flex w-full items-end justify-between">
             <div class="form-control w-full pr-3">
                 <label class="label">
                     <span class="label-text">Program*</span>
                 </label>
-                <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter Program" :class="{ 'input-error': validationStatus(v$.programName) }" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.programName) }" v-if="validationStatus(v$.programName)">
+                        Program is Required</span>
+                </label>
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">CMO No.*</span>
                 </label>
-                <input v-model="cmoNo" type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="cmoNo" type="text" placeholder="Enter CMO No." class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter CMO No." :class="{ 'input-error': validationStatus(v$.cmoNo) }" class="input input-bordered w-full max-w-xs" v-model="v$.cmoNo.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.cmoNo) }" v-if="validationStatus(v$.cmoNo)">
+                        CMO No. is Required</span>
+                </label>
             </div>
             <div class="form-control ml-3 w-full">
                 <label class="label">
                     <span class="label-text">Series*</span>
                 </label>
-                <input v-model="seriesYear" type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" required />
+                <!-- <input v-model="seriesYear" type="text" placeholder="Enter Series Year" class="input input-bordered w-full max-w-xs" required /> -->
+                <input type="text" placeholder="Enter Series Year" :class="{ 'input-error': validationStatus(v$.seriesYear) }" class="input input-bordered w-full max-w-xs" v-model="v$.seriesYear.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.seriesYear) }" v-if="validationStatus(v$.seriesYear)">
+                        Series Year is Required</span>
+                </label>
             </div>
             <div class="pl-5 w-auto">
                 <button class="btn bg-brand-darkblue hover:bg-brand-blue  border-none" @click="addCategory()">
@@ -38,7 +52,12 @@
             <label class="label">
                 <span class="label-text">Description*</span>
             </label>
-            <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea>
+            <!-- <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea> -->
+            <textarea type="text" placeholder="Enter Description" :class="{ 'input-error': validationStatus(v$.evalDesc) }" class="textarea textarea-bordered w-full" v-model="v$.evalDesc.$model" />
+            <label class="label">
+                <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.evalDesc) }" v-if="validationStatus(v$.evalDesc)">
+                    Description is Required</span>
+            </label>
         </div>
         <!-- Body -->
         <!-- category in categories" :key="category means it accesses the cateogies array which contains every category. -->
@@ -66,69 +85,69 @@
                             <span class="label-text">Description</span>
                         </label>
                         <textarea v-model="category.Desc" class="textarea textarea-bordered" placeholder="Enter Description" style="height: 48px; width: 100%"></textarea>
-                    </div>
-                </div>
-                <div class="pl-4">
-                    <button data-tip="Remove Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeCategory(category.id)">
+        </div>
+</div>
+<div class="pl-4">
+    <button data-tip="Remove Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeCategory(category.id)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+        </svg>
+    </button>
+</div>
+</div>
+<div class="flex flex-row pt-10 justify-between items-center">
+    <div class="font-semibold">SUB-CATEGORY</div>
+    <div class="">
+        <button class="btn bg-brand-darkblue hover:bg-brand-blue border-none" @click="addSubCategory(category.subcategory)">
+            Add Sub-Category
+        </button>
+    </div>
+</div>
+<!-- v-for="subcategory in category.subcategory" :key="subcategory" means it accesses each subcategory in the subcategory array inside each category in the categories array -->
+<div v-for="subcategory in category.subcategory" :key="subcategory" class="overflow-x-auto rounded-lg" id="add-subcat">
+    <div v-if="viewSubCat()">
+        <div class="">
+            <label class="label"><span class="label-text">Sub Category</span></label>
+            <div class="form-control w-full flex flex-row" style="justify-content: space-between">
+                <input v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="input input-bordered w-full mr-4 flex" />
+                <div class="flex flex-row justify-center items-center">
+                    <!-- Delete Sub-Category -->
+                    <button data-tip="Remove Sub-Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeSubCategory(subcategory.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
                         </svg>
+
                     </button>
                 </div>
             </div>
-            <div class="flex flex-row pt-10 justify-between items-center">
-                <div class="font-semibold">SUB-CATEGORY</div>
-                <div class="">
-                    <button class="btn bg-brand-darkblue hover:bg-brand-blue border-none" @click="addSubCategory(category.subcategory)">
-                        Add Sub-Category
-                    </button>
-                </div>
+        </div>
+        <div class="flex flex-row pt-5 justify-between">
+            <div class="label">ITEMS:</div>
+            <div>
+                <button data-tip="Add Item" @click="addItem(subcategory.items)" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-brand-blue border-none mr-2">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                    </svg>
+                </button>
+                <button data-tip="Remove Item" @click="pop(subcategory.items)" class="btn tooltip tooltip-left btn-outline hover:bg-brand-red/60">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H5V11H19V13Z" />
+                    </svg>
+                </button>
             </div>
-            <!-- v-for="subcategory in category.subcategory" :key="subcategory" means it accesses each subcategory in the subcategory array inside each category in the categories array -->
-            <div v-for="subcategory in category.subcategory" :key="subcategory" class="overflow-x-auto rounded-lg" id="add-subcat">
-                <div v-if="viewSubCat()">
-                    <div class="">
-                        <label class="label"><span class="label-text">Sub Category</span></label>
-                        <div class="form-control w-full flex flex-row" style="justify-content: space-between">
-                            <input v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="input input-bordered w-full mr-4 flex" />
-                            <div class="flex flex-row justify-center items-center">
-                                <!-- Delete Sub-Category -->
-                                <button data-tip="Remove Sub-Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeSubCategory(subcategory.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                    </svg>
+        </div>
 
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-row pt-5 justify-between">
-                        <div class="label">ITEMS:</div>
-                        <div>
-                            <button data-tip="Add Item" @click="addItem(subcategory.items)" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-brand-blue border-none mr-2">
-                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                                </svg>
-                            </button>
-                            <button data-tip="Remove Item" @click="pop(subcategory.items)" class="btn tooltip tooltip-left btn-outline hover:bg-brand-red/60">
-                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,13H5V11H19V13Z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- v-for="item in subcategory.items" :key="item" means it accesses the items in the items array inside the subcategory array which is inside the categories array. -->
-                    <div v-for="item in subcategory.items" :key="item" class="my-4">
-                        <div class="flex flex-row items-start">
-                            <label class="label flex space-x-1 text-sm font-semibold pr-2">
-                                <span>Item:</span>
-                                <span>{{ item.id }}</span>
-                            </label>
-                            <textarea v-model="item.Item" type="text" placeholder="Enter Item Name" class="textarea textarea-bordered w-full flex" />
-                            </div>
+        <!-- v-for="item in subcategory.items" :key="item" means it accesses the items in the items array inside the subcategory array which is inside the categories array. -->
+        <div v-for="item in subcategory.items" :key="item" class="my-4">
+            <div class="flex flex-row items-start">
+                <label class="label flex space-x-1 text-sm font-semibold pr-2">
+                    <span>Item:</span>
+                    <span>{{ item.id }}</span>
+                </label>
+                <textarea v-model="item.Item" type="text" placeholder="Enter Item Name" class="textarea textarea-bordered w-full flex" />
+                </div>
                     </div>
                 </div>
             </div>
@@ -136,10 +155,25 @@
         <!-- Footer -->
         <div class="table-footer flex flex-row" style="justify-content: center">
             <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-outline">Cancel</button>
-                <button @click="saveEvalForm()" class="btn btn-margin submit border-none bg-brand-darkblue hover:bg-brand-blue">
+                <button class="btn btn-margin btn-outline" @click="$router.go(-1)">Cancel</button>
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
                     Create
                 </button>
+            </div>
+        </div>
+    </form>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add Evaluation Instrument
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this Evaluation Instrument?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="saveEvalForm()">Continue</label>
             </div>
         </div>
     </div>
@@ -152,6 +186,7 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import useVuelidate from "@vuelidate/core";
 import {
     required
@@ -162,8 +197,10 @@ const toast = useToast();
 
 export default {
     name: "AddEvalInstView",
+    components: VueInstantLoadingSpinner,
     data() {
         return {
+            showModal1: false,
             v$: useVuelidate(),
             categories: [],
             categoryId: 0,
@@ -178,13 +215,16 @@ export default {
     },
     validations() {
         return {
-            cmo_no: {
+            programName: {
                 required,
             },
-            series: {
+            cmoNo: {
                 required,
             },
-            description: {
+            seriesYear: {
+                required,
+            },
+            evalDesc: {
                 required,
             },
             category: {
@@ -213,16 +253,25 @@ export default {
         validate() {
             return this.showModal1;
         },
+
         modal() {
             var has_error = 0;
+
             if (
                 this.programName == "" ||
                 this.cmoNo == "" ||
                 this.seriesYear == "" ||
                 this.evalDesc == ""
             ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
                 has_error = 1;
             }
+
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
@@ -237,26 +286,27 @@ export default {
             }
         },
         async saveEvalForm() {
-
-            console.log("save");
-            const EvaluationForm = Parse.Object.extend("EvaluationForms");
-            const newEvaluationForm = new EvaluationForm();
-
-            newEvaluationForm.set(
-                "evaluationFormName",
-                this.programName.toUpperCase()
-            );
-            newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
-            newEvaluationForm.set(
-                "evaluationFormSeries",
-                this.seriesYear.toUpperCase()
-            );
-            newEvaluationForm.set("evaluationFormDesc", this.evalDesc.toUpperCase());
-            newEvaluationForm.set("evaluationFormReqs", this.categories);
-
-            // await newEvaluationForm.save();
-            // console.log(newEvaluationForm.save())
             try {
+                console.log("save");
+
+                const EvaluationForm = Parse.Object.extend("EvaluationForms");
+                const newEvaluationForm = new EvaluationForm();
+
+                newEvaluationForm.set(
+                    "evaluationFormName",
+                    this.programName.toUpperCase()
+                );
+                newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
+                newEvaluationForm.set(
+                    "evaluationFormSeries",
+                    this.seriesYear.toUpperCase()
+                );
+                newEvaluationForm.set("evaluationFormDesc", this.evalDesc.toUpperCase());
+                newEvaluationForm.set("evaluationFormReqs", this.categories);
+
+                // await newEvaluationForm.save();
+                // console.log(newEvaluationForm.save())
+
                 await newEvaluationForm.save();
                 toast("Evaluation Added", {
                         type: TYPE.SUCCESS,
