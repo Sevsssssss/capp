@@ -184,185 +184,200 @@
 </template>
 
 <script>
-import {
-    useToast,
-    TYPE,
-    POSITION
-} from "vue-toastification";
+import { useToast, TYPE, POSITION } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
 // import NoDataAvail from "@/components//NoDataAvail.vue";
-import {
-    required,
-    email
-} from "@vuelidate/validators";
+import { required, email } from "@vuelidate/validators";
 import Parse from "parse";
-
 const toast = useToast();
-
 export default {
-    name: 'HEIapply',
-    // components: { NoDataAvail,},
-    data() {
-        return {
-            v$: useVuelidate(),
-            pointPerson: "",
-            email: "",
-            phoneNumber: "",
-            selected: "",
-            applicationTypes: [],
-            reqs: [],
-            programs: [{
-                id: 1,
-                name: "Bachelor of Science in Information Technology"
-            }],
-        };
-    },
-    validations() {
-        return {
-            pointPerson: {
-                required,
-            },
-            email: {
-                required,
-                email,
-            },
-            phoneNumber: {
-                required,
-            },
-        };
-    },
-    methods: {
-        submitApplication(values) {
-            try {
-                var reqFiles = [];
-                let requirement = null;
-                for (var i = 0; i < this.reqs.length; i++) {
-                    const file = values.target[4 + i].files[0];
-
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
-
-                    requirement = new Parse.File(file.name.replace(/[^a-zA-Z]/g, ""), file, file.type);
-
-                    reqFiles.push({
-                        id: i + 1,
-                        file: requirement,
-                        status: "",
-                        comment: "",
-                    });
-                }
-                // const file = values.target[4].files[0];
-                // console.log(file);
-                // console.log(file.name);
-                // console.log(file.type);
-
-                const application = Parse.Object.extend("Applications");
-                const newApplication = new application();
-
-                //requirement = new Parse.File(file.name, file, file.type);
-
-                newApplication.save({
-                        pointPerson: this.pointPerson,
-                        email: this.email,
-                        phoneNumber: this.phoneNumber,
-                        requirements: reqFiles,
-                        applicationType: this.selected,
-                        applicationStatus: 'For Approval',
-                        createdBy: Parse.User.current().id,
-                    })
-                    .then(
-                        (newApplication) => {
-                            toast("Application Added: " + newApplication.id, {
-                                    type: TYPE.SUCCESS,
-                                    timeout: 3000,
-                                    position: POSITION.TOP_RIGHT,
-                                }),
-                                window.location.reload()
-                            // console.log("New Access Type Added:" + newApplication.id)
-                        },
-                        (e) => {
-                            toast("Application Adding Failed: " + e.message, {
-                                type: TYPE.ERROR,
-                                timeout: 5000,
-                                hideProgressBar: true,
-                                position: POSITION.TOP_RIGHT,
-                            });
-                            // alert("Access Type Adding Failed: " + error)
-                        })
-            } catch (error) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error)
-            }
+  name: "HEIapply",
+  // components: { NoDataAvail,},
+  data() {
+    return {
+      v$: useVuelidate(),
+      pointPerson: "",
+      email: "",
+      phoneNumber: "",
+      selected: "",
+      applicationTypes: [],
+      reqs: [],
+      programs: [
+        {
+          id: 1,
+          name: "Bachelor of Science in Information Technology",
         },
-        changeItem: function changeItem(event) {
-            for (var i = 0; i < this.applicationTypes.length; i++) {
-                if (
-                    this.applicationTypes[i].appType.get("applicationTypeName") ===
-                    event.target.value
-                ) {
-                    this.showApplicationType(this.applicationTypes[i].appType);
-                }
-            }
-        },
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
-        },
-        handleUserInput(input) {
-            var replacedInput = input.target.value
-                .replace(/\D/g, "")
-                .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-            this.value = !replacedInput[2] ?
-                replacedInput[1] :
-                "(" +
-                replacedInput[1] +
-                ") " +
-                replacedInput[2] +
-                (replacedInput[3] ? "-" + replacedInput[3] : "");
-        },
-        showApplicationType(appTypeObj) {
-            this.selected = appTypeObj.get("applicationTypeName");
-            var appTypeReqs = [];
-            for (var i = 0; i < appTypeObj.get("applicationReqs").length; i++) {
-                var req = appTypeObj.get("applicationReqs")[i];
-                appTypeReqs.push({
-                    req,
-                });
-            }
-            // console.log(appTypeReqs);
-            this.reqs = appTypeReqs;
-        },
-    },
-    mounted: async function () {
-        var applicationTypesMenu = [];
-        // var applicationTypeReqs = [];
-        const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
-        const query = new Parse.Query(ApplicationTypes);
-        const queryResult = await query.find();
-        if (queryResult !== null) {
-            //this.selected = queryResult[0];
-            this.showApplicationType(queryResult[0]);
+      ],
+    };
+  },
+  validations() {
+    return {
+      pointPerson: {
+        required,
+      },
+      email: {
+        required,
+        email,
+      },
+      phoneNumber: {
+        required,
+      },
+    };
+  },
+  methods: {
+    submitApplication(values) {
+      try {
+        var reqFiles = [];
+        let requirement = null;
+        for (var i = 0; i < this.reqs.length; i++) {
+          const file = values.target[5 + i].files[0];
+          console.log(file);
+          console.log(file.name);
+          console.log(file.type);
+          requirement = new Parse.File(
+            file.name.replace(/[^a-zA-Z]/g, ""),
+            file,
+            file.type
+          );
+          reqFiles.push({
+            id: i + 1,
+            file: requirement,
+            status: "",
+            comment: "",
+          });
         }
-        // this.applicationTypes[0].appType.get('applicationTypeName')
-        for (var i = 0; i < queryResult.length; i++) {
-            const appType = queryResult[i];
-            applicationTypesMenu.push({
-                appType,
-            });
-        }
-        this.totalEntries = queryResult.length;
-        this.applicationTypes = applicationTypesMenu;
-        // const app = this.applicationTypes[0];
-        //  console.log( queryResult[0]);
-        //  console.log( this.selected.get('applicationTypeName'));
+        // const file = values.target[4].files[0];
+        // console.log(file);
+        // console.log(file.name);
+        // console.log(file.type);
+        const application = Parse.Object.extend("Applications");
+        const newApplication = new application();
+        //requirement = new Parse.File(file.name, file, file.type);
+        newApplication
+          .save({
+            pointPerson: this.pointPerson,
+            email: this.email,
+            phoneNumber: this.phoneNumber,
+            requirements: reqFiles,
+            applicationType: this.selected,
+            applicationStatus: "For Approval",
+            createdBy: Parse.User.current().id,
+          })
+          .then(
+            (newApplication) => {
+              toast("Application Added: " + newApplication.id, {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+              }),
+                window.location.reload();
+              // console.log("New Access Type Added:" + newApplication.id)
+            },
+            (e) => {
+              toast("Application Adding Failed: " + e.message, {
+                type: TYPE.ERROR,
+                timeout: 5000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+              });
+              // alert("Access Type Adding Failed: " + error)
+            }
+          );
+      } catch (error) {
+        toast("Please fill out the required information", {
+          type: TYPE.ERROR,
+          timeout: 3000,
+          hideProgressBar: true,
+          position: POSITION.TOP_RIGHT,
+        });
+        console.log(error);
+      }
     },
+    changeItem: function changeItem(event) {
+      for (var i = 0; i < this.applicationTypes.length; i++) {
+        if (
+          this.applicationTypes[i].appType.get("applicationTypeName") ===
+          event.target.value
+        ) {
+          this.showApplicationType(this.applicationTypes[i].appType);
+        }
+      }
+    },
+    validationStatus: function (validation) {
+      return typeof validation !== "undefined" ? validation.$error : false;
+    },
+    handleUserInput(input) {
+      var replacedInput = input.target.value
+        .replace(/\D/g, "")
+        .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+      this.value = !replacedInput[2]
+        ? replacedInput[1]
+        : "(" +
+          replacedInput[1] +
+          ") " +
+          replacedInput[2] +
+          (replacedInput[3] ? "-" + replacedInput[3] : "");
+    },
+    showApplicationType(appTypeObj) {
+      this.selected = appTypeObj.get("applicationTypeName");
+      var appTypeReqs = [];
+      for (var i = 0; i < appTypeObj.get("applicationReqs").length; i++) {
+        var req = appTypeObj.get("applicationReqs")[i];
+        appTypeReqs.push({
+          req,
+        });
+      }
+      // console.log(appTypeReqs);
+      this.reqs = appTypeReqs;
+    },
+  },
+  mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
+
+    const querResult = await query.find();
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("/403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var applicationTypesMenu = [];
+      // var applicationTypeReqs = [];
+      const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+      const query = new Parse.Query(ApplicationTypes);
+      const queryResult = await query.find();
+      if (queryResult !== null) {
+        //this.selected = queryResult[0];
+        this.showApplicationType(queryResult[0]);
+      }
+      // this.applicationTypes[0].appType.get('applicationTypeName')
+      for (var i = 0; i < queryResult.length; i++) {
+        const appType = queryResult[i];
+        applicationTypesMenu.push({
+          appType,
+        });
+      }
+      this.totalEntries = queryResult.length;
+      this.applicationTypes = applicationTypesMenu;
+      // const app = this.applicationTypes[0];
+      //  console.log( queryResult[0]);
+      //  console.log( this.selected.get('applicationTypeName'))
+    }
+  },
 };
 </script>
 
 <style>
 </style>
+
+

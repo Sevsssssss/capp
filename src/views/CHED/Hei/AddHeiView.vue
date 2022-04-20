@@ -165,9 +165,7 @@ import {
     email
 } from "@vuelidate/validators";
 import emailjs from "emailjs-com";
-
 const toast = useToast();
-
 export default {
     name: "AddHeiView",
     components: {
@@ -306,7 +304,6 @@ export default {
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", "HEI");
                 newHEI.set("hasTransactions", false);
-
                 await newHEI.save()
                     .then(() => {
                         toast("HEI Account Added!", {
@@ -365,37 +362,60 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
+    mounted: async function () {
+      // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+      const AccessTypes = Parse.Object.extend("AccessTypes");
+      const query = new Parse.Query(AccessTypes);
+      query.equalTo("name", Parse.User.current().get("access_type"));
+
+      const querResult = await query.find();
+      var accType = querResult[0].get("privileges");
+      var flag = 0;
+      for (var i = 0; i < accType.length; i++) {
+        if (accType[i] === this.$route.path) {
+          flag = 1;
+        }
+      }
+      if (flag === 0) {
+        this.$router.push("/403");
+      } else {
+        console.log("Hi!, You have permission to access this Page");
+        //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+        //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        
+      }
     },
+  },
 };
 </script>
 
 <style>
 .main-page {
-    align-items: center;
+  align-items: center;
 }
 
 .add-hei {
-    width: 783px;
+  width: 783px;
 }
 
 .line {
-    border-width: 1px;
+  border-width: 1px;
 }
 
 .btn-margin {
-    margin-left: 10px;
-    margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .text-error {
-    color: red;
+  color: red;
 }
 
 .backdrop {
-    top: 0;
-    position: fixed;
-    background: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
+  top: 0;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
 }
 </style>

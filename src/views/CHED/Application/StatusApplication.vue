@@ -4,11 +4,14 @@
         <div>
             <div class="flex flex-row justify-between">
                 <div class="flex flex-col p-4 text-left space-y-2">
-                    <span class="text-2xl font-semibold uppercase">{{
-                  HeiName
-                }}</span>
+                    <span class="text-2xl font-semibold uppercase">{{ HeiName }}</span>
                     <div class="font-normal text-sm uppercase">
                         APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
+                    </div>
+                    <div class="font-normal text-sm uppercase">
+                        PROGRAM:
+                        <span class="font-semibold">BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY
+                            <!--{{ type }}--></span>
                     </div>
                 </div>
                 <div class="flex flex-col">
@@ -38,60 +41,76 @@
         </div>
 
         <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
-            <ForApproval :appID="appID"/>
+            <ForApproval :appID="appID" />
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
-            <ForRevision :appID="appID"/>
+            <ForRevision :appID="appID" />
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
-            <ForEvaluation :appID="appID"/>
+            <ForEvaluation :appID="appID" />
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
             <ForIssuance></ForIssuance>
         </div>
         <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>
-        </div>
-        <div class="space-x-6 py-8 px-3 flex justify-center">
-        
-     
-            <!-- <div v-else-if="status === 'COMPLETED'">
+            <div class="space-x-6 py-8 px-3 flex justify-center">
+                <!-- <div v-else-if="status === 'COMPLETED'">
         <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             BACK</label>
     </div> -->
+            </div>
+            <!-- For Approval Modal -->
         </div>
-        <!-- For Approval Modal -->
-    </div>
-    <!-- For Evaluation Modal -->
-    <input type="checkbox" id="for-evaluation" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">RE-ASSIGN SUPERVISOR</div>
-            <p class="py-2 text-sm">
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-            </p>
-            <!-- Filter -->
-            <div class="flex flex-row py-6 justify-start items-start">
-                <!-- sort -->
-                <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort">
-                        <option disabled selected>Select Supervisor</option>
-                        <option>Joshua Sarmiento</option>
-                        <option>Sev Sarate</option>
-                        <option>Duane</option>
-                        <option>Jeff</option>
-                        <option>Saq</option>
-                    </select>
+        <!-- For Evaluation Modal -->
+        <input type="checkbox" id="for-evaluation" class="modal-toggle" />
+        <div class="modal">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">RE-ASSIGN SUPERVISOR</div>
+                <p class="py-2 text-sm">
+                    You've been selected for a chance to get one year of subscription to
+                    use Wikipedia for free!
+                </p>
+                <!-- Filter -->
+                <div class="flex flex-row py-6 justify-start items-start">
+                    <!-- sort -->
+                    <div class="month-sort flex flex-row border rounded-md w-full">
+                        <select class="
+                font-normal
+                rounded-md
+                select select-ghost select-sm
+                w-full
+              " style="outline: none" id="application_sort">
+                            <option disabled selected>Select Supervisor</option>
+                            <option>Joshua Sarmiento</option>
+                            <option>Sev Sarate</option>
+                            <option>Duane</option>
+                            <option>Jeff</option>
+                            <option>Saq</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="for-evaluation" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                    <label @click="submitChanges()" class="
+              btn btn-sm
+              rounded-md
+              bg-blue-700
+              hover:bg-blue-800
+              border-none
+            ">Assign</label>
                 </div>
             </div>
-            <div class="modal-action">
-                <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="submitChanges()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
-            </div>
         </div>
     </div>
-</div>
+    </div>
 </template>
 
 <script>
@@ -177,29 +196,59 @@ export default {
         };
     },
     mounted: async function () {
-        var storedApplications = [];
-        const applications = Parse.Object.extend("Applications");
-        const query = new Parse.Query(applications);
-        query.equalTo("objectId", this.appID);
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("name", Parse.User.current().get("access_type"));
 
-        const application = await query.first({
-            useMasterKey: true,
-        });
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var i = 0; i < accType.length; i++) {
+            if (accType[i] === "/application") {
+                flag = 1;
+            }
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            var storedApplications = [];
+            const applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(applications);
+            query.equalTo("objectId", this.appID);
 
-        this.status = application.get("applicationStatus");
-        this.type = application.get("applicationType");
-        this.email = application.get("email");
-        this.rep = application.get("pointPerson");
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
-        'November', 'December'];
-        var month = application.createdAt.getMonth();
-        var day = application.createdAt.getDate();
-        var year = application.createdAt.getFullYear();
-        this.dateApplied = months[month] + " " + day + ", " + year;
+            const application = await query.first({
+                useMasterKey: true,
+            });
 
-        
-        this.tables = storedApplications;
+            this.status = application.get("applicationStatus");
+            this.type = application.get("applicationType");
+            this.email = application.get("email");
+            this.rep = application.get("pointPerson");
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var month = application.createdAt.getMonth();
+            var day = application.createdAt.getDate();
+            var year = application.createdAt.getFullYear();
+            this.dateApplied = months[month] + " " + day + ", " + year;
 
+            this.tables = storedApplications;
+        }
     },
 };
 </script>

@@ -1,13 +1,25 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
+    <div class="
+        card
+        over
+        p-4
+        w-fit
+        bg-white
+        rounded-lg
+        border border-gray-200
+        shadow-md
+      ">
         <form v-on:submit.prevent="submit" class="card-body">
+          {{disciplines}}
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
                 </svg>
-                <span class="text-2xl font-semibold text-grey-100">ADD EMPLOYEE ACCOUNT</span>
+                <span class="text-2xl font-semibold text-grey-100">
+                    ADD EMPLOYEE ACCOUNT
+                </span>
             </div>
             <div class="line"></div>
             <div class="flex flex-row">
@@ -102,11 +114,31 @@
                     </select>
                 </div>
             </div>
+
+            <div v-if="v$.emp_designation.$model == 'EDUCATION SUPERVISOR'">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Assigned Discipline:</span>
+                    </label>
+
+                    <select class="select select-bordered w-full" v-model="v$.discipline.$model">
+                        <option v-for="discipline in disciplines" :key="discipline">
+                            <div class="discipline">{{discipline.title}}</div>
+                        </option>
+                    </select>
+                </div>
+            </div>
             <div class="flex justify-end pt-8 space-x-4">
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="
+              border-none
+              btn btn-m
+              submit
+              bg-brand-darkblue
+              hover:bg-brand-blue
+            " @click="modal()">
                     Add Employee
                 </button>
             </div>
@@ -122,12 +154,34 @@
             <form>
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation" />
+                    <input type="text" id="base-input" class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              " placeholder="Enter designation" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createEmType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
+                <label for="createEmType" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label class="
+              btn btn-sm
+              bg-blue-700
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            ">Submit</label>
             </div>
         </div>
     </div>
@@ -141,8 +195,21 @@
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addEmployee()">Continue</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              bg-blue-700
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            " @click="addEmployee()">Continue</label>
             </div>
         </div>
     </div>
@@ -164,90 +231,85 @@ import {
     required
 } from "@vuelidate/validators";
 // import emailjs from 'emailjs-com';
-
 const toast = useToast();
-
 export default {
-  name: "AddEmployeeView",
-  components: {
-    VueInstantLoadingSpinner,
-  },
-  data() {
-    return {
-      showModal: false,
-      showModal1: false,
-      savingSuccessful: false,
-      v$: useVuelidate(),
-      accessTypes: [],
-
-      designations: [],
-
-      lastname: "",
-      firstname: "",
-      midinit: "",
-      email: "",
-      username: "",
-      contactnum: "",
-      emp_designation: "",
-      access_type: "",
-    };
-  },
-  validations() {
-    return {
-      lastname: {
-        required,
-      },
-      firstname: {
-        required,
-      },
-      midinit: {
-        required,
-      },
-      username: {
-        required,
-      },
-      contactnum: {
-        required,
-      },
-      email: {
-        email,
-        required,
-      },
-      emp_designation: {
-        required,
-      },
-      access_type: {
-        required,
-      },
-    };
-  },
-
-  methods: {
-    ToggleshowModal() {
-      this.showModal = !this.showModal;
+    name: "AddEmployeeView",
+    components: {
+        VueInstantLoadingSpinner,
     },
-    validationStatus: function (validation) {
-      return typeof validation !== "undefined" ? validation.$error : false;
+    data() {
+        return {
+            showModal: false,
+            showModal1: false,
+            savingSuccessful: false,
+            v$: useVuelidate(),
+            accessTypes: [],
+            designations: [],
+            disciplines: [],
+            lastname: "",
+            firstname: "",
+            midinit: "",
+            email: "",
+            username: "",
+            contactnum: "",
+            emp_designation: "",
+            access_type: "",
+            discipline: "",
+        };
     },
-
-    submit: function () {
-      this.v$.$touch();
-      if (!this.v$.$pending || !this.v$.$error) return;
+    validations() {
+        return {
+            lastname: {
+                required,
+            },
+            firstname: {
+                required,
+            },
+            midinit: {
+                required,
+            },
+            username: {
+                required,
+            },
+            contactnum: {
+                required,
+            },
+            email: {
+                email,
+                required,
+            },
+            emp_designation: {
+                required,
+            },
+            discipline: {
+                required,
+            },
+            access_type: {
+                required,
+            },
+        };
     },
-    validate() {
-      return this.showModal1;
-    },
-
+    methods: {
+        ToggleshowModal() {
+            this.showModal = !this.showModal;
+        },
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        validate() {
+            return this.showModal1;
+        },
         async addEmployee() {
-            try {
             const newEmployee = new Parse.User();
-
             var employeeName = {
                 lastname: this.lastname,
                 firstname: this.firstname,
                 middleinitial: this.midinit,
             };
-
             newEmployee.set("name", employeeName);
             newEmployee.set("username", this.username);
             newEmployee.set("password", "password");
@@ -256,24 +318,23 @@ export default {
             newEmployee.set("access_type", this.access_type);
             newEmployee.set("designation", this.emp_designation);
             newEmployee.set("user_type", "employee");
-            newEmployee.set("hasTransactions", false);
-
-            
+            newEmployee.set("discipline", this.discipline);
+            try {
                 await newEmployee.save().then(() => {
                     toast("Employee Account Added!", {
                         type: TYPE.SUCCESS,
                         timeout: 2000,
                         position: POSITION.TOP_RIGHT,
                     });
-                    this.sendEmail().then(() => {
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/hei",
-                            }),
-                            1000
-                        );
-                    });
+                    // this.sendEmail().then(() => {
+                    setTimeout(
+                        () =>
+                        this.$router.push({
+                            path: "/employees",
+                        }),
+                        1000
+                    );
+                    // });
                 });
                 this.$refs.Spinner.show();
                 setTimeout(
@@ -304,7 +365,6 @@ export default {
             ) {
                 has_error = 1;
             }
-
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
@@ -318,6 +378,56 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
+    },
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        const queryResult = await query.find();
+        query.equalTo("name", Parse.User.current().get("access_type"));
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var y = 0; y < accType.length; y++) {
+            // this.accessTypes.push({title: accType[y].get('name')})
+            if (accType[y] === this.$route.path) {
+                flag = 1;
+            }
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            for (var e = 0; e < queryResult.length; e++) {
+                this.accessTypes.push({
+                    title: queryResult[e].get('name')
+                })
+            }
+            this.access_type = queryResult[0].get('name');
+            const Designations = Parse.Object.extend("Designations");
+            const queryD = new Parse.Query(Designations);
+            const queryResultDesig = await queryD.find();
+            for (var w = 0; w < queryResultDesig.length; w++) {
+                this.designations.push({
+                    title: queryResultDesig[w].get('name')
+                })
+            }
+            this.emp_designation = queryResultDesig[0].get('name');
+
+            const Discipline = Parse.Object.extend("Disciplines");
+            const queryDiscipline = new Parse.Query(Discipline);
+            const queryResultDiscipline = await queryDiscipline.find();
+            console.log(queryResultDiscipline);
+            for (var z = 0; z < queryResultDiscipline.length; z++) {
+                this.disciplines.push({
+                    title: queryResultDiscipline[z].get('disciplineName')
+                })
+            }
+            this.discipline = queryResultDiscipline[0].get('disciplineName');
+
+        }
     },
 };
 </script>

@@ -142,7 +142,6 @@
     </div>
 </div>
 </template>
-
 <script>
 import Parse from "parse";
 // var dataNumber = 10;
@@ -151,118 +150,139 @@ import Parse from "parse";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
 export default {
-    name: "RqatView",
-    data() {
-        return {
-            currentpage: 0,
-            numPerPage: 10,
-            totalEntries: 0,
-            headers: [{
-                    title: "RQAT MEMBER NAME",
-                },
-                {
-                    title: "HEI",
-                },
-                {
-                    title: "CONTACT NUMBER",
-                },
-                {
-                    title: "USERNAME",
-                },
-            ],
+  name: "RqatView",
+  data() {
+    return {
+      currentpage: 0,
+      numPerPage: 10,
+      totalEntries: 0,
+      headers: [
+        {
+          title: "RQAT MEMBER NAME",
+        },
+        {
+          title: "HEI",
+        },
+        {
+          title: "CONTACT NUMBER",
+        },
+        {
+          title: "USERNAME",
+        },
+      ],
 
-            datas: [{
-                    title: "FOR APPROVAL",
-                    num: 300,
-                },
-                {
-                    title: "FOR REVISION",
-                    num: 300,
-                },
-                {
-                    title: "FOR ISSUANCE",
-                    num: 300,
-                },
-                {
-                    title: "FOR EVALUATION",
-                    num: 300,
-                },
-                {
-                    title: "FOR COMPLETION",
-                    num: 300,
-                },
-            ],
-            tables: [],
-            search: "",
-        };
+      datas: [
+        {
+          title: "FOR APPROVAL",
+          num: 300,
+        },
+        {
+          title: "FOR REVISION",
+          num: 300,
+        },
+        {
+          title: "FOR ISSUANCE",
+          num: 300,
+        },
+        {
+          title: "FOR EVALUATION",
+          num: 300,
+        },
+        {
+          title: "FOR COMPLETION",
+          num: 300,
+        },
+      ],
+      tables: [],
+      search: "",
+    };
+  },
+  components: {
+    NoDataAvail,
+  },
+  computed: {
+    searchRqat() {
+      this.newEntCount();
+      return this.tables
+        .filter((p) => {
+          return (
+            p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+          );
+        })
+        .slice(
+          this.numPerPage * this.currentpage,
+          (this.currentpage + 1) * this.numPerPage
+        );
     },
-    components: {
-        NoDataAvail,
+  },
+  methods: {
+    addRQAT() {
+      this.$router.push("/rqat/add");
     },
-    computed: {
-        searchRqat() {
-            this.newEntCount();
-            return this.tables
-                .filter((p) => {
-                    return (
-                        p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                    );
-                })
-                .slice(
-                    this.numPerPage * this.currentpage,
-                    (this.currentpage + 1) * this.numPerPage
-                );
-        },
+    viewAssignments() {
+      this.$router.push("/rqat-assignment");
     },
-    methods: {
-        addRQAT() {
-            this.$router.push("/rqat/add");
-        },
-        viewAssignments() {
-            this.$router.push("/rqat-assignment");
-        },
-        newEntCount() {
-            this.totalEntries = this.tables.filter((p) => {
-                return (
-                    p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                );
-            }).length;
-        },
-        prevPage() {
-            if (this.currentpage > 0) this.currentpage -= 1;
-        },
-        nextPage() {
-            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
-                this.currentpage += 1;
-            }
-        },
+    newEntCount() {
+      this.totalEntries = this.tables.filter((p) => {
+        return (
+          p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+        );
+      }).length;
     },
-    mounted: async function () {
-        var rqats = [];
+    prevPage() {
+      if (this.currentpage > 0) this.currentpage -= 1;
+    },
+    nextPage() {
+      if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+        this.currentpage += 1;
+      }
+    },
+  },
+  mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
 
-        const query = new Parse.Query(Parse.User);
-        query.equalTo("access_type", "RQAT");
-        query.notEqualTo("hei_affil", null);
-
-        const querResult = await query.find();
-        for (var i = 0; i < querResult.length; i++) {
-            const rqat = querResult[i];
-            rqats.push({
-                id: rqat.id,
-                rqatName: rqat.get("name")["lastname"] +
-                    ", " +
-                    rqat.get("name")["firstname"] +
-                    " " +
-                    rqat.get("name")["middleinitial"] +
-                    ".",
-                hei: rqat.get("hei_affil"),
-                contactNum: rqat.get("contact_num"),
-                username: rqat.get("username"),
-            });
-        }
-        this.totalEntries = querResult.length;
-        this.tables = rqats;
-    },
+    const querResult = await query.find();
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("/403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var rqats = [];
+      const query = new Parse.Query(Parse.User);
+      query.equalTo("access_type", "RQAT");
+      query.notEqualTo("hei_affil", null);
+      const querResult = await query.find();
+      for (var i = 0; i < querResult.length; i++) {
+        const rqat = querResult[i];
+        rqats.push({
+          id: rqat.id,
+          rqatName:
+            rqat.get("name")["lastname"] +
+            ", " +
+            rqat.get("name")["firstname"] +
+            " " +
+            rqat.get("name")["middleinitial"] +
+            ".",
+          hei: rqat.get("hei_affil"),
+          contactNum: rqat.get("contact_num"),
+          username: rqat.get("username"),
+        });
+      }
+      this.totalEntries = querResult.length;
+      this.tables = rqats;
+    }
+  },
 };
 </script>
 

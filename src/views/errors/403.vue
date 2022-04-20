@@ -20,7 +20,7 @@ export default {
     name: '403View',
     methods: {
         push() {
-            this.$router.go(-1);
+            this.$router.go(-2);
         }
     }
 }

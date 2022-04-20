@@ -101,99 +101,107 @@
 </div>
 </template>
 
+
 <script>
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
 
 export default {
-    name: "EvalInstView",
-    data() {
-        return {
-            currentpage: 0,
-            numPerPage: 10,
-            search: "",
-            headers: [{
-                    title: "PROGRAM NAME",
-                },
-                {
-                    title: "DESCRIPTION",
-                },
-            ],
-            tables: [
-                // {
-                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                //     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                // },
-                // {
-                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION",
-                //     description: "has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                // },
-                // {
-                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                //     description: "minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                // },
-                // {
-                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                //     description: "elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                // },
-                // {
-                //     programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                //     description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-                // },
-            ],
-        };
-    },
-    components: {
-        NoDataAvail,
-    },
-    computed: {
-        searchEval() {
-            if (this.search) {
-                return this.tables.filter((item) => {
-                    return this.search
-                        .toLowerCase()
-                        .split(" ")
-                        .every((v) => item.description.toLowerCase().includes(v));
-                });
-            } else {
-                return this.tables;
-            }
+  name: "EvalInstView",
+  data() {
+    return {
+      currentpage: 0,
+      numPerPage: 10,
+      search: "",
+      headers: [
+        {
+          title: "PROGRAM NAME",
         },
-    },
-    methods: {
-        addEvalIns() {
-            this.$router.push("/evaluationins/add");
+        {
+          title: "DESCRIPTION",
         },
-        viewEvalIns() {
-            this.$router.push("/evaluationins/view");
-        },
-        prevPage() {
-            if (this.currentpage > 0) this.currentpage -= 1;
-        },
-        nextPage() {
-            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
-                this.currentpage += 1;
-            }
-        },
-    },
-    mounted: async function () {
-        var storedEvalInstruments = [];
-        const instruments = Parse.Object.extend("EvaluationForms");
-        const query = new Parse.Query(instruments);
-        const querResult = await query.find();
+      ],
 
-        for (var i = 0; i < querResult.length; i++) {
-            const evalInst = querResult[i];
-
-            storedEvalInstruments.push({
-                programName: evalInst.get("evaluationFormName"),
-                description: evalInst.get("evaluationFormDesc"),
-            });
-        }
-        this.totalEntries = querResult.length;
-        this.tables = storedEvalInstruments;
-
+      tables: [
+        {
+          programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
+          description:
+            "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
+        },
+      ],
+    };
+  },
+  components: {
+    NoDataAvail,
+  },
+  computed: {
+    searchEval() {
+      if (this.search) {
+        return this.tables.filter((item) => {
+          return this.search
+            .toLowerCase()
+            .split(" ")
+            .every((v) => item.description.toLowerCase().includes(v));
+        });
+      } else {
+        return this.tables;
+      }
     },
+    
+  },
+  methods: {
+    addEvalIns() {
+      this.$router.push("/evaluationins/add");
+    },
+    viewEvalIns() {
+      this.$router.push("/evaluationins/view");
+    },
+    prevPage() {
+      if (this.currentpage > 0) this.currentpage -= 1;
+    },
+    nextPage() {
+      if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+        this.currentpage += 1;
+      }
+    },
+  },
+  mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
+
+    const querResult = await query.find();
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("/403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var storedEvalInstruments = [];
+      const instruments = Parse.Object.extend("EvaluationForms");
+      const query = new Parse.Query(instruments);
+      const querResult = await query.find();
+
+      for (var i = 0; i < querResult.length; i++) {
+        const evalInst = querResult[i];
+
+        storedEvalInstruments.push({
+          programName: evalInst.get("evaluationFormName"),
+          description: evalInst.get("evaluationFormDesc"),
+        });
+      }
+      this.totalEntries = querResult.length;
+      this.tables = storedEvalInstruments;
+    }
+  },
 };
 </script>
 

@@ -43,6 +43,7 @@ import NotFound404 from "../views/errors/404.vue";
 import StatusApplication from '../views/CHED/Application/StatusApplication.vue';
 
 const routes = [
+
   {
     path: "/",
     name: "landing",
@@ -51,19 +52,14 @@ const routes = [
   {
     path: "/capp",
     component: CHEDViewLayout,
-    beforeEnter: () => {
-      if (Parse.User.current().get("access_type") === "hei") {
-        return { name: '403' }
-      }
-    },
     children: [
       {
         path: "/home",
         name: "home",
         component: CHED_HomeView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'Dashboard'},
+            { name: 'Dashboard' },
           ]
         }
       },
@@ -71,9 +67,9 @@ const routes = [
         path: "/application",
         name: "application",
         component: ApplicationView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'Application'},
+            { name: 'Application' },
           ]
         }
       },
@@ -82,10 +78,10 @@ const routes = [
         name: "StatusApplication",
         component: StatusApplication,
         props: true,
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'Application', link: '/application' },
-            { name: 'Status'}
+            { name: 'Status' }
           ]
         }
       },
@@ -93,14 +89,9 @@ const routes = [
         path: "/hei",
         name: "hei",
         component: HeiView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'HEI'},
+            { name: 'HEI' },
           ]
         }
       },
@@ -108,15 +99,10 @@ const routes = [
         path: "/hei/add",
         name: "addhei",
         component: AddHeiView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
-            { name: 'ADD HEI ACCOUNT'}
+            { name: 'ADD HEI ACCOUNT' }
           ]
         }
       },
@@ -125,11 +111,6 @@ const routes = [
         path: "/hei/edit/:id",
         name: "edithei",
         component: AddHeiView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -141,11 +122,6 @@ const routes = [
         path: "/hei/edit",
         name: "edithei",
         component: EditHeiView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -157,15 +133,10 @@ const routes = [
         path: "/hei/upload",
         name: "uploadCSV",
         component: UploadCSV,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
-            { name: 'UPLOAD CSV'}
+            { name: 'UPLOAD CSV' }
           ]
         }
       },
@@ -173,14 +144,9 @@ const routes = [
         path: "/rqat",
         name: "rqat",
         component: RqatView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'RQAT'},
+            { name: 'RQAT' },
           ]
         }
       },
@@ -188,15 +154,10 @@ const routes = [
         path: "/rqat/add",
         name: "addrqat",
         component: AddRQATView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
-            { name: 'ADD RQAT ACCOUNT'}
+            { name: 'ADD RQAT ACCOUNT' }
           ]
         }
       },
@@ -204,11 +165,6 @@ const routes = [
         path: "/rqat/edit",
         name: "editrqat",
         component: EditRQATView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
@@ -220,14 +176,9 @@ const routes = [
         path: "/employees",
         name: "employees",
         component: EmployeesView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'EMPLOYEE'},
+            { name: 'EMPLOYEE' },
           ]
         }
       },
@@ -235,15 +186,10 @@ const routes = [
         path: "/employees/add",
         name: "addemployee",
         component: AddEmployeeView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
-            { name: 'ADD EMPLOYEE ACCOUNT'}
+            { name: 'ADD EMPLOYEE ACCOUNT' }
           ]
         }
       },
@@ -267,14 +213,9 @@ const routes = [
         path: "/evaluationins",
         name: "evaluationins",
         component: EvaluationInsView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN" && Parse.User.current().get("access_type") !== "ADMIN" && Parse.User.current().get("access_type") !== "EDUCATION SUPERVISOR"){
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'EVALUATION Ins.'},
+            { name: 'EVALUATION Ins.' },
           ]
         }
       },
@@ -282,10 +223,10 @@ const routes = [
         path: "/evaluationins/view",
         name: "evaluationinsfile",
         component: EvalFileView,
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
-            { name: 'EDIT'}
+            { name: 'EDIT' }
           ]
         }
       },
@@ -293,15 +234,10 @@ const routes = [
         path: "/evaluationins/add",
         name: "addevaluationins",
         component: AddEvaluationInsView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN" && Parse.User.current().get("access_type") !== "ADMIN" && Parse.User.current().get("access_type") !== "EDUCATION SUPERVISOR"){
-            return { name: '403' }
-          }
-        },
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
-            { name: 'ADD EVALUATION INs.'}
+            { name: 'ADD EVALUATION INs.' }
           ]
         }
       },
@@ -325,9 +261,9 @@ const routes = [
         path: "/reporting",
         name: "reporting",
         component: ReportingView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'REPORTING'},
+            { name: 'REPORTING' },
           ]
         }
       },
@@ -335,21 +271,21 @@ const routes = [
         path: "/app-settings",
         name: "app-settings",
         component: AppSettingsView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'APPLICATION SETTINGS'},
+            { name: 'APPLICATION SETTINGS' },
           ]
         }
       },
-      
+
       {
         path: "/app-settings/add",
         name: "applicationType",
         component: AddApplicationView,
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
-            { name: 'ADD APPLICATION TYPE'}
+            { name: 'ADD APPLICATION TYPE' }
           ]
         }
       },
@@ -357,10 +293,10 @@ const routes = [
         path: "/app-settings/appTypeView",
         name: "AppTypeView",
         component: ApplicationTypeView,
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
-            { name: 'VIEW'}
+            { name: 'VIEW' }
           ]
         }
       },
@@ -369,10 +305,10 @@ const routes = [
         name: "StatusApplication",
         component: StatusApplication,
         props: true,
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'Application', link: '/application' },
-            { name: 'Status'}
+            { name: 'Status' }
           ]
         }
       },
@@ -380,9 +316,9 @@ const routes = [
         path: "/access-settings",
         name: "access-settings",
         component: AccessSettingsView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'SETTINGS'},
+            { name: 'SETTINGS' },
           ]
         }
       },
@@ -390,9 +326,9 @@ const routes = [
         path: "/rqat-assignment",
         name: "rqat-assignment",
         component: rqatEvaluationView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'RQAT EVALUATION'},
+            { name: 'RQAT EVALUATION' },
           ]
         }
       },
@@ -400,9 +336,9 @@ const routes = [
         path: "/designations",
         name: "designations",
         component: DesignationsView,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'DESIGNATION'},
+            { name: 'DESIGNATION' },
           ]
         }
       },
@@ -421,19 +357,14 @@ const routes = [
   {
     path: "/HEIPage",
     component: HEIViewLayout,
-    beforeEnter: () => {
-      if (Parse.User.current().get("access_type") !== "HEI") {
-        return { name: '403' }
-      }
-    },
     children: [
       {
         path: "/HEIhome",
         name: "HEIhome",
         component: HEI_Home,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'Home'},
+            { name: 'Home' },
           ]
         }
       },
@@ -441,9 +372,9 @@ const routes = [
         path: "/HEIapply",
         name: "HEIapply",
         component: HEI_Apply,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'Apply'},
+            { name: 'Apply' },
           ]
         }
       },
@@ -451,9 +382,9 @@ const routes = [
         path: "/HEIapplication",
         name: "HEIapplication",
         component: HEI_Application,
-        meta:{
+        meta: {
           breadcrumb: [
-            {name: 'Application'},
+            { name: 'Application' },
           ]
         }
       },
@@ -462,16 +393,12 @@ const routes = [
         name: "EditHEIapplication",
         component: Edit_HEI_Application,
         props: true,
-        meta:{
+        meta: {
           breadcrumb: [
             { name: 'Application', link: '/HEIapplication' },
-            { name: 'Edit'}
+            { name: 'Edit' }
           ]
         }
-      },
-      {
-        path: '/add-tables',
-        redirect: '/HEIapplication'
       },
     ]
   },
@@ -498,4 +425,5 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
+
 

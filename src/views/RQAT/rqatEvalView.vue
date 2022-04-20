@@ -57,95 +57,120 @@
 </div>
 </template>
 
+
 <script>
 import NoDataAvail from "@/components//NoDataAvail.vue";
+import Parse from 'parse'
 export default {
-    name: "rqatEvalView",
-    components: {
-        NoDataAvail,
-    },
-    data() {
-        return {
-            search: "",
-            tables: [{
-                    id: 1,
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Initial Offering",
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR APPROVAL",
-                },
-                {
-                    id: 2,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Bicol University",
-                    address: "Legazpi City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR REVISION",
-                },
-                {
-                    id: 3,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Catanduanes State University",
-                    address: "Virac",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR EVALUATION",
-                },
-                {
-                    id: 4,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Aquinas University of Legazpi",
-                    address: "Legazpi City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR ISSUANCE",
-                },
-                {
-                    id: 5,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Universidad de Sta. Isabel",
-                    address: "Naga City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "COMPLETED",
-                },
-            ],
-        };
-    },
-    computed: {
-        searchApplication() {
-            if (this.search) {
-                return this.tables.filter((item) => {
-                    return this.search
-                        .toLowerCase()
-                        .split(" ")
-                        .every((v) => item.HeiName.toLowerCase().includes(v));
-                });
-            } else {
-                return this.tables;
-            }
+  name: "rqatEvalView",
+  components: {
+    NoDataAvail,
+  },
+  data() {
+    return {
+      search: "",
+      tables: [
+        {
+          id: 1,
+          HeiName: "Ateneo De Naga University",
+          address: "Naga City",
+          type: "Initial Offering",
+          rep: "Aiden Gibbs",
+          email: "aadnu@adnu.edu.ph",
+          program: "BSIT",
+          dateApplied: "2022-06-10",
+          status: "FOR APPROVAL",
         },
+        {
+          id: 2,
+          rep: "Aiden Gibbs",
+          email: "aadnu@adnu.edu.ph",
+          HeiName: "Bicol University",
+          address: "Legazpi City",
+          type: "Initial Offering",
+          program: "BSIT",
+          dateApplied: "2022-06-10",
+          status: "FOR REVISION",
+        },
+        {
+          id: 3,
+          rep: "Aiden Gibbs",
+          email: "aadnu@adnu.edu.ph",
+          HeiName: "Catanduanes State University",
+          address: "Virac",
+          type: "Initial Offering",
+          program: "BSIT",
+          dateApplied: "2022-06-10",
+          status: "FOR EVALUATION",
+        },
+        {
+          id: 4,
+          rep: "Aiden Gibbs",
+          email: "aadnu@adnu.edu.ph",
+          HeiName: "Aquinas University of Legazpi",
+          address: "Legazpi City",
+          type: "Initial Offering",
+          program: "BSIT",
+          dateApplied: "2022-06-10",
+          status: "FOR ISSUANCE",
+        },
+        {
+          id: 5,
+          rep: "Aiden Gibbs",
+          email: "aadnu@adnu.edu.ph",
+          HeiName: "Universidad de Sta. Isabel",
+          address: "Naga City",
+          type: "Initial Offering",
+          program: "BSIT",
+          dateApplied: "2022-06-10",
+          status: "COMPLETED",
+        },
+      ],
+    };
+  },
+  computed: {
+    searchApplication() {
+      if (this.search) {
+        return this.tables.filter((item) => {
+          return this.search
+            .toLowerCase()
+            .split(" ")
+            .every((v) => item.HeiName.toLowerCase().includes(v));
+        });
+      } else {
+        return this.tables;
+      }
     },
-    methods: {
-        // statusChecker(status) {
-        //     if (status != "COMPLETED") {
-        //         return true;
-        //     }
-        // },
-    },
+  },
+  methods: {
+    // statusChecker(status) {
+    //     if (status != "COMPLETED") {
+    //         return true;
+    //     }
+    // },
+  },
+  mounted: async function () {
+    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+    const AccessTypes = Parse.Object.extend("AccessTypes");
+    const query = new Parse.Query(AccessTypes);
+    query.equalTo("name", Parse.User.current().get("access_type"));
+
+    const querResult = await query.find();
+    var accType = querResult[0].get("privileges");
+    var flag = 0;
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
+        flag = 1;
+      }
+    }
+    if (flag === 0) {
+      this.$router.push("/403");
+    } else {
+      console.log("Hi!, You have permission to access this Page");
+      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+    }
+  },
 };
 </script>
 
