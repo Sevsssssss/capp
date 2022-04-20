@@ -300,7 +300,7 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.comment === null
+                this.comment == null
             ) {
                 toast("Please fill out the comment for disapproving the file", {
                     type: TYPE.ERROR,
