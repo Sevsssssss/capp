@@ -78,8 +78,8 @@
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ i.Name }}
                     </td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ i.programs }}
+                    <td v-for="program in i.Programs" :key="program" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{ program.name }}
                     </td>
                     <td class="py-4 text-right">
                         <label for="editDisciplines" class="font-medium text-blue-600 hover:underline">Edit Disciplines</label>
@@ -367,13 +367,25 @@ export default {
         const querResult = await query.find();
         for (var i = 0; i < querResult.length; i++) {
             const discipline = querResult[i];
+
+            const programs = Parse.Object.extend("Programs");
+            const queryProg = new Parse.Query(programs);
+            queryProg.equalTo("programDiscipline", discipline.id);
+
+            const progResult = await queryProg.find();
+
+            var programsMat=[];
+            for(var j = 0; j < progResult.length; j++){
+                const prog = progResult[j];
+                programsMat.push({
+                    id: prog.id,
+                    name: prog.get("programName")
+                })
+            }
             
             disciplineTable.push({
                 Name: discipline.get("disciplineName"),
-                Programs: [
-                    "BS IT",
-                    "BS CS"
-                ],
+                Programs: programsMat,
             });
             disciplinesNames.push({
                 id: discipline.id,
