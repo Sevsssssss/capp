@@ -1,12 +1,6 @@
 <template>
   <!--Header-->
   <div class="m-3">
-    {{ categories }}
-    <br />
-    <div v-for="category in categories" :key="category">
-      {{ category.id }}
-      {{ category.subcategory.length }}
-    </div>
     <form
       v-on:submit.prevent="submit"
       class="overflow-x-auto shadow-lg rounded-lg p-8 w-full"
