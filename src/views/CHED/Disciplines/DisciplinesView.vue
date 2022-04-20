@@ -3,6 +3,7 @@
     <NoDataAvail names="DisciplinesView" />
   </div>
   <div v-else class="p-3">
+    {{editDisciplineName}}
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
       <div
         class="bg-brand-white shadow-md rounded-md m-3 p-4"
@@ -177,7 +178,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="i in searchAccessType" :key="i" class="bg-white border-b">
+          <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
             <td
               scope="row"
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -195,7 +196,7 @@
             <td class="py-4 text-right">
               <label
                 for="editDisciplines"
-                class="font-medium text-blue-600 hover:underline"
+                class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)"
                 >Edit Disciplines</label
               >
             </td>
@@ -219,7 +220,7 @@
           </tr>
         </tbody>
       </table>
-      <div v-if="searchAccessType.length == 0" class="p-5 font-medium">
+      <div v-if="searchDiscipline.length == 0" class="p-5 font-medium">
         <!-- NO DATA FOUND {{search}} -->
         Sorry, the keyword "{{ search }}" cannot be found in the database.
       </div>
@@ -389,8 +390,8 @@
     <input type="checkbox" id="editDisciplines" class="modal-toggle" />
     <div class="modal">
       <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">ADD A DISCIPLINE</div>
-        <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
+        <div class="font-semibold text-md">EDIT DISCIPLINE NAME</div>
+        <p class="py-2 text-sm">Input the new name of the dicipline.</p>
         <form>
           <div class="mb-6">
             <label
@@ -412,7 +413,7 @@
                 p-2.5
               "
               placeholder="Enter Name"
-              v-model="disciplineName"
+              v-model="editDisciplineName"
             />
           </div>
         </form>
@@ -437,7 +438,7 @@
               hover:bg-blue-800
               border-none
             "
-            @click="addDiscipline()"
+            @click="newDiscName()"
             >Submit</label
           >
         </div>
@@ -652,6 +653,8 @@ export default {
       tables: [],
       search: "",
       disciplineName: "",
+      editDisciplineName: "",
+      editID: "",
       programs: [
         {
           id: 1,
@@ -665,7 +668,7 @@ export default {
   },
   components: { NoDataAvail },
   computed: {
-    searchAccessType() {
+    searchDiscipline() {
       return this.tables
         .filter((p) => {
           return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -682,6 +685,22 @@ export default {
     },
     modal() {
       this.showModal1 = !this.showModal1;
+    },
+    editDiscipline(name, id) {
+      this.editDisciplineName = name;
+      this.editID = id;
+    },
+    async newDiscName() {
+      const Disciplines = Parse.Object.extend("Disciplines");
+      const discipline = new Parse.Query(Disciplines);
+      discipline.equalTo("objectId", this.editID);
+      const disc = await discipline.first();
+      disc.set("disciplineName", this.editDisciplineName);
+      disc.save();
+      console.log("Edit Successful");
+        
+      
+      
     },
     addDiscipline() {
       const disciplines = Parse.Object.extend("Disciplines");
@@ -787,6 +806,7 @@ export default {
         }
 
         disciplineTable.push({
+          id: discipline.id,
           Name: discipline.get("disciplineName"),
           Programs: programsMat,
         });
