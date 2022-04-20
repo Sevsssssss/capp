@@ -23,10 +23,10 @@
                         {{table.file}}
                     </td> -->
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" /> 
                         </td>
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]"/>
                         </td>
                         <td class="px-6 py-4">
                             <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1, v$.comment.$model]"></textarea>
@@ -140,8 +140,8 @@ export default {
             ],
             tables: [],
             search: "",
-            disapproved: null,
-            approved: null,
+            disapproved: '',
+            approved: '',
         };
     },
     validations() {
@@ -281,8 +281,8 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.approved == null &&
-                this.disapproved == null
+                this.approved == '' ||
+                this.disapproved == ''
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -300,7 +300,7 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.comment == null
+                this.comment === null
             ) {
                 toast("Please fill out the comment for disapproving the file", {
                     type: TYPE.ERROR,
