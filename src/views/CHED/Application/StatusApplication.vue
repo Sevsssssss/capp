@@ -10,6 +10,9 @@
                     <div class="font-normal text-sm uppercase">
                         APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
                     </div>
+                    <div class="font-normal text-sm uppercase">
+                        PROGRAM: <span class="font-semibold">BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY <!--{{ type }}--></span>
+                    </div>
                 </div>
                 <div class="flex flex-col">
                     <div class="text-left p-4 pr-6 space-y-2">

@@ -3,19 +3,17 @@
 <div class="m-5">
     <form v-on:submit.prevent="submit">
         <div class="overflow-x-auto shadow-lg rounded-lg px-8 py-5">
-            <div class="flex flex-row" style="justify-content: space-between">
+            <div class="" style="justify-content: space-between">
                 <div class="form-control mr-3 w-full">
                     <label class="label">
                         <span class="label-text">Application Type Name:</span>
                     </label>
-                    <input type="text" placeholder="Enter Application Type Name" :class="{ 'input-error': validationStatus(v$.applicationTypeName) }" class="input input-bordered w-full max-w-xs" v-model="v$.applicationTypeName.$model" />
-                    <!-- <label class="label"></label> -->
-                    <!--<label class="label">
-                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationTypeName) }" v-if="validationStatus(v$.applicationTypeName)">
-                            Application Type Name is Required</span>
-                    </label>-->
+                    
                 </div>
-                <div :class="{'hide' : !isZero() }"  class="flex flex-row justify-center items-center space-x-4">
+                <div class="flex flex-row form-control mr-3 w-full justify-between">
+                    
+                    <input type="text" placeholder="Enter Application Type Name" :class="{ 'input-error': validationStatus(v$.applicationTypeName) }" class="input input-bordered w-full max-w-xs" v-model="v$.applicationTypeName.$model" />
+                    <div :class="{'hide' : !isZero() }"  class="flex flex-row justify-center items-center space-x-4">
                     <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
                         <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
@@ -27,6 +25,13 @@
                         </svg>
                     </button>
                 </div>
+                    <!-- <label class="label"></label> -->
+                    <!--<label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationTypeName) }" v-if="validationStatus(v$.applicationTypeName)">
+                            Application Type Name is Required</span>
+                    </label>-->
+                </div>
+                
             </div>
             <!-- Body -->
             <div class="overflow-x-auto rounded-lg" v-for="req in appReqs" v-bind:key="req" :id="req.id">
@@ -41,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div :class="{'hide' : isZero() }" class="space-x-4" style="text-align-last: right;">
+            <div :class="{'hide' : isZero() }" class="space-x-4 pt-5" style="text-align-last: right;">
                 <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
                         Add Category
                     </button> -->
