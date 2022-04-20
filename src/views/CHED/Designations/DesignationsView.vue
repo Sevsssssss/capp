@@ -142,16 +142,22 @@
             >
               {{ i.Name }}
             </td>
-            <td class="px-6 py-4 text-right">
+            <!-- <td class="px-6 py-4 text-right">
               <a
                 @click="viewEvalIns"
                 href="#"
                 class="font-medium text-blue-600 hover:underline"
                 >Edit</a
               >
-            </td>
-            <td class="px-6 py-4 flex flex-row">
-              <div class="hover:text-brand-red/60">
+            </td> -->
+            <td class="px-6 py-4 flex flex-row justify-end">
+              <a
+                @click="viewEvalIns"
+                href="#"
+                class="font-medium text-blue-600 hover:underline pr-3"
+                >Edit</a
+              >
+              <div class="hover:text-brand-red/60 self-center">
                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
