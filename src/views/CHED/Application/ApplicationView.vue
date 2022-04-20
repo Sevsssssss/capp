@@ -90,7 +90,10 @@
                                 {{ table.status }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-center">
+                         <!-- <td class="px-6 py-4">
+                            Assigned to
+                        </td> -->
+                        <td class="px-6 py-4 text-center items-end">
                             <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
                             <router-link :to="{
                     name: 'StatusApplication',
@@ -283,7 +286,10 @@ export default {
             return this.tables
                 .filter((p) => {
                     return (
-                        p.rep.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                        p.status.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                        // p.program.toLowerCase().indexOf(this.search.toLowerCase()) != -1,
+                        // p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1,
+                        // p.type.toLowerCase().indexOf(this.search.toLowerCase()) != -1
                     );
                 })
                 .slice(

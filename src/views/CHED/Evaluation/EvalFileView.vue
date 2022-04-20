@@ -10,7 +10,7 @@
         </button> -->
         <div class="flex space-x-2 pr-2">
             <!-- add -->
-            <button @click="$router.replace({path: '/evaluationins/edit'})" class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
+            <button @click="$router.replace({ path: '/evaluationins/edit' })" class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
                 <div class="flex flex-row">
                     <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
@@ -52,8 +52,8 @@
             <div class="font-semibold">
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
-            <div>{{evalDesc}}</div>
-            <div>per CMO {{cmoNo}}, s.{{seriesYear}}</div>
+            <div>{{ evalDesc }}</div>
+            <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
             <div>Description Here</div>
         </div>
         <div class="">
@@ -62,17 +62,17 @@
                     <tbody>
                         <!-- row 1 -->
                         <div v-for="cat in categories" :key="cat">
-                            <th>{{cat.id}}</th>
-                            <td class="font-bold">{{cat.Category}}</td>
+                            <th>{{ cat.id }}</th>
+                            <td class="font-bold">{{ cat.Category }}</td>
                             <div v-for="subcat in cat.subcategory" :key="subcat">
                                 <td></td>
-                                <th>{{cat.id}}.{{subcat.id}}</th>
-                                <td class="font-medium">{{subcat.Subcategory}}</td>
+                                <th>{{ cat.id }}.{{ subcat.id }}</th>
+                                <td class="font-medium">{{ subcat.Subcategory }}</td>
                                 <div v-for="item in subcat.items" :key="item">
                                     <td></td>
                                     <td></td>
-                                    <th>{{cat.id}}.{{subcat.id}}.{{item.id}}</th>
-                                    <td class="font-thin">{{item.Item}}</td>
+                                    <th>{{ cat.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                                    <td class="font-thin">{{ item.Item }}</td>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" >Delete</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
             </div>
         </div>
     </div>
@@ -105,82 +105,100 @@ export default {
     data() {
         return {
             categories: [{
-                "id": 1,
-                "subcategory": [{
-                    "id": 1,
-                    "items": [],
-                    "Subcategory": "A doctoral degree holder in Education or a related field"
-                }, {
-                    "id": 2,
-                    "items": [],
-                    "Subcategory": "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981."
-                }, {
-                    "id": 3,
-                    "items": [],
-                    "Subcategory": "Employed full - time. "
-                }, {
-                    "id": 4,
-                    "items": [],
-                    "Subcategory": "With at least three (3) years of very satisfactory teaching experience in tertiary level."
-                }, {
-                    "id": 5,
-                    "items": [],
-                    "Subcategory": "With at least three (3) years of very satisfactory teaching experience in either the elementary or secondary level"
-                }, {
-                    "id": 6,
-                    "items": [],
-                    "Subcategory": "With at least 2 years of very managerial/administrative experience"
-                }, {
-                    "id": 7,
-                    "items": [],
-                    "Subcategory": "With updated notarized contract of employment"
-                }],
-                "Category": "DEAN OR DEPARTMENT CHAIR",
-                "Desc": "(CMO 76, s. 2017), and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)"
-            }, {
-                "id": 2,
-                "subcategory": [{
-                    "id": 1,
-                    "items": [{
-                        "id": 1,
-                        "Item": "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)"
-                    }, {
-                        "id": 2,
-                        "Item": "Faculty teaching general education and major subjects should have an appropriate master’s degree in the field they are assigned to teach."
-                    }, {
-                        "id": 3,
-                        "Item": "Physical Education Teacher"
-                    }, {
-                        "id": 4,
-                        "Item": "Teacher has a BS P.E. degree or BEEd/ BSEd major/minor in P.E. or any other bachelor's degree with certificate in P.E."
-                    }, {
-                        "id": 5,
-                        "Item": "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981."
-                    }, {
-                        "id": 6,
-                        "Item": "With updated notarized contract of employment"
-                    }],
-                    "Subcategory": "General Requirements"
-                }, {
-                    "id": 2,
-                    "items": [{
-                        "id": 1,
-                        "Item": "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981."
-                    }, {
-                        "id": 2,
-                        "Item": "Holder of Master’s degree in education or any of the allied fields"
-                    }],
-                    "Subcategory": "Qualifications of the Professional Education Faculty"
-                }],
-                "Category": "FACULTY"
-            }],
+                    id: 1,
+                    subcategory: [{
+                            id: 1,
+                            items: [],
+                            Subcategory: "A doctoral degree holder in Education or a related field",
+                        },
+                        {
+                            id: 2,
+                            items: [],
+                            Subcategory: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
+                        },
+                        {
+                            id: 3,
+                            items: [],
+                            Subcategory: "Employed full - time. ",
+                        },
+                        {
+                            id: 4,
+                            items: [],
+                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in tertiary level.",
+                        },
+                        {
+                            id: 5,
+                            items: [],
+                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in either the elementary or secondary level",
+                        },
+                        {
+                            id: 6,
+                            items: [],
+                            Subcategory: "With at least 2 years of very managerial/administrative experience",
+                        },
+                        {
+                            id: 7,
+                            items: [],
+                            Subcategory: "With updated notarized contract of employment",
+                        },
+                    ],
+                    Category: "DEAN OR DEPARTMENT CHAIR",
+                    Desc: "(CMO 76, s. 2017), and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
+                },
+                {
+                    id: 2,
+                    subcategory: [{
+                            id: 1,
+                            items: [{
+                                    id: 1,
+                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
+                                },
+                                {
+                                    id: 2,
+                                    Item: "Faculty teaching general education and major subjects should have an appropriate master’s degree in the field they are assigned to teach.",
+                                },
+                                {
+                                    id: 3,
+                                    Item: "Physical Education Teacher",
+                                },
+                                {
+                                    id: 4,
+                                    Item: "Teacher has a BS P.E. degree or BEEd/ BSEd major/minor in P.E. or any other bachelor's degree with certificate in P.E.",
+                                },
+                                {
+                                    id: 5,
+                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
+                                },
+                                {
+                                    id: 6,
+                                    Item: "With updated notarized contract of employment",
+                                },
+                            ],
+                            Subcategory: "General Requirements",
+                        },
+                        {
+                            id: 2,
+                            items: [{
+                                    id: 1,
+                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
+                                },
+                                {
+                                    id: 2,
+                                    Item: "Holder of Master’s degree in education or any of the allied fields",
+                                },
+                            ],
+                            Subcategory: "Qualifications of the Professional Education Faculty",
+                        },
+                    ],
+                    Category: "FACULTY",
+                },
+            ],
             programName: "Bachelor of Early Childhood Education (BECEd",
             cmoNo: "76",
             seriesYear: "2017",
             evalDesc: "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
         };
     },
-    methods: {
-    },
+    methods: {},
 };
 </script>

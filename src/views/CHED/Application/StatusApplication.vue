@@ -41,10 +41,10 @@
             <ForApproval :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
-            <ForRevision></ForRevision>
+            <ForRevision :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
-            <ForEvaluation></ForEvaluation>
+            <ForEvaluation :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
             <ForIssuance></ForIssuance>

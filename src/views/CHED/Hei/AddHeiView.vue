@@ -348,10 +348,10 @@ export default {
             //var error_text = "Account not created due to the following reasons:\n";
              if (
                 this.hei_name == "" ||
-                this.usernameError == "" ||
-                this.addressError == "" ||
-                this.numberError == "" ||
-                this.inst_codeError == ""
+                this.username == "" ||
+                this.address == "" ||
+                this.number == "" ||
+                this.inst_code == ""
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,

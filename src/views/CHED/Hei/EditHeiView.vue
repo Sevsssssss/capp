@@ -298,18 +298,21 @@ export default {
                 // setTimeout(() => this.$router.push({
                 //     path: "/hei"
                 // }), 3000);
-                await newHEI.save()
-                    .then(() => {
-                        toast("HEI Account Added!", {
-                                type: TYPE.SUCCESS,
-                                timeout: 3000,
-                                position: POSITION.TOP_RIGHT,
+                await newHEI.save().then(() => {
+                    toast("HEI Account Added!", {
+                            type: TYPE.SUCCESS,
+                            timeout: 3000,
+                            position: POSITION.TOP_RIGHT,
+                        }),
+                        // this.sendEmail()
+                        setTimeout(
+                            () =>
+                            this.$router.push({
+                                path: "/hei",
                             }),
-                            // this.sendEmail()
-                            setTimeout(() => this.$router.push({
-                                path: "/hei"
-                            }), 2000);
-                    });
+                            2000
+                        );
+                });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
