@@ -102,11 +102,11 @@
                         <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ i.Name }}
                         </td>
-                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <td scope="row" class="px-6 py-4 font-medium spacer text-gray-900">
                             {{ i.Privileges }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                         </td>
                         <td class="px-6 py-4 flex flex-row">
                             <div class="hover:text-brand-red/60">
