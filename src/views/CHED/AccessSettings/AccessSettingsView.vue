@@ -305,6 +305,7 @@
                 </div>
             </div>
         </div>
+        <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
         <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box relative rounded-md text-left">
                 <div class="text-brand-darkblue font-bold label-xl">Grant Access</div>
@@ -328,6 +329,7 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
@@ -338,6 +340,9 @@ const toast = useToast();
 // var page = 0;
 export default {
     name: "AccessTypesView",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             showModal1: false,
@@ -367,7 +372,7 @@ export default {
             },
         };
     },
-    // components: {NoDataAvail},
+    
     computed: {
         searchAccessType() {
             return this.tables
@@ -407,6 +412,7 @@ export default {
             }
         },
         addAccessType() {
+            this.$refs.Spinner.show();
             const accessType = Parse.Object.extend("AccessTypes");
             const newAccessType = new accessType();
             try {
@@ -415,17 +421,32 @@ export default {
                     hometype: this.homeType,
                     privileges: this.checkedAccessTypes,
                 });
-                if (
-                    confirm(
-                        "Application Type added. Would you like to add another Application Type?"
-                    )
-                ) {
-                    document.location.reload();
-                } else {
-                    document.location.reload();
-                }
+                toast("Access Type Added", {
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    }),
+                    // window.location.reload()
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 2000);
+                // if (
+                //     confirm(
+                //         "Application Type added. Would you like to add another Application Type?"
+                //     )
+                // ) {
+                //     document.location.reload();
+                // } else {
+                //     document.location.reload();
+                // }
             } catch (error) {
-                alert("Error: " + error.code + " " + error.message);
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error.message)
             }
         },
         addAppType() {

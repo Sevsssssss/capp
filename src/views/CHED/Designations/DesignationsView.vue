@@ -326,7 +326,7 @@ export default {
                     }),
                     // window.location.reload()
                     setTimeout(() => {
-                        this.$router.push("/app-settings")
+                        document.location.reload();
                     }, 2000);
                 //if (
                 //  confirm(
