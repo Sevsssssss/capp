@@ -33,52 +33,19 @@
                     <div class="mr-5">
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative mt-1">
-                            <div class="
-                    absolute
-                    inset-y-0
-                    left-0
-                    flex
-                    items-center
-                    pl-3
-                    pointer-events-none
-                  ">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input v-model="search" type="text" id="search" class="
-                    bg-gray-50
-                    border border-gray-300
-                    text-gray-900 text-sm
-                    rounded-lg
-                    focus:ring-blue-500 focus:border-blue-500
-                    block
-                    w-80
-                    pl-10
-                    p-2.5
-                  " placeholder="Search for items" />
+                            <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-row">
                     <!-- button -->
                     <div class="h-fit pr-5 pt-3 items-center">
-                        <label type="button" for="createAccessType" class="
-                  flex
-                  items-center
-                  text-white
-                  bg-brand-darkblue
-                  hover:bg-blue-800
-                  focus:ring-4 focus:ring-blue-300
-                  font-medium
-                  rounded-lg
-                  text-sm
-                  px-3
-                  py-2.5
-                  mr-2
-                  mb-2
-                  focus:outline-none
-                ">
+                        <label type="button" for="createAccessType" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -147,29 +114,10 @@
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
-                                <a href="javascript:void(0)" class="
-                      py-2
-                      px-3
-                      ml-0
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-l-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                    " @click="prevPage()">Previous</a>
+                                <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)" class="
-                      py-2
-                      px-3
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-r-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                    " @click="nextPage()">Next</a>
+                                <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
                             </li>
                         </ul>
                     </div>
@@ -179,24 +127,15 @@
 
         <input type="checkbox" id="createAccessType" class="modal-toggle" />
         <div class="modal">
-            <div class="modal-box relative rounded-md text-left">
+            <div class="modal-box relative  w-11/12 max-w-5xl rounded-md text-left">
                 <div class="font-semibold text-md">ADD ACCESS TYPES</div>
-                <p class="py-2 text-sm">Input the name and choose its priviliges.</p>
+                <p class="py-2 text-sm">Input the name and choose its priviliges</p>
                 <form v-on:submit.prevent="submit">
                     <div class="mb-6">
-                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Access Type:</label>
-                        <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="
-                  bg-gray-50
-                  border border-gray-300
-                  text-gray-900 text-sm
-                  rounded-md
-                  focus:ring-blue-500 focus:border-blue-500
-                  block
-                  w-full
-                  p-2.5
-                " placeholder="Enter Name" v-model="v$.atname.$model" />
+                        <label for="base-input" class="block pb-2 text-sm font-medium text-gray-900">Access Type:</label>
+                        <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
                         <div class="font-medium text-sm mt-2">
-                            Choose Home Type:
+                            <div class="pb-2">Choose Home Type:</div>
                             <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
                                 <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
@@ -209,14 +148,8 @@
                             </label>
                         </div>
                         <div v-if="homeType == '/home'" class="font-medium text-sm mt-2">
-                            CHED Privileges:
-                            <div class="
-                    grid
-                    xxl:grid-cols-3
-                    xl:grid-cols-2
-                    lg:grid-cols-2
-                    text-left
-                  ">
+                            <div class="pb-2">CHED Privileges:</div>
+                            <div class="grid xxl:grid-cols-3 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left">
                                 <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
                                     <input type="checkbox" class="checkbox mr-1" value="/application" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
@@ -342,8 +275,8 @@
                         </div>
 
                         <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
-                            HEI Privileges:
-                            <div class="form-control flex mt-1 flex-row">
+                            <div class="pb-2">HEI Privileges:</div>
+                            <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
                                     <input type="checkbox" class="checkbox mr-1" value="/HEIapply" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
@@ -367,21 +300,8 @@
                     </div>
                 </form>
                 <div class="modal-action">
-                    <label for="createAccessType" class="
-                btn btn-sm
-                rounded-md
-                text-blue-700
-                bg-transparent
-                border border-blue-700
-                hover:bg-white
-              ">Cancel</label>
-                    <label for="my-modal-6" id="my-modal-6" type="submit" class="
-                btn btn-sm
-                bg-blue-700
-                rounded-md
-                hover:bg-blue-800
-                border-none
-              " @click="modal()">Submit</label>
+                    <label for="createAccessType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
                 </div>
             </div>
         </div>
@@ -392,21 +312,8 @@
                     Are you sure you want to grant access?
                 </p>
                 <div class="modal-action">
-                    <label for="my-modal-6" class="
-                btn btn-sm
-                rounded-md
-                text-blue-700
-                bg-transparent
-                border border-blue-700
-                hover:bg-white
-              " @click="modal()">Cancel</label>
-                    <label class="
-                btn btn-sm
-                bg-red-500
-                hover:bg-red-600
-                rounded-md
-                border-none
-              " @click="addAccessType()">Continue</label>
+                    <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                    <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addAccessType()">Continue</label>
                 </div>
             </div>
         </div>

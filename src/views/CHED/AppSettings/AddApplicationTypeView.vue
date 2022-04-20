@@ -10,27 +10,14 @@
                     </label>
                 </div>
                 <div class="flex flex-row form-control mr-3 w-full justify-between">
-                    <input type="text" placeholder="Enter Application Type Name" :class="{
-                'input-error': validationStatus(v$.applicationTypeName),
-              }" class="input input-bordered w-full max-w-xs" v-model="v$.applicationTypeName.$model" />
+                    <input type="text" placeholder="Enter Application Type Name" class="input input-bordered w-full max-w-xs" v-model="v$.applicationTypeName.$model" />
                     <div :class="{ hide: !isZero() }" class="flex flex-row justify-center items-center space-x-4">
-                        <button data-tip="Add Requirement" @click="addRequirement" class="
-                  btn
-                  tooltip tooltip-left
-                  bg-brand-darkblue
-                  hover:bg-blue-800
-                  border-none
-                ">
+                        <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
                             <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                             </svg>
                         </button>
-                        <button data-tip="Remove Requirement" @click="pop" class="
-                  btn
-                  tooltip tooltip-left
-                  btn-outline
-                  hover:bg-brand-red/60
-                ">
+                        <button data-tip="Remove Requirement" @click="pop" class="btn tooltip tooltip-left btn-outline hover:bg-brand-red/60">
                             <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,13H5V11H19V13Z" />
                             </svg>
@@ -45,7 +32,7 @@
             </div>
             <!-- Body -->
             <div class="overflow-x-auto rounded-lg" v-for="req in appReqs" v-bind:key="req" :id="req.id">
-                <div class="ml-5" style="justify-content: space-between">
+                <div class="mt-2" style="justify-content: space-between">
                     <div class="flex flex-row justify-center items-center">
                         <div class="form-control w-full mr-3">
                             <label class="label">
@@ -60,13 +47,7 @@
                 <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
                         Add Category
                     </button> -->
-                <button data-tip="Add Requirement" @click="addRequirement" class="
-              btn
-              tooltip tooltip-left
-              bg-brand-darkblue
-              hover:bg-blue-800
-              border-none
-            ">
+                <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
                     <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                     </svg>
@@ -83,20 +64,13 @@
                     <button class="btn btn-margin btn-outline" @click="$router.go(-1)">
                         Cancel
                     </button>
-                    <button for="my-modal-6" id="my-modal-6" type="submit" class="
-                border-none
-                btn btn-m
-                submit
-                bg-brand-darkblue
-                hover:bg-brand-blue
-              " @click="modal()">
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
                         Create
                     </button>
                 </div>
             </div>
         </div>
     </form>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="text-brand-darkblue font-bold label-xl">
@@ -106,21 +80,8 @@
                 Are you sure you want to add this application type?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-brand-darkblue
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            " @click="saveAppType()" type="submit">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
             </div>
         </div>
     </div>
