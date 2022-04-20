@@ -231,7 +231,7 @@
       <div class="modal-box relative rounded-md text-left">
         <div class="font-semibold text-md">ADD DESIGNATION</div>
         <p class="py-2 text-sm">Input the name of the Designation.</p>
-        <form>
+        <form v-on:submit.prevent="submit"> 
           <div class="mb-6">
             <label
               for="base-input"
@@ -241,6 +241,7 @@
             <input
               type="text"
               id="base-input"
+              :class="{ 'input-error': validationStatus(v$.designationName) }"
               class="
                 bg-gray-50
                 border border-gray-300
@@ -252,7 +253,7 @@
                 p-2.5
               "
               placeholder="Enter Name"
-              v-model="designationName"
+              v-model="v$.designationName.$model"
             />
           </div>
         </form>
@@ -269,7 +270,7 @@
             "
             >Cancel</label
           >
-          <label
+          <label for="my-modal-6" id="my-modal-6" type="submit"
             class="
               btn btn-sm
               bg-blue-700
@@ -277,25 +278,49 @@
               hover:bg-blue-800
               border-none
             "
-            @click="addAccessType()"
+            @click="modal()"
             >Submit</label
           >
         </div>
       </div>
+    </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left" >
+            <div class="text-brand-darkblue font-bold label-xl">
+                Add Designation
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this designation?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addAccessType()">Continue</label>
+            </div>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 import Parse from "parse";
-
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import {
+    required
+} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 // var dataNumber = 10;
 // var page = 0;
-
+const toast = useToast();
 export default {
   name: "DesignationsView",
   data() {
     return {
+      showModal1: false,
+      v$: useVuelidate(),
       currentpage: 0,
       numPerPage: 10,
       totalEntries: 0,
@@ -311,6 +336,13 @@ export default {
       checkedAccessTypes: [],
     };
   },
+  validations() {
+        return {
+            designationName: {
+                required,
+            },
+        };
+    },
   components: {},
   computed: {
     searchDesignation() {
@@ -325,6 +357,31 @@ export default {
     },
   },
   methods: {
+    validationStatus: function (validation) {
+        return typeof validation !== "undefined" ? validation.$error : false;
+    },
+    submit: function () {
+        this.v$.$touch();
+        if (!this.v$.$pending || !this.v$.$error) return;
+    },
+    validate() {
+        return this.showModal1;
+    },
+    modal(){
+        var has_error = 0;
+        if (this.designationName == "") {
+            toast("Please fill out the required information", {
+                type: TYPE.ERROR,
+                timeout: 3000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+            });
+            has_error = 1;
+        }
+        if (has_error < 1) {
+            this.showModal1 = !this.showModal1;
+        }
+    },
     addAccessType() {
       const designation = Parse.Object.extend("Designations");
       const newDesignation = new designation();

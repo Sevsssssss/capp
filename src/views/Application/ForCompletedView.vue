@@ -21,12 +21,17 @@
             </tbody>
         </table>
     </div>
+    <div class="flex flex-row center pt-10">
+        <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+            <div>Back</div>
+        </button>
+    </div>
 </div>
 </template>
 
 <script>
 export default {
- data() {
+    data() {
         return {
             // id: this.$route.params.id,
             show: false,
@@ -77,7 +82,7 @@ export default {
             search: '',
         }
     },
-     computed: {
+    computed: {
         searchHEI() {
             return this.tables.filter(p => {
                 return p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1;

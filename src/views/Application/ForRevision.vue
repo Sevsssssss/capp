@@ -20,16 +20,16 @@
                     <td class="px-6 py-4">
                         <svg class="check" width="24" height="24" style="fill: green">
                             <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                            <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
                         </svg>
                         <!--<input type="radio"  :id="'approved ' + table.id" :value="'approved ' + table.id" class="radio" v-model="statusShow">-->
                     </td>
                     <td class="px-6 py-4">
                         <svg class="wrong" width="24" height="24" style="fill: red">
                             <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
                         </svg>
-                        
+
                         <!--<input type="radio" :id="'disapproved ' + table.id" :value="'disapproved ' + table.id" class="radio" v-model="statusShow">-->
                     </td>
                     <td class="px-6 py-4">
@@ -39,12 +39,24 @@
             </tbody>
         </table>
     </div>
+    <div class="flex flex-row center pt-10">
+        <div class="pr-5">
+            <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+                <div>Dismiss</div>
+            </button>
+        </div>
+        <div>
+            <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                Re-Submit</label>
+        </div>
+
+    </div>
 </div>
 </template>
 
 <script>
 export default {
- data() {
+    data() {
         return {
             // id: this.$route.params.id,
             show: false,
@@ -106,7 +118,7 @@ export default {
             search: '',
         }
     },
-     computed: {
+    computed: {
         searchHEI() {
             return this.tables.filter(p => {
                 return p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1;

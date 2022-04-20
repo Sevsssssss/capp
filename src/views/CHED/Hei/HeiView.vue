@@ -161,9 +161,9 @@
               >
                 {{ header.title }}
               </th>
-              <!-- <th scope="col" class="px-6 py-3">
-                            <span class="sr-only">Edit</span>
-                        </th> -->
+              <th scope="col" class="px-6 py-3">
+                <span class="sr-only">Edit</span>
+              </th>
             </tr>
           </thead>
           <tbody v-if="sort_type_var == false">
@@ -188,18 +188,36 @@
                 {{ table.email }}
               </td>
               <td class="px-6 py-4">
-                <label
-                  for="deleteFunc"
-                  class="hover:text-brand-red/60"
-                  @click="selectAcc(table.InstNo)"
-                >
-                  <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                    <path
-                      fill="currentColor"
-                      d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                    />
-                  </svg>
-                </label>
+                <div class="flex space-x-4 items-end justify-end">
+                  <a
+                    href="#"
+                    @click="$router.replace({ path: '/hei/edit' })"
+                    class="
+                      font-medium
+                      text-blue-600
+                      dark:text-blue-500
+                      hover:underline
+                    "
+                    >Edit</a
+                  >
+                  <div>
+                    <label
+                      for="deleteFunc"
+                      class="hover:text-brand-red/60"
+                      @click="selectAcc(table.InstNo)"
+                    >
+                      <svg
+                        style="width: 20px; height: 20px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                        />
+                      </svg>
+                    </label>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -210,7 +228,8 @@
         </div>
         <div v-if="sort_type_var == true" class="p-5 font-medium">
           <!-- NO DATA FOUND {{search}} -->
-          Sorry, the keyword "{{ sort_type }}" cannot be found in the database.
+          Sorry, there is no data with the type of "{{ sort_type }}" in the
+          database.
         </div>
         <!-- Table Footer -->
         <div class="table-footer flex flex-row justify-between">
@@ -498,6 +517,7 @@ export default {
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
           heisPriv.push({
+            id: hei.id,
             InstNo: hei.get("inst_code"),
             HeiName: hei.get("hei_name"),
             address: hei.get("address"),
@@ -523,6 +543,7 @@ export default {
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
           heisState.push({
+            id: hei.id,
             InstNo: hei.get("inst_code"),
             HeiName: hei.get("hei_name"),
             address: hei.get("address"),
@@ -548,6 +569,7 @@ export default {
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
           heisLocal.push({
+            id: hei.id,
             InstNo: hei.get("inst_code"),
             HeiName: hei.get("hei_name"),
             address: hei.get("address"),
@@ -573,6 +595,7 @@ export default {
         for (i = 0; i < querResult.length; i++) {
           const hei = querResult[i];
           heisOthers.push({
+            id: hei.id,
             InstNo: hei.get("inst_code"),
             HeiName: hei.get("hei_name"),
             address: hei.get("address"),
@@ -589,7 +612,6 @@ export default {
       }
     },
   },
-
   mounted: async function () {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
@@ -616,10 +638,12 @@ export default {
       const querResult = await query.find({
         useMasterKey: true,
       });
-      for (var z = 0; z < querResult.length; z++) {
-        const hei = querResult[z];
+      for (var i = 0; i < querResult.length; i++) {
+        const hei = querResult[i];
         console.log(heis);
+        console.log(hei.id);
         heis.push({
+          id: hei.id,
           InstNo: hei.get("inst_code"),
           HeiName: hei.get("hei_name"),
           address: hei.get("address"),

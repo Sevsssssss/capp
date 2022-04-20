@@ -445,152 +445,161 @@ export default {
     validationStatus: function (validation) {
       return typeof validation !== "undefined" ? validation.$error : false;
     },
-    submit: function () {
-      this.v$.$touch();
-      if (!this.v$.$pending || !this.v$.$error) return;
-    },
-    validate() {
-      return this.showModal1;
-    },
-    showaddAgain() {
-      return this.addAgain;
-    },
-    scrollToTop() {
-      window.scrollTo(0, 0);
-    },
-    async addHEI() {
-      this.password = "password";
-      const newHEI = new Parse.User();
-      newHEI.set("hei_name", this.hei_name);
-      newHEI.set("username", this.username);
-      newHEI.set("password", "password");
-      newHEI.set("email", this.email);
-      newHEI.set("address", this.address);
-      newHEI.set("number", this.number);
-      newHEI.set("inst_code", this.inst_code);
-      newHEI.set("hei_type", this.hei_type);
-      newHEI.set("access_type", "HEI");
-      try {
-        // Show the spinner first
-        // this.$refs.Spinner.show();
-        // setTimeout(
-        //     function () {
-        //         this.$refs.Spinner.hide();
-        //     }.bind(this),
-        //     5000
-        // );
-        // await newHEI.save().then(() => {
-        //     setTimeout(() => (this.savingSuccessful = true), 2000);
-        // });
-        // this.sendEmail();
-        // setTimeout(() => this.$router.push({
-        //     path: "/hei"
-        // }), 3000);
-
-        await newHEI.save().then(() => {
-          toast("HEI Account Added!", {
-            type: TYPE.SUCCESS,
-            timeout: 2000,
+    methods: {
+      sendEmail() {
+        var emailParams = {
+          message:
+            "Your account has been created. \n Your account username is " +
+            this.username +
+            "\n Your temporary password is " +
+            this.password,
+          email: this.email,
+        };
+        try {
+          //alert(this.email)
+          emailjs
+            .send(
+              "service_rax86wc",
+              "template_nyqa4k6",
+              emailParams,
+              "wXbhKrnQCwo8bc25m"
+            )
+            .then(() => {
+              toast("Email sent!", {
+                type: TYPE.INFO,
+                timeout: 2000,
+                position: POSITION.TOP_RIGHT,
+              });
+            });
+        } catch (error) {
+          toast("Error:" + error.code + "" + error.message, {
+            type: TYPE.ERROR,
+            timeout: 3000,
+            hideProgressBar: true,
             position: POSITION.TOP_RIGHT,
           });
-          this.sendEmail().then(() => {
-            setTimeout(
-              () =>
-                this.$router.push({
-                  path: "/hei",
-                }),
-              1000
-            );
-          });
-        });
+          console.log(error.message);
+        }
+      },
+      ToggleshowModal() {
+        this.showModal = !this.showModal;
+      },
+      validationStatus: function (validation) {
+        return typeof validation !== "undefined" ? validation.$error : false;
+      },
+      submit: function () {
+        this.v$.$touch();
+        if (!this.v$.$pending || !this.v$.$error) return;
+      },
+      validate() {
+        return this.showModal1;
+      },
+      showaddAgain() {
+        return this.addAgain;
+      },
+      scrollToTop() {
+        window.scrollTo(0, 0);
+      },
+      async addHEI() {
         this.$refs.Spinner.show();
+        try {
+          this.password = "password";
+          const newHEI = new Parse.User();
+          newHEI.set("hei_name", this.hei_name);
+          newHEI.set("username", this.username);
+          newHEI.set("password", "password");
+          newHEI.set("email", this.email);
+          newHEI.set("address", this.address);
+          newHEI.set("number", this.number);
+          newHEI.set("inst_code", this.inst_code);
+          newHEI.set("hei_type", this.hei_type);
+          newHEI.set("access_type", "HEI");
+          newHEI.set("hasTransactions", false);
+
+          await newHEI.save().then(() => {
+            toast("HEI Account Added!", {
+              type: TYPE.SUCCESS,
+              timeout: 3000,
+              position: POSITION.TOP_RIGHT,
+            }),
+              // this.sendEmail()
+              setTimeout(
+                () =>
+                  this.$router.push({
+                    path: "/hei",
+                  }),
+                2000
+              );
+          });
+        } catch (error) {
+          toast("Error:" + error.code + " " + error.message, {
+            type: TYPE.ERROR,
+            timeout: 3000,
+            hideProgressBar: true,
+            position: POSITION.TOP_RIGHT,
+          });
+          console.log(error.message);
+          // alert("Error: " + error.code + " " + error.message);
+          //document.location.reload();
+        }
         setTimeout(
           function () {
             this.$refs.Spinner.hide();
           }.bind(this),
           2000
         );
-      } catch (error) {
-        toast("Error:" + error.code + " " + error.message, {
-          type: TYPE.ERROR,
-          timeout: 3000,
-          hideProgressBar: true,
-          position: POSITION.TOP_RIGHT,
-        });
-        console.log(error.message);
-        // alert("Error: " + error.code + " " + error.message);
-        //document.location.reload();
-      }
-    },
-    modal() {
-      // this.v$.$validate();
-      // if(!this.v$.$error){
-      //     alert('Yey')
-      // }else{
-      //     alert('nay')
-      // }
-      var has_error = 0;
-      //var error_text = "Account not created due to the following reasons:\n";
-      if (this.hei_name == "") {
-        has_error = 1;
-        //error_text += "HEI Name is empty\n"
-        this.hei_nameError = "HEI Name is Required";
-      }
-      if (this.username == "") {
-        has_error = 1;
-        //error_text += "Username is empty\n"
-        this.usernameError = "Username is Required";
-      }
-      if (this.address == "") {
-        has_error = 1;
-        //error_text += "Address is empty\n"
-        this.addressError = "Address is Required";
-      }
-      if (this.number == "") {
-        has_error = 1;
-        //error_text += "Contact Number is empty\n"
-        this.numberError = "Contact Number is Required";
-      }
-      if (this.inst_code == "") {
-        has_error = 1;
-        //error_text += "Institution Code is empty\n"
-        this.inst_codeError = "Institution Code is Required";
-      }
-      if (has_error < 1) {
-        // var password = "";
-        // var characters =
-        //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        // var charactersLength = characters.length;
-        // for (var i = 0; i < 8; i++) {
-        //   password += characters.charAt(
-        //     Math.floor(Math.random() * charactersLength)
-        //   );
+      },
+      modal() {
+        // this.v$.$validate();
+        // if(!this.v$.$error){
+        //     alert('Yey')
+        // }else{
+        //     alert('nay')
         // }
-        this.showModal1 = !this.showModal1;
+        var has_error = 0;
+        //var error_text = "Account not created due to the following reasons:\n";
+        if (
+          this.hei_name == "" ||
+          this.usernameError == "" ||
+          this.addressError == "" ||
+          this.numberError == "" ||
+          this.inst_codeError == ""
+        ) {
+          toast("Please fill out the required information", {
+            type: TYPE.ERROR,
+            timeout: 3000,
+            hideProgressBar: true,
+            position: POSITION.TOP_RIGHT,
+          });
+          has_error = 1;
+        }
+        if (has_error < 1) {
+          this.showModal1 = !this.showModal1;
+        }
+      },
+    },
+    mounted: async function () {
+      // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+      const AccessTypes = Parse.Object.extend("AccessTypes");
+      const query = new Parse.Query(AccessTypes);
+      query.equalTo("name", Parse.User.current().get("access_type"));
+
+      const querResult = await query.find();
+      var accType = querResult[0].get("privileges");
+      var flag = 0;
+      for (var i = 0; i < accType.length; i++) {
+        if (accType[i] === this.$route.path) {
+          flag = 1;
+        }
+      }
+      if (flag === 0) {
+        this.$router.push("403");
+      } else {
+        console.log("Hi!, You have permission to access this Page");
+        //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+        //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
       }
     },
-  },
-  mounted: async function () {
-    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes);
-    query.equalTo("name", Parse.User.current().get("access_type"));
-
-    const querResult = await query.find();
-    var accType = querResult[0].get("privileges");
-    var flag = 0;
-    for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === this.$route.path) {
-        flag = 1;
-      }
-    }
-    if (flag === 0) {
-      this.$router.push("403");
-    } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-    }
   },
 };
 </script>

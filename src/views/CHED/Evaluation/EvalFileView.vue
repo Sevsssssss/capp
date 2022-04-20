@@ -11,7 +11,7 @@
       <div class="flex space-x-2 pr-2">
         <!-- add -->
         <button
-          @click="editEvalIns()"
+          @click="$router.replace({ path: '/evaluationins/edit' })"
           class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none"
         >
           <div class="flex flex-row">
@@ -42,12 +42,11 @@
                 d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
               />
             </svg>
-            <div class="btn-text">DELETE</div>
+            <label for="deleteFunc" class="btn-text">DELETE</label>
           </div>
         </button>
       </div>
     </div>
-
     <!-- <div class="flex space-x-10 text-left center">
         <div class="">
             <img src="../assets/img/CHED_logo.png" alt="ChedLogo" width="90px" height="90px">
@@ -72,186 +71,188 @@
         <div class="font-semibold">
           REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
         </div>
-        <div>per CMO 24, s.2015</div>
+        <div>{{ evalDesc }}</div>
+        <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
         <div>Description Here</div>
       </div>
       <div class="">
         <div class="overflow-x-auto">
           <table class="table eval-table w-full">
-            <!-- head -->
-            <thead class="bg-grey-400">
-              <tr>
-                <th></th>
-                <th class="aoe">Areas of Evaluation</th>
-                <th>Requirements</th>
-              </tr>
-            </thead>
             <tbody>
               <!-- row 1 -->
-              <tr>
-                <th>1</th>
-                <td class="font-bold">PROGRAM ADMINISTRATION</td>
-                <td></td>
-              </tr>
-              <!-- row 2 -->
-              <tr>
-                <th></th>
-                <td class="font-medium">
-                  Presence of a clearly defined and organized administrative and
-                  instructional unit such as college, institute or department
-                </td>
-                <td></td>
-              </tr>
-              <!-- row 3 -->
-              <tr>
-                <th></th>
-                <td class="font-medium flex">DEAN</td>
-                <td class="font-light space-y-3">
-                  <div>1. full-time</div>
-                  <div>2. holder of professional license for librarians</div>
-                  <div>
-                    3. holder of Master of Doctor of Library and Information
-                    Science, or With appropriate or related Specialization
-                    (Information Systems, Educ. Tech., Technology Mgmt. Info
+              <div v-for="cat in categories" :key="cat">
+                <th>{{ cat.id }}</th>
+                <td class="font-bold">{{ cat.Category }}</td>
+                <div v-for="subcat in cat.subcategory" :key="subcat">
+                  <td></td>
+                  <th>{{ cat.id }}.{{ subcat.id }}</th>
+                  <td class="font-medium">{{ subcat.Subcategory }}</td>
+                  <div v-for="item in subcat.items" :key="item">
+                    <td></td>
+                    <td></td>
+                    <th>{{ cat.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                    <td class="font-thin">{{ item.Item }}</td>
                   </div>
-                  <div>
-                    4. With at least 5 years of very satisfactory teaching
-                    experience.
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th></th>
-                <td class="font-medium flex">DEPARTMENT CHAIR</td>
-                <td class="font-light space-y-3">
-                  <div>
-                    For initial program, a part-time program coordinator may be
-                    employed until such time that the program becomes
-                    economically viable.
-                  </div>
-                  <div>
-                    For LIS HEIs with big enrolment, an Assoc./ Assist. Dean/
-                    Chair may be assigned
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th></th>
-                <td class="font-medium flex">
-                  Teaching Load of the Dean/ Program
-                </td>
-                <td class="font-light space-y-3">
-                  <div>max. of 12 units</div>
-                  <div>max. of 3 preparations</div>
-                </td>
-              </tr>
-
-              <!-- row 1 -->
-              <tr>
-                <th>2</th>
-                <td class="font-bold">FACULTY</td>
-                <td></td>
-              </tr>
-              <!-- row 2 -->
-              <tr>
-                <th></th>
-                <td class="font-medium flex">ACADEMIC QUALIFICATIONS</td>
-                <td class="font-light space-y-3">
-                  <div>
-                    1. Faculty teaching the courses covered in the licensure
-                    exams must be holders of valid certificates of registration
-                    or professional license for librarians;
-                  </div>
-                  <div>
-                    2. Majority of the faculty must be holders of appropriate
-                    MLIS or related degrees (e.g. Master in Info Systems, Ed.
-                    Tech, Archives Studies, Educ’l. Tech.) to teach LIS, ICT
-                    and/or allied courses (Records Mgmt.& Archives, Preservation
-                    of Info Resources, Philo and Principles of Teaching,
-                    Indigenous Peoples and Multiculturalism);
-                  </div>
-                  <div>
-                    3. Faculty must have at least 2 years of library-related
-                    experience.
-                  </div>
-                  <div>
-                    * A Practicum Coordinator who is a regular faculty in the
-                    college/department shall be assigned to plan, supervise and
-                    evaluate students’ practicum experience and provide career
-                    guidance.
-                  </div>
-                </td>
-              </tr>
-              <!-- row 3 -->
-              <tr>
-                <th></th>
-                <td class="font-medium flex">CONDITIONS OF EMPLOYMENT</td>
-                <td class="font-light space-y-3">
-                  <div>
-                    1. Salary rates of faculty members shall be commensurate
-                    with their academic rank, academic preparation, experience
-                    in instruction and research, and comparable with those of
-                    other faculty members who teach other baccalaureate courses.
-                  </div>
-                  <div>
-                    2. Maximum teaching load of LIS faculty is 24 units for
-                    full-timers and 12 units for part-timers, with a maximum of
-                    four (4) preparations and inclusive of research and other
-                    related assignments.
-                  </div>
-                  <div>
-                    3. LIS faculty shall be assigned academic rank in accordance
-                    with their acad. Preparation, teaching experience and
-                    continuing professional growth, library and info science
-                    work experience, and other criteria which the HEIs may
-                    require.
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th></th>
-                <td class="font-medium flex">FACULTY DEVELOPMENT</td>
-                <td class="font-light space-y-3">
-                  <div>
-                    1. presence of a system of faculty development. The HEI
-                    should encourage faculty members to: -complete doctoral
-                    degrees in LIS and other allied fields; - undertake research
-                    activities reacted to librarianship and publish their
-                    research outputs in refereed journals; - give lectures,
-                    conduct workshops and present papers in national/
-                    international conferences, symposia and seminars; - attend
-                    continuing education seminars, workshops, conferences and
-                    the like.
-                  </div>
-                  <div>
-                    2. provision of opportunities and incentives, such as: -
-                    tuition subsidy for graduate studies; -study leave w/ pay;
-                    -deloading to finish a thesis or carry out research
-                    activities; -travel grants for academic dev’t. activities
-                    (special skills training, national/ international
-                    conferences, symposia and seminars; - awards and
-                    recognition.
-                  </div>
-                </td>
-              </tr>
+                </div>
+              </div>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative rounded-md text-left">
+        <div class="font-semibold text-md">Delete Document</div>
+        <p class="py-2 text-sm">
+          This action cannot be undone. Are you sure you want to delete this
+          document?
+        </p>
+        <div class="modal-action">
+          <label
+            for="deleteFunc"
+            class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            >Cancel</label
+          >
+          <label
+            class="
+              btn btn-sm
+              bg-red-500
+              hover:bg-red-600
+              rounded-md
+              border-none
+            "
+            >Delete</label
+          >
         </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script>
-import Parse  from 'parse'
+import Parse from "parse";
 export default {
   name: "EvalFileView",
   components: {},
-  methods: {
-    editEvalIns() {
-      this.$router.push("/evaluationins/add");
-    },
+  data() {
+    return {
+      categories: [
+        {
+          id: 1,
+          subcategory: [
+            {
+              id: 1,
+              items: [],
+              Subcategory:
+                "A doctoral degree holder in Education or a related field",
+            },
+            {
+              id: 2,
+              items: [],
+              Subcategory:
+                "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
+            },
+            {
+              id: 3,
+              items: [],
+              Subcategory: "Employed full - time. ",
+            },
+            {
+              id: 4,
+              items: [],
+              Subcategory:
+                "With at least three (3) years of very satisfactory teaching experience in tertiary level.",
+            },
+            {
+              id: 5,
+              items: [],
+              Subcategory:
+                "With at least three (3) years of very satisfactory teaching experience in either the elementary or secondary level",
+            },
+            {
+              id: 6,
+              items: [],
+              Subcategory:
+                "With at least 2 years of very managerial/administrative experience",
+            },
+            {
+              id: 7,
+              items: [],
+              Subcategory: "With updated notarized contract of employment",
+            },
+          ],
+          Category: "DEAN OR DEPARTMENT CHAIR",
+          Desc: "(CMO 76, s. 2017), and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
+        },
+        {
+          id: 2,
+          subcategory: [
+            {
+              id: 1,
+              items: [
+                {
+                  id: 1,
+                  Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
+                },
+                {
+                  id: 2,
+                  Item: "Faculty teaching general education and major subjects should have an appropriate master’s degree in the field they are assigned to teach.",
+                },
+                {
+                  id: 3,
+                  Item: "Physical Education Teacher",
+                },
+                {
+                  id: 4,
+                  Item: "Teacher has a BS P.E. degree or BEEd/ BSEd major/minor in P.E. or any other bachelor's degree with certificate in P.E.",
+                },
+                {
+                  id: 5,
+                  Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
+                },
+                {
+                  id: 6,
+                  Item: "With updated notarized contract of employment",
+                },
+              ],
+              Subcategory: "General Requirements",
+            },
+            {
+              id: 2,
+              items: [
+                {
+                  id: 1,
+                  Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
+                },
+                {
+                  id: 2,
+                  Item: "Holder of Master’s degree in education or any of the allied fields",
+                },
+              ],
+              Subcategory:
+                "Qualifications of the Professional Education Faculty",
+            },
+          ],
+          Category: "FACULTY",
+        },
+      ],
+      programName: "Bachelor of Early Childhood Education (BECEd",
+      cmoNo: "76",
+      seriesYear: "2017",
+      evalDesc:
+        "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
+    };
   },
+  methods: {},
   mounted: async function () {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");

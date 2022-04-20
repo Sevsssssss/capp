@@ -8,6 +8,13 @@
             <div class="font-normal text-sm uppercase">
               APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
             </div>
+            <div class="font-normal text-sm uppercase">
+              PROGRAM:
+              <span class="font-semibold"
+                >BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY
+                <!--{{ type }}--></span
+              >
+            </div>
           </div>
           <div class="flex flex-col">
             <div class="text-left p-4 pr-6 space-y-2">
@@ -35,161 +42,28 @@
         </div>
       </div>
 
-      <div v-if="status === 'FOR APPROVAL'">
-        <ForApproval></ForApproval>
+      <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
+        <ForApproval :appID="appID" />
       </div>
-      <div v-else-if="status === 'FOR REVISION'">
+      <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
         <ForRevision></ForRevision>
       </div>
-      <div v-else-if="status === 'FOR EVALUATION'">
+      <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
         <ForEvaluation></ForEvaluation>
       </div>
-      <div v-else-if="status === 'FOR ISSUANCE'">
+      <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
         <ForIssuance></ForIssuance>
       </div>
-      <div v-else-if="status === 'COMPLETED'">
+      <div v-else-if="status.toUpperCase() === 'COMPLETED'">
         <ForCompleted></ForCompleted>
       </div>
       <div class="space-x-6 py-8 px-3 flex justify-center">
-        <button
-          @click="$router.go(-1)"
-          type="button"
-          class="
-            btn
-            text-blue-700
-            bg-transparent
-            border border-blue-700
-            hover:bg-white
-          "
-          data-dismiss-target="#alert-additional-content-1"
-          aria-label="Close"
-        >
-          <div v-if="status != 'COMPLETED'">Dismiss</div>
-          <div v-else>Back</div>
-        </button>
-        <div v-if="status === 'FOR APPROVAL'">
-          <label
-            for="for-approval"
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Submit</label
-          >
-        </div>
-        <div v-else-if="status === 'FOR REVISION'">
-          <label
-            for="for-approval"
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Re-Submit</label
-          >
-        </div>
-        <div v-else-if="status === 'FOR EVALUATION'">
-          <label
-            for="for-evaluation"
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Evaluate</label
-          >
-        </div>
-        <div v-else-if="status === 'FOR ISSUANCE'">
-          <label
-            for=""
-            class="
-              btn
-              modal-button
-              border-none
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-            "
-          >
-            Complete</label
-          >
-        </div>
         <!-- <div v-else-if="status === 'COMPLETED'">
         <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
             BACK</label>
     </div> -->
       </div>
       <!-- For Approval Modal -->
-      <input type="checkbox" id="for-approval" class="modal-toggle" />
-      <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-          <div class="font-semibold text-md">SELECT SUPERVISOR</div>
-          <p class="py-2 text-sm">
-            You've been selected for a chance to get one year of subscription to
-            use Wikipedia for free!
-          </p>
-          <!-- Filter -->
-          <div class="flex flex-row py-6 justify-start items-start">
-            <!-- sort -->
-            <div class="month-sort flex flex-row border rounded-md w-full">
-              <select
-                class="
-                  font-normal
-                  rounded-md
-                  select select-ghost select-sm
-                  w-full
-                "
-                style="outline: none"
-                id="application_sort"
-              >
-                <option disabled selected>Select Supervisor</option>
-                <option>Joshua Sarmiento</option>
-                <option>Sev Sarate</option>
-                <option>Duane</option>
-                <option>Jeff</option>
-                <option>Saq</option>
-              </select>
-            </div>
-          </div>
-          <div class="modal-action">
-            <label
-              for="for-approval"
-              class="
-                btn btn-sm
-                rounded-md
-                text-blue-700
-                bg-transparent
-                border border-blue-700
-                hover:bg-white
-              "
-              >Cancel</label
-            >
-            <label
-              class="
-                btn btn-sm
-                rounded-md
-                bg-blue-700
-                hover:bg-blue-800
-                border-none
-              "
-              >Assign</label
-            >
-          </div>
-        </div>
-      </div>
     </div>
     <!-- For Evaluation Modal -->
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
@@ -237,6 +111,7 @@
             >Cancel</label
           >
           <label
+            @click="submitChanges()"
             class="
               btn btn-sm
               rounded-md
@@ -258,9 +133,10 @@ import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
 import ForIssuance from "../../Application/ForIssuance.vue";
 import ForCompleted from "../../Application/ForCompletedView.vue";
-import Parse from 'parse'
+import Parse from "parse";
+
 export default {
-  props: ["id", "HeiName", "type", "status", "dateApplied", "rep", "email"],
+  props: ["appID"],
   name: "StatusApplication",
   components: {
     ForApproval,
@@ -274,6 +150,11 @@ export default {
       // id: this.$route.params.id,
       show: false,
       statusShow: "",
+      status: "",
+      rep: "",
+      email: "",
+      type: "",
+      dateApplied: "",
       headers: [
         {
           title: "CREDENTIALS",
@@ -351,6 +232,39 @@ export default {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      var storedApplications = [];
+      const applications = Parse.Object.extend("Applications");
+      const query = new Parse.Query(applications);
+      query.equalTo("objectId", this.appID);
+
+      const application = await query.first({
+        useMasterKey: true,
+      });
+
+      this.status = application.get("applicationStatus");
+      this.type = application.get("applicationType");
+      this.email = application.get("email");
+      this.rep = application.get("pointPerson");
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      var month = application.createdAt.getMonth();
+      var day = application.createdAt.getDate();
+      var year = application.createdAt.getFullYear();
+      this.dateApplied = months[month] + " " + day + ", " + year;
+
+      this.tables = storedApplications;
     }
   },
 };

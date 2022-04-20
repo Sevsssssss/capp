@@ -40,7 +40,7 @@
                         </div>
                         <!-- <hr /> -->
 
-                        <div class="flex flex-row items-start justify-evenly px-2 py-4 ">
+                        <div class="flex flex-row items-start justify-evenly px-2 pt-4">
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="text-sm">Point Person</span>
@@ -75,6 +75,14 @@
                                         Phone Number is Required</span>
                                 </label>
                             </div>
+                        </div>
+                        <div class="items-start justify-evenly px-10 pb-4">
+                            <label class="label">
+                                <span class="label-text">Program:</span>
+                            </label>
+                            <select class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option v-for="program in programs" :key="program">{{program.name}}</option>
+                            </select>
                         </div>
 
                     </div>
@@ -178,12 +186,13 @@
 <script>
 import { useToast, TYPE, POSITION } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
+// import NoDataAvail from "@/components//NoDataAvail.vue";
 import { required, email } from "@vuelidate/validators";
 import Parse from "parse";
-
 const toast = useToast();
-
 export default {
+  name: "HEIapply",
+  // components: { NoDataAvail,},
   data() {
     return {
       v$: useVuelidate(),
@@ -193,6 +202,12 @@ export default {
       selected: "",
       applicationTypes: [],
       reqs: [],
+      programs: [
+        {
+          id: 1,
+          name: "Bachelor of Science in Information Technology",
+        },
+      ],
     };
   },
   validations() {
@@ -216,17 +231,14 @@ export default {
         let requirement = null;
         for (var i = 0; i < this.reqs.length; i++) {
           const file = values.target[4 + i].files[0];
-
           console.log(file);
           console.log(file.name);
           console.log(file.type);
-
           requirement = new Parse.File(
             file.name.replace(/[^a-zA-Z]/g, ""),
             file,
             file.type
           );
-
           reqFiles.push({
             id: i + 1,
             file: requirement,
@@ -238,12 +250,9 @@ export default {
         // console.log(file);
         // console.log(file.name);
         // console.log(file.type);
-
         const application = Parse.Object.extend("Applications");
         const newApplication = new application();
-
         //requirement = new Parse.File(file.name, file, file.type);
-
         newApplication
           .save({
             pointPerson: this.pointPerson,
@@ -258,7 +267,7 @@ export default {
             (newApplication) => {
               toast("Application Added: " + newApplication.id, {
                 type: TYPE.SUCCESS,
-                timeout: 2000,
+                timeout: 3000,
                 position: POSITION.TOP_RIGHT,
               }),
                 window.location.reload();
@@ -267,7 +276,7 @@ export default {
             (e) => {
               toast("Application Adding Failed: " + e.message, {
                 type: TYPE.ERROR,
-                timeout: 3000,
+                timeout: 5000,
                 hideProgressBar: true,
                 position: POSITION.TOP_RIGHT,
               });
@@ -362,7 +371,7 @@ export default {
       this.applicationTypes = applicationTypesMenu;
       // const app = this.applicationTypes[0];
       //  console.log( queryResult[0]);
-      //  console.log( this.selected.get('applicationTypeName'));
+      //  console.log( this.selected.get('applicationTypeName'))
     }
   },
 };
@@ -370,3 +379,5 @@ export default {
 
 <style>
 </style>
+
+

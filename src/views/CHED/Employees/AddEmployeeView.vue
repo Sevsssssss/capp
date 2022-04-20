@@ -406,24 +406,25 @@ export default {
     },
 
     async addEmployee() {
-      const newEmployee = new Parse.User();
-
-      var employeeName = {
-        lastname: this.lastname,
-        firstname: this.firstname,
-        middleinitial: this.midinit,
-      };
-
-      newEmployee.set("name", employeeName);
-      newEmployee.set("username", this.username);
-      newEmployee.set("password", "password");
-      newEmployee.set("email", this.email);
-      newEmployee.set("contact_num", this.contactnum);
-      newEmployee.set("access_type", this.access_type);
-      newEmployee.set("designation", this.emp_designation);
-      newEmployee.set("user_type", "employee");
-
       try {
+        const newEmployee = new Parse.User();
+
+        var employeeName = {
+          lastname: this.lastname,
+          firstname: this.firstname,
+          middleinitial: this.midinit,
+        };
+
+        newEmployee.set("name", employeeName);
+        newEmployee.set("username", this.username);
+        newEmployee.set("password", "password");
+        newEmployee.set("email", this.email);
+        newEmployee.set("contact_num", this.contactnum);
+        newEmployee.set("access_type", this.access_type);
+        newEmployee.set("designation", this.emp_designation);
+        newEmployee.set("user_type", "employee");
+        newEmployee.set("hasTransactions", false);
+
         await newEmployee.save().then(() => {
           toast("Employee Account Added!", {
             type: TYPE.SUCCESS,
@@ -484,6 +485,32 @@ export default {
       }
     },
   },
+  modal() {
+    var has_error = 0;
+    if (
+      this.lastname == "" ||
+      this.firstname == "" ||
+      this.midinit == "" ||
+      this.username == "" ||
+      this.contactnum == "" ||
+      this.email == null
+    ) {
+      has_error = 1;
+    }
+
+    if (has_error < 1) {
+      // var password = "";
+      // var characters =
+      //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      // var charactersLength = characters.length;
+      // for (var i = 0; i < 8; i++) {
+      //     password += characters.charAt(
+      //         Math.floor(Math.random() * charactersLength)
+      //     );
+      //}
+      this.showModal1 = !this.showModal1;
+    }
+  },
   mounted: async function () {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
@@ -506,19 +533,6 @@ export default {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-      for(var e = 0; e < queryResult.length; e++) {
-        this.accessTypes.push({title: queryResult[e].get('name')})
-      }
-      this.access_type = queryResult[0].get('name');
-
-      const Designations = Parse.Object.extend("Designations");
-      const queryD = new Parse.Query(Designations);
-
-      const queryResultDesig = await queryD.find();
-      for (var w = 0; w < queryResultDesig.length; w++) {
-        this.designations.push({title: queryResultDesig[w].get('name')})
-      }
-      this.emp_designation = queryResultDesig[0].get('name');
     }
   },
 };

@@ -1,5 +1,8 @@
 <template>
-  <div class="m-5">
+  <div v-if="!tables.length" style="height: 100%">
+    <NoDataAvail names="ApplicationView" />
+  </div>
+  <div v-else class="m-5">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div class="flex flex-row space-x-4 pl-5 py-4">
         <div class="">
@@ -217,12 +220,13 @@
     <br />
   </div>
 </template>
-
 <script>
+import NoDataAvail from "@/components//NoDataAvail.vue";
 // import TableTopLeft from "@/components//TableTopLeft.vue";
 import Parse from "parse";
 export default {
   name: "ApplicationView",
+  components: { NoDataAvail },
   data() {
     return {
       currentpage: 0,
@@ -301,19 +305,6 @@ export default {
         //     },
       ],
     };
-  },
-  computed: {
-    searchApplication() {
-      this.newEntCount();
-      return this.tables
-        .filter((p) => {
-          return p.rep.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-        })
-        .slice(
-          this.numPerPage * this.currentpage,
-          (this.currentpage + 1) * this.numPerPage
-        );
-    },
   },
   methods: {
     statusChecker(status) {

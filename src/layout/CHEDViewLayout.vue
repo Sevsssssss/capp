@@ -1,35 +1,23 @@
 <template>
   <div class="">
     <div class="flex">
-      <TopNavigation class="z-40" />
-      <sidebar-menu
-        :menu="menu"
-        class="z-10"
-        @update:collapsed="toggle"
-        v-model="collapsed"
-      >
-        <template v-slot:toggle-icon> <MenuOpen class="h-6" /></template>
-        <template v-slot:footer>
-          <div
-            class="p-5 grid grid-cols-1 content-center space-y-4"
-            :class="collapsed ? '' : 'hidden'"
-          >
-            <button
-              @click="Logout(), scrollToTop()"
-              class="flex space-x-1 justify-center items-center text-blue-500"
-            >
-              <Logout class="h-6" />
-              <span class="text-sm hover:font-semibold">Logout</span>
-            </button>
-            <p class="flex justify-center text-sm text-grey-300 tracking-wide">
-              Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
-            </p>
-          </div>
-        </template>
-      </sidebar-menu>
-      <div
-        class="w-full content"
-        :class="
+        <TopNavigation class="z-40" />
+        <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
+            <template v-slot:toggle-icon>
+                <MenuOpen class="h-6" /></template>
+            <template v-slot:footer>
+                <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
+                    <button for="my-modal-7" id="my-modal-7" type="submit" class="flex space-x-1 justify-center items-center text-blue-500" @click="modal()">
+                        <Logout class="h-6" />
+                        <span class="text-sm hover:font-semibold">Logout</span>
+                    </button>
+                    <p class="flex justify-center text-sm text-grey-300 tracking-wide">
+                        Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
+                    </p>
+                </div>
+            </template>
+        </sidebar-menu>
+        <div class="w-full content" :class="
           collapsed
             ? 'pl-[290px] transition-width duration-300'
             : 'pl-[65px] transition-width duration-300'
@@ -59,7 +47,21 @@
         </div>
       </div>
     </div>
-  </div>
+    <div :class="{ 'modal-open ': validate1() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">
+                Logout Account
+            </div>
+            <p class="py-2 text-sm">
+                Are you sure you want to logout?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-7" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-7" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"  @click="Logout(), scrollToTop()">Logout</label>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 
 

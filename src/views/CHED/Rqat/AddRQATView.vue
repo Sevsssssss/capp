@@ -254,10 +254,8 @@
       :class="{ 'modal-open ': validate() }"
       class="modal modal-bottom sm:modal-middle"
     >
-      <div class="modal-box">
-        <div class="text-brand-darkblue font-bold label-xl">
-          Add RQAT Account
-        </div>
+      <div class="modal-box text-left">
+        <div class="font-semibold">ADD RQAT ACCOUNT</div>
         <p class="text-sm xxs:leading-tight text-grey-200">
           Are you sure you want to add this account?
         </p>
@@ -274,8 +272,9 @@
             "
             >Cancel</label
           >
-          <label
+          <button
             for="my-modal-6"
+            type="submit"
             class="
               btn btn-sm
               bg-blue-700
@@ -283,9 +282,10 @@
               rounded-md
               border-none
             "
-            @click="addRQAT()"
-            >Continue</label
+            @click="addRQAT(), scrollToTop()"
           >
+            Continue
+          </button>
         </div>
       </div>
     </div>
@@ -306,7 +306,6 @@ export default {
   components: {
     VueInstantLoadingSpinner,
   },
-
   data() {
     return {
       showModal: false,
@@ -390,56 +389,44 @@ export default {
     validationStatus: function (validation) {
       return typeof validation !== "undefined" ? validation.$error : false;
     },
-
     submit: function () {
       this.v$.$touch();
       if (!this.v$.$pending || !this.v$.$error) return;
     },
-
     validate() {
       return this.showModal1;
     },
-
     async addRQAT() {
-      const newRQAT = new Parse.User();
-
-      var rqatName = {
-        lastname: this.lastname,
-        firstname: this.firstname,
-        middleinitial: this.midinit,
-      };
-
-      newRQAT.set("name", rqatName);
-      newRQAT.set("username", this.username);
-      newRQAT.set("password", "password");
-      newRQAT.set("contact_num", this.contactnum);
-      newRQAT.set("hei_affil", this.hei_affil);
-      newRQAT.set("access_type", "RQAT");
-
+      this.$refs.Spinner.show();
       try {
+        const newRQAT = new Parse.User();
+        var rqatName = {
+          lastname: this.lastname,
+          firstname: this.firstname,
+          middleinitial: this.midinit,
+        };
+        newRQAT.set("name", rqatName);
+        newRQAT.set("username", this.username);
+        newRQAT.set("password", "password");
+        newRQAT.set("contact_num", this.contactnum);
+        newRQAT.set("hei_affil", this.hei_affil);
+        newRQAT.set("access_type", "RQAT");
+        newRQAT.set("hasTransactions", false);
         await newRQAT.save().then(() => {
           toast("RQAT Account Added!", {
             type: TYPE.SUCCESS,
-            timeout: 2000,
+            timeout: 3000,
             position: POSITION.TOP_RIGHT,
-          });
-          this.sendEmail().then(() => {
+          }),
+            // this.sendEmail()
             setTimeout(
               () =>
                 this.$router.push({
-                  path: "/hei",
+                  path: "/rqat",
                 }),
-              1000
+              2000
             );
-          });
         });
-        this.$refs.Spinner.show();
-        setTimeout(
-          function () {
-            this.$refs.Spinner.hide();
-          }.bind(this),
-          2000
-        );
       } catch (error) {
         toast("Error:" + error.code + " " + error.message, {
           type: TYPE.ERROR,
@@ -449,10 +436,15 @@ export default {
         });
         console.log(error.message);
       }
+      setTimeout(
+        function () {
+          this.$refs.Spinner.hide();
+        }.bind(this),
+        2000
+      );
     },
     modal() {
       var has_error = 0;
-
       if (
         this.lastname == "" ||
         this.firstname == "" ||
@@ -460,9 +452,14 @@ export default {
         this.username == "" ||
         this.contactnum == ""
       ) {
+        toast("Please fill out the required information", {
+          type: TYPE.ERROR,
+          timeout: 3000,
+          hideProgressBar: true,
+          position: POSITION.TOP_RIGHT,
+        });
         has_error = 1;
       }
-
       if (has_error < 1) {
         // var password = "";
         // var characters =
@@ -473,7 +470,6 @@ export default {
         //     Math.floor(Math.random() * charactersLength)
         //   );
         // }
-
         this.showModal1 = !this.showModal1;
       }
     },
@@ -500,16 +496,14 @@ export default {
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
       var heis = [];
-
       const query = new Parse.Query(Parse.User);
       query.equalTo("access_type", "HEI");
-
       const querResult = await query.find();
       heis.push({
         title: "None",
       });
-      for (var y = 0; y < querResult.length; y++) {
-        const hei = querResult[y];
+      for (var i = 0; i < querResult.length; i++) {
+        const hei = querResult[i];
         heis.push({
           title: hei.get("hei_name"),
         });

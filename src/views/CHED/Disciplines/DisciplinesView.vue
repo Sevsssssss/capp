@@ -185,17 +185,25 @@
               {{ i.Name }}
             </td>
             <td
+              v-for="program in i.Programs"
+              :key="program"
               scope="row"
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-              {{ i.Privileges }}
+              {{ program.name }}
             </td>
-            <td class="px-6 py-4 text-right">
-              <a
-                @click="viewEvalIns"
-                href="#"
+            <td class="py-4 text-right">
+              <label
+                for="editDisciplines"
                 class="font-medium text-blue-600 hover:underline"
-                >Edit</a
+                >Edit Disciplines</label
+              >
+            </td>
+            <td class="py-4 text-right">
+              <label
+                for="editPrograms"
+                class="font-medium text-blue-600 hover:underline"
+                >Edit Programs</label
               >
             </td>
             <td class="px-6 py-4 flex flex-row">
@@ -322,6 +330,106 @@
             >Cancel</label
           >
           <label
+            for="my-modal-6"
+            id="my-modal-6"
+            type="submit"
+            class="
+              btn btn-sm
+              bg-blue-700
+              rounded-md
+              hover:bg-blue-800
+              border-none
+            "
+            @click="modal()"
+            >Submit</label
+          >
+        </div>
+      </div>
+    </div>
+    <div
+      :class="{ 'modal-open ': validate() }"
+      class="modal modal-bottom sm:modal-middle"
+    >
+      <div class="modal-box relative rounded-md text-left">
+        <div class="text-brand-darkblue font-bold label-xl">Add Discipline</div>
+        <p class="text-sm xxs:leading-tight text-grey-200">
+          Are you sure you want to add this discipline?
+        </p>
+        <div class="modal-action">
+          <label
+            for="my-modal-6"
+            class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            @click="modal()"
+            >Cancel</label
+          >
+          <label
+            for="my-modal-6"
+            class="
+              btn btn-sm
+              bg-red-500
+              hover:bg-red-600
+              rounded-md
+              border-none
+            "
+            @click="addDiscipline()"
+            >Continue</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- edit -->
+    <input type="checkbox" id="editDisciplines" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative rounded-md text-left">
+        <div class="font-semibold text-md">ADD A DISCIPLINE</div>
+        <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
+        <form>
+          <div class="mb-6">
+            <label
+              for="base-input"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Discipline Name:</label
+            >
+            <input
+              type="text"
+              id="base-input"
+              class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              "
+              placeholder="Enter Name"
+              v-model="disciplineName"
+            />
+          </div>
+        </form>
+        <div class="modal-action">
+          <label
+            for="editDisciplines"
+            class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            >Cancel</label
+          >
+          <label
             class="
               btn btn-sm
               bg-blue-700
@@ -383,9 +491,14 @@
                 w-full
                 p-2.5
               "
+              v-model="selectedDiscipline"
             >
-              <option v-for="discipline in disciplines" :key="discipline">
-                {{ discipline }}
+              <option
+                v-for="discipline in disciplines"
+                :key="discipline"
+                :value="discipline.id"
+              >
+                {{ discipline.name }}
               </option>
             </select>
           </div>
@@ -404,6 +517,101 @@
             >Cancel</label
           >
           <label
+            for="my-modal-6"
+            id="my-modal-6"
+            type="submit"
+            class="
+              btn btn-sm
+              bg-blue-700
+              rounded-md
+              hover:bg-blue-800
+              border-none
+            "
+            @click="addProgram()"
+            >Submit</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <input type="checkbox" id="editPrograms" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box relative rounded-md text-left">
+        <div class="font-semibold text-md">ADD A PROGRAM</div>
+        <p class="py-2 text-sm">
+          Input the Program Name and the Designated Discipline.
+        </p>
+        <form>
+          <div class="mb-6">
+            <label
+              for="base-input"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Program Name:</label
+            >
+            <input
+              type="text"
+              id="base-input"
+              class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              "
+              placeholder="Enter Name"
+              v-model="atname"
+            />
+            <label
+              for="base-input"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Discipline Name:</label
+            >
+            <select
+              class="
+                select
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              "
+              v-model="selectedDiscipline"
+            >
+              <!-- Discipline must be Disabled only programs can be edited -->
+              <option
+                disabled
+                v-for="discipline in disciplines"
+                :key="discipline"
+                :value="discipline.id"
+              >
+                {{ discipline.name }}
+              </option>
+            </select>
+          </div>
+        </form>
+        <div class="modal-action">
+          <label
+            for="editPrograms"
+            class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            >Cancel</label
+          >
+          <label
+            for="my-modal-6"
+            id="my-modal-6"
+            type="submit"
             class="
               btn btn-sm
               bg-blue-700
@@ -422,7 +630,6 @@
 
 <script>
 import Parse from "parse";
-
 // var dataNumber = 10;
 // var page = 0;
 import NoDataAvail from "@/components//NoDataAvail.vue";
@@ -430,6 +637,7 @@ export default {
   name: "DisciplinesView",
   data() {
     return {
+      showModal1: false,
       currentpage: 0,
       numPerPage: 10,
       totalEntries: 0,
@@ -444,8 +652,15 @@ export default {
       tables: [],
       search: "",
       disciplineName: "",
-      programs: [],
-      disciplines: [1],
+      programs: [
+        {
+          id: 1,
+          name: "Bachelor of Science in Information Technology, Bachelor of Science in Computer Science, Bachelor of Science in Information Systems",
+        },
+      ],
+      disciplines: [],
+      atname: "",
+      selectedDiscipline: "",
     };
   },
   components: { NoDataAvail },
@@ -462,6 +677,37 @@ export default {
     },
   },
   methods: {
+    validate() {
+      return this.showModal1;
+    },
+    modal() {
+      this.showModal1 = !this.showModal1;
+    },
+    addDiscipline() {
+      const disciplines = Parse.Object.extend("Disciplines");
+      const newDiscipline = new disciplines();
+      try {
+        newDiscipline.save({
+          disciplineName: this.disciplineName,
+        });
+        alert("New Discipline Added: " + newDiscipline.id);
+      } catch (error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    },
+    addProgram() {
+      const programs = Parse.Object.extend("Programs");
+      const newProgram = new programs();
+      try {
+        newProgram.save({
+          programName: this.atname,
+          programDiscipline: this.selectedDiscipline,
+        });
+        alert("New Discipline Added: " + this.atname);
+      } catch (error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    },
     addAccessType() {
       const accessType = Parse.Object.extend("AccessTypes");
       const newAccessType = new accessType();
@@ -520,31 +766,37 @@ export default {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-      var accessTypesTable = [];
-
-      const AccessTypes = Parse.Object.extend("AccessTypes");
-      const query = new Parse.Query(AccessTypes);
-
+      var disciplineTable = [];
+      var disciplinesNames = [];
+      const disciplines = Parse.Object.extend("Disciplines");
+      const query = new Parse.Query(disciplines);
       const querResult = await query.find();
       for (var i = 0; i < querResult.length; i++) {
-        const accessType = querResult[i];
-        var accessPriv = "";
-        for (var x = 0; x < accessType.get("privileges").length; x++) {
-          var accessPrivIndex = accessType.get("privileges")[x];
-          if (accessPriv === "") {
-            accessPriv = accessPriv + accessPrivIndex;
-          } else {
-            accessPriv = accessPriv + ", " + accessPrivIndex;
-          }
+        const discipline = querResult[i];
+        const programs = Parse.Object.extend("Programs");
+        const queryProg = new Parse.Query(programs);
+        queryProg.equalTo("programDiscipline", discipline.id);
+        const progResult = await queryProg.find();
+        var programsMat = [];
+        for (var j = 0; j < progResult.length; j++) {
+          const prog = progResult[j];
+          programsMat.push({
+            id: prog.id,
+            name: prog.get("programName"),
+          });
         }
 
-        accessTypesTable.push({
-          Name: accessType.get("name"),
-          Privileges: accessPriv,
+        disciplineTable.push({
+          Name: discipline.get("disciplineName"),
+          Programs: programsMat,
+        });
+        disciplinesNames.push({
+          id: discipline.id,
+          name: discipline.get("disciplineName"),
         });
       }
-      this.totalEntries = querResult.length;
-      this.tables = accessTypesTable;
+      this.disciplines = disciplinesNames;
+      this.tables = disciplineTable;
       // console.log(this.tables);
     }
   },
@@ -552,3 +804,4 @@ export default {
 </script>
 
 <style></style>
+  
