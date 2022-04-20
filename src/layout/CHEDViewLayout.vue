@@ -1,23 +1,38 @@
 <template>
   <div class="">
     <div class="flex">
-        <TopNavigation class="z-40" />
-        <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
-            <template v-slot:toggle-icon>
-                <MenuOpen class="h-6" /></template>
-            <template v-slot:footer>
-                <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
-                    <button for="my-modal-7" id="my-modal-7" type="submit" class="flex space-x-1 justify-center items-center text-blue-500" @click="modal()">
-                        <Logout class="h-6" />
-                        <span class="text-sm hover:font-semibold">Logout</span>
-                    </button>
-                    <p class="flex justify-center text-sm text-grey-300 tracking-wide">
-                        Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
-                    </p>
-                </div>
-            </template>
-        </sidebar-menu>
-        <div class="w-full content" :class="
+      <TopNavigation class="z-40" />
+      <sidebar-menu
+        :menu="menu"
+        class="z-10"
+        @update:collapsed="toggle"
+        v-model="collapsed"
+      >
+        <template v-slot:toggle-icon> <MenuOpen class="h-6" /></template>
+        <template v-slot:footer>
+          <div
+            class="p-5 grid grid-cols-1 content-center space-y-4"
+            :class="collapsed ? '' : 'hidden'"
+          >
+            <button
+              for="my-modal-7"
+              id="my-modal-7"
+              type="submit"
+              class="flex space-x-1 justify-center items-center text-blue-500"
+              @click="modal()"
+            >
+              <Logout class="h-6" />
+              <span class="text-sm hover:font-semibold">Logout</span>
+            </button>
+            <p class="flex justify-center text-sm text-grey-300 tracking-wide">
+              Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
+            </p>
+          </div>
+        </template>
+      </sidebar-menu>
+      <div
+        class="w-full content"
+        :class="
           collapsed
             ? 'pl-[290px] transition-width duration-300'
             : 'pl-[65px] transition-width duration-300'
@@ -48,20 +63,38 @@
       </div>
     </div>
     <div :class="{ 'modal-open ': validate1() }" class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">
-                Logout Account
-            </div>
-            <p class="py-2 text-sm">
-                Are you sure you want to logout?
-            </p>
-            <div class="modal-action">
-                <label for="my-modal-7" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-7" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none"  @click="Logout(), scrollToTop()">Logout</label>
-            </div>
+      <div class="modal-box relative rounded-md text-left">
+        <div class="font-semibold text-md">Logout Account</div>
+        <p class="py-2 text-sm">Are you sure you want to logout?</p>
+        <div class="modal-action">
+          <label
+            for="my-modal-7"
+            class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            "
+            >Cancel</label
+          >
+          <label
+            for="my-modal-7"
+            class="
+              btn btn-sm
+              bg-blue-700
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            "
+            @click="Logout(), scrollToTop()"
+            >Logout</label
+          >
         </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 
@@ -163,12 +196,54 @@ export default {
     MenuOpen,
     Logout,
   },
-
+  data() {
+    return {
+      showModal1: false,
+      collapsed: true,
+      breadcrumbs: [],
+      menu: [],
+    };
+  },
   watch: {
     $route() {
       this.updateList();
     },
   },
+  methods: {
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
+    validate1() {
+      return this.showModal1;
+    },
+    modal() {
+      this.showModal1 = !this.showModal1;
+    },
+    Logout() {
+      toast("Logging out..", {
+        type: TYPE.WARNING,
+        closeButton: false,
+        timeout: 2000,
+        position: POSITION.BOTTOM_RIGHT,
+      });
+      setTimeout(() => {
+        Parse.User.logOut();
+        this.$router.push("/");
+      }, 2000);
+    },
+    updateList() {
+      this.breadcrumbs = this.$route.meta.breadcrumb;
+    },
+    toggle() {
+      this.collapsed = !this.collapsed;
+    },
+    routeTo(pRouteTo) {
+      if (this.breadcrumbs[pRouteTo].link) {
+        this.$router.push(this.breadcrumbs[pRouteTo].link);
+      }
+    },
+  },
+
   mounted: async function () {
     console.log("hi");
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -327,203 +402,6 @@ export default {
         });
       }
       this.updateList();
-    }
-  },
-  methods: {
-    scrollToTop() {
-      window.scrollTo(0, 0);
-    },
-    Logout() {
-      toast("Logging out..", {
-        type: TYPE.WARNING,
-        closeButton: false,
-        timeout: 2000,
-        position: POSITION.BOTTOM_RIGHT,
-      });
-      setTimeout(() => {
-        Parse.User.logOut();
-        this.$router.push("/");
-      }, 2000);
-    },
-    updateList() {
-      this.breadcrumbs = this.$route.meta.breadcrumb;
-    },
-    toggle() {
-      this.collapsed = !this.collapsed;
-    },
-    routeTo(pRouteTo) {
-      if (this.breadcrumbs[pRouteTo].link) {
-        this.$router.push(this.breadcrumbs[pRouteTo].link);
-      }
-    },
-  },
-  data() {
-    if (
-      Parse.User.current().get("access_type") === "SUPER ADMIN" ||
-      Parse.User.current().get("access_type") === "SAMPLE"
-    ) {
-      return {
-        collapsed: true,
-        menu: [],
-      };
-    } else if (Parse.User.current().get("access_type") === "ADMIN") {
-      return {
-        collapsed: true,
-        menu: [
-          {
-            href: "/home",
-            title: "Home",
-            icon: {
-              element: "img",
-              attributes: {
-                src: HomeOutline,
-              },
-            },
-          },
-          {
-            href: "/application",
-            title: "Application",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileOutline,
-              },
-            },
-          },
-
-          {
-            href: "/evaluationins",
-            title: "Evaluation Ins.",
-            icon: {
-              element: "img",
-              attributes: {
-                src: ClipboardLine,
-              },
-            },
-          },
-          {
-            href: "/reporting",
-            title: "Reporting",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileChartOutline,
-              },
-            },
-          },
-        ],
-      };
-    } else if (
-      Parse.User.current().get("access_type") === "EDUCATION SUPERVISOR"
-    ) {
-      return {
-        collapsed: true,
-        menu: [
-          {
-            href: "/home",
-            title: "Home",
-            icon: {
-              element: "img",
-              attributes: {
-                src: HomeOutline,
-              },
-            },
-          },
-          {
-            href: "/application",
-            title: "Application",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileOutline,
-              },
-            },
-          },
-
-          {
-            href: "/evaluationins",
-            title: "Evaluation Ins.",
-            icon: {
-              element: "img",
-              attributes: {
-                src: ClipboardLine,
-              },
-            },
-          },
-          {
-            href: "/reporting",
-            title: "Reporting",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileChartOutline,
-              },
-            },
-          },
-        ],
-      };
-    } else if (Parse.User.current().get("access_type") === "RQAT") {
-      return {
-        collapsed: true,
-        menu: [
-          {
-            href: "/home",
-            title: "Home",
-            icon: {
-              element: "img",
-              attributes: {
-                src: HomeOutline,
-              },
-            },
-          },
-          {
-            href: "/rqat-assignment",
-            title: "Evaluation",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileOutline,
-              },
-            },
-          },
-          {
-            href: "/reporting",
-            title: "Reporting",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileChartOutline,
-              },
-            },
-          },
-        ],
-      };
-    } else if (Parse.User.current().get("access_type") === "REPORTS") {
-      return {
-        collapsed: true,
-        menu: [
-          {
-            href: "/home",
-            title: "Home",
-            icon: {
-              element: "img",
-              attributes: {
-                src: HomeOutline,
-              },
-            },
-          },
-          {
-            href: "/reporting",
-            title: "Reporting",
-            icon: {
-              element: "img",
-              attributes: {
-                src: FileChartOutline,
-              },
-            },
-          },
-        ],
-      };
     }
   },
 };

@@ -331,9 +331,7 @@ import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 // import emailjs from 'emailjs-com';
-
 const toast = useToast();
-
 export default {
   name: "AddEmployeeView",
   components: {
@@ -346,9 +344,7 @@ export default {
       savingSuccessful: false,
       v$: useVuelidate(),
       accessTypes: [],
-
       designations: [],
-
       lastname: "",
       firstname: "",
       midinit: "",
@@ -388,7 +384,6 @@ export default {
       },
     };
   },
-
   methods: {
     ToggleshowModal() {
       this.showModal = !this.showModal;
@@ -396,7 +391,6 @@ export default {
     validationStatus: function (validation) {
       return typeof validation !== "undefined" ? validation.$error : false;
     },
-
     submit: function () {
       this.v$.$touch();
       if (!this.v$.$pending || !this.v$.$error) return;
@@ -404,42 +398,37 @@ export default {
     validate() {
       return this.showModal1;
     },
-
     async addEmployee() {
+      const newEmployee = new Parse.User();
+      var employeeName = {
+        lastname: this.lastname,
+        firstname: this.firstname,
+        middleinitial: this.midinit,
+      };
+      newEmployee.set("name", employeeName);
+      newEmployee.set("username", this.username);
+      newEmployee.set("password", "password");
+      newEmployee.set("email", this.email);
+      newEmployee.set("contact_num", this.contactnum);
+      newEmployee.set("access_type", this.access_type);
+      newEmployee.set("designation", this.emp_designation);
+      newEmployee.set("user_type", "employee");
       try {
-        const newEmployee = new Parse.User();
-
-        var employeeName = {
-          lastname: this.lastname,
-          firstname: this.firstname,
-          middleinitial: this.midinit,
-        };
-
-        newEmployee.set("name", employeeName);
-        newEmployee.set("username", this.username);
-        newEmployee.set("password", "password");
-        newEmployee.set("email", this.email);
-        newEmployee.set("contact_num", this.contactnum);
-        newEmployee.set("access_type", this.access_type);
-        newEmployee.set("designation", this.emp_designation);
-        newEmployee.set("user_type", "employee");
-        newEmployee.set("hasTransactions", false);
-
         await newEmployee.save().then(() => {
           toast("Employee Account Added!", {
             type: TYPE.SUCCESS,
             timeout: 2000,
             position: POSITION.TOP_RIGHT,
           });
-          this.sendEmail().then(() => {
+          // this.sendEmail().then(() => {
             setTimeout(
               () =>
                 this.$router.push({
-                  path: "/hei",
+                  path: "/employees",
                 }),
               1000
             );
-          });
+          // });
         });
         this.$refs.Spinner.show();
         setTimeout(
@@ -470,7 +459,6 @@ export default {
       ) {
         has_error = 1;
       }
-
       if (has_error < 1) {
         // var password = "";
         // var characters =
@@ -485,38 +473,12 @@ export default {
       }
     },
   },
-  modal() {
-    var has_error = 0;
-    if (
-      this.lastname == "" ||
-      this.firstname == "" ||
-      this.midinit == "" ||
-      this.username == "" ||
-      this.contactnum == "" ||
-      this.email == null
-    ) {
-      has_error = 1;
-    }
-
-    if (has_error < 1) {
-      // var password = "";
-      // var characters =
-      //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      // var charactersLength = characters.length;
-      // for (var i = 0; i < 8; i++) {
-      //     password += characters.charAt(
-      //         Math.floor(Math.random() * charactersLength)
-      //     );
-      //}
-      this.showModal1 = !this.showModal1;
-    }
-  },
   mounted: async function () {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);
+    const queryResult = await query.find();
     query.equalTo("name", Parse.User.current().get("access_type"));
-
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
     var flag = 0;
@@ -532,6 +494,17 @@ export default {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+      for(var e = 0; e < queryResult.length; e++) {
+        this.accessTypes.push({title: queryResult[e].get('name')})
+      }
+      this.access_type = queryResult[0].get('name');
+      const Designations = Parse.Object.extend("Designations");
+      const queryD = new Parse.Query(Designations);
+      const queryResultDesig = await queryD.find();
+      for (var w = 0; w < queryResultDesig.length; w++) {
+        this.designations.push({title: queryResultDesig[w].get('name')})
+      }
+      this.emp_designation = queryResultDesig[0].get('name');
     }
   },
 };
@@ -541,20 +514,16 @@ export default {
 .main-page {
   align-items: center;
 }
-
 .add-hei {
   width: 783px;
 }
-
 .line {
   border-width: 1px;
 }
-
 .btn-margin {
   margin-left: 10px;
   margin-right: 10px;
 }
-
 .text-error {
   color: red;
 }

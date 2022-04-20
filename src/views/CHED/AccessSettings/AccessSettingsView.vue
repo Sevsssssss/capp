@@ -271,7 +271,7 @@
                   p-2.5
                 "
                 placeholder="Enter Name"
-                v-model="atname"
+                v-model="v$.atname.$model"
               />
               <div class="font-medium text-sm mt-2">
                 Choose Home Type:
@@ -794,8 +794,13 @@
   </div>
 </template>
 
+
 <script>
 import Parse from "parse";
+import { useToast, TYPE, POSITION } from "vue-toastification";
+import { required } from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+const toast = useToast();
 // import NoDataAvail from "@/components//NoDataAvail.vue";
 // var dataNumber = 10;
 // var page = 0;
@@ -803,6 +808,8 @@ export default {
   name: "AccessTypesView",
   data() {
     return {
+      showModal1: false,
+      v$: useVuelidate(),
       currentpage: 0,
       numPerPage: 10,
       totalEntries: 0,
@@ -822,7 +829,14 @@ export default {
       homeType: "",
     };
   },
-  // components: { NoDataAvail },
+  validations() {
+    return {
+      atname: {
+        required,
+      },
+    };
+  },
+  // components: {NoDataAvail},
   computed: {
     searchAccessType() {
       return this.tables
@@ -836,6 +850,31 @@ export default {
     },
   },
   methods: {
+    validationStatus: function (validation) {
+      return typeof validation !== "undefined" ? validation.$error : false;
+    },
+    submit: function () {
+      this.v$.$touch();
+      if (!this.v$.$pending || !this.v$.$error) return;
+    },
+    validate() {
+      return this.showModal1;
+    },
+    modal() {
+      var has_error = 0;
+      if (this.atname == "") {
+        toast("Please fill out the required information", {
+          type: TYPE.ERROR,
+          timeout: 3000,
+          hideProgressBar: true,
+          position: POSITION.TOP_RIGHT,
+        });
+        has_error = 1;
+      }
+      if (has_error < 1) {
+        this.showModal1 = !this.showModal1;
+      }
+    },
     addAccessType() {
       const accessType = Parse.Object.extend("AccessTypes");
       const newAccessType = new accessType();

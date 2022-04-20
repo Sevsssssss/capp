@@ -80,6 +80,7 @@
                   type="text"
                   placeholder="Enter Requirement Name"
                   class="input input-bordered"
+                  v-model="req.applicationReq"
                 />
               </div>
             </div>
@@ -152,10 +153,10 @@
     >
       <div class="modal-box relative rounded-md text-left">
         <div class="text-brand-darkblue font-bold label-xl">
-          Add RQAT Account
+          Add Application Type
         </div>
         <p class="text-sm xxs:leading-tight text-grey-200">
-          Are you sure you want to add this account?
+          Are you sure you want to add this application type?
         </p>
         <div class="modal-action">
           <label
@@ -174,8 +175,8 @@
             for="my-modal-6"
             class="
               btn btn-sm
-              bg-red-500
-              hover:bg-red-600
+              bg-brand-darkblue
+              hover:bg-blue-800
               rounded-md
               border-none
             "

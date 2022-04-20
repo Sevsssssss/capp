@@ -230,7 +230,7 @@ export default {
         var reqFiles = [];
         let requirement = null;
         for (var i = 0; i < this.reqs.length; i++) {
-          const file = values.target[4 + i].files[0];
+          const file = values.target[5 + i].files[0];
           console.log(file);
           console.log(file.name);
           console.log(file.type);
