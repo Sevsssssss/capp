@@ -796,11 +796,6 @@
 
 <script>
 import Parse from "parse";
-import { useToast, TYPE, POSITION } from "vue-toastification";
-import { required } from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
-
-const toast = useToast();
 // import NoDataAvail from "@/components//NoDataAvail.vue";
 // var dataNumber = 10;
 // var page = 0;
@@ -827,7 +822,7 @@ export default {
       homeType: "",
     };
   },
-  components: { NoDataAvail },
+  // components: { NoDataAvail },
   computed: {
     searchAccessType() {
       return this.tables

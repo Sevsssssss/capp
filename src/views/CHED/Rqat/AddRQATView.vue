@@ -484,8 +484,8 @@ export default {
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
     var flag = 0;
-    for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === this.$route.path) {
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
         flag = 1;
       }
     }

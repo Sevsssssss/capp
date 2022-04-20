@@ -612,17 +612,13 @@ export default {
       const applications = Parse.Object.extend("Applications");
       const query = new Parse.Query(applications);
       const querResult = await query.find();
-
       for (var i = 0; i < querResult.length; i++) {
         var hei_name = "";
         const application = querResult[i];
         const user = new Parse.Query(Parse.User);
         user.equalTo("objectId", application.get("createdBy"));
-
         const hei = await user.first();
-
         hei_name = hei.get("hei_name");
-
         var months = [
           "January",
           "February",
@@ -655,116 +651,51 @@ export default {
         });
       }
       this.totalEntries = querResult.length;
-      this.tables = storedApplicationsAll;
-      if (this.sort_type == "For Approval") {
-        var storedApplicationsFA = [];
-        const applications = Parse.Object.extend("Applications");
+      this.tables = storedApplications;
+      const applicationsFA = Parse.Object.extend("Applications");
+      const queryFA = new Parse.Query(applicationsFA);
+      queryFA.equalTo("applicationStatus", "For Approval");
 
-        const query = new Parse.Query(applications);
-        query.equalTo("applicationStatus", "For Approval");
+      const applicationsFR = Parse.Object.extend("Applications");
+      const queryFR = new Parse.Query(applicationsFR);
+      queryFR.equalTo("applicationStatus", "For Revision");
+      const applicationsFI = Parse.Object.extend("Applications");
+      const queryFI = new Parse.Query(applicationsFI);
+      queryFI.equalTo("applicationStatus", "For Issuance ");
+      const applicationsFE = Parse.Object.extend("Applications");
+      const queryFE = new Parse.Query(applicationsFE);
+      queryFE.equalTo("applicationStatus", "For Evaluation");
+      const applicationsFC = Parse.Object.extend("Applications");
+      const queryFC = new Parse.Query(applicationsFC);
+      queryFC.equalTo("applicationStatus", "For Completed");
 
-        const querResult = await query.find();
-
-        for (i = 0; i < querResult.length; i++) {
-          const application = querResult[i];
-          const user = new Parse.Query(Parse.User);
-          user.equalTo("objectId", application.get("createdBy"));
-
-          const hei = await user.first();
-
-          hei_name = hei.get("hei_name");
-
-          month = application.createdAt.getMonth();
-          day = application.createdAt.getDate();
-          year = application.createdAt.getFullYear();
-          storedApplicationsC.push({
-            id: i + 1,
-            rep: application.get("pointPerson"),
-            email: application.get("email"),
-            phoneNumber: application.get("phoneNumber"),
-            type: application.get("applicationType"),
-            requirements: application.get("requirements"),
-            dateApplied: months[month] + " " + day + ", " + year,
-            status: application.get("applicationStatus"),
-            program: "BSIT",
-            HeiName: hei_name,
-          });
-        }
-        this.totalEntries = querResult.length;
-        this.tables = storedApplicationsFA;
-      } else if (this.sort_type == "For Revision") {
-        var storedApplicationsFR = [];
-        const applications = Parse.Object.extend("Applications");
-
-        const query = new Parse.Query(applications);
-        query.equalTo("applicationStatus", "For Revision");
-
-        const querResult = await query.find();
-
-        for (i = 0; i < querResult.length; i++) {
-          const application = querResult[i];
-          const user = new Parse.Query(Parse.User);
-          user.equalTo("objectId", application.get("createdBy"));
-
-          const hei = await user.first();
-
-          hei_name = hei.get("hei_name");
-
-          month = application.createdAt.getMonth();
-          day = application.createdAt.getDate();
-          year = application.createdAt.getFullYear();
-          storedApplicationsC.push({
-            id: i + 1,
-            rep: application.get("pointPerson"),
-            email: application.get("email"),
-            phoneNumber: application.get("phoneNumber"),
-            type: application.get("applicationType"),
-            requirements: application.get("requirements"),
-            dateApplied: months[month] + " " + day + ", " + year,
-            status: application.get("applicationStatus"),
-            program: "BSIT",
-            HeiName: hei_name,
-          });
-        }
-        this.totalEntries = querResult.length;
-        this.tables = storedApplicationsFR;
-      } else if (this.sort_type == "Completed") {
-        var storedApplicationsC = [];
-        const applications = Parse.Object.extend("Applications");
-
-        const query = new Parse.Query(applications);
-        query.equalTo("applicationStatus", "Completed");
-
-        const querResult = await query.find();
-
-        for (i = 0; i < querResult.length; i++) {
-          const application = querResult[i];
-          const user = new Parse.Query(Parse.User);
-          user.equalTo("objectId", application.get("createdBy"));
-
-          const hei = await user.first();
-
-          hei_name = hei.get("hei_name");
-
-          month = application.createdAt.getMonth();
-          day = application.createdAt.getDate();
-          year = application.createdAt.getFullYear();
-          storedApplicationsC.push({
-            id: i + 1,
-            rep: application.get("pointPerson"),
-            email: application.get("email"),
-            phoneNumber: application.get("phoneNumber"),
-            type: application.get("applicationType"),
-            requirements: application.get("requirements"),
-            dateApplied: months[month] + " " + day + ", " + year,
-            status: application.get("applicationStatus"),
-            program: "BSIT",
-            HeiName: hei_name,
-          });
-        }
-        this.totalEntries = querResult.length;
-        this.tables = storedApplicationsC;
-      }
+      this.datas = [
+        {
+          title: "FOR APPROVAL",
+          num: await queryFA.count(),
+          color: "orange",
+        },
+        {
+          title: "FOR REVISION",
+          num: await queryFR.count(),
+          color: "blue",
+        },
+        {
+          title: "FOR ISSUANCE",
+          num: await queryFI.count(),
+          color: "violet",
+        },
+        {
+          title: "FOR EVALUATION",
+          num: await queryFE.count(),
+          color: "green",
+        },
+        {
+          title: "COMPLETED",
+          num: await queryFC.count(),
+          color: "pink",
+        },
+      ];
     }
   },
 };

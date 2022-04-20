@@ -110,58 +110,122 @@
             </div>
           </div>
         </div>
-        <!-- Table body -->
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3" v-for="header in headers" :key="header">
-                            {{ header.title }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="bg-white border-b" v-for="table in searchEmployee" :key="table">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            {{ table.Name }}
-                        </th>
-                        <td class="px-6 py-4">
-                            <div>{{ table.ContactNo }}</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ table.Username }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ table.Email }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ table.Designation }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex space-x-2 items-end justify-end">
-                                <a href="#" @click="$router.replace({path: '/employees/edit'})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <div>
-                                    <label for="deleteFunc" class="hover:text-brand-red/60">
-                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                        </svg>
-                                    </label>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div v-if="searchEmployee.length == 0" class="p-5 font-medium">
-                <!-- NO DATA FOUND {{search}} -->
-                Sorry, the keyword "{{search}}" cannot be found in the database.
-            </div>
-            <!-- Table Footer -->
-            <div class="table-footer flex flex-row justify-between">
-                <div class="flex flex-row pl-4 justify-center items-center">
-                    <span class="text-sm text-gray-700">
-                        Showing
-                        <span class="font-semibold text-gray-900">{{
+        <div class="flex flex-row">
+          <!-- button -->
+          <div class="h-fit pt-3 items-center">
+            <button @click="csvEmployee()" type="button" class="btn-table">
+              <svg
+                style="fill: white"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z"
+                />
+              </svg>
+              <div class="pl-2">Upload CSV</div>
+            </button>
+          </div>
+          <!-- button -->
+          <div class="h-fit pr-5 pt-3 items-center">
+            <button @click="addEmployee()" type="button" class="btn-table">
+              <svg
+                style="fill: white"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"
+                />
+              </svg>
+              <div class="pl-2">Add Employee</div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Table body -->
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 py-3"
+                v-for="header in headers"
+                :key="header"
+              >
+                {{ header.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="bg-white border-b"
+              v-for="table in searchEmployee"
+              :key="table"
+            >
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+                {{ table.Name }}
+              </th>
+              <td class="px-6 py-4">
+                <div>{{ table.ContactNo }}</div>
+              </td>
+              <td class="px-6 py-4">
+                {{ table.Username }}
+              </td>
+              <td class="px-6 py-4">
+                {{ table.Email }}
+              </td>
+              <td class="px-6 py-4">
+                {{ table.Designation }}
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex space-x-2 items-end justify-end">
+                  <a
+                    href="#"
+                    @click="$router.replace({ path: '/employees/edit' })"
+                    class="
+                      font-medium
+                      text-blue-600
+                      dark:text-blue-500
+                      hover:underline
+                    "
+                    >Edit</a
+                  >
+                  <div>
+                    <label for="deleteFunc" class="hover:text-brand-red/60">
+                      <svg
+                        style="width: 20px; height: 20px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                        />
+                      </svg>
+                    </label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="searchEmployee.length == 0" class="p-5 font-medium">
+          <!-- NO DATA FOUND {{search}} -->
+          Sorry, the keyword "{{ search }}" cannot be found in the database.
+        </div>
+        <!-- Table Footer -->
+        <div class="table-footer flex flex-row justify-between">
+          <div class="flex flex-row pl-4 justify-center items-center">
+            <span class="text-sm text-gray-700">
+              Showing
+              <span class="font-semibold text-gray-900">{{
                 1 + numPerPage * currentpage
               }}</span>
               to
@@ -260,12 +324,9 @@
 
 <script>
 import Parse from "parse";
-
 // var dataNumber = 10;
 // var page = 0;
-
 import NoDataAvail from "@/components//NoDataAvail.vue";
-
 export default {
   name: "EmployeesView",
   data() {
@@ -319,172 +380,8 @@ export default {
         return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
       }).length;
     },
-    methods: {
-        addEmployee() {
-            this.$router.push("/employees/add");
-        },
-        newEntCount() {
-            this.totalEntries = this.tables.filter((p) => {
-                return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-            }).length;
-        },
-        prevPage() {
-            if (this.currentpage > 0) this.currentpage -= 1;
-        },
-        nextPage() {
-            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
-                this.currentpage += 1;
-            }
-        },
-        async filterEmployees() {
-            var i = 0;
-
-            if (this.sort_type == "CHED Director") {
-                var empDir = [];
-
-                const query = new Parse.Query(Parse.User);
-                query.notEqualTo("access_type", "HEI");
-                query.equalTo("designation", "DIRECTOR");
-
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const emp = querResult[i];
-
-                    empDir.push({
-                        id: emp.id,
-                        Name: emp.get("name")["lastname"] +
-                            ", " +
-                            emp.get("name")["firstname"] +
-                            " " +
-                            emp.get("name")["middleinitial"] +
-                            ".",
-                        Email: emp.get("email"),
-                        ContactNo: emp.get("contact_num"),
-                        Username: emp.get("username"),
-                        Designation: emp.get("designation"),
-                    });
-                }
-                this.tables = empDir;
-            }
-            if (this.sort_type == "Supervisor") {
-                var empSuper = [];
-
-                const query = new Parse.Query(Parse.User);
-                query.notEqualTo("access_type", "HEI");
-                query.equalTo("designation", "EDUCATION SUPERVISOR");
-
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const emp = querResult[i];
-
-                    empSuper.push({
-                        id: emp.id,
-                        Name: emp.get("name")["lastname"] +
-                            ", " +
-                            emp.get("name")["firstname"] +
-                            " " +
-                            emp.get("name")["middleinitial"] +
-                            ".",
-                        Email: emp.get("email"),
-                        ContactNo: emp.get("contact_num"),
-                        Username: emp.get("username"),
-                        Designation: emp.get("designation"),
-                    });
-                }
-                this.tables = empSuper;
-            }
-            if (this.sort_type == "Employees") {
-                var empEmp = [];
-
-                const query = new Parse.Query(Parse.User);
-                query.notEqualTo("access_type", "HEI");
-                query.equalTo("designation", "CHED EMPLOYEE");
-
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const emp = querResult[i];
-
-                    empEmp.push({
-                        id: emp.id,
-                        Name: emp.get("name")["lastname"] +
-                            ", " +
-                            emp.get("name")["firstname"] +
-                            " " +
-                            emp.get("name")["middleinitial"] +
-                            ".",
-                        Email: emp.get("email"),
-                        ContactNo: emp.get("contact_num"),
-                        Username: emp.get("username"),
-                        Designation: emp.get("designation"),
-                    });
-                }
-                this.tables = empEmp;
-            }
-            if (this.sort_type == "Others") {
-                var empOthers = [];
-
-                const query = new Parse.Query(Parse.User);
-                query.notEqualTo("access_type", "HEI");
-                query.equalTo("designation", "SUPER ADMIN");
-
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const emp = querResult[i];
-
-                    empOthers.push({
-                        id: emp.id,
-                        Name: emp.get("name")["lastname"] +
-                            ", " +
-                            emp.get("name")["firstname"] +
-                            " " +
-                            emp.get("name")["middleinitial"] +
-                            ".",
-                        Email: emp.get("email"),
-                        ContactNo: emp.get("contact_num"),
-                        Username: emp.get("username"),
-                        Designation: emp.get("designation"),
-                    });
-                }
-                this.tables = empOthers;
-            }
-            if (this.sort_type == "All") {
-                var empAll = [];
-
-                const query = new Parse.Query(Parse.User);
-                query.notEqualTo("access_type", "HEI");
-                query.notEqualTo("designation", null);
-
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const emp = querResult[i];
-
-                    empAll.push({
-                        id: emp.id,
-                        Name: emp.get("name")["lastname"] +
-                            ", " +
-                            emp.get("name")["firstname"] +
-                            " " +
-                            emp.get("name")["middleinitial"] +
-                            ".",
-                        Email: emp.get("email"),
-                        ContactNo: emp.get("contact_num"),
-                        Username: emp.get("username"),
-                        Designation: emp.get("designation"),
-                    });
-                }
-                this.tables = empAll;
-            }
-        },
+    prevPage() {
+      if (this.currentpage > 0) this.currentpage -= 1;
     },
     nextPage() {
       if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
@@ -493,21 +390,18 @@ export default {
     },
     async filterEmployees() {
       var i = 0;
-
       if (this.sort_type == "CHED Director") {
         var empDir = [];
-
         const query = new Parse.Query(Parse.User);
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "DIRECTOR");
-
         const querResult = await query.find({
           useMasterKey: true,
         });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
-
           empDir.push({
+            id: emp.id,
             Name:
               emp.get("name")["lastname"] +
               ", " +
@@ -525,18 +419,16 @@ export default {
       }
       if (this.sort_type == "Supervisor") {
         var empSuper = [];
-
         const query = new Parse.Query(Parse.User);
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "EDUCATION SUPERVISOR");
-
         const querResult = await query.find({
           useMasterKey: true,
         });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
-
           empSuper.push({
+            id: emp.id,
             Name:
               emp.get("name")["lastname"] +
               ", " +
@@ -554,18 +446,16 @@ export default {
       }
       if (this.sort_type == "Employees") {
         var empEmp = [];
-
         const query = new Parse.Query(Parse.User);
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "CHED EMPLOYEE");
-
         const querResult = await query.find({
           useMasterKey: true,
         });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
-
           empEmp.push({
+            id: emp.id,
             Name:
               emp.get("name")["lastname"] +
               ", " +
@@ -583,18 +473,16 @@ export default {
       }
       if (this.sort_type == "Others") {
         var empOthers = [];
-
         const query = new Parse.Query(Parse.User);
         query.notEqualTo("access_type", "HEI");
         query.equalTo("designation", "SUPER ADMIN");
-
         const querResult = await query.find({
           useMasterKey: true,
         });
         for (i = 0; i < querResult.length; i++) {
           const emp = querResult[i];
-
           empOthers.push({
+            id: emp.id,
             Name:
               emp.get("name")["lastname"] +
               ", " +
@@ -612,29 +500,34 @@ export default {
       }
       if (this.sort_type == "All") {
         var empAll = [];
-
         const query = new Parse.Query(Parse.User);
         query.notEqualTo("access_type", "HEI");
         query.notEqualTo("designation", null);
-
-            employees.push({
-                id: emp.id,
-                Name: emp.get("name")["lastname"] +
-                    ", " +
-                    emp.get("name")["firstname"] +
-                    " " +
-                    emp.get("name")["middleinitial"] +
-                    ".",
-                Email: emp.get("email"),
-                ContactNo: emp.get("contact_num"),
-                Username: emp.get("username"),
-                Designation: emp.get("designation"),
-            });
+        const querResult = await query.find({
+          useMasterKey: true,
+        });
+        for (i = 0; i < querResult.length; i++) {
+          const emp = querResult[i];
+          empAll.push({
+            id: emp.id,
+            Name:
+              emp.get("name")["lastname"] +
+              ", " +
+              emp.get("name")["firstname"] +
+              " " +
+              emp.get("name")["middleinitial"] +
+              ".",
+            Email: emp.get("email"),
+            ContactNo: emp.get("contact_num"),
+            Username: emp.get("username"),
+            Designation: emp.get("designation"),
+          });
         }
         this.tables = empAll;
       }
     },
-    mounted: async function () {
+  },
+  mounted: async function () {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);
@@ -643,8 +536,8 @@ export default {
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
     var flag = 0;
-    for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === this.$route.path) {
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
         flag = 1;
       }
     }
@@ -655,18 +548,16 @@ export default {
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
       var employees = [];
-
       const query = new Parse.Query(Parse.User);
-
       query.notEqualTo("access_type", "HEI");
       query.notEqualTo("designation", null);
       const querResult = await query.find({
         useMasterKey: true,
       });
-      for (var y = 0; y < querResult.length; y++) {
-        const emp = querResult[y];
-
+      for (var i = 0; i < querResult.length; i++) {
+        const emp = querResult[i];
         employees.push({
+          id: emp.id,
           Name:
             emp.get("name")["lastname"] +
             ", " +
@@ -684,7 +575,6 @@ export default {
       this.tables = employees;
     }
   },
-  
 };
 </script>
 

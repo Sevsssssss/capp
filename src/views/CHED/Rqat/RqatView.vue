@@ -1,59 +1,47 @@
 <template>
-  <div v-if="!tables.length" style="height: 100%">
+<div v-if="!tables.length" style="height: 100%">
     <NoDataAvail names="RqatView" />
-  </div>
-  <div v-else class="p-3">
+</div>
+<div v-else class="p-3">
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
-      <!-- Table header -->
-      <div class="flex flex-row justify-between items-center">
-        <!-- Search -->
-        <div class="flex space-x-4 pl-5 py-4">
-          <div class="">
-            <label for="table-search" class="sr-only">Search</label>
-            <div class="relative mt-1">
-              <div
-                class="
-                  absolute
-                  inset-y-0
-                  left-0
-                  flex
-                  items-center
-                  pl-3
-                  pointer-events-none
-                "
-              >
-                <svg
-                  class="w-5 h-5 text-gray-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-              <input
-                v-model="search"
-                type="text"
-                id="search"
-                class="
-                  bg-gray-50
-                  border border-gray-300
-                  text-gray-900 text-sm
-                  rounded-lg
-                  focus:ring-blue-500 focus:border-blue-500
-                  block
-                  w-80
-                  pl-10
-                  p-2.5
-                "
-                placeholder="Search for items"
-              />
+        <!-- Table header -->
+        <div class="flex flex-row justify-between items-center">
+            <!-- Search -->
+            <div class="flex space-x-4 pl-5 py-4">
+                <div class="">
+                    <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative mt-1">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="flex flex-row">
+                <!-- button -->
+                <div class="h-fit pt-3 items-center">
+                    <button @click="csvRQAT()" type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload CSV</div>
+                    </button>
+                </div>
+                <!-- button -->
+                <div class="h-fit pr-5 pt-3 items-center">
+                    <button @click="addRQAT()" type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                        </svg>
+                        <div class="pl-2">Add RQAT</div>
+                    </button>
+                </div>
+            </div>
         </div>
         <!-- Table body -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -110,100 +98,50 @@
                         <span class="font-semibold text-gray-900 ">{{
                 1 + numPerPage * currentpage
               }}</span>
-              to
-              <span class="font-semibold text-gray-900">{{
+                        to
+                        <span class="font-semibold text-gray-900 ">{{
                 (currentpage + 1) * numPerPage > totalEntries
                   ? totalEntries
                   : (currentpage + 1) * numPerPage
               }}</span>
-              of
-              <span class="font-semibold text-gray-900">{{
+                        of
+                        <span class="font-semibold text-gray-900 ">{{
                 totalEntries
               }}</span>
-              Entries
-            </span>
-          </div>
-          <div class="p-2 pr-4">
-            <div class="btn-group">
-              <ul class="inline-flex -space-x-px">
-                <li>
-                  <a
-                    href="javascript:void(0)"
-                    class="
-                      py-2
-                      px-3
-                      ml-0
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-l-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                    "
-                    @click="prevPage()"
-                    >Previous</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="javascript:void(0)"
-                    class="
-                      py-2
-                      px-3
-                      leading-tight
-                      text-gray-500
-                      bg-white
-                      rounded-r-lg
-                      border border-gray-300
-                      hover:bg-gray-100 hover:text-gray-700
-                    "
-                    @click="nextPage()"
-                    >Next</a
-                  >
-                </li>
-              </ul>
+                        Entries
+                    </span>
+                </div>
+                <div class="p-2 pr-4">
+                    <div class="btn-group">
+                        <ul class="inline-flex -space-x-px">
+                            <li>
+                                <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 " @click="prevPage()">Previous</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 " @click="nextPage()">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
-      <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">Delete Account</div>
-        <p class="py-2 text-sm">
-          This action cannot be undone. Are you sure you want to delete this
-          account?
-        </p>
-        <div class="modal-action">
-          <label
-            for="deleteFunc"
-            class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            "
-            >Cancel</label
-          >
-          <label
-            class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            "
-            >Delete</label
-          >
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Account</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 </template>
-
 <script>
 import Parse from "parse";
 // var dataNumber = 10;
@@ -309,8 +247,8 @@ export default {
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
     var flag = 0;
-    for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === this.$route.path) {
+    for (var y = 0; y < accType.length; y++) {
+      if (accType[y] === this.$route.path) {
         flag = 1;
       }
     }
