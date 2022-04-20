@@ -111,11 +111,6 @@ const routes = [
         path: "/hei/edit/:id",
         name: "edithei",
         component: AddHeiView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -127,11 +122,6 @@ const routes = [
         path: "/hei/edit",
         name: "edithei",
         component: EditHeiView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -175,11 +165,6 @@ const routes = [
         path: "/rqat/edit",
         name: "editrqat",
         component: EditRQATView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
