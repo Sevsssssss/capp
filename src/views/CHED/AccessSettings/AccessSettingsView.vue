@@ -89,7 +89,7 @@
                 </div>
             </div>
             <!-- Table body -->
-            <table class="w-full rqat-table text-sm text-left text-gray-500">
+            <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3" v-for="header in headers" :key="header">
@@ -102,16 +102,18 @@
                         <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ i.Name }}
                         </td>
-                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 spacer">
+                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ i.Privileges }}
                         </td>
-                        <td class="px-2 py-4 text-right">
+                        <td class="px-6 py-4 text-right">
                             <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                         </td>
-                        <td class="px-4 py-4 self-center">
-                            <svg class="hover:text-brand-red/60 self-center" style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                            </svg>
+                        <td class="px-6 py-4 flex flex-row">
+                            <div class="hover:text-brand-red/60">
+                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                </svg>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -541,7 +543,6 @@ export default {
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
         query.equalTo("name", Parse.User.current().get("access_type"));
-
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
@@ -551,7 +552,7 @@ export default {
             }
         }
         if (flag === 0) {
-            this.$router.push("403");
+            this.$router.push("/403");
         } else {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT

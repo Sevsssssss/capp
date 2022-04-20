@@ -185,6 +185,7 @@ import TeamLine from "@/assets/sidebar_icons/team-line.svg";
 import FileSettingsLine from "@/assets/sidebar_icons/file-settings-line.svg";
 import AccessTypeLine from "@/assets/sidebar_icons/shield-user-line.svg";
 import BookLine from "@/assets/sidebar_icons/book-line.svg";
+import ContactLine from "@/assets/sidebar_icons/contacts-line.svg";
 
 const toast = useToast();
 
@@ -268,7 +269,7 @@ export default {
       });
     }
     if (flag === 0) {
-      this.$router.push("403");
+      this.$router.push("/403");
     } else {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
@@ -384,7 +385,7 @@ export default {
           icon: {
             element: "img",
             attributes: {
-              src: AccessTypeLine,
+              src: ContactLine,
             },
           },
         });

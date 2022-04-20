@@ -37,7 +37,7 @@ export default {
       }
     }
     if (flag === 0) {
-      this.$router.push("403");
+      this.$router.push("/403");
     } else {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
