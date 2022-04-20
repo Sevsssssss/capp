@@ -23,36 +23,34 @@
                         {{table.file}}
                     </td> -->
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1]" v-model="v$.approved.$model" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" /> 
                         </td>
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1]" v-model="v$.disapproved.$model" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]"/>
                         </td>
                         <td class="px-6 py-4">
-                            <textarea v-if=" statusShow[table.id - 1] == 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1]" v-model="v$.comment.$model"></textarea>
-                            <textarea v-else-if="statusShow[table.id - 1] == 'Approved' || statusShow[table.id - 1] == '' " disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..." :v-model="comment[table.id - 1]"></textarea>
-                            <textarea v-else disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..." :v-model="comment[table.id - 1]"></textarea>
+                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1, v$.comment.$model]"></textarea>
+                            <textarea v-else-if="statusShow[table.id - 1] === 'Approved' || statusShow[table.id - 1] === null " disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
+                            <textarea v-else disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="flex flex-row justify-center items-center space-x-6 pt-10">
+        <div class="flex flex-row justify-center items-center space-x-6 py-10">
             <div class="">
                 <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" aria-label="Close">
                     <div>Dismiss</div>
                 </button>
             </div>
-
-            <div v-if="statusShow != 'Disapproved'">
-                <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                    Submit
-                </button>
-
-            </div>
-            <div v-else>
+            <div v-if="statusShow.includes('Disapproved')">
                 <button @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Revise
+                </button>
+            </div>
+            <div v-else>
+                <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                    Submit
                 </button>
             </div>
         </div>
@@ -142,8 +140,8 @@ export default {
             ],
             tables: [],
             search: "",
-            disapproved: null,
-            approved: null,
+            disapproved: '',
+            approved: '',
         };
     },
     validations() {
@@ -283,8 +281,8 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.approved == null &&
-                this.disapproved == null
+                this.approved == '' ||
+                this.disapproved == ''
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -302,7 +300,7 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.comment == null
+                this.comment === null
             ) {
                 toast("Please fill out the comment for disapproving the file", {
                     type: TYPE.ERROR,
