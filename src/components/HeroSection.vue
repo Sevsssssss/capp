@@ -158,7 +158,6 @@ export default {
                         user.get("access_type") === "SUPER ADMIN" ||
                         user.get("access_type") === "ADMIN" ||
                         user.get("access_type") === "EDUCATION SUPERVISOR" ||
-                        user.get("access_type") === "RQAT" ||
                         user.get("access_type") === "REPORTS"
                     ) {
                         this.$router
@@ -173,6 +172,15 @@ export default {
                         this.$router
                             .push({
                                 path: "/HEIhome",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    } else if (user.get("access_type") === "RQAT") {
+                        this.$router
+
+                            .push({
+                                path: "/assignments",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
@@ -193,7 +201,7 @@ export default {
                         return;
                     }
                 });
-            
+
         },
         toggleModal() {
             if (Parse.User.current() !== null) {
@@ -202,7 +210,6 @@ export default {
                     user.get("access_type") === "SUPER ADMIN" ||
                     user.get("access_type") === "ADMIN" ||
                     user.get("access_type") === "EDUCATION SUPERVISOR" ||
-                    user.get("access_type") === "RQAT" ||
                     user.get("access_type") === "REPORTS"
                 ) {
                     this.$router
@@ -216,6 +223,15 @@ export default {
                     this.$router
                         .push({
                             path: "/HEIhome",
+                        })
+                        .catch((err) => {
+                            throw new Error(`Problem handling something: ${err}.`);
+                        });
+                } else if (user.get("access_type") === "RQAT") {
+                    this.$router
+
+                        .push({
+                            path: "/assignments",
                         })
                         .catch((err) => {
                             throw new Error(`Problem handling something: ${err}.`);

@@ -141,9 +141,13 @@
                                     <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
                                     CHED Home
                                 </div>
-                                <div class="label-text viewSubCatbool" style="align-self: center">
+                                <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/HEIhome" class="radio mr-1" v-model="homeType" />
                                     HEI Home
+                                </div>
+                                <div class="label-text viewSubCatbool" style="align-self: center">
+                                    <input type="radio" id="homeType" value="/assignments" class="radio mr-1" v-model="homeType" />
+                                    RQAT Home
                                 </div>
                             </label>
                         </div>
@@ -293,6 +297,24 @@
                                     <input type="checkbox" class="checkbox mr-1" value="/HEIapplication/:id" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         HEI Edit Application
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div v-if="homeType == '/assignments'" class="font-medium text-sm mt-2">
+                            <div class="pb-2">RQAT Privileges:</div>
+                            <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/evaluate" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Evaluate
+                                    </div>
+                                </label>
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/history" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        History
                                     </div>
                                 </label>
                             </div>
@@ -335,9 +357,13 @@
                                     <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
                                     CHED Home
                                 </div>
-                                <div class="label-text viewSubCatbool" style="align-self: center">
+                                <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/HEIhome" class="radio mr-1" v-model="homeType" />
                                     HEI Home
+                                </div>
+                                <div class="label-text viewSubCatbool" style="align-self: center">
+                                    <input type="radio" id="homeType" value="/assignments" class="radio mr-1" v-model="homeType" />
+                                    RQAT Home
                                 </div>
                             </label>
                         </div>
@@ -487,6 +513,24 @@
                                     <input type="checkbox" class="checkbox mr-1" value="/HEIapplication/:id" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         HEI Edit Application
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div v-if="homeType == '/assignments'" class="font-medium text-sm mt-2">
+                            <div class="pb-2">RQAT Privileges:</div>
+                            <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/evaluate" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Evaluate
+                                    </div>
+                                </label>
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/history" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        History
                                     </div>
                                 </label>
                             </div>
