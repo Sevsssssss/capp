@@ -119,7 +119,6 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
             // Query the application from the db
-            var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("objectId", this.appID);
@@ -164,8 +163,6 @@ export default {
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
             this.dateApplied = months[month] + " " + day + ", " + year;
-
-            this.tables = storedApplications;
         }
     },
 };

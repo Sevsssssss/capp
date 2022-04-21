@@ -71,12 +71,19 @@
 <script>
 import Parse from "parse";
 export default {
-    props: ["id", "HeiName", "type", "status", "dateApplied"],
+    props: ["id"],
     name: "EditHEIapplication",
     data() {
         return {
             // id: this.$route.params.id,
             show: false,
+            statusShow: "",
+            status: "",
+            rep: "",
+            email: "",
+            type: "",
+            dateApplied: "",
+            program: "",
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -137,9 +144,66 @@ export default {
     if (flag === 0) {
       this.$router.push("/403");
     } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        console.log("Hi!, You have permission to access this Page");
+        //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+        //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        
+        var storedReqs = [];
+
+        // Query the application from the db
+        const applications = Parse.Object.extend("Applications");
+        const query = new Parse.Query(applications);
+        query.equalTo("objectId", this.id);
+
+        const application = await query.first({
+            useMasterKey: true,
+        });
+
+        //Query the program of the application
+        const programs = Parse.Object.extend("Programs");
+        const progQuery = new Parse.Query(programs);
+        progQuery.equalTo("objectId", application.get("program"));
+
+        const program = await progQuery.first();
+
+        //Query the applicationType of the application
+        const appTypes = Parse.Object.extend("ApplicationTypes");
+        const appTypeQuery = new Parse.Query(appTypes);
+        appTypeQuery.equalTo("objectId", application.get("applicationType"));
+
+        const appType = await appTypeQuery.first();
+
+        this.status = application.get("applicationStatus");
+        this.type = appType.get("applicationTypeName");
+
+        this.program = program.get("programName");
+        var months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+        var month = application.createdAt.getMonth();
+        var day = application.createdAt.getDate();
+        var year = application.createdAt.getFullYear();
+        this.dateApplied = months[month] + " " + day + ", " + year;
+
+        for (var i = 0; i < application.get("requirements").length; i++) {
+            storedReqs.push({
+                credential: appType.get("applicationReqs")[i].applicationReq,
+                file: application.get("requirements")[i].file.name(),
+                comment: application.get("requirements")[i].comment,
+            });
+        }
+        this.tables = storedReqs;
     }
   },
 };
