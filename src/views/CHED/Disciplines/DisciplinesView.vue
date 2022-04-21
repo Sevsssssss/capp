@@ -1,9 +1,8 @@
 <template>
-<div v-if="!tables.length" style="height: 100%">
+<!-- <div v-if="!tables.length" style="height: 100%">
     <NoDataAvail names="DisciplinesView" />
-</div>
-<div v-else class="p-3">
-    {{editDisciplineName}}
+</div> -->
+<div class="p-3">
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
@@ -311,37 +310,46 @@
     </label>
 
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
-    <label for="createPrograms" class="modal cursor-pointer">
+    <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD A PROGRAM</div>
-            <p class="py-2 text-sm">
-                Input the Program Name and the Designated Discipline.
-            </p>
+            <div class="flex flex-row justify-between">
+                <div>
+                <div class="font-semibold text-md">ADD A PROGRAM</div>
+                <p class="py-2 text-sm">
+                    Input the Program Name and the Designated Discipline.
+                </p>
+            </div>
+            <div class="space-x-4 " style="text-align-last: right">
+                <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
+                        Add Category
+                    </button> -->
+                <button data-tip="Add Program" @click="addProgramName()" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
+                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                    </svg>
+                </button>
+
+            </div>
+            </div>
+            
             <form v-on:submit.prevent="submit">
-                <div class="mb-6">
+                <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="v$.atname.$model" />
+                    <div class="flex flex-row">
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
+                        <div class="pl-4">
+                            <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <select class="
-                select
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " v-model="selectedDiscipline">
+                    <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
                         <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
                             {{ discipline.name }}
                         </option>
@@ -366,11 +374,12 @@
             " @click="addProgram()">Submit</label>
             </div>
         </div>
-    </label>
+    </div>
 
     <input type="checkbox" id="editPrograms" class="modal-toggle" />
-    <label for="editPrograms" class="modal cursor-pointer">
+    <div class="modal">
         <div class="modal-box relative rounded-md text-left">
+
             <div class="font-semibold text-md">ADD A PROGRAM</div>
             <p class="py-2 text-sm">
                 Input the Program Name and the Designated Discipline.
@@ -425,7 +434,7 @@
             " @click="addProgram()">Submit</label>
             </div>
         </div>
-    </label>
+    </div>
 </div>
 </template>
 
@@ -444,11 +453,11 @@ import useVuelidate from "@vuelidate/core";
 const toast = useToast();
 // var dataNumber = 10;
 // var page = 0;
-import NoDataAvail from "@/components//NoDataAvail.vue";
+// import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
     name: "DisciplinesView",
     components: {
-        NoDataAvail,
+        // NoDataAvail,
         VueInstantLoadingSpinner
     },
     data() {
@@ -470,14 +479,13 @@ export default {
             disciplineName: "",
             editDisciplineName: "",
             editID: "",
-            programs: [{
-                id: 1,
-                name: "Bachelor of Science in Information Technology, Bachelor of Science in Computer Science, Bachelor of Science in Information Systems",
-            }, ],
+
             disciplines: [],
             atname: "",
             editAtName: "",
             selectedDiscipline: "",
+            programs: [],
+            progCounter: 0,
         };
     },
     validations() {
@@ -509,6 +517,27 @@ export default {
         },
     },
     methods: {
+        addProgramName() {
+            this.progCounter++;
+            this.programs.push({
+                id: this.progCounter,
+                programName: "",
+            });
+        },
+        removeProgram(id) {
+            console.log(this.programs.length);
+            for (var i = 0; i < this.programs.length; i++) {
+                console.log(i, id);
+                console.log(this.programs[i]);
+                if (this.programs[i].id === id) {
+                    console.log("true");
+                    console.log(id, this.programs[i].id);
+                    this.programs.splice(i, 1);
+                    i--;
+                }
+            }
+        },
+
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
