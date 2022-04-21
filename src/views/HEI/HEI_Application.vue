@@ -81,7 +81,8 @@
                     dateApplied: table.dateApplied,
                   },
                 }">
-                            <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a v-if="statusChecker(table.status) && table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a v-if="statusChecker(table.status) && table.status != 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                     </td>
                 </tr>

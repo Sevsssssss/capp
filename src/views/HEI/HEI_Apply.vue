@@ -58,22 +58,22 @@
                                     <span class="label-text">Email Address</span>
                                 </label>
                                 <input :class="{ 'input-error': validationStatus(v$.email) }" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs" />
-                                <label class="label">
+                                <!-- <label class="label">
                                     <span v-if="validationStatus(v$.email)" :class="{ 'text-error': validationStatus(v$.email) }" class="label-text-alt">
                                         Email is Required</span>
-                                </label>
+                                </label> -->
                             </div>
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="label-text">Contact Number</span>
                                 </label>
                                 <input :class="{ 'input-error': validationStatus(v$.phoneNumber) }" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs" />
-                                <label class="label">
+                                <!-- <label class="label">
                                     <span v-if="validationStatus(v$.phoneNumber)" :class="{
                       'text-error': validationStatus(v$.phoneNumber),
                     }" class="label-text-alt">
                                         Phone Number is Required</span>
-                                </label>
+                                </label> -->
                             </div>
                         </div>
                         <div class="flex flex-col items-start justify-start px-6 pb-4">
@@ -276,13 +276,15 @@ export default {
                                     timeout: 3000,
                                     position: POSITION.TOP_RIGHT,
                                 }),
-                                window.location.reload();
+                               setTimeout(() => {
+                                   this.$router.replace({path: "/HEIapplication"})
+                               }, 3000);
                             // console.log("New Access Type Added:" + newApplication.id)
                         },
                         (e) => {
                             toast("Application Adding Failed: " + e.message, {
                                 type: TYPE.ERROR,
-                                timeout: 5000,
+                                timeout: 2000,
                                 hideProgressBar: true,
                                 position: POSITION.TOP_RIGHT,
                             });
