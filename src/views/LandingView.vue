@@ -27,10 +27,6 @@ export default {
         SendMessageForm,
         FooterLP,
     },
-    methods: {
-        login() {
-            this.$router.push("/home");
-        },
-    },
+    methods: {},
 };
 </script>

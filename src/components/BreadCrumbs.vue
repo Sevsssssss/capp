@@ -1,29 +1,10 @@
 <template>
-<div class="
-      breadcrumbs
-      mt-14
-      w-full
-      p-2
-      fixed
-      shadow-sm
-      text-left
-      bg-brand-white
-    ">
+<div class=" pl-3 breadcrumbs mt-14 w-full fixed shadow-sm">
     <div class="text-sm breadcrumbs">
         <ul>
-            <!-- <li v-for="(crumb, ci) in crumbs" :key="ci">
-          <a
-            class="link"
-            :class="{ disabled: isLast(ci) }"
-            @click="selected(crumb)"
-          >
-            {{ crumb }}
-          </a>
-        </li> -->
-
-            <li v-for="menu in menu" :key="menu.href">
-                <a class="link">
-                    {{ menu.title }}
+            <li v-for="(crumb, ci) in crumbs" :key="ci">
+                <a class="link no-underline hover:text-blue-400 " :class="{ disabled: isLast(ci) }" @click="selected(crumb)">
+                    {{ crumb.title }}
                 </a>
             </li>
         </ul>
@@ -34,7 +15,10 @@
 <script>
 export default {
     props: {
-        menu: [],
+        crumbs: {
+            type: [],
+            required: true
+        },
     },
     watch: {
         $route() {

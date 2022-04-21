@@ -1,5 +1,8 @@
 module.exports = {
-  content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [
+  './public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}',
+  "./node_modules/flowbite/**/*.js"
+],
   daisyui: {
     styled: true,
     themes: false,
@@ -29,7 +32,8 @@ module.exports = {
 
       },
       blue :{
-        100: '#0085FF'
+        100: '#0085FF',
+        200: '#006ed4'
       },
       black: {
         100: '#000000',
@@ -57,9 +61,25 @@ module.exports = {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
-      xxl: '1536px'
+      xxl: '1536px',
+      xxxl: '1620px',
     },
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require('flowbite/plugin'),
+    // require('tailwindcss-animatecss')({
+    //   classes: ['animate__animated', 'animate__fadeIn', 'animate__bounceIn', 'animate__lightSpeedOut'],
+    //   settings: {
+    //     animatedSpeed: 1000,
+    //     heartBeatSpeed: 1000,
+    //     hingeSpeed: 2000,
+    //     bounceInSpeed: 750,
+    //     bounceOutSpeed: 750,
+    //     animationDelaySpeed: 1000
+    //   },
+    //   variants: ['responsive', 'hover', 'reduced-motion'],
+    // }),
+  ],
 }
