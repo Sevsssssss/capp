@@ -1,6 +1,7 @@
 <template>
 <form v-on:submit.prevent="submit">
     <div class="m-3">
+        {{ selectedSupervisor }}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -58,22 +59,22 @@
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT SUPERVISOR</div>
-            <p class="py-2 text-sm">
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-            </p>
+            
             <div class="flex flex-row py-6 justify-start items-start">
                 <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" :v-model="selectedRQAT">
-                        <option v-for="rqat in rqats" :key="rqat">
-                            {{ rqat.name }}
+                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
+                        <option disabled>
+                            Select A Supervisor
+                        </option>
+                        <option v-for="supervisor in supervisors" :key="supervisor" :value="supervisor.id">
+                            {{ supervisor.name }}
                         </option>
                     </select>
                 </div>
             </div>
             <div class="modal-action">
                 <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitChanges()">Continue</label>
+                <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : null">Continue</label>
             </div>
         </div>
     </div>
@@ -119,11 +120,11 @@ export default {
             v$: useVuelidate(),
             comment: [],
             type: "",
-            rqats: [{
+            supervisors: [{
                 id: 1,
                 name: "Maging Sino ka Man",
             }, ],
-            selectedRQAT: "",
+            selectedSupervisor: "Select A Supervisor",
             el: document.body,
             headers: [{
                     title: "CREDENTIALS",
@@ -201,7 +202,7 @@ export default {
                 }
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Evaluation");
-                application.set("selectedRQAT", this.selectedRQAT);
+                application.set("selectedSupervisor", this.selectedSupervisor);
 
                 application
                     .save()
@@ -248,7 +249,6 @@ export default {
                 }
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Revision");
-                application.set("selectedRQAT", this.selectedRQAT);
 
                 application
                     .save()
@@ -281,8 +281,7 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.approved == '' ||
-                this.disapproved == ''
+                this.statusShow.filter(x => x == "Approved").length != this.statusShow.length
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -318,6 +317,8 @@ export default {
 
     mounted: async function () {
         var storedApplications = [];
+        
+        //Query Application
         const applications = Parse.Object.extend("Applications");
         const query = new Parse.Query(applications);
         query.equalTo("objectId", this.appID);
@@ -325,6 +326,7 @@ export default {
         const application = await query.first();
         this.type = application.get("applicationType");
 
+        //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
         const appTypeQuery = new Parse.Query(applicationTypes);
         appTypeQuery.equalTo(
@@ -333,6 +335,30 @@ export default {
         );
 
         const applicationType = await appTypeQuery.first();
+
+        //Query Supervisors
+        const user = new Parse.Query(Parse.User);
+        user.equalTo("designation", "EDUCATION SUPERVISOR");
+        const supervisorResult = await user.find();
+
+        var dbSupervisors =[];
+
+        for (var j = 0; j < supervisorResult.length; j++) {
+            const sup = supervisorResult[j];
+
+            dbSupervisors.push({
+                id: sup.id,
+                name: sup.get("name")["lastname"] +
+                        ", " +
+                        sup.get("name")["firstname"] +
+                        " " +
+                        sup.get("name")["middleinitial"] +
+                        ".",
+            })
+        }
+
+        this.supervisors = dbSupervisors;
+
         for (var i = 0; i < application.get("requirements").length; i++) {
             this.statusShow.push("");
             this.comment.push("");
