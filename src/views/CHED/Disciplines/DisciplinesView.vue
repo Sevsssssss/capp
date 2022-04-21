@@ -312,6 +312,7 @@
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
+            {{programs}}
             <div class="flex flex-row justify-between">
                 <div>
                     <div class="font-semibold text-md">ADD A PROGRAM</div>
@@ -336,7 +337,7 @@
                 <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
                     <div class="flex flex-row">
-                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
                         <div class="pl-4">
                             <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
