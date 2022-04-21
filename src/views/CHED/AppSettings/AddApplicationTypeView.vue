@@ -73,9 +73,9 @@
         </div>
     </form>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+    <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">
+            <div class="font-semibold text-md">
                 Add Application Type
             </div>
             <p class="text-sm xxs:leading-tight text-grey-200">

@@ -5,7 +5,7 @@
             <div class="p-5">
                 <div class="">
                     <div class="flex-col py-5 ">
-                        <div class="flex justify-between items-center bg-brand-lightblue/5 w-full px-5 py-2 rounded-md">
+                        <div class="flex justify-between items-center bg-brand-lightblue/5 w-full px-5 py-2 rounded-sm">
                             <div class="flex">
                                 <div class="font-semibold text-lg">
                                     APPLY FOR APPLICATION
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="flex" style="">
-                                <select v-on:change="changeItem($event)" class="py-2 px-3 rounded-md w-64 uppercase text-sm font-semibold">
+                                <select v-on:change="changeItem($event)" class="select select-bordered w-64 uppercase font-semibold">
                                     <option class="" v-for="i in applicationTypes" :key="i" :value="i.href">
                                         {{ i.appType.get("applicationTypeName") }}
                                     </option>
@@ -40,7 +40,7 @@
                         </div>
                         <!-- <hr /> -->
 
-                        <div class="flex flex-row items-start justify-evenly px-2 pt-4">
+                        <div class="flex flex-row items-start justify-between px-2 pt-4">
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="text-sm">Point Person</span>
@@ -58,40 +58,36 @@
                                     <span class="label-text">Email Address</span>
                                 </label>
                                 <input :class="{ 'input-error': validationStatus(v$.email) }" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs" />
-                                <label class="label">
+                                <!-- <label class="label">
                                     <span v-if="validationStatus(v$.email)" :class="{ 'text-error': validationStatus(v$.email) }" class="label-text-alt">
                                         Email is Required</span>
-                                </label>
+                                </label> -->
                             </div>
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="label-text">Contact Number</span>
                                 </label>
                                 <input :class="{ 'input-error': validationStatus(v$.phoneNumber) }" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs" />
-                                <label class="label">
+                                <!-- <label class="label">
                                     <span v-if="validationStatus(v$.phoneNumber)" :class="{
                       'text-error': validationStatus(v$.phoneNumber),
                     }" class="label-text-alt">
                                         Phone Number is Required</span>
-                                </label>
+                                </label> -->
                             </div>
                         </div>
-                        <div class="items-start justify-evenly px-10 pb-4">
+                        <div class="flex flex-col items-start justify-start px-6 pb-4">
                             <label class="label">
                                 <span class="label-text">Program:</span>
                             </label>
-                            <select v-model="programSelect" class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <select v-model="programSelect" class="select select-bordered  w-full ">
                                 <option v-for="program in programs" :key="program" :value="program.id">{{program.name}}</option>
                             </select>
                         </div>
-
                     </div>
                     <!-- Title -->
-
                     <div class="">
                         <div>
-                            <!-- <div class="font-semibold text-lg text-center">REQUIREMENTS</div> -->
-
                             <table class="w-full text-sm text-left text-gray-500">
                                 <thead class="font-semibold text-gray-700 uppercase bg-gray-50">
                                     <tr>
@@ -184,218 +180,225 @@
 </template>
 
 <script>
-import { useToast, TYPE, POSITION } from "vue-toastification";
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
 // import NoDataAvail from "@/components//NoDataAvail.vue";
-import { required, email } from "@vuelidate/validators";
+import {
+    required,
+    email
+} from "@vuelidate/validators";
 import Parse from "parse";
 const toast = useToast();
 export default {
-  name: "HEIapply",
-  // components: { NoDataAvail,},
-  data() {
-    return {
-      v$: useVuelidate(),
-      pointPerson: "",
-      email: "",
-      phoneNumber: "",
-      selected: "",
-      applicationTypes: [],
-      reqs: [],
-      selProg: "",
-      programSelect: "",
-      programs: [
-        // {
-        //   id: 1,
-        //   name: "Bachelor of Science in Information Technology",
-        // },
-      ],
-    };
-  },
-  validations() {
-    return {
-      pointPerson: {
-        required,
-      },
-      email: {
-        required,
-        email,
-      },
-      phoneNumber: {
-        required,
-      },
-    };
-  },
-  methods: {
-    submitApplication(values) {
-      try {
-        var reqFiles = [];
-        let requirement = null;
-        for (var i = 0; i < this.reqs.length; i++) {
-          const file = values.target[5 + i].files[0];
-          console.log(file);
-          console.log(file.name);
-          console.log(file.type);
-          requirement = new Parse.File(
-            file.name.replace(/[^a-zA-Z]/g, ""),
-            file,
-            file.type
-          );
-          reqFiles.push({
-            id: i + 1,
-            file: requirement,
-            status: "",
-            comment: "",
-          });
-        }
-        // const file = values.target[4].files[0];
-        // console.log(file);
-        // console.log(file.name);
-        // console.log(file.type);
-        const application = Parse.Object.extend("Applications");
-        const newApplication = new application();
-        //requirement = new Parse.File(file.name, file, file.type);
-        newApplication
-          .save({
-            pointPerson: this.pointPerson,
-            email: this.email,
-            phoneNumber: this.phoneNumber,
-            requirements: reqFiles,
-            applicationType: this.selected,
-            applicationStatus: "For Approval",
-            createdBy: Parse.User.current().id,
-            program: this.programSelect,
-          })
-          .then(
-            (newApplication) => {
-              toast("Application Added: " + newApplication.id, {
-                type: TYPE.SUCCESS,
-                timeout: 3000,
-                position: POSITION.TOP_RIGHT,
-              }),
-                window.location.reload();
-              // console.log("New Access Type Added:" + newApplication.id)
+    name: "HEIapply",
+    // components: { NoDataAvail,},
+    data() {
+        return {
+            v$: useVuelidate(),
+            pointPerson: "",
+            email: "",
+            phoneNumber: "",
+            selected: "",
+            applicationTypes: [],
+            reqs: [],
+            selProg: "",
+            programSelect: "",
+            programs: [
+                // {
+                //   id: 1,
+                //   name: "Bachelor of Science in Information Technology",
+                // },
+            ],
+        };
+    },
+    validations() {
+        return {
+            pointPerson: {
+                required,
             },
-            (e) => {
-              toast("Application Adding Failed: " + e.message, {
-                type: TYPE.ERROR,
-                timeout: 5000,
-                hideProgressBar: true,
-                position: POSITION.TOP_RIGHT,
-              });
-              // alert("Access Type Adding Failed: " + error)
+            email: {
+                required,
+                email,
+            },
+            phoneNumber: {
+                required,
+            },
+        };
+    },
+    methods: {
+        submitApplication(values) {
+            try {
+                var reqFiles = [];
+                let requirement = null;
+                for (var i = 0; i < this.reqs.length; i++) {
+                    const file = values.target[5 + i].files[0];
+                    console.log(file);
+                    console.log(file.name);
+                    console.log(file.type);
+                    requirement = new Parse.File(
+                        file.name.replace(/[^a-zA-Z]/g, ""),
+                        file,
+                        file.type
+                    );
+                    reqFiles.push({
+                        id: i + 1,
+                        file: requirement,
+                        status: "",
+                        comment: "",
+                    });
+                }
+                // const file = values.target[4].files[0];
+                // console.log(file);
+                // console.log(file.name);
+                // console.log(file.type);
+                const application = Parse.Object.extend("Applications");
+                const newApplication = new application();
+                //requirement = new Parse.File(file.name, file, file.type);
+                newApplication
+                    .save({
+                        pointPerson: this.pointPerson,
+                        email: this.email,
+                        phoneNumber: this.phoneNumber,
+                        requirements: reqFiles,
+                        applicationType: this.selected,
+                        applicationStatus: "For Approval",
+                        createdBy: Parse.User.current().id,
+                        program: this.programSelect,
+                    })
+                    .then(
+                        (newApplication) => {
+                            toast("Application Added: " + newApplication.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                               setTimeout(() => {
+                                   this.$router.replace({path: "/HEIapplication"})
+                               }, 3000);
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Adding Failed: " + e.message, {
+                                type: TYPE.ERROR,
+                                timeout: 2000,
+                                hideProgressBar: true,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        }
+                    );
+            } catch (error) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error);
             }
-          );
-      } catch (error) {
-        toast("Please fill out the required information", {
-          type: TYPE.ERROR,
-          timeout: 3000,
-          hideProgressBar: true,
-          position: POSITION.TOP_RIGHT,
-        });
-        console.log(error);
-      }
+        },
+        changeItem: function changeItem(event) {
+            for (var i = 0; i < this.applicationTypes.length; i++) {
+                if (
+                    this.applicationTypes[i].appType.get("applicationTypeName") ===
+                    event.target.value
+                ) {
+                    this.showApplicationType(this.applicationTypes[i].appType);
+                }
+            }
+        },
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        handleUserInput(input) {
+            var replacedInput = input.target.value
+                .replace(/\D/g, "")
+                .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+            this.value = !replacedInput[2] ?
+                replacedInput[1] :
+                "(" +
+                replacedInput[1] +
+                ") " +
+                replacedInput[2] +
+                (replacedInput[3] ? "-" + replacedInput[3] : "");
+        },
+        showApplicationType(appTypeObj) {
+            this.selected = appTypeObj.id;
+            var appTypeReqs = [];
+            for (var i = 0; i < appTypeObj.get("applicationReqs").length; i++) {
+                var req = appTypeObj.get("applicationReqs")[i];
+                appTypeReqs.push({
+                    req,
+                });
+            }
+            // console.log(appTypeReqs);
+            this.reqs = appTypeReqs;
+        },
     },
-    changeItem: function changeItem(event) {
-      for (var i = 0; i < this.applicationTypes.length; i++) {
-        if (
-          this.applicationTypes[i].appType.get("applicationTypeName") ===
-          event.target.value
-        ) {
-          this.showApplicationType(this.applicationTypes[i].appType);
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("name", Parse.User.current().get("access_type"));
+
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var y = 0; y < accType.length; y++) {
+            if (accType[y] === this.$route.path) {
+                flag = 1;
+            }
         }
-      }
-    },
-    validationStatus: function (validation) {
-      return typeof validation !== "undefined" ? validation.$error : false;
-    },
-    handleUserInput(input) {
-      var replacedInput = input.target.value
-        .replace(/\D/g, "")
-        .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-      this.value = !replacedInput[2]
-        ? replacedInput[1]
-        : "(" +
-          replacedInput[1] +
-          ") " +
-          replacedInput[2] +
-          (replacedInput[3] ? "-" + replacedInput[3] : "");
-    },
-    showApplicationType(appTypeObj) {
-      this.selected = appTypeObj.id;
-      var appTypeReqs = [];
-      for (var i = 0; i < appTypeObj.get("applicationReqs").length; i++) {
-        var req = appTypeObj.get("applicationReqs")[i];
-        appTypeReqs.push({
-          req,
-        });
-      }
-      // console.log(appTypeReqs);
-      this.reqs = appTypeReqs;
-    },
-  },
-  mounted: async function () {
-    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes);
-    query.equalTo("name", Parse.User.current().get("access_type"));
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            var applicationTypesMenu = [];
+            // var applicationTypeReqs = [];
+            const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+            const query = new Parse.Query(ApplicationTypes);
+            const queryResult = await query.find();
+            if (queryResult !== null) {
+                //this.selected = queryResult[0];
+                this.showApplicationType(queryResult[0]);
+            }
+            // this.applicationTypes[0].appType.get('applicationTypeName')
+            for (var i = 0; i < queryResult.length; i++) {
+                const appType = queryResult[i];
+                applicationTypesMenu.push({
+                    appType,
+                });
+            }
+            this.totalEntries = queryResult.length;
+            this.applicationTypes = applicationTypesMenu;
 
-    const querResult = await query.find();
-    var accType = querResult[0].get("privileges");
-    var flag = 0;
-    for (var y = 0; y < accType.length; y++) {
-      if (accType[y] === this.$route.path) {
-        flag = 1;
-      }
-    }
-    if (flag === 0) {
-      this.$router.push("/403");
-    } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-      var applicationTypesMenu = [];
-      // var applicationTypeReqs = [];
-      const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
-      const query = new Parse.Query(ApplicationTypes);
-      const queryResult = await query.find();
-      if (queryResult !== null) {
-        //this.selected = queryResult[0];
-        this.showApplicationType(queryResult[0]);
-      }
-      // this.applicationTypes[0].appType.get('applicationTypeName')
-      for (var i = 0; i < queryResult.length; i++) {
-        const appType = queryResult[i];
-        applicationTypesMenu.push({
-          appType,
-        });
-      }
-      this.totalEntries = queryResult.length;
-      this.applicationTypes = applicationTypesMenu;
-      
-      //Get Programs
-      var programsMat = [];
-      const Programs = Parse.Object.extend("Programs");
-      const programsQuery = new Parse.Query(Programs);
-      const progQueResult = await programsQuery.find();
-      
-      for (var j = 0; j < progQueResult.length; j++) {
-        const prog = progQueResult[j];
+            //Get Programs
+            var programsMat = [];
+            const Programs = Parse.Object.extend("Programs");
+            const programsQuery = new Parse.Query(Programs);
+            const progQueResult = await programsQuery.find();
 
-         console.log(prog.get("programName"));
-        programsMat.push({
-          id: prog.id,
-          name: prog.get("programName"),
-        });
-      }
-      this.programs = programsMat;
+            for (var j = 0; j < progQueResult.length; j++) {
+                const prog = progQueResult[j];
 
-    }
-  },
+                console.log(prog.get("programName"));
+                programsMat.push({
+                    id: prog.id,
+                    name: prog.get("programName"),
+                });
+            }
+            this.programs = programsMat;
+
+        }
+    },
 };
 </script>
 
 <style>
 </style>
-
-

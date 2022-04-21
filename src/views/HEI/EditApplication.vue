@@ -1,41 +1,23 @@
 <template>
 <div>
-    <div class="m-3">
-        <div class="flex flex-row justify-between">
+    <div class="mx-3">
+        <div class="flex justify-between items-start">
             <div class="flex flex-col">
-                <div class="p-4 text-left space-y-3">
-                    <div>Type: {{ type }}</div>
-                    <div>Date Applied: {{ dateApplied }}</div>
+                <div class="p-4 text-left space-y-3 uppercase">
+                    <div class="font-normal text-md">Type: <span class="font-semibold ">{{ type }}</span> </div>
+                    <div class="font-normal text-md">Date Applied: <span class="font-semibold ">{{ dateApplied }}</span> </div>
                 </div>
             </div>
             <div class="flex flex-col">
-                <div class="text-left p-4 pr-6 space-y-3">
-                    <span>Status: {{ status }}</span>
+                <div class="p-4 text-left space-y-3 uppercase">
+                    <div class="font-normal text-md ">Status: <span class="font-semibold">{{ status }}</span> </div>
                 </div>
                 <!-- <p>ID Number: {{id}}</p> -->
             </div>
         </div>
+        <hr>
     </div>
     <div class="m-3">
-        <div class="flex justify-between p-4">
-            <div class="">
-                <label for="table-search" class="sr-only">Search</label>
-                <div class="relative mt-1">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <input type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
-                </div>
-            </div>
-            <div>
-                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-                    Submit
-                </button>
-            </div>
-        </div>
-
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -63,6 +45,42 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <!-- BUTTONS -->
+        <div class="space-x-6 p-10">
+            <button type="button" class="
+                w-40
+                py-2.5
+                px-5
+                mr-2
+                mb-2
+                text-sm
+                font-medium
+                text-gray-900
+                focus:outline-none
+                bg-white
+                rounded-lg
+                border border-gray-200
+                hover:bg-gray-100 hover:text-blue-700
+              ">
+                Cancel
+            </button>
+            <button type="submit" class="
+                submit
+                w-40
+                text-white
+                bg-blue-700
+                hover:bg-blue-800
+                font-medium
+                rounded-lg
+                text-sm
+                px-5
+                py-2.5
+                mr-2
+                mb-2
+              ">
+                Submit
+            </button>
         </div>
     </div>
 </div>
@@ -135,77 +153,20 @@ export default {
         const query = new Parse.Query(AccessTypes);
         query.equalTo("name", Parse.User.current().get("access_type"));
 
-    const querResult = await query.find();
-    var homeType = querResult[0].get("hometype");
-    var flag = 0;
-    if (homeType === "/HEIhome") {
-      flag = 1;
-    }
-    if (flag === 0) {
-      this.$router.push("/403");
-    } else {
-        console.log("Hi!, You have permission to access this Page");
-        //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-        //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-        
-        var storedReqs = [];
-
-        // Query the application from the db
-        const applications = Parse.Object.extend("Applications");
-        const query = new Parse.Query(applications);
-        query.equalTo("objectId", this.id);
-
-        const application = await query.first({
-            useMasterKey: true,
-        });
-
-        //Query the program of the application
-        const programs = Parse.Object.extend("Programs");
-        const progQuery = new Parse.Query(programs);
-        progQuery.equalTo("objectId", application.get("program"));
-
-        const program = await progQuery.first();
-
-        //Query the applicationType of the application
-        const appTypes = Parse.Object.extend("ApplicationTypes");
-        const appTypeQuery = new Parse.Query(appTypes);
-        appTypeQuery.equalTo("objectId", application.get("applicationType"));
-
-        const appType = await appTypeQuery.first();
-
-        this.status = application.get("applicationStatus");
-        this.type = appType.get("applicationTypeName");
-
-        this.program = program.get("programName");
-        var months = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-        ];
-        var month = application.createdAt.getMonth();
-        var day = application.createdAt.getDate();
-        var year = application.createdAt.getFullYear();
-        this.dateApplied = months[month] + " " + day + ", " + year;
-
-        for (var i = 0; i < application.get("requirements").length; i++) {
-            storedReqs.push({
-                credential: appType.get("applicationReqs")[i].applicationReq,
-                file: application.get("requirements")[i].file.name(),
-                comment: application.get("requirements")[i].comment,
-            });
+        const querResult = await query.find();
+        var homeType = querResult[0].get("hometype");
+        var flag = 0;
+        if (homeType === "/HEIhome") {
+            flag = 1;
         }
-        this.tables = storedReqs;
-    }
-  },
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        }
+    },
 };
 </script>
 
