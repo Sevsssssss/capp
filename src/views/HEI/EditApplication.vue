@@ -208,7 +208,7 @@ export default {
     const querResult = await query.find();
     var homeType = querResult[0].get("hometype");
     var flag = 0;
-    if (homeType === "/home") {
+    if (homeType === "/HEIhome") {
       flag = 1;
     }
     if (flag === 0) {
