@@ -126,8 +126,8 @@
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ i.Name }}
                     </td>
-                    <td v-for="program in i.Programs" :key="program" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ program.name }}
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{ i.Programs }}
                     </td>
                     <td class="py-4 text-right">
                         <label for="editDisciplines" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)">Edit Disciplines</label>
@@ -626,14 +626,14 @@ export default {
         addProgram() {
             this.$refs.Spinner.show();
             try {
-                for(var i = 0; i < this.programs.length; i++){
-                        const programs = Parse.Object.extend("Programs");
-                        const newProgram = new programs();
-                        newProgram.save({
-                            programName: this.programs[i].programName,
-                            programDiscipline: this.selectedDiscipline,
-                        });
-                    }
+                for (var i = 0; i < this.programs.length; i++) {
+                    const programs = Parse.Object.extend("Programs");
+                    const newProgram = new programs();
+                    newProgram.save({
+                        programName: this.programs[i].programName,
+                        programDiscipline: this.selectedDiscipline,
+                    });
+                }
                 //alert("New Discipline Added: " + this.atname);
                 toast("New Program Added: " + this.atname, {
                         type: TYPE.SUCCESS,
@@ -724,8 +724,15 @@ export default {
                 queryProg.equalTo("programDiscipline", discipline.id);
                 const progResult = await queryProg.find();
                 var programsMat = [];
+                var programsText = "";
                 for (var j = 0; j < progResult.length; j++) {
                     const prog = progResult[j];
+
+                    if (programsText === "") {
+                        programsText = programsText + prog.get("programName");
+                    } else {
+                        programsText = programsText + ", " + prog.get("programName");
+                    }
                     programsMat.push({
                         id: prog.id,
                         name: prog.get("programName"),
@@ -735,7 +742,7 @@ export default {
                 disciplineTable.push({
                     id: discipline.id,
                     Name: discipline.get("disciplineName"),
-                    Programs: programsMat,
+                    Programs: programsText,
                 });
                 disciplinesNames.push({
                     id: discipline.id,
