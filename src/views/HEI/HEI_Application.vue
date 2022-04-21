@@ -72,15 +72,11 @@
                     <td class="px-6 py-4 text-right">
                         <a v-if="table.status === 'COMPLETED'"></a>
                         <router-link :to="{
-                  name: 'EditHEIapplication',
-                  params: {
-                    id: table.id,
-                    HeiName: table.HeiName,
-                    type: table.type,
-                    status: table.status,
-                    dateApplied: table.dateApplied,
-                  },
-                }">
+                        name: 'EditHEIapplication',
+                        params: {
+                            id: table.appID,
+                        },
+                        }">
                             <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                         </router-link>
                     </td>
@@ -152,63 +148,7 @@ export default {
                     title: "STATUS",
                 },
             ],
-            tables: [
-                //{
-                //         id: 1,
-                //         HeiName: "Bicol University",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         rep: "San Goku",
-                //         email: "aadnu@adnu.edu.ph",
-                //         program: "BSIT",
-                //         dateApplied: "June 1, 2015",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 2,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Ateneo De Naga University",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 2, 2015",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 3,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Universidad de Sta. Isabel",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 3, 2015",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 4,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Aquinas University of Legazpi",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 4, 2015",
-                //         status: "FOR REVISION",
-                //     },
-                //     {
-                //         id: 5,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "La Consolacion College",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 5, 2015",
-                //         status: "COMPLETED",
-                //     },
-            ],
+            tables: [],
         };
     },
     computed: {
@@ -432,12 +372,23 @@ export default {
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
+
+                const applicationTypes = Parse.Object.extend("ApplicationTypes");
+                const appTypeQuery = new Parse.Query(applicationTypes);
+                appTypeQuery.equalTo(
+                    "objectId",
+                    application.get("applicationType")
+                );
+
+                const applicationType = await appTypeQuery.first();
+
                 storedApplications.push({
+                    appID: application.id,
                     id: i + 1,
                     rep: application.get("pointPerson"),
                     email: application.get("email"),
                     phoneNumber: application.get("phoneNumber"),
-                    type: application.get("applicationType"),
+                    type: applicationType.get("applicationTypeName"),
                     requirements: application.get("requirements"),
                     dateApplied: months[month] + " " + day + ", " + year,
                     status: application.get("applicationStatus"),
