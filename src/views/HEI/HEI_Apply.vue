@@ -80,8 +80,8 @@
                             <label class="label">
                                 <span class="label-text">Program:</span>
                             </label>
-                            <select class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option v-for="program in programs" :key="program">{{program.name}}</option>
+                            <select v-model="programSelect" class="select  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option v-for="program in programs" :key="program" :value="program.id">{{program.name}}</option>
                             </select>
                         </div>
 
@@ -202,11 +202,13 @@ export default {
       selected: "",
       applicationTypes: [],
       reqs: [],
+      selProg: "",
+      programSelect: "",
       programs: [
-        {
-          id: 1,
-          name: "Bachelor of Science in Information Technology",
-        },
+        // {
+        //   id: 1,
+        //   name: "Bachelor of Science in Information Technology",
+        // },
       ],
     };
   },
@@ -262,6 +264,7 @@ export default {
             applicationType: this.selected,
             applicationStatus: "For Approval",
             createdBy: Parse.User.current().id,
+            program: this.programSelect,
           })
           .then(
             (newApplication) => {
@@ -319,7 +322,7 @@ export default {
           (replacedInput[3] ? "-" + replacedInput[3] : "");
     },
     showApplicationType(appTypeObj) {
-      this.selected = appTypeObj.get("applicationTypeName");
+      this.selected = appTypeObj.id;
       var appTypeReqs = [];
       for (var i = 0; i < appTypeObj.get("applicationReqs").length; i++) {
         var req = appTypeObj.get("applicationReqs")[i];
@@ -369,9 +372,24 @@ export default {
       }
       this.totalEntries = queryResult.length;
       this.applicationTypes = applicationTypesMenu;
-      // const app = this.applicationTypes[0];
-      //  console.log( queryResult[0]);
-      //  console.log( this.selected.get('applicationTypeName'))
+      
+      //Get Programs
+      var programsMat = [];
+      const Programs = Parse.Object.extend("Programs");
+      const programsQuery = new Parse.Query(Programs);
+      const progQueResult = await programsQuery.find();
+      
+      for (var j = 0; j < progQueResult.length; j++) {
+        const prog = progQueResult[j];
+
+         console.log(prog.get("programName"));
+        programsMat.push({
+          id: prog.id,
+          name: prog.get("programName"),
+        });
+      }
+      this.programs = programsMat;
+
     }
   },
 };
