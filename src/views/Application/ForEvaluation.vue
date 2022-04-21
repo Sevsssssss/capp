@@ -79,7 +79,7 @@ export default {
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
         const appTypeQuery = new Parse.Query(applicationTypes);
         appTypeQuery.equalTo(
-            "applicationTypeName",
+            "objectId",
             application.get("applicationType")
         );
 

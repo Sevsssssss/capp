@@ -306,6 +306,20 @@ export default {
       ],
     };
   },
+  computed: {
+    searchApplication() {
+      this.newEntCount();
+      return this.tables
+        .filter((p) => {
+          return p.rep.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+        })
+        .slice(
+          this.numPerPage * this.currentpage,
+          (this.currentpage + 1) * this.numPerPage
+        );
+    },
+  },
+
   methods: {
     statusChecker(status) {
       if (

@@ -437,7 +437,7 @@ export default {
       var day;
       var year;
       var hei_name = "";
-
+      //If All is Selected
       if (this.sort_type == "All") {
         var storedApplicationsAll = [];
         const applications = Parse.Object.extend("Applications");
@@ -458,7 +458,7 @@ export default {
           month = application.createdAt.getMonth();
           day = application.createdAt.getDate();
           year = application.createdAt.getFullYear();
-          storedApplicationsC.push({
+          storedApplicationsAll.push({
             id: i + 1,
             rep: application.get("pointPerson"),
             email: application.get("email"),
@@ -474,7 +474,10 @@ export default {
         }
         this.totalEntries = querResult.length;
         this.tables = storedApplicationsAll;
-      } else if (this.sort_type == "For Approval") {
+      } 
+      
+      //If Selected For Approval
+      else if (this.sort_type == "For Approval") {
         var storedApplicationsFA = [];
         const applications = Parse.Object.extend("Applications");
 
@@ -495,7 +498,7 @@ export default {
           month = application.createdAt.getMonth();
           day = application.createdAt.getDate();
           year = application.createdAt.getFullYear();
-          storedApplicationsC.push({
+          storedApplicationsFA.push({
             id: i + 1,
             rep: application.get("pointPerson"),
             email: application.get("email"),
@@ -511,7 +514,89 @@ export default {
         }
         this.totalEntries = querResult.length;
         this.tables = storedApplicationsFA;
-      } else if (this.sort_type == "For Revision") {
+      } 
+      
+      //If selected For Issuance
+      else if (this.sort_type == "For Issuance") {
+        var storedApplicationsFI = [];
+        const applications = Parse.Object.extend("Applications");
+
+        const query = new Parse.Query(applications);
+        query.equalTo("applicationStatus", "For Issuance");
+
+        const querResult = await query.find();
+
+        for (i = 0; i < querResult.length; i++) {
+          const application = querResult[i];
+          const user = new Parse.Query(Parse.User);
+          user.equalTo("objectId", application.get("createdBy"));
+
+          const hei = await user.first();
+
+          hei_name = hei.get("hei_name");
+
+          month = application.createdAt.getMonth();
+          day = application.createdAt.getDate();
+          year = application.createdAt.getFullYear();
+          storedApplicationsFI.push({
+            id: i + 1,
+            rep: application.get("pointPerson"),
+            email: application.get("email"),
+            phoneNumber: application.get("phoneNumber"),
+            type: application.get("applicationType"),
+            requirements: application.get("requirements"),
+            dateApplied: months[month] + " " + day + ", " + year,
+            status: application.get("applicationStatus"),
+            program: "BSIT",
+            HeiName: hei_name,
+            appID: application.id,
+          });
+        }
+        this.totalEntries = querResult.length;
+        this.tables = storedApplicationsFI;
+      }
+      
+      //If Selected For Evaluation
+      else if (this.sort_type == "For Evaluation") {
+        var storedApplicationsFE = [];
+        const applications = Parse.Object.extend("Applications");
+
+        const query = new Parse.Query(applications);
+        query.equalTo("applicationStatus", "For Evaluation");
+
+        const querResult = await query.find();
+
+        for (i = 0; i < querResult.length; i++) {
+          const application = querResult[i];
+          const user = new Parse.Query(Parse.User);
+          user.equalTo("objectId", application.get("createdBy"));
+
+          const hei = await user.first();
+
+          hei_name = hei.get("hei_name");
+
+          month = application.createdAt.getMonth();
+          day = application.createdAt.getDate();
+          year = application.createdAt.getFullYear();
+          storedApplicationsFE.push({
+            id: i + 1,
+            rep: application.get("pointPerson"),
+            email: application.get("email"),
+            phoneNumber: application.get("phoneNumber"),
+            type: application.get("applicationType"),
+            requirements: application.get("requirements"),
+            dateApplied: months[month] + " " + day + ", " + year,
+            status: application.get("applicationStatus"),
+            program: "BSIT",
+            HeiName: hei_name,
+            appID: application.id,
+          });
+        }
+        this.totalEntries = querResult.length;
+        this.tables = storedApplicationsFE;
+      }
+      
+      else if (this.sort_type == "For Revision") {
         var storedApplicationsFR = [];
         const applications = Parse.Object.extend("Applications");
 
@@ -532,7 +617,7 @@ export default {
           month = application.createdAt.getMonth();
           day = application.createdAt.getDate();
           year = application.createdAt.getFullYear();
-          storedApplicationsC.push({
+          storedApplicationsFR.push({
             id: i + 1,
             rep: application.get("pointPerson"),
             email: application.get("email"),
@@ -648,6 +733,16 @@ export default {
 
         const appType = await appTypeQuery.first();
 
+        //Query the program of the application
+        const programs = Parse.Object.extend("Programs");
+        const programQuery = new Parse.Query(programs);
+        programQuery.equalTo(
+            "objectId",
+            application.get("program")
+        );
+
+        const program = await programQuery.first();
+
         storedApplications.push({
           id: i + 1,
           rep: application.get("pointPerson"),
@@ -657,7 +752,7 @@ export default {
           requirements: application.get("requirements"),
           dateApplied: months[month] + " " + day + ", " + year,
           status: application.get("applicationStatus"),
-          program: "BSIT",
+          program: program.get("programName"),
           HeiName: hei_name,
           appID: application.id,
         });
