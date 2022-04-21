@@ -1,25 +1,5 @@
 <template>
 <div class="p-3">
-    <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
-        <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
-            <div class="flex flex-col justify-between text-left">
-                <div class="flex flex-row">
-                    <div :class="'homeIcon ' + data.color" class="mr-3">
-                        <svg class="icon" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z" />
-                        </svg>
-                    </div>
-                    <div class="text-sm font-semibold" style="color: #8fa0b9">
-                        {{ data.title }}
-                    </div>
-                </div>
-                <div class="text-2xl text-right font-semibold text-grey-300">
-                    {{ data.num }}
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Table -->
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
@@ -108,7 +88,7 @@
               >
             </td> -->
                     <td class="px-6 py-4 flex flex-row justify-end">
-                        <a @click="viewEvalIns" href="#" class="font-medium text-blue-600 hover:underline pr-3">Edit</a>
+                        <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3">Edit</label>
                         <div class="hover:text-brand-red/60 self-center">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -172,7 +152,7 @@
     </div>
 
     <input type="checkbox" id="createDesignation" class="modal-toggle" />
-    <div class="modal">
+    <label for="createDesignation" class="modal cursor-pointer">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD DESIGNATION</div>
             <p class="py-2 text-sm">Input the name of the Designation.</p>
@@ -210,7 +190,8 @@
             " @click="modal()">Submit</label>
             </div>
         </div>
-    </div>
+    </label>
+
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
@@ -221,11 +202,56 @@
                 Are you sure you want to add this designation?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addDesignation()">Continue</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            " @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              bg-red-500
+              hover:bg-red-600
+              rounded-md
+              border-none
+            " @click="addDesignation()">Continue</label>
             </div>
         </div>
     </div>
+
+    <input type="checkbox" id="editDesignation" class="modal-toggle" />
+    <label for="editDesignation" class="modal cursor-pointer">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">UPDATE DESIGNATION</div>
+            <p class="py-2 text-sm">Update the name of the Designation.</p>
+            <form v-on:submit.prevent="submit">
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Designation:
+                    </label>
+                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.designationName) }" class="
+                bg-gray-50
+                border border-gray-300
+                text-gray-900 text-sm
+                rounded-md
+                focus:ring-blue-500 focus:border-blue-500
+                block
+                w-full
+                p-2.5
+              " placeholder="Enter Name" v-model="v$.designationName.$model" />
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="editDesignation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">
+                    Cancel
+                </label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class=" btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">
+                    Update
+                </label>
+            </div>
+        </div>
+    </label>
 </div>
 </template>
 
@@ -344,7 +370,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
             setTimeout(
                 function () {

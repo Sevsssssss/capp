@@ -204,7 +204,7 @@
     </div>
 
     <input type="checkbox" id="createDisciplines" class="modal-toggle" />
-    <div class="modal">
+    <label for="createDisciplines" class="modal cursor-pointer">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD A DISCIPLINE</div>
             <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
@@ -241,7 +241,7 @@
             " @click="modal()">Submit</label>
             </div>
         </div>
-    </div>
+    </label>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
@@ -271,7 +271,7 @@
 
     <!-- edit -->
     <input type="checkbox" id="editDisciplines" class="modal-toggle" />
-    <div class="modal">
+    <label for="editDisciplines" class="modal cursor-pointer">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">EDIT DISCIPLINE NAME</div>
             <p class="py-2 text-sm">Input the new name of the dicipline.</p>
@@ -308,10 +308,10 @@
             " @click="newDiscName()">Submit</label>
             </div>
         </div>
-    </div>
+    </label>
 
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
-    <div class="modal">
+    <label for="createPrograms" class="modal cursor-pointer">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD A PROGRAM</div>
             <p class="py-2 text-sm">
@@ -366,10 +366,10 @@
             " @click="addProgram()">Submit</label>
             </div>
         </div>
-    </div>
+    </label>
 
     <input type="checkbox" id="editPrograms" class="modal-toggle" />
-    <div class="modal">
+    <label for="editPrograms" class="modal cursor-pointer">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD A PROGRAM</div>
             <p class="py-2 text-sm">
@@ -425,7 +425,7 @@
             " @click="addProgram()">Submit</label>
             </div>
         </div>
-    </div>
+    </label>
 </div>
 </template>
 

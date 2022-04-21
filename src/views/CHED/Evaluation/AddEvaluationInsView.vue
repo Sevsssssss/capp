@@ -1,6 +1,7 @@
 <template>
 <!--Header-->
 <div class="m-3">
+    {{categories}}
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full">
         <div class="flex w-full items-end justify-between">
             <div class="form-control w-full pr-3">
@@ -321,13 +322,22 @@ export default {
 
         modal() {
             var has_error = 0;
+            var errCat = 0;
             var subcat = 0;
             var items = 0;
 
             for (var i = 0; i < this.categories.length; i++) {
+                console.log(this.categories[i].Category);
+                if (this.categories[i].Category != ''){
+                    errCat = errCat - 0;
+                }else{
+                    errCat = errCat + 1;
+                }
+                console.log(errCat);
                 console.log(this.categories[i].id);
                 console.log("SUBCAT:" + this.categories[i].subcategory.length);
                 if (this.categories[i].subcategory.length == 0) {
+                    console.log("ANO NI?: " + this.categories[i].subcategory.length);
                     subcat = 0;
                 } else {
                     for (var x = 0; x < this.categories[i].subcategory.length; x++) {
@@ -335,7 +345,7 @@ export default {
                         console.log("name:" + this.categories[i].subcategory[x].Subcategory);
                         if (this.categories[i].subcategory[x].Subcategory != null) {
 
-                            subcat = 0;
+                            subcat = subcat - 0;
                             console.log("EYY");
                             console.log(this.categories[i].subcategory[x].Subcategory.length);
                             if (this.categories[i].subcategory[x].items.length == 0) {
@@ -345,10 +355,10 @@ export default {
                                     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
                                     if (this.categories[i].subcategory[x].items[y].Item != null) {
                                         console.log("EYYS");
-                                        items = 0;
+                                        items = items - 0;
                                     } else {
                                         console.log("EdsYY");
-                                        items = 1;
+                                        items = items + 1;
                                     }
                                     if (this.categories[i].subcategory[x].items[y].Item.length == 0) {
                                         console.log("EYdasdasY");
@@ -359,7 +369,7 @@ export default {
                                 // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
                             }
                         } else {
-                            subcat = 1;
+                            subcat = subcat + 1;
                             console.log("HELL")
 
                         }
@@ -390,7 +400,7 @@ export default {
                 this.seriesYear == "" ||
                 this.evalDesc == "" ||
                 subcat == 1 ||
-                items == 1
+                items == 1 || errCat >= 1
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -479,6 +489,8 @@ export default {
             this.categories.push({
                 id: this.categoryId,
                 subcategory: [],
+                Category: "",
+                Desc: "",
             });
         },
         //This removes a category

@@ -1,6 +1,7 @@
 <template>
 <!--Header-->
 <div class="m-5">
+    {{appReqs}}
     <form v-on:submit.prevent="submit">
         <div class="overflow-x-auto shadow-lg rounded-lg px-8 py-5">
             <div class="" style="justify-content: space-between">
@@ -142,8 +143,18 @@ export default {
             return this.showModal1;
         },
         modal() {
+            var errChecker = 0;
+            for (var i = 0; i < this.appReqs.length; i++){
+                console.log(this.appReqs.length);
+                if (this.appReqs[i].applicationReq == ""){
+                    errChecker = errChecker + 1;
+                }else{
+                    errChecker = errChecker - 0;
+                }
+            }
+
             var has_error = 0;
-            if (this.applicationTypeName == "") {
+            if (this.applicationTypeName == "" || errChecker >= 1) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
