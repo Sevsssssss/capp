@@ -608,10 +608,14 @@ export default {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+      //Query the applications
       var storedApplications = [];
       const applications = Parse.Object.extend("Applications");
       const query = new Parse.Query(applications);
       const querResult = await query.find();
+
+      //Get details of the applications
       for (var i = 0; i < querResult.length; i++) {
         var hei_name = "";
         const application = querResult[i];
@@ -636,12 +640,20 @@ export default {
         var month = application.createdAt.getMonth();
         var day = application.createdAt.getDate();
         var year = application.createdAt.getFullYear();
+
+        //Query the applicationType of the application
+        const appTypes = Parse.Object.extend("ApplicationTypes");
+        const appTypeQuery = new Parse.Query(appTypes);
+        appTypeQuery.equalTo("objectId", application.get("applicationType"));
+
+        const appType = await appTypeQuery.first();
+
         storedApplications.push({
           id: i + 1,
           rep: application.get("pointPerson"),
           email: application.get("email"),
           phoneNumber: application.get("phoneNumber"),
-          type: application.get("applicationType"),
+          type: appType.get("applicationTypeName"),
           requirements: application.get("requirements"),
           dateApplied: months[month] + " " + day + ", " + year,
           status: application.get("applicationStatus"),

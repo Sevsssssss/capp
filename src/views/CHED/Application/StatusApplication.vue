@@ -10,7 +10,7 @@
                     </div>
                     <div class="font-normal text-sm uppercase">
                         PROGRAM:
-                        <span class="font-semibold">BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY
+                        <span class="font-semibold">{{ program }}
                             <!--{{ type }}--></span>
                     </div>
                 </div>
@@ -141,6 +141,7 @@ export default {
             email: "",
             type: "",
             dateApplied: "",
+            program: "",
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -215,6 +216,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            // Query the application from the db
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
@@ -224,10 +227,25 @@ export default {
                 useMasterKey: true,
             });
 
+            //Query the program of the application
+            const programs = Parse.Object.extend("Programs");
+            const progQuery = new Parse.Query(programs);
+            progQuery.equalTo("objectId", application.get("program"));
+
+            const program = await progQuery.first();
+
+            //Query the applicationType of the application
+            const appTypes = Parse.Object.extend("ApplicationTypes");
+            const appTypeQuery = new Parse.Query(appTypes);
+            appTypeQuery.equalTo("objectId", application.get("applicationType"));
+
+            const appType = await appTypeQuery.first();
+
             this.status = application.get("applicationStatus");
-            this.type = application.get("applicationType");
+            this.type = appType.get("applicationTypeName");
             this.email = application.get("email");
             this.rep = application.get("pointPerson");
+            this.program = program.get("programName");
             var months = [
                 "January",
                 "February",

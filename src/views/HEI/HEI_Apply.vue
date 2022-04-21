@@ -322,7 +322,7 @@ export default {
           (replacedInput[3] ? "-" + replacedInput[3] : "");
     },
     showApplicationType(appTypeObj) {
-      this.selected = appTypeObj.get("applicationTypeName");
+      this.selected = appTypeObj.id;
       var appTypeReqs = [];
       for (var i = 0; i < appTypeObj.get("applicationReqs").length; i++) {
         var req = appTypeObj.get("applicationReqs")[i];
