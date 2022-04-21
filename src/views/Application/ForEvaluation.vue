@@ -21,7 +21,7 @@
             </tbody>
         </table>
     </div>
-    <div class="flex flex-row center pt-10">
+    <div class="flex flex-row center py-10">
         <div class="pr-5">
             <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
                 <div>Dismiss</div>

@@ -1,7 +1,16 @@
 <template>
 <form v-on:submit.prevent="submit">
-    <div class="m-3">
-        {{ selectedSupervisor }}
+    <div class="mx-3">
+        <div class="py-4 px-1">
+            <div class="flex justify-start space-x-4">
+                <div class="font-normal text-sm">
+                    Point Person: <span class="font-semibold">{{ rep }}</span>
+                </div>
+                <div class="font-normal text-sm">
+                    Email: <span class="font-semibold">{{ email }}</span>
+                </div>
+            </div>
+        </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -20,14 +29,11 @@
                                 <a :href="table.file" target="_blank" class="text-blue-400">View File</a>
                             </div>
                         </th>
-                        <!-- <td class="px-6 py-4 flex text-blue-400">
-                        {{table.file}}
-                    </td> -->
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" /> 
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" />
                         </td>
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]"/>
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
                         </td>
                         <td class="px-6 py-4">
                             <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1, v$.comment.$model]"></textarea>
@@ -59,7 +65,7 @@
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT SUPERVISOR</div>
-            
+
             <div class="flex flex-row py-6 justify-start items-start">
                 <div class="month-sort flex flex-row border rounded-md w-full">
                     <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
@@ -74,7 +80,7 @@
             </div>
             <div class="modal-action">
                 <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : null">Continue</label>
+                <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
             </div>
         </div>
     </div>
@@ -219,10 +225,14 @@ export default {
                     })
 
                 setTimeout(() => {
-                    this.$router.replace({
-                        path: "/application"
+                    this.$router.push({
+                        path: "/application/ " + this.appID.slice(0, 2).join(""),
                     })
                 }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
             } catch (error) {
                 alert("Error" + error.message);
                 console.log(error);
@@ -265,7 +275,7 @@ export default {
 
                 setTimeout(() => {
                     this.$router.replace({
-                        path: "/application"
+                        path: "/application/"
                     })
                 }, 2000);
             } catch (error) {
@@ -312,12 +322,20 @@ export default {
             if (has_error < 1) {
                 this.showModal2 = !this.showModal2;
             }
+        },
+        showToastSupervisor() {
+            toast("Please select the required supervisor", {
+                type: TYPE.ERROR,
+                timeout: 3000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+            });
         }
     },
 
     mounted: async function () {
         var storedApplications = [];
-        
+
         //Query Application
         const applications = Parse.Object.extend("Applications");
         const query = new Parse.Query(applications);
@@ -335,13 +353,15 @@ export default {
         );
 
         const applicationType = await appTypeQuery.first();
+        this.email = application.get("email");
+        this.rep = application.get("pointPerson");
 
         //Query Supervisors
         const user = new Parse.Query(Parse.User);
         user.equalTo("designation", "EDUCATION SUPERVISOR");
         const supervisorResult = await user.find();
 
-        var dbSupervisors =[];
+        var dbSupervisors = [];
 
         for (var j = 0; j < supervisorResult.length; j++) {
             const sup = supervisorResult[j];
@@ -349,11 +369,11 @@ export default {
             dbSupervisors.push({
                 id: sup.id,
                 name: sup.get("name")["lastname"] +
-                        ", " +
-                        sup.get("name")["firstname"] +
-                        " " +
-                        sup.get("name")["middleinitial"] +
-                        ".",
+                    ", " +
+                    sup.get("name")["firstname"] +
+                    " " +
+                    sup.get("name")["middleinitial"] +
+                    ".",
             })
         }
 
