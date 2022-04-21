@@ -7,10 +7,9 @@
                 <label class="label">
                     <span class="label-text">Program*</span>
                 </label>
-                <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                    <option v-for="program in programs" :key="program" :value="program.id">
-                        {{ program.programName }}
-                    </option>
+                
+                <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="programName">
+                    <option v-for="program in programs" :key="program" :value="program.id">{{program.name}}</option>
                 </select>
                 <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
                 <!-- <input type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" /> -->
@@ -281,15 +280,7 @@ export default {
             cmoNo: "",
             seriesYear: "",
             evalDesc: "",
-            programs: [{
-                    id: 1,
-                    programName: "Prgrams"
-                },
-                {
-                    id: 2,
-                    programName: "Prgrams1"
-                },
-            ],
+            programs: [],
         };
     },
     validations() {
@@ -421,6 +412,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
+                console.log(this.programName);
                 has_error = 1;
             }
 
@@ -600,6 +592,23 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Get Programs
+            var programsMat = [];
+            const Programs = Parse.Object.extend("Programs");
+            const programsQuery = new Parse.Query(Programs);
+            const progQueResult = await programsQuery.find();
+
+            for (var j = 0; j < progQueResult.length; j++) {
+                const prog = progQueResult[j];
+
+                console.log(prog.get("programName"));
+                programsMat.push({
+                    id: prog.id,
+                    name: prog.get("programName"),
+                });
+            }
+            this.programs = programsMat;
         }
     },
 };
