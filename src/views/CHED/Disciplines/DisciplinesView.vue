@@ -312,7 +312,6 @@
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            {{programs}}
             <div class="flex flex-row justify-between">
                 <div>
                     <div class="font-semibold text-md">ADD A PROGRAM</div>
@@ -626,13 +625,15 @@ export default {
         },
         addProgram() {
             this.$refs.Spinner.show();
-            const programs = Parse.Object.extend("Programs");
-            const newProgram = new programs();
             try {
-                newProgram.save({
-                    programName: this.atname,
-                    programDiscipline: this.selectedDiscipline,
-                });
+                for(var i = 0; i < this.programs.length; i++){
+                        const programs = Parse.Object.extend("Programs");
+                        const newProgram = new programs();
+                        newProgram.save({
+                            programName: this.programs[i].programName,
+                            programDiscipline: this.selectedDiscipline,
+                        });
+                    }
                 //alert("New Discipline Added: " + this.atname);
                 toast("New Program Added: " + this.atname, {
                         type: TYPE.SUCCESS,
