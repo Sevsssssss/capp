@@ -11,7 +11,7 @@
         shadow-md
       ">
         <form v-on:submit.prevent="submit" class="card-body">
-          {{disciplines}}
+            {{disciplines}}
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -363,6 +363,12 @@ export default {
                 this.contactnum == "" ||
                 this.email == null
             ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
                 has_error = 1;
             }
             if (has_error < 1) {
