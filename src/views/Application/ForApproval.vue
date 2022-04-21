@@ -36,7 +36,7 @@
                             <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
                         </td>
                         <td class="px-6 py-4">
-                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1, v$.comment.$model]" :class="{ 'input-error': validationStatus(v$.comment[table.id - 1]) }"></textarea>
+                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id - 1]" ></textarea>
                             <textarea v-else-if="statusShow[table.id - 1] === 'Approved' || statusShow[table.id - 1] === null " disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                             <textarea v-else disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                         </td>
@@ -198,7 +198,6 @@ export default {
                 var requirements = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
-                    console.log(this.comment[i]);
                     requirements.push({
                         id: application.get("requirements")[i].id,
                         file: application.get("requirements")[i].file,
@@ -249,7 +248,6 @@ export default {
                 var requirements = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
-                    console.log(this.comment[i]);
                     requirements.push({
                         id: application.get("requirements")[i].id,
                         file: application.get("requirements")[i].file,
@@ -287,10 +285,6 @@ export default {
                 console.log(error);
             }
         },
-
-        checkBox() {
-            console.log(this.comment);
-        },
         modal() {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
@@ -311,9 +305,14 @@ export default {
         },
         modalRevise() {
             var has_error = 0;
+            var missing_comment = 0;
             //var error_text = "Account not created due to the following reasons:\n";
+            for(var i = 0; i < this.statusShow.length; i++){
+                if(this.statusShow[i] == 'Disapproved' && this.comment[i] == '')
+                    missing_comment++;
+            }
             if (
-                this.comment === null
+                missing_comment > 0
             ) {
                 toast("Please fill out the comment for disapproving the file", {
                     type: TYPE.ERROR,
