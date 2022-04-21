@@ -123,7 +123,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addRQAT(), scrollToTop()">
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addRQAT(), scrollToTop()">
                     Continue
                 </button>
             </div>

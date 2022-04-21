@@ -210,7 +210,7 @@
       :class="{ 'modal-open ': validate() }"
       class="modal modal-bottom sm:modal-middle"
     >
-      <div class="modal-box">
+      <div class="modal-box relative rounded-md text-left">
         <div class="text-brand-darkblue font-bold label-xl">
           Add Evaluation Instrument
         </div>
@@ -234,8 +234,8 @@
             for="my-modal-6"
             class="
               btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
+              bg-red-500
+              hover:bg-red-600
               rounded-md
               border-none
             "

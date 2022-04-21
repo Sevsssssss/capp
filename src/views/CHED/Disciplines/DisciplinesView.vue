@@ -311,7 +311,7 @@
 
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Add Discipline</div>
+            <div class="text-brand-darkblue font-bold label-xl">Edit Discipline</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to edit this discipline?
             </p>
@@ -404,9 +404,9 @@
 
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Add Discipline</div>
+            <div class="text-brand-darkblue font-bold label-xl">Add Program</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to edit this discipline?
+                Are you sure you want to add this program?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="
