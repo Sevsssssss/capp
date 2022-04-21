@@ -1,6 +1,5 @@
 <template>
 <div class="m-3">
-    <div>
         <div>
             <div class="flex flex-row justify-between">
                 <div class="flex flex-col p-4 text-left space-y-2">
@@ -45,7 +44,6 @@
         <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>
         </div>
-    </div>
 </div>
 </template>
 

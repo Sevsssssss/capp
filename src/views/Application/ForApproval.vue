@@ -36,7 +36,7 @@
                             <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
                         </td>
                         <td class="px-6 py-4">
-                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1, v$.comment.$model]"></textarea>
+                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." :v-model="comment[table.id - 1, v$.comment.$model]" :class="{ 'input-error': validationStatus(v$.comment[table.id - 1]) }"></textarea>
                             <textarea v-else-if="statusShow[table.id - 1] === 'Approved' || statusShow[table.id - 1] === null " disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                             <textarea v-else disabled id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                         </td>
@@ -275,9 +275,13 @@ export default {
 
                 setTimeout(() => {
                     this.$router.replace({
-                        path: "/application/"
+                        path: "/application/ " + this.appID.slice(0, 2).join(""),
                     })
                 }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
             } catch (error) {
                 alert("Error" + error.message);
                 console.log(error);
@@ -309,7 +313,7 @@ export default {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
             if (
-                this.comment == null
+                this.comment === null
             ) {
                 toast("Please fill out the comment for disapproving the file", {
                     type: TYPE.ERROR,
