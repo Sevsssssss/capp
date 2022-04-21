@@ -1,15 +1,19 @@
 <template>
 <!--Header-->
 <div class="m-3">
-    {{categories}}
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full">
         <div class="flex w-full items-end justify-between">
             <div class="form-control w-full pr-3">
                 <label class="label">
                     <span class="label-text">Program*</span>
                 </label>
+                <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
+                    <option v-for="program in programs" :key="program" :value="program.id">
+                        {{ program.programName }}
+                    </option>
+                </select>
                 <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
-                <input type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" />
+                <!-- <input type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" /> -->
                 <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.programName) }" v-if="validationStatus(v$.programName)">
                         Program is Required</span>
@@ -262,7 +266,7 @@ const toast = useToast();
 export default {
     name: "AddEvalInstView",
     components: {
-      VueInstantLoadingSpinner,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -277,6 +281,15 @@ export default {
             cmoNo: "",
             seriesYear: "",
             evalDesc: "",
+            programs: [{
+                    id: 1,
+                    programName: "Prgrams"
+                },
+                {
+                    id: 2,
+                    programName: "Prgrams1"
+                },
+            ],
         };
     },
     validations() {
@@ -328,9 +341,9 @@ export default {
 
             for (var i = 0; i < this.categories.length; i++) {
                 console.log(this.categories[i].Category);
-                if (this.categories[i].Category != ''){
+                if (this.categories[i].Category != '') {
                     errCat = errCat - 0;
-                }else{
+                } else {
                     errCat = errCat + 1;
                 }
                 console.log(errCat);

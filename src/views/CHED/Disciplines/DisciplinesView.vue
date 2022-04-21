@@ -314,24 +314,24 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="flex flex-row justify-between">
                 <div>
-                <div class="font-semibold text-md">ADD A PROGRAM</div>
-                <p class="py-2 text-sm">
-                    Input the Program Name and the Designated Discipline.
-                </p>
-            </div>
-            <div class="space-x-4 " style="text-align-last: right">
-                <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
+                    <div class="font-semibold text-md">ADD A PROGRAM</div>
+                    <p class="py-2 text-sm">
+                        Input the Program Name and the Designated Discipline.
+                    </p>
+                </div>
+                <div class="space-x-4 " style="text-align-last: right">
+                    <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
                         Add Category
                     </button> -->
-                <button data-tip="Add Program" @click="addProgramName()" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
-                    <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                    </svg>
-                </button>
+                    <button data-tip="Add Program" @click="addProgramName()" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
+                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </button>
 
+                </div>
             </div>
-            </div>
-            
+
             <form v-on:submit.prevent="submit">
                 <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
@@ -379,38 +379,34 @@
     <input type="checkbox" id="editPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
+            <div class="flex flex-row justify-between">
+                <div>
+                    <div class="font-semibold text-md">EDIT PROGRAMS</div>
+                    <p class="py-2 text-sm">
+                        Input the Program Name and the Designated Discipline.
+                    </p>
+                </div>
+            </div>
 
-            <div class="font-semibold text-md">ADD A PROGRAM</div>
-            <p class="py-2 text-sm">
-                Input the Program Name and the Designated Discipline.
-            </p>
             <form v-on:submit.prevent="submit">
-                <div class="mb-6">
+                <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editAtName) }" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="v$.editAtName.$model" />
+                    <div class="flex flex-row">
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
+                        <div class="pl-4">
+                            <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <select class="
-                select
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " v-model="selectedDiscipline">
-                        <!-- Discipline must be Disabled only programs can be edited -->
-                        <option disabled v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                    <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
                             {{ discipline.name }}
                         </option>
                     </select>
