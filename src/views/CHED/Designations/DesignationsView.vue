@@ -55,9 +55,9 @@
               >
             </td> -->
                     <td class="px-6 py-4 flex flex-row justify-end">
-                        <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3">Edit</label>
+                        <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3" @click="selectDesignation(i.id)">Edit</label>
                         <div class="hover:text-brand-red/60 self-center">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="deleteDesignation(i.id)">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
                         </div>
@@ -194,6 +194,7 @@ export default {
             sort_type: "Sort by Designation",
             designationName: "",
             checkedAccessTypes: [],
+            designationSelected: "",
         };
     },
     validations() {
@@ -226,8 +227,12 @@ export default {
         validate() {
             return this.showModal1;
         },
-        modal() {
+        selectDesignation(id) {
+            this.designationSelected = id;
+        },
+        async modal() {
             var has_error = 0;
+            console.log(this.designationName);
             if (this.designationName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -239,6 +244,47 @@ export default {
             }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
+                console.log(this.designationSelected)
+                const designations = Parse.Object.extend("Designations");
+                const desigQuery = new Parse.Query(designations);
+                desigQuery.equalTo("objectId", this.designationSelected);
+
+                const designation = await desigQuery.first();
+
+                designation.set("name", this.designationName)
+
+                designation.save({
+                        name: this.designationName.toUpperCase(),
+                    }).then(() =>
+                        toast("Designation Updated", {
+                            type: TYPE.SUCCESS,
+                            timeout: 3000,
+                            position: POSITION.TOP_RIGHT,
+                        }),
+                    ),
+
+                    // window.location.reload()
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 2000);
+            }
+        },
+        async deleteDesignation(id){
+            const designations = Parse.Object.extend("Designations");
+            const desigQuery = new Parse.Query(designations);
+            desigQuery.equalTo("objectId", id);
+
+            const designation = await desigQuery.first();
+
+            if(confirm("Delete Designation?")){
+                designation.destroy().then((disc) => {
+                    console.log("Deleted object: " + disc.id);
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 2000);
+                }, (error) => {
+                    console.log("Error: " + error)
+                })
             }
         },
         addDesignation() {
@@ -321,6 +367,7 @@ export default {
                 const desig = querResult[i];
 
                 designationsTable.push({
+                    id: desig.id,
                     Name: desig.get("name"),
                 });
             }
