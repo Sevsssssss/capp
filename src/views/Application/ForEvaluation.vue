@@ -85,7 +85,7 @@
                 rounded-md
                 select select-ghost select-sm
                 w-full
-              " style="outline: none" id="application_sort">
+              " style="outline: none" id="application_sort" v-model="selectedRQAT">
                         <option v-for="rqat in Rqat" :key="rqat" :value="rqat.id">
                             {{ rqat.name }}
                         </option>
@@ -101,7 +101,7 @@
               border border-blue-700
               hover:bg-white
             ">Cancel</label>
-                <label @click="submitChanges()" class="
+                <label @click="assignRQAT()" class="
               btn btn-sm
               rounded-md
               bg-blue-700
@@ -135,6 +135,7 @@ export default {
             tables: [],
             search: "",
             Rqat: [],
+            selectedRQAT: "",
             supervisor: false,
         };
     },
@@ -151,6 +152,21 @@ export default {
         supervisorChecker() {
             return this.supervisor;
         },
+        async assignRQAT(){
+            const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.equalTo("objectId", this.appID);
+
+                const application = await query.first();
+
+                application.set("selectedRQAT", this.selectedRQAT);
+
+                application
+                    .save()
+                    .then((application) => {
+                        console.log("Object Updated: " + application.id);
+                    })
+        }
     },
 
     mounted: async function () {
