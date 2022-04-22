@@ -11,14 +11,14 @@
         </div>
         <div>
             <div class="font-normal text-sm">
-                Evalutaion Instrument: <a href="#" target="_blank" class="text-blue-400">
-                    Click here </a>
+                Evalutaion Instrument:
+                <a href="#" target="_blank" class="text-blue-400"> Click here </a>
             </div>
         </div>
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 ">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
                         {{ header.title }}
@@ -26,9 +26,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="table in searchHEI" :key="table" class="bg-white border-b ">
-                    <th scope="row" class=" px-6 py-4  font-medium text-gray-900 text-wrap break-words">
-                        {{table.credential}}
+                <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 text-wrap break-words">
+                        {{ table.credential }}
                     </th>
                     <td class="px-6 py-4 text-blue-400">
                         <a :href="table.file" target="_blank" class="text-blue-400">view</a>
@@ -39,40 +39,75 @@
     </div>
     <div class="flex flex-row center py-10">
         <div class="pr-5">
-            <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
+            <button @click="$router.go(-1)" type="button" class="
+            btn
+            text-blue-700
+            bg-transparent
+            border border-blue-700
+            hover:bg-white
+          " data-dismiss-target="#alert-additional-content-1" aria-label="Close">
                 <div>Dismiss</div>
             </button>
         </div>
+        <div v-if="supervisorChecker()" class="pr-5">
+            <div class="
+            btn
+            border
+            text-white
+            bg-brand-red
+            hover:bg-brand-red/60
+          ">
+                Request Re-Assign</div>
+        </div>
         <div>
-            <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                Assign</label>
+            <label for="for-evaluation" class="
+            btn
+            modal-button
+            border-none
+            text-white
+            bg-blue-700
+            hover:bg-blue-800
+          ">
+                Assign RQAT</label>
         </div>
     </div>
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">RE-ASSIGN SUPERVISOR</div>
-            <p class="py-2 text-sm">
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-            </p>
+            <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
+
             <!-- Filter -->
             <div class="flex flex-row py-6 justify-start items-start">
                 <!-- sort -->
                 <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort">
-                        <option disabled selected>Select Supervisor</option>
-                        <option>Joshua Sarmiento</option>
-                        <option>Sev Sarate</option>
-                        <option>Duane</option>
-                        <option>Jeff</option>
-                        <option>Saq</option>
+                    <select class="
+                font-normal
+                rounded-md
+                select select-ghost select-sm
+                w-full
+              " style="outline: none" id="application_sort">
+                        <option v-for="rqat in Rqat" :key="rqat" :value="rqat.id">
+                            {{ rqat.name }}
+                        </option>
                     </select>
                 </div>
             </div>
             <div class="modal-action">
-                <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="submitChanges()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                <label for="for-evaluation" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label @click="submitChanges()" class="
+              btn btn-sm
+              rounded-md
+              bg-blue-700
+              hover:bg-blue-800
+              border-none
+            ">Assign</label>
             </div>
         </div>
     </div>
@@ -98,8 +133,10 @@ export default {
                 },
             ],
             tables: [],
-            search: '',
-        }
+            search: "",
+            Rqat: [],
+            supervisor: false,
+        };
     },
     computed: {
         searchHEI() {
@@ -108,6 +145,11 @@ export default {
                     p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
                 );
             });
+        },
+    },
+    methods: {
+        supervisorChecker() {
+            return this.supervisor;
         },
     },
 
@@ -125,10 +167,16 @@ export default {
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
 
-        appTypeQuery.equalTo(
-            "objectId",
-            application.get("applicationType")
-        );
+
+
+        //Get to view applications to specific user (Education Supervisor)
+        if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
+            query.equalTo("selectedSupervisor", Parse.User.current().id);
+            query.equalTo("applicationStatus", "For Evaluation");
+            this.supervisor = true;
+        }
+
+        appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
         const applicationType = await appTypeQuery.first();
         for (var i = 0; i < application.get("requirements").length; i++) {
@@ -142,11 +190,32 @@ export default {
         }
 
         this.tables = storedApplications;
-    },
 
-}
+        //Query RQAT
+        const user = new Parse.Query(Parse.User);
+        user.equalTo("access_type", "RQAT");
+        const rqatResult = await user.find();
+
+        var dbRqat = [];
+
+        for (var j = 0; j < rqatResult.length; j++) {
+            const rqat = rqatResult[j];
+
+            dbRqat.push({
+                id: rqat.id,
+                name: rqat.get("name")["lastname"] +
+                    ", " +
+                    rqat.get("name")["firstname"] +
+                    " " +
+                    rqat.get("name")["middleinitial"] +
+                    ".",
+            });
+        }
+
+        this.Rqat = dbRqat;
+    },
+};
 </script>
 
 <style>
-
 </style>

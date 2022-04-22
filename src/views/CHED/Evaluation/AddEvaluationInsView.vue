@@ -9,7 +9,7 @@
                 </label>
                 
                 <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="programName">
-                    <option v-for="program in programs" :key="program" :value="program.id">{{program.name}}</option>
+                    <option v-for="program in programs" :key="program" :value="program.name">{{program.name}}</option>
                 </select>
                 <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
                 <!-- <input type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" /> -->
@@ -48,7 +48,7 @@
         </div>
         <div class="form-control w-full pt-2">
             <label class="label">
-                <span class="label-text">Description*</span>
+                <span class="label-text">Evaluation Form Name*</span>
             </label>
             <!-- <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea> -->
             <textarea type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" v-model="v$.evalDesc.$model" />
@@ -438,7 +438,7 @@ export default {
                 const newEvaluationForm = new EvaluationForm();
 
                 newEvaluationForm.set(
-                    "evaluationFormName",
+                    "evaluationFormProgram",
                     this.programName.toUpperCase()
                 );
                 newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
@@ -446,7 +446,7 @@ export default {
                     "evaluationFormSeries",
                     this.seriesYear.toUpperCase()
                 );
-                newEvaluationForm.set("evaluationFormDesc", this.evalDesc.toUpperCase());
+                newEvaluationForm.set("evaluationFormName", this.evalDesc.toUpperCase());
                 newEvaluationForm.set("evaluationFormReqs", this.categories);
 
                 // await newEvaluationForm.save();

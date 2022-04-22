@@ -125,7 +125,7 @@ export default {
                     title: "PROGRAM NAME",
                 },
                 {
-                    title: "DESCRIPTION",
+                    title: "EVALUATION FORM NAME",
                 },
             ],
 
@@ -199,8 +199,8 @@ export default {
                 console.log(evalInst)
                 storedEvalInstruments.push({
                     id: evalInst.id,
-                    programName: evalInst.get("evaluationFormName"),
-                    description: evalInst.get("evaluationFormDesc"),
+                    programName: evalInst.get("evaluationFormProgram"),
+                    description: evalInst.get("evaluationFormName"),
                 });
             }
             this.totalEntries = evalInsResult.length;

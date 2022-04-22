@@ -52,8 +52,9 @@
             <div class="font-semibold">
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
-            <div>{{ evalDesc }}</div>
+            <div>{{ Name }}</div>
             <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
+            <div>{{Program}}</div>
         </div>
         <div class="">
             <div class="overflow-x-auto">
@@ -105,99 +106,11 @@ export default {
     components: {},
     data() {
         return {
-            categories: [{
-                    id: 1,
-                    subcategory: [{
-                            id: 1,
-                            items: [],
-                            Subcategory: "A doctoral degree holder in Education or a related field",
-                        },
-                        {
-                            id: 2,
-                            items: [],
-                            Subcategory: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                        },
-                        {
-                            id: 3,
-                            items: [],
-                            Subcategory: "Employed full - time. ",
-                        },
-                        {
-                            id: 4,
-                            items: [],
-                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in tertiary level.",
-                        },
-                        {
-                            id: 5,
-                            items: [],
-                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in either the elementary or secondary level",
-                        },
-                        {
-                            id: 6,
-                            items: [],
-                            Subcategory: "With at least 2 years of very managerial/administrative experience",
-                        },
-                        {
-                            id: 7,
-                            items: [],
-                            Subcategory: "With updated notarized contract of employment",
-                        },
-                    ],
-                    Category: "DEAN OR DEPARTMENT CHAIR",
-                    Desc: "(CMO 76, s. 2017), and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                },
-                {
-                    id: 2,
-                    subcategory: [{
-                            id: 1,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "Faculty teaching general education and major subjects should have an appropriate master’s degree in the field they are assigned to teach.",
-                                },
-                                {
-                                    id: 3,
-                                    Item: "Physical Education Teacher",
-                                },
-                                {
-                                    id: 4,
-                                    Item: "Teacher has a BS P.E. degree or BEEd/ BSEd major/minor in P.E. or any other bachelor's degree with certificate in P.E.",
-                                },
-                                {
-                                    id: 5,
-                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                                },
-                                {
-                                    id: 6,
-                                    Item: "With updated notarized contract of employment",
-                                },
-                            ],
-                            Subcategory: "General Requirements",
-                        },
-                        {
-                            id: 2,
-                            items: [{
-                                    id: 1,
-                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "Holder of Master’s degree in education or any of the allied fields",
-                                },
-                            ],
-                            Subcategory: "Qualifications of the Professional Education Faculty",
-                        },
-                    ],
-                    Category: "FACULTY",
-                },
-            ],
-            programName: "Bachelor of Early Childhood Education (BECEd",
-            cmoNo: "76",
-            seriesYear: "2017",
-            evalDesc: "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
+            categories: [],
+            Name: "",
+            cmoNo: "",
+            seriesYear: "",
+            Program: "",
         };
     },
     methods: {},
@@ -254,7 +167,10 @@ export default {
                     })
 
                 }
-
+                this.Name = evalInstrument.get("evaluationFormName");
+                this.Program = evalInstrument.get("evaluationFormProgram");
+                this.cmoNo = evalInstrument.get("evaluationFormCMOno");
+                this.seriesYear = evalInstrument.get("evaluationFormSeries");
                 categories.push({
                     id: evalInstrument.get("evaluationFormReqs")[i].id,
                     Category: evalInstrument.get("evaluationFormReqs")[i].Category,
