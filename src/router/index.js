@@ -220,7 +220,7 @@ const routes = [
       },
       {
         path: "/evaluationins",
-        name: "evaluationins",
+        name: "EvaluationInsView",
         component: EvaluationInsView,
         meta: {
           breadcrumb: [
@@ -229,9 +229,10 @@ const routes = [
         }
       },
       {
-        path: "/evaluationins/view",
-        name: "evaluationinsfile",
+        path: "/evaluationins/:id",
+        name: "EvalFileView",
         component: EvalFileView,
+        props: true,
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -438,12 +439,14 @@ const routes = [
         }
       },
       {
-        path: "/evaluate",
+        path: "/assignments/:id",
         name: "Evaluate",
         component: rqatEvaluate,
+        props: true,
         meta: {
           breadcrumb: [
-            { name: 'Evaluate' },
+            { name: 'Assignments', link: '/assignments' },
+            { name: 'Evaluate' }
           ]
         }
       },
