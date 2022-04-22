@@ -58,7 +58,7 @@
                             <div v-for="subcat in cat.subcategory" :key="subcat">
                                 <div class="aoe2">
                                     <td class="pl-4">{{ cat.id }}.{{ subcat.id }}</td>
-                                    <td class="font-normal text-justify pl-8">{{ subcat.Subcategory }}</td>
+                                    <td class="font-normal pl-8">{{ subcat.Subcategory }}</td>
                                 </div>
                                 <td v-if="subcat.items.length == 0" class="font-normalpx-2 py-4">
                                 <div class="flex justify-start items-start">
