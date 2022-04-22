@@ -51,22 +51,15 @@
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">RE-ASSIGN SUPERVISOR</div>
-            <p class="py-2 text-sm">
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-            </p>
+            <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
+            
             <!-- Filter -->
             <div class="flex flex-row py-6 justify-start items-start">
                 <!-- sort -->
                 <div class="month-sort flex flex-row border rounded-md w-full">
                     <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort">
-                        <option disabled selected>Select Supervisor</option>
-                        <option>Joshua Sarmiento</option>
-                        <option>Sev Sarate</option>
-                        <option>Duane</option>
-                        <option>Jeff</option>
-                        <option>Saq</option>
+                        <option v-for="rqat in Rqat" :key="rqat" :value="rqat.id"> {{rqat.name}} </option>
+                        
                     </select>
                 </div>
             </div>
@@ -99,6 +92,7 @@ export default {
             ],
             tables: [],
             search: '',
+            Rqat: [],
         }
     },
     computed: {
@@ -142,6 +136,30 @@ export default {
         }
 
         this.tables = storedApplications;
+
+
+        //Query RQAT
+        const user = new Parse.Query(Parse.User);
+        user.equalTo("access_type", "RQAT");
+        const rqatResult = await user.find();
+
+        var dbRqat = [];
+
+        for (var j = 0; j < rqatResult.length; j++) {
+            const rqat = rqatResult[j];
+
+            dbRqat.push({
+                id: rqat.id,
+                name: rqat.get("name")["lastname"] +
+                    ", " +
+                    rqat.get("name")["firstname"] +
+                    " " +
+                    rqat.get("name")["middleinitial"] +
+                    ".",
+            })
+        }
+
+        this.Rqat = dbRqat;
     },
 
 }
