@@ -172,6 +172,68 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            var storedApplications = [];
+            const applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(applications);
+
+            const querResult = await query.find();
+
+            for (var i = 0; i < querResult.length; i++) {
+                const application = querResult[i];
+                const user = new Parse.Query(Parse.User);
+                user.equalTo("objectId", application.get("createdBy"));
+                // console.log(application.get("createdBy"));
+                const hei = await user.first();
+                
+                var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                var month = application.createdAt.getMonth();
+                var day = application.createdAt.getDate();
+                var year = application.createdAt.getFullYear();
+
+                //Query the applicationType of the application
+                const appTypes = Parse.Object.extend("ApplicationTypes");
+                const appTypeQuery = new Parse.Query(appTypes);
+                appTypeQuery.equalTo("objectId", application.get("applicationType"));
+
+                const appType = await appTypeQuery.first();
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", application.get("program"));
+
+                const program = await programQuery.first();
+
+                storedApplications.push({
+                    id: i + 1,
+                    rep: application.get("pointPerson"),
+                    email: application.get("email"),
+                    type: appType.get("applicationTypeName"),
+                    requirements: application.get("requirements"),
+                    dateApplied: months[month] + " " + day + ", " + year,
+                    status: application.get("applicationStatus"),
+                    program: program.get("programName"),
+                    HeiName: hei.get("hei_name"),
+                    address: hei.get("address"),
+                    appID: application.id,
+
+                });
+            }
+            this.totalEntries = querResult.length;
+            this.table = storedApplications;
         }
     },
 };
