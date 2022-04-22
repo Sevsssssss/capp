@@ -50,45 +50,59 @@
                 <tbody>
                     <tr v-for="cat in categories" :key="cat" class="divide-x-2 border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 w-2/5">
-                        <div class="leading-relaxed text-sm space-y-2" >
-                        <th class="">( {{ cat.id }} )</th>
-                        <td class="font-semibold pl-4">
-                          {{ cat.Category }}
-                        </td>
-                          <div v-for="subcat in cat.subcategory" :key="subcat">
-                              <th class="pl-4">{{ cat.id }}.{{ subcat.id }}</th>
-                              <td class="font-normal pl-8">{{ subcat.Subcategory }}</td>
-                              <div v-for="item in subcat.items" :key="item">
-                                  <th class="font-normal pl-8">
-                                      {{ cat.id }}.{{ subcat.id }}.{{ item.id }}
-                                  </th>
-                                  <td class="font-normal pl-8">{{ item.Item }}</td>
-                              </div>
-                          </div>
+                            <div class="leading-relaxed text-sm space-y-2">
+                            <th class="">( {{ cat.id }} )</th>
+                            <td class="font-semibold pl-4">
+                                {{ cat.Category }}
+                            </td>
+                            <div v-for="subcat in cat.subcategory" :key="subcat">
+                                <td class="pl-4">{{ cat.id }}.{{ subcat.id }}</td>
+                                <td class="font-normal pl-8">{{ subcat.Subcategory }}</td>
+                                <div v-for="item in subcat.items" :key="item">
+                                    <td class="font-normal pl-8">
+                                        {{ cat.id }}.{{ subcat.id }}.{{ item.id }}
+                                    </td>
+                                    <td class="font-normal pl-8">{{ item.Item }}</td>
+                                </div>
+                            </div>
                         </div>
-                      </th>
-                      <td class="px-2 py-4">
-                          <div class="flex justify-start items-start">
+                        </th>
+                        <div v-for="subcat in cat.subcategory" :key="subcat">
+                            
+                            <td v-if="subcat.items.length == 0" class="font-normalpx-2 py-4">
+                                <div class="flex justify-start items-start">
+                                    <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                </div>
+                            </td>
+                            <td v-else>
+                                <div v-for="item in subcat.items" :key="item">
+                                    <td class="px-2 py-4">
+                                        <div class="flex justify-start items-start">
+                                            <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                        </div>
+                                    </td>
+                                </div>
+                            </td>
+                        </div>
+                        
+                        <td class="px-6 py-4 ">
+                            <div class="flex items-center">
+                                <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
+                                <label for="checkbox-all" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 ">
+                            <div class="flex items-center">
+                                <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
+                                <label for="checkbox-all" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
+                        <td class="px-2 py-4 text-end">
                             <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                          </div>
-                      </td>
-                      <td class="px-6 py-4 ">
-                          <div class="flex items-center">
-                              <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
-                              <label for="checkbox-all" class="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <td class="px-6 py-4 ">
-                          <div class="flex items-center">
-                              <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
-                              <label for="checkbox-all" class="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <td class="px-2 py-4 text-end">
-                          <textarea  rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                      </td>
-                  </tr>
-              </tbody>
+                        </td>
+                        
+                    </tr>
+                </tbody>
         </table>
     </div>
 </div>
