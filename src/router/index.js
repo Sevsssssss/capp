@@ -31,6 +31,9 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
+import ForApprovalView from '../views/HEI/ForApprovalView.vue';
+
+
 import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
@@ -217,7 +220,7 @@ const routes = [
       },
       {
         path: "/evaluationins",
-        name: "evaluationins",
+        name: "EvaluationInsView",
         component: EvaluationInsView,
         meta: {
           breadcrumb: [
@@ -226,9 +229,10 @@ const routes = [
         }
       },
       {
-        path: "/evaluationins/view",
-        name: "evaluationinsfile",
+        path: "/evaluationins/:id",
+        name: "EvalFileView",
         component: EvalFileView,
+        props: true,
         meta: {
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -406,6 +410,18 @@ const routes = [
           ]
         }
       },
+      {
+        path: "/HEIapplication/:id",
+        name: "ForApprovalView",
+        component: ForApprovalView,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Application', link: '/HEIapplication' },
+            { name: 'View' }
+          ]
+        }
+      },
     ]
   },
   {
@@ -423,12 +439,14 @@ const routes = [
         }
       },
       {
-        path: "/evaluate",
+        path: "/assignments/:id",
         name: "Evaluate",
         component: rqatEvaluate,
+        props: true,
         meta: {
           breadcrumb: [
-            { name: 'Evaluate' },
+            { name: 'Assignments', link: '/assignments' },
+            { name: 'Evaluate' }
           ]
         }
       },

@@ -137,49 +137,72 @@
                 >
                   {{ table.status }}
                 </div>
-                <div
-                  v-else-if="table.status === 'For Revision'"
-                  class="btn-sm1 rounded-md p-2 font-normal revision"
-                >
-                  {{ table.status }}
-                </div>
-                <div
-                  v-else-if="table.status === 'For Evaluation'"
-                  class="btn-sm1 rounded-md p-2 font-normal evaluation"
-                >
-                  {{ table.status }}
-                </div>
-                <div
-                  v-else-if="table.status === 'For Issuance'"
-                  class="btn-sm1 rounded-md p-2 font-normal issuance"
-                >
-                  {{ table.status }}
-                </div>
-                <div
-                  v-else-if="table.status === 'Completed'"
-                  class="btn-sm1 rounded-md p-2 font-normal completed"
-                >
-                  {{ table.status }}
-                </div>
-              </td>
-              <td class="px-6 py-4 text-center">
-                <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
-                <router-link
-                  :to="{
-                    name: 'StatusApplication',
-                    params: {
-                      appID: table.appID,
-                    },
-                  }"
-                >
-                  <a href="#" class="font-medium text-blue-600 hover:underline"
-                    >View</a
-                  >
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-          <!-- <tbody v-else>
+            </div>
+        </div>
+        <!-- Table body -->
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3" v-for="header in headers" :key="header">
+                            {{ header.title }}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">View</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b" v-for="table in searchApplication" :key="table">
+                        <td class="px-6 py-4">
+                            <div class="">
+                                <div class="font-semibold text-grey-300">
+                                    {{ table.HeiName }}
+                                </div>
+                                <div class="font-normal">{{ table.address }}</div>
+                            </div>
+                        </td>
+                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{ table.type }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ table.program }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ table.dateApplied }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <!-- :class="'homeIcon.' + data.color" -->
+                            <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 rounded-md p-2 font-normal evaluation">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
+                                {{ table.status }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
+                            <router-link :to="{
+                                name: 'StatusApplication',
+                                params: {
+                                appID: table.appID,
+                                },
+                            }">
+                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            </router-link>
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- <tbody v-else>
                     <tr class="bg-white border-b">
                         <td class="px-6 py-4 text-center">
                             <div class="">

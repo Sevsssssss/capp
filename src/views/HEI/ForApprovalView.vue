@@ -42,13 +42,6 @@
                             <td class="px-6 py-4">
                                 {{ table.file }}
                             </td>
-                            <td class="px-6 py-4">
-                                {{ table.comment }}
-                            </td>
-                            <td class="flex items-end px-6 py-4">
-                                <a v-if="table.comment === ''"></a>
-                                <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -97,9 +90,6 @@ export default {
                 },
                 {
                     title: "FILES",
-                },
-                {
-                    title: "COMMENTS",
                 },
             ],
             tables: [{

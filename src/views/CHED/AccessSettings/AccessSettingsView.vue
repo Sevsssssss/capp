@@ -222,7 +222,7 @@
                                     </div>
                                 </label>
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
-                                    <input type="checkbox" class="checkbox mr-1" value="/evaluationins/view" v-model="checkedAccessTypes" />
+                                    <input type="checkbox" class="checkbox mr-1" value="/evaluationins/:id" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         Evaluation Ins. View
                                     </div>
@@ -438,7 +438,7 @@
                                     </div>
                                 </label>
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
-                                    <input type="checkbox" class="checkbox mr-1" value="/evaluationins/view" v-model="checkedAccessTypes" />
+                                    <input type="checkbox" class="checkbox mr-1" value="/evaluationins/:id" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         Evaluation Ins. View
                                     </div>

@@ -70,15 +70,44 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a v-if="table.status === 'COMPLETED'"></a>
                         <router-link :to="{
-                        name: 'EditHEIapplication',
-                        params: {
-                            id: table.appID,
+                         name: 'EditHEIapplication',
+                         params: {
+                         id: table.appID,
                         },
-                }">
-                            <a v-if="statusChecker(table.status) && table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            <a v-if="statusChecker(table.status) && table.status != 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                        }">
+                            <a v-if="
+                    statusChecker(table.status) &&
+                    table.status === 'For Revision'
+                  " href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                        </router-link>
+                        <router-link :to="{
+                        name: 'ForApprovalView',
+                        params: {
+                        id: table.appID,
+                        },
+                        }">
+                            <a v-if="
+                    statusChecker(table.status) &&
+                    table.status === 'For Approval'
+                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                        </router-link>
+                        <a v-if="
+                    table.status === 'For Evaluation'
+                  " href="#"></a>
+                        <a v-if="
+                    table.status === 'For Issuance'
+                  " href="#"></a>
+                        <router-link :to="{
+                        name: 'ForApprovalView',
+                        params: {
+                        id: table.appID,
+                        },
+                        }">
+                            <a v-if="
+                    statusChecker(table.status) &&
+                    table.status === 'For Completed'
+                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                     </td>
                 </tr>
@@ -128,7 +157,7 @@ import Parse from "parse";
 export default {
     name: "ApplicationView",
     components: {
-        NoDataAvail
+        NoDataAvail,
     },
     data() {
         return {
@@ -376,10 +405,7 @@ export default {
 
                 const applicationTypes = Parse.Object.extend("ApplicationTypes");
                 const appTypeQuery = new Parse.Query(applicationTypes);
-                appTypeQuery.equalTo(
-                    "objectId",
-                    application.get("applicationType")
-                );
+                appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
                 const applicationType = await appTypeQuery.first();
 
