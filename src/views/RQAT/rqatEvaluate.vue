@@ -39,12 +39,12 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr class="divide-x-2">
-                        <th scope="col" class="px-6 py-3" v-for="head in header" :key="head.title">
+                        <!-- <th scope="col" class="px-6 py-3" v-for="head in header" :key="head.title">
                             {{ head.title }}
                         </th>
                         <th scope="col" class=" py-3">
                             <span class="sr-only">Remarks</span>
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -56,18 +56,51 @@
                                 {{ cat.Category }}
                             </td>
                             <div v-for="subcat in cat.subcategory" :key="subcat">
-                                <td class="pl-4">{{ cat.id }}.{{ subcat.id }}</td>
-                                <td class="font-normal pl-8">{{ subcat.Subcategory }}</td>
-                                <div v-for="item in subcat.items" :key="item">
-                                    <td class="font-normal pl-8">
+                                <div class="aoe2">
+                                    <td class="pl-4">{{ cat.id }}.{{ subcat.id }}</td>
+                                    <td class="font-normal pl-8">{{ subcat.Subcategory }}</td>
+                                </div>
+                                <td v-if="subcat.items.length == 0" class="font-normalpx-2 py-4">
+                                <div class="flex justify-start items-start">
+                                    <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                </div>
+                            </td>
+                            
+                                
+                            
+                                <div v-for="item in subcat.items" :key="item" class="flex flex-row justify-between">
+                                   <div class="aoe2">
+                                        <td class="font-normal pl-8">
                                         {{ cat.id }}.{{ subcat.id }}.{{ item.id }}
+                                        </td>
+                                        <td class="font-normal pl-8">{{ item.Item }}</td>
+                                   </div>
+                                    
+                                    <td class="px-2 py-4">
+                                        <div class="flex justify-start items-start">
+                                            <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                        </div>
                                     </td>
-                                    <td class="font-normal pl-8">{{ item.Item }}</td>
+                                    <td class="px-6 py-4 ">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
+                                            <label for="checkbox-all" class="sr-only">checkbox</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 ">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
+                                            <label for="checkbox-all" class="sr-only">checkbox</label>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-4 text-end">
+                                        <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                    </td>
                                 </div>
                             </div>
                         </div>
                         </th>
-                        <div v-for="subcat in cat.subcategory" :key="subcat">
+                        <!-- <div v-for="subcat in cat.subcategory" :key="subcat">
                             
                             <td v-if="subcat.items.length == 0" class="font-normalpx-2 py-4">
                                 <div class="flex justify-start items-start">
@@ -99,7 +132,7 @@
                         </td>
                         <td class="px-2 py-4 text-end">
                             <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                        </td>
+                        </td> -->
                         
                     </tr>
                 </tbody>
