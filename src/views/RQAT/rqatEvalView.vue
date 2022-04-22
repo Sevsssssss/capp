@@ -21,59 +21,33 @@
                         {{tables.program}}
                     </th>
                     <td class="px-6 py-4">
-                         {{tables.HeiName}}
+                        {{tables.HeiName}}
                     </td>
                     <td class="px-6 py-4">
-                         {{tables.address}}
+                        {{tables.address}}
                     </td>
                     <td class="px-6 py-4">
-                         {{tables.rep}}
+                        {{tables.rep}}
                     </td>
-                     <td class="px-6 py-4">
-                         {{tables.email}}
+                    <td class="px-6 py-4">
+                        {{tables.email}}
                     </td>
+
                     <td class="px-6 py-4 text-right flex justify-end">
-                        <button class="btn-table rounded-md" @click="evaluate()"> Evaluate </button>
+                        <router-link :to="{
+                        name: 'Evaluate',
+                        params: {
+                            id: tables.id,
+                        },
+                        }">
+                            <button class="btn-table rounded-md"> Evaluate </button>
+                        </router-link>
+                            <!-- <button class="btn-table rounded-md"> Evaluate </button> -->
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
-    <!-- <table class="table rqat-table w-full">
-        <tbody>
-            <tr>
-                <th>Program:</th>
-                <td>{{ table.program }}</td>
-            </tr>
-
-            <tr>
-                <th>HEI Name</th>
-                <td>{{ table.HeiName }}</td>
-            </tr>
-
-            <tr>
-                <th>Address</th>
-                <td>{{ table.address }}</td>
-            </tr>
-            <tr>
-                <th>Representative</th>
-                <td>{{ table.rep }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ table. email }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <button @click="evaluate()" type="button" class="btn-table center">
-        <svg style="fill:white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path d="M7 7V3a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-4v3.993c0 .556-.449 1.007-1.007 1.007H3.007A1.006 1.006 0 0 1 2 20.993l.003-12.986C2.003 7.451 2.452 7 3.01 7H7zm2 0h6.993C16.549 7 17 7.449 17 8.007V15h3V4H9v3zm-.497 11l5.656-5.657-1.414-1.414-4.242 4.243L6.38 13.05l-1.414 1.414L8.503 18z" /></svg>
-        <div class="pl-2">EVALUATE</div>
-    </button> -->
-
 </div>
 </template>
 
@@ -81,7 +55,7 @@
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from 'parse'
 export default {
-    name: "rqatEvalView",
+    name: "rqatEvaluationView",
     components: {
         NoDataAvail,
     },
@@ -177,9 +151,7 @@ export default {
         // },
     },
     methods: {
-        evaluate() {
-            this.$router.push("/assignments/");
-        }
+
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE

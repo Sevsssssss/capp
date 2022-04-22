@@ -225,7 +225,7 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             const evalInstruments = Parse.Object.extend("EvaluationForms");
             const evalQuery = new Parse.Query(evalInstruments);
-            evalQuery.equalTo("objectId", "HMTbQBTqoK");
+            evalQuery.equalTo("objectId", this.id);
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
