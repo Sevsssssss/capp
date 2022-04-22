@@ -76,6 +76,7 @@
                          name: 'EditHEIapplication',
                          params: {
                          id: table.appID,
+                         statusA: table.status
                         },
                         }">
                             <a v-if="
