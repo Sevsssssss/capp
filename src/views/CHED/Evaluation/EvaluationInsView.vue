@@ -54,11 +54,11 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <!-- {{table.id}} -->
-                            <router-link :to="{
-                            name: 'EvalFileView',
-                            params: {
-                              id: table.id,
-                            }
+                            <router-link v-if="table && table.id" :to="{
+                                name: 'EvalFileView',
+                                params: {
+                                id: table.id,
+                                },
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>

@@ -211,16 +211,59 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            if (accType[y] === this.$route.path) {
+            console.log(accType[y])
+            if (accType[y] === "/evaluationins") {
                 flag = 1;
             }
         }
         if (flag === 0) {
+            console.log(this.$route.path)
             this.$router.push("/403");
         } else {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalQuery = new Parse.Query(evalInstruments);
+            evalQuery.equalTo("objectId", "HMTbQBTqoK");
+            const evalInstrument = await evalQuery.first({
+                useMasterKey: true,
+            });
+
+            var categories = [];
+
+            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+
+                var subcat = [];
+
+                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+
+                    var items = [];
+
+                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                        items.push({
+                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                        })
+                    }
+
+                    subcat.push({
+                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
+                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                        items: items,
+                    })
+
+                }
+
+                categories.push({
+                    id: evalInstrument.get("evaluationFormReqs")[i].id,
+                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
+                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
+                    subcategory: subcat,
+                })
+
+            }
+            this.categories = categories;
         }
     },
 };

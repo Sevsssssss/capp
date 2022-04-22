@@ -91,11 +91,11 @@
                         <td class="px-6 py-4 text-center">
                             <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
                             <router-link :to="{
-                    name: 'StatusApplication',
-                    params: {
-                      appID: table.appID,
-                    },
-                  }">
+                                name: 'StatusApplication',
+                                params: {
+                                appID: table.appID,
+                                },
+                            }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                         </td>
