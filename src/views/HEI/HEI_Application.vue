@@ -72,14 +72,10 @@
                     <td class="px-6 py-4 text-right">
                         <a v-if="table.status === 'COMPLETED'"></a>
                         <router-link :to="{
-                  name: 'EditHEIapplication',
-                  params: {
-                    id: table.id,
-                    HeiName: table.HeiName,
-                    type: table.type,
-                    status: table.status,
-                    dateApplied: table.dateApplied,
-                  },
+                        name: 'EditHEIapplication',
+                        params: {
+                            id: table.appID,
+                        },
                 }">
                             <a v-if="statusChecker(table.status) && table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             <a v-if="statusChecker(table.status) && table.status != 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
