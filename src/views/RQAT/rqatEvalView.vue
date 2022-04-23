@@ -175,6 +175,7 @@ export default {
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
+            query.equalTo("selectedRQAT", Parse.User.current().id);
 
             const querResult = await query.find();
 

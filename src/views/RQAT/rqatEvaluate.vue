@@ -178,6 +178,7 @@
 </template>
 
 <script>
+import Parse from "parse";
 export default {
     props: ["id"],
     name: "rqatEvaluate",
@@ -350,6 +351,74 @@ export default {
             seriesYear: "2017",
             evalDesc: "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
         };
+    },
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        // const AccessTypes = Parse.Object.extend("AccessTypes");
+        // const query = new Parse.Query(AccessTypes);
+        // query.equalTo("name", Parse.User.current().get("access_type"));
+
+        // const querResult = await query.find();
+        // var accType = querResult[0].get("privileges");
+        // var flag = 0;
+        // for (var y = 0; y < accType.length; y++) {
+        //     console.log(accType[y])
+        //     if (accType[y] === "/evaluationins") {
+        //         flag = 1;
+        //     }
+        // }
+        // if (flag === 0) {
+        //     console.log(this.$route.path)
+        //     this.$router.push("/403");
+        // } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalQuery = new Parse.Query(evalInstruments);
+            evalQuery.equalTo("objectId", this.id);
+            const evalInstrument = await evalQuery.first({
+                useMasterKey: true,
+            });
+
+            var categories = [];
+
+            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+
+                var subcat = [];
+
+                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+
+                    var items = [];
+
+                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                        items.push({
+                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                        })
+                    }
+
+                    subcat.push({
+                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
+                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                        items: items,
+                    })
+
+                }
+                this.Name = evalInstrument.get("evaluationFormName");
+                this.Program = evalInstrument.get("evaluationFormProgram");
+                this.cmoNo = evalInstrument.get("evaluationFormCMOno");
+                this.seriesYear = evalInstrument.get("evaluationFormSeries");
+                categories.push({
+                    id: evalInstrument.get("evaluationFormReqs")[i].id,
+                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
+                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
+                    subcategory: subcat,
+                })
+
+            }
+            this.categories = categories;
+        //}
     },
 };
 </script>
