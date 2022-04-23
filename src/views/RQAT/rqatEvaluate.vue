@@ -349,7 +349,16 @@ export default {
             cmoNo: "76",
             seriesYear: "2017",
             evalDesc: "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
+            eval: [],
+
         };
+    },
+    methods: {
+        evalitems(){
+            for (var i = 0; i <= this.categories.length; i++){
+                
+            }
+        },
     },
 };
 </script>
