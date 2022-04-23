@@ -1,5 +1,6 @@
 <template>
-<div class="shadow-lg rounded-lg my-3 py-5">
+<div v-if="evalitems()" class="shadow-lg rounded-lg my-3 py-5">
+    {{ eval }}
     <div class="flex flex-row justify-center items-center space-x-4 text-sm">
         <div class="">
             <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
@@ -21,10 +22,10 @@
     <div class="flex flex-col text-sm w-full pl-10">
         <div class="flex space-x-8">
             <div class="flex flex-col items-start uppercase font-semibold">
-                <span class=" ">Name of Institution: </span>
-                <span class=" ">address: </span>
-                <span class=" ">Porgram(s): </span>
-                <span class=" ">Date of Evalution</span>
+                <span class="">Name of Institution: </span>
+                <span class="">address: </span>
+                <span class="">Porgram(s): </span>
+                <span class="">Date of Evalution</span>
             </div>
             <div class="flex flex-col items-start">
                 <p class="">Ateneo De Naga University</p>
@@ -35,89 +36,33 @@
         </div>
     </div>
     <div class="py-4">
-        <div class="relative overflow-x-auto shadow-md">
+        <div class="relative overflow-x-auto shadow-md m-5">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead class="
+              text-xs text-gray-700
+              uppercase
+              bg-gray-50
+              dark:bg-gray-700 dark:text-gray-400
+            ">
                     <tr class="divide-x-2">
-                        <!-- <th scope="col" class="px-6 py-3" v-for="head in header" :key="head.title">
+                        <th scope="col" class="px-6 py-3" v-for="head in header" :key="head.title">
                             {{ head.title }}
                         </th>
                         <th scope="col" class=" py-3">
                             <span class="sr-only">Remarks</span>
-                        </th> -->
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="cat in categories" :key="cat" class="divide-x-2 border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 w-2/5">
-                            <div class="leading-relaxed text-sm space-y-2">
-                            <th class="">( {{ cat.id }} )</th>
-                            <td class="font-semibold pl-4">
-                                {{ cat.Category }}
-                            </td>
-                            <div v-for="subcat in cat.subcategory" :key="subcat">
-                                <div class="aoe2">
-                                    <td class="pl-4">{{ cat.id }}.{{ subcat.id }}</td>
-                                    <td class="font-normal pl-8">{{ subcat.Subcategory }}</td>
-                                </div>
-                                <td v-if="subcat.items.length == 0" class="font-normalpx-2 py-4">
-                                <div class="flex justify-start items-start">
-                                    <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                                </div>
-                            </td>
-                            
-                                
-                            
-                                <div v-for="item in subcat.items" :key="item" class="flex flex-row justify-between">
-                                   <div class="aoe2">
-                                        <td class="font-normal pl-8">
-                                        {{ cat.id }}.{{ subcat.id }}.{{ item.id }}
-                                        </td>
-                                        <td class="font-normal pl-8">{{ item.Item }}</td>
-                                   </div>
-                                    
-                                    <td class="px-2 py-4">
-                                        <div class="flex justify-start items-start">
-                                            <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 ">
-                                        <div class="flex items-center">
-                                            <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
-                                            <label for="checkbox-all" class="sr-only">checkbox</label>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 ">
-                                        <div class="flex items-center">
-                                            <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
-                                            <label for="checkbox-all" class="sr-only">checkbox</label>
-                                        </div>
-                                    </td>
-                                    <td class="px-2 py-4 text-end">
-                                        <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                                    </td>
-                                </div>
+                    <tr v-for="req in eval" :key="req">
+                        <td class="aoe">
+                            {{req.Requirement}}
+                        </td>
+                        <td class="px-2 py-4">
+                            <div class="flex justify-start items-start">
+                                <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
                             </div>
-                        </div>
-                        </th>
-                        <!-- <div v-for="subcat in cat.subcategory" :key="subcat">
-                            
-                            <td v-if="subcat.items.length == 0" class="font-normalpx-2 py-4">
-                                <div class="flex justify-start items-start">
-                                    <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                                </div>
-                            </td>
-                            <td v-else>
-                                <div v-for="item in subcat.items" :key="item">
-                                    <td class="px-2 py-4">
-                                        <div class="flex justify-start items-start">
-                                            <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                                        </div>
-                                    </td>
-                                </div>
-                            </td>
-                        </div>
-                        
+                        </td>
                         <td class="px-6 py-4 ">
                             <div class="flex items-center">
                                 <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
@@ -132,17 +77,23 @@
                         </td>
                         <td class="px-2 py-4 text-end">
                             <textarea rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
-                        </td> -->
-                        
+                        </td>
                     </tr>
+
+
                 </tbody>
-        </table>
+            </table>
+        </div>
     </div>
-</div>
 <div class="py-4">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="
+              text-xs text-gray-700
+              uppercase
+              bg-gray-50
+              dark:bg-gray-700 dark:text-gray-400
+            ">
                 <tr class="divide-x-2">
                     <th scope="col" class="px-6 py-3">FINAL REMARKS</th>
                     <th scope="col" class="px-6 py-3">
@@ -151,15 +102,50 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                <tr class="
+                divide-x-2
+                bg-white
+                border-b
+                dark:bg-gray-800 dark:border-gray-700
+              ">
+                    <th scope="row" class="
+                  px-6
+                  py-4
+                  font-medium
+                  text-gray-900
+                  dark:text-white
+                  whitespace-nowrap
+                ">
                         <p class="py-2 font-semibold">Summary</p>
-                        <textarea id="message" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                        <textarea id="message" rows="6" class="
+                    block
+                    p-2.5
+                    w-full
+                    text-sm text-gray-900
+                    bg-gray-50
+                    rounded-md
+                    border border-gray-300
+                  " placeholder="Leave a comment..."></textarea>
                     </th>
 
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    <th scope="row" class="
+                  px-6
+                  py-4
+                  font-medium
+                  text-gray-900
+                  dark:text-white
+                  whitespace-nowrap
+                ">
                         <p class="py-2 font-semibold">Recommendation</p>
-                        <textarea id="message" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                        <textarea id="message" rows="6" class="
+                    block
+                    p-2.5
+                    w-full
+                    text-sm text-gray-900
+                    bg-gray-50
+                    rounded-md
+                    border border-gray-300
+                  " placeholder="Leave a comment..."></textarea>
                     </th>
                 </tr>
             </tbody>
@@ -167,10 +153,37 @@
     </div>
 </div>
 <div class="space-x-6 p-10">
-    <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
+    <button type="button" class="
+          w-40
+          py-2.5
+          px-5
+          mr-2
+          mb-2
+          text-sm
+          font-medium
+          text-gray-900
+          focus:outline-none
+          bg-white
+          rounded-lg
+          border border-gray-200
+          hover:bg-gray-100 hover:text-blue-700
+        ">
         Cancel
     </button>
-    <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+    <button type="submit" class="
+          submit
+          w-40
+          text-white
+          bg-blue-700
+          hover:bg-blue-800
+          font-medium
+          rounded-lg
+          text-sm
+          px-5
+          py-2.5
+          mr-2
+          mb-2
+        ">
         Submit
     </button>
 </div>
@@ -350,14 +363,37 @@ export default {
             seriesYear: "2017",
             evalDesc: "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
             eval: [],
-
         };
     },
     methods: {
-        evalitems(){
-            for (var i = 0; i <= this.categories.length; i++){
-                
+        evalitems() {
+            console.log(this.categories.length);
+            for (var i = 0; i < this.categories.length; i++) {
+                // console.log(this.categories[i].subcategory.length)
+                // console.log(this.categories[i].Category);
+                this.eval.push({
+                    id: i + 1,
+                    Requirement: this.categories[i].Category,
+                });
+                for (var x = 0; x < this.categories[i].subcategory.length; x++) {
+                    // console.log(this.categories[i].subcategory[x].Subcategory);
+                    this.eval.push({
+                        id: x + 1,
+                        Requirement: this.categories[i].subcategory[x].Subcategory,
+                    });
+                    //var itemLen = this.categories[i].subcategory[x].items.length;
+                    for (
+                        var y = 0; y < this.categories[i].subcategory[x].items.length; y++
+                    ) {
+                        console.log(this.categories[i].subcategory[x].items[y].Item);
+                        this.eval.push({
+                            id: y + 1,
+                            Requirement: this.categories[i].subcategory[x].items[y].Item,
+                        });
+                    }
+                }
             }
+            return true;
         },
     },
 };
