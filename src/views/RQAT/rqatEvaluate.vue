@@ -1,6 +1,6 @@
 <template>
 <div v-if="evalitems()" class="shadow-lg rounded-lg my-3 py-5">
-    {{ eval }}
+    {{ categories }}
     <div class="flex flex-row justify-center items-center space-x-4 text-sm">
         <div class="">
             <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
@@ -191,6 +191,7 @@
 </template>
 
 <script>
+import Parse from "parse";
 export default {
     props: ["id"],
     name: "rqatEvaluate",
@@ -213,151 +214,7 @@ export default {
                     title: "REMARKS",
                 },
             ],
-            categories: [{
-                    id: 1,
-                    subcategory: [{
-                            id: 1,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "A doctoral degree holder in Education or a related field",
-                        },
-                        {
-                            id: 2,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                        },
-                        {
-                            id: 3,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "Employed full - time. ",
-                        },
-                        {
-                            id: 4,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in tertiary level.",
-                        },
-                        {
-                            id: 5,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in either the elementary or secondary level",
-                        },
-                        {
-                            id: 6,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "With at least 2 years of very managerial/administrative experience",
-                        },
-                        {
-                            id: 7,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                            ],
-                            Subcategory: "With updated notarized contract of employment",
-                        },
-                    ],
-                    Category: "DEAN OR DEPARTMENT CHAIR",
-                    Desc: "(CMO 76, s. 2017), and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                },
-                {
-                    id: 2,
-                    subcategory: [{
-                            id: 1,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "Faculty teaching general education and major subjects should have an appropriate master’s degree in the field they are assigned to teach.",
-                                },
-                                {
-                                    id: 3,
-                                    Item: "Physical Education Teacher",
-                                },
-                                {
-                                    id: 4,
-                                    Item: "Teacher has a BS P.E. degree or BEEd/ BSEd major/minor in P.E. or any other bachelor's degree with certificate in P.E.",
-                                },
-                                {
-                                    id: 5,
-                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                                },
-                                {
-                                    id: 6,
-                                    Item: "With updated notarized contract of employment",
-                                },
-                            ],
-                            Subcategory: "General Requirements",
-                        },
-                        {
-                            id: 2,
-                            items: [{
-                                    id: 1,
-                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "Holder of Master’s degree in education or any of the allied fields",
-                                },
-                            ],
-                            Subcategory: "Qualifications of the Professional Education Faculty",
-                        },
-                    ],
-                    Category: "FACULTY",
-                },
-            ],
+            categories: [],
             programName: "Bachelor of Early Childhood Education (BECEd",
             cmoNo: "76",
             seriesYear: "2017",
@@ -395,6 +252,74 @@ export default {
             }
             return true;
         },
+    },
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        // const AccessTypes = Parse.Object.extend("AccessTypes");
+        // const query = new Parse.Query(AccessTypes);
+        // query.equalTo("name", Parse.User.current().get("access_type"));
+
+        // const querResult = await query.find();
+        // var accType = querResult[0].get("privileges");
+        // var flag = 0;
+        // for (var y = 0; y < accType.length; y++) {
+        //     console.log(accType[y])
+        //     if (accType[y] === "/evaluationins") {
+        //         flag = 1;
+        //     }
+        // }
+        // if (flag === 0) {
+        //     console.log(this.$route.path)
+        //     this.$router.push("/403");
+        // } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalQuery = new Parse.Query(evalInstruments);
+            evalQuery.equalTo("objectId", this.id);
+            const evalInstrument = await evalQuery.first({
+                useMasterKey: true,
+            });
+
+            var categories = [];
+
+            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+
+                var subcat = [];
+
+                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+
+                    var items = [];
+
+                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                        items.push({
+                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                        })
+                    }
+
+                    subcat.push({
+                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
+                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                        items: items,
+                    })
+
+                }
+                this.Name = evalInstrument.get("evaluationFormName");
+                this.Program = evalInstrument.get("evaluationFormProgram");
+                this.cmoNo = evalInstrument.get("evaluationFormCMOno");
+                this.seriesYear = evalInstrument.get("evaluationFormSeries");
+                categories.push({
+                    id: evalInstrument.get("evaluationFormReqs")[i].id,
+                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
+                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
+                    subcategory: subcat,
+                })
+
+            }
+            this.categories = categories;
+        //}
     },
 };
 </script>
