@@ -37,12 +37,12 @@
                         <router-link :to="{
                         name: 'Evaluate',
                         params: {
-                            id: tables.id,
+                            id: tables.appID,
                         },
                         }">
                             <button class="btn-table rounded-md"> Evaluate </button>
                         </router-link>
-                            <!-- <button class="btn-table rounded-md"> Evaluate </button> -->
+
                     </td>
                 </tr>
             </tbody>
@@ -78,62 +78,7 @@ export default {
                     title: "EMAIL",
                 },
             ],
-            table: [{
-                    id: 1,
-                    HeiName: "Ateneo De Naga University",
-                    address: "Naga City",
-                    type: "Initial Offering",
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR APPROVAL",
-                },
-                {
-                    id: 2,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Bicol University",
-                    address: "Legazpi City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR REVISION",
-                },
-                {
-                    id: 3,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Catanduanes State University",
-                    address: "Virac",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR EVALUATION",
-                },
-                {
-                    id: 4,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Aquinas University of Legazpi",
-                    address: "Legazpi City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "FOR ISSUANCE",
-                },
-                {
-                    id: 5,
-                    rep: "Aiden Gibbs",
-                    email: "aadnu@adnu.edu.ph",
-                    HeiName: "Universidad de Sta. Isabel",
-                    address: "Naga City",
-                    type: "Initial Offering",
-                    program: "BSIT",
-                    dateApplied: "2022-06-10",
-                    status: "COMPLETED",
-                },
-            ],
+            table: [],
         };
     },
     computed: {
@@ -175,6 +120,7 @@ export default {
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
+            query.equalTo("selectedRQAT", Parse.User.current().id);
 
             const querResult = await query.find();
 
