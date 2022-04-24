@@ -129,10 +129,7 @@ export default {
                 },
             ],
 
-            tables: [{
-                programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-            }, ],
+            tables: [],
         };
     },
     components: {

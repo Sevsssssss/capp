@@ -1,4 +1,5 @@
 <template>
+<form v-on:submit.prevent="submit">
 <div class="shadow-lg rounded-lg my-3 py-5">
     <div class="flex flex-row justify-center items-center space-x-4 text-sm">
         <div class="">
@@ -27,10 +28,10 @@
                 <span class="">Date of Evalution</span>
             </div>
             <div class="flex flex-col items-start">
-                <p class="">{{instName}}</p>
-                <p class="">{{address}}</p>
-                <p class="">{{program}}</p>
-                <p class="">{{dateApplied}}</p>
+                <p class="">{{ instName }}</p>
+                <p class="">{{ address }}</p>
+                <p class="">{{ program }}</p>
+                <p class="">{{ dateApplied }}</p>
             </div>
         </div>
     </div>
@@ -38,56 +39,49 @@
         <div class="py-4">
             <div class="relative overflow-x-auto shadow-md m-5">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="
-              text-xs text-gray-700
-              uppercase
-              bg-gray-50
-              dark:bg-gray-700 dark:text-gray-400
-            ">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr class="divide-x-2">
                             <th scope="col" class="px-6 py-3 text-center" v-for="head in header" :key="head.title">
                                 {{ head.title }}
                             </th>
-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr scope="row" v-for="req in eval" :key="req" class="bg-white border dark:bg-gray-800 dark:border-gray-700 ">
-                            <td class="text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{req.id}}
+                        <tr scope="row" v-for="req in eval" :key="req" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                            <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{ req.id }}
                             </td>
-                            <td v-if="req.type == 'Category'" class="font-bold">
-                                {{req.Requirement}}
+                            <td v-if="req.type == 'Category'" class="aoe font-bold">
+                                {{ req.Requirement }}
                             </td>
-                            <td v-else-if="req.type == 'SubCategory'" class=" ml-5">
-                                {{req.Requirement}}
+                            <td v-else-if="req.type == 'SubCategory'" class="ml-5">
+                                {{ req.Requirement }}
                             </td>
                             <td v-else-if="req.type == 'Item'" class="ml-12">
-                                {{req.Requirement}}
+                                {{ req.Requirement }}
                             </td>
                             <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
                             <td class="">
                                 <div class="flex justify-start items-start">
-                                    <textarea rows="3" class="textarea p-2.5 w-full text-sm text-gray-900 " placeholder="Leave a comment..."></textarea>
+                                    <textarea v-model="comment1[req.id - 1]" rows="3" id="message1" class="textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 ">
+                            <td class="px-6 py-4">
                                 <div class="text-center">
-                                    <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
-                                    <label for="checkbox-all" class="sr-only">checkbox</label>
+                                    <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id - 1] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[req.id - 1, v$.complied.$model]">
+                                    <label class="sr-only">checkbox</label>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 ">
+                            <td class="px-6 py-4">
                                 <div class="text-center">
-                                    <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded" />
-                                    <label for="checkbox-all" class="sr-only">checkbox</label>
+                                    <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id - 1] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[req.id - 1, v$.notcomplied.$model]" />
+                                    <label class="sr-only">checkbox</label>
                                 </div>
                             </td>
-                            <td class=" text-end">
-                                <textarea rows="3" class="textarea p-2.5 w-full text-sm text-gray-900 " placeholder="Leave a comment..."></textarea>
+                            <td class="text-end">
+                                <textarea v-model="comment2[req.id - 1]" rows="3" id="message2" class="textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -95,12 +89,7 @@
         <div class="py-4">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="
-                text-xs text-gray-700
-                uppercase
-                bg-gray-50
-                dark:bg-gray-700 dark:text-gray-400
-                ">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr class="divide-x-2">
                             <th scope="col" class="px-6 py-3">FINAL REMARKS</th>
                             <th scope="col" class="px-6 py-3">
@@ -109,50 +98,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="
-                    divide-x-2
-                    bg-white
-                    border-b
-                    dark:bg-gray-800 dark:border-gray-700
-                ">
-                            <th scope="row" class="
-                    px-6
-                    py-4
-                    font-medium
-                    text-gray-900
-                    dark:text-white
-                    whitespace-nowrap
-                    ">
+                        <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 <p class="py-2 font-semibold">Summary</p>
-                                <textarea id="message" rows="6" class="
-                        block
-                        p-2.5
-                        w-full
-                        text-sm text-gray-900
-                        bg-gray-50
-                        rounded-md
-                        border border-gray-300
-                    " placeholder="Leave a comment..."></textarea>
+                                <textarea  id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
                             </th>
 
-                            <th scope="row" class="
-                    px-6
-                    py-4
-                    font-medium
-                    text-gray-900
-                    dark:text-white
-                    whitespace-nowrap
-                    ">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 <p class="py-2 font-semibold">Recommendation</p>
-                                <textarea id="message" rows="6" class="
-                        block
-                        p-2.5
-                        w-full
-                        text-sm text-gray-900
-                        bg-gray-50
-                        rounded-md
-                        border border-gray-300
-                    " placeholder="Leave a comment..."></textarea>
+                                <textarea  id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
                             </th>
                         </tr>
                     </tbody>
@@ -160,45 +114,23 @@
             </div>
         </div>
         <div class="space-x-6 p-10">
-            <button type="button" class="
-            w-40
-            py-2.5
-            px-5
-            mr-2
-            mb-2
-            text-sm
-            font-medium
-            text-gray-900
-            focus:outline-none
-            bg-white
-            rounded-lg
-            border border-gray-200
-            hover:bg-gray-100 hover:text-blue-700
-            ">
+            <button  type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                 Cancel
             </button>
-            <button type="submit" class="
-            submit
-            w-40
-            text-white
-            bg-blue-700
-            hover:bg-blue-800
-            font-medium
-            rounded-lg
-            text-sm
-            px-5
-            py-2.5
-            mr-2
-            mb-2
-            ">
+            <button @click="modal(), scrollToTop()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                 Submit
             </button>
         </div>
     </div>
 </div>
+</form>
 </template>
 
 <script>
+import {
+    required
+} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 import Parse from "parse";
 export default {
     props: ["id"],
@@ -206,6 +138,7 @@ export default {
     components: {},
     data() {
         return {
+            v$: useVuelidate(),
             header: [{
                     title: "ID",
                 },
@@ -225,13 +158,14 @@ export default {
                     title: "REMARKS",
                 },
             ],
+            statusShow: [],
             categories: [],
             eval: [],
             catCounter: 0,
             subcatCounter: 0,
             itemCounter: 0,
             Name: "",
-            Program:"",
+            Program: "",
             cmoNo: "",
             seriesYear: "",
             dateApplied: "",
@@ -240,9 +174,55 @@ export default {
             address: "",
             program: "",
             evalDate: "",
+
+            complied: '',
+            notcomplied: '',
+            comment1: [],
+            comment2: [],
+            summary: [],
+            recommendation: [],
         };
     },
+    validations() {
+        return {
+            complied: {
+                required,
+            },
+            notcomplied: {
+                required,
+            },
+            comment1: {
+                required,
+            },
+            comment2: {
+                required,
+            },
+            summary: {
+                required,
+            },
+            recommendation: {
+                required,
+            },
+        }
+    },
     methods: {
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
+        submitButton() {
+            try {
+                alert("No data to submit")
+            } catch (error) {
+                alert(error.message)
+            }
+        },
         evalitems() {
             console.log(this.categories.length);
             //this.catCounter = this.categories.length;
@@ -311,25 +291,24 @@ export default {
         });
 
         var months = [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                ];
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
         var month = application.createdAt.getMonth();
         var day = application.createdAt.getDate();
         var year = application.createdAt.getFullYear();
 
         this.dateApplied = months[month] + " " + day + ", " + year;
-
 
         const Users = Parse.Object.extend("User");
         const userQuery = new Parse.Query(Users);
@@ -338,13 +317,11 @@ export default {
             useMasterKey: true,
         });
 
-         this.instName = user.get("hei_name")
-         this.address = user.get("address")
+        this.instName = user.get("hei_name");
+        this.address = user.get("address");
 
         console.log("Hello" + user.get("hei_name"));
 
-
-        
         //Query Evaluation Instrument
         const evalInstruments = Parse.Object.extend("EvaluationForms");
         const evalQuery = new Parse.Query(evalInstruments);
@@ -366,38 +343,51 @@ export default {
 
         this.program = program.get("programName");
 
-
-
         var categories = [];
 
         for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
-
             var subcat = [];
             var catID = evalInstrument.get("evaluationFormReqs")[i].id;
-            for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
-
+            for (
+                var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++
+            ) {
                 var items = [];
-                var subcatID = evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id;
+                var subcatID =
+                    evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id;
 
-                for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                for (
+                    var k = 0; k <
+                    evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items
+                    .length; k++
+                ) {
                     items.push({
-                        id: catID + "." + subcatID + "." + evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                        Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
-                    })
+                        id: catID +
+                            "." +
+                            subcatID +
+                            "." +
+                            evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[
+                                k
+                            ].id,
+                        Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
+                            .items[k].Item,
+                    });
                 }
 
                 subcat.push({
-                    id: catID + "." + evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
-                    Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                    id: catID +
+                        "." +
+                        evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
+                    Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
+                        .Subcategory,
                     items: items,
-                })
+                });
             }
             categories.push({
                 id: evalInstrument.get("evaluationFormReqs")[i].id,
                 Category: evalInstrument.get("evaluationFormReqs")[i].Category,
                 Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
                 subcategory: subcat,
-            })
+            });
         }
         this.categories = categories;
 
