@@ -80,7 +80,7 @@
                             </div>
                             <div v-else-if="table.status === 'For Evaluation'" class=" btn-sm1 rounded-md p-2 font-normal evaluation">
                                 {{ table.status }} 
-                                <!-- <div class="absolute top-1 right-5 badge badge-accent">assigned</div> -->
+                                 <div v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-1 right-5 badge badge-accent">assigned</div>
                             </div>
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
@@ -315,6 +315,7 @@ export default {
                         program: "BSIT",
                         HeiName: hei_name,
                         appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -361,6 +362,7 @@ export default {
                         program: "BSIT",
                         HeiName: hei_name,
                         appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -407,6 +409,7 @@ export default {
                         program: "BSIT",
                         HeiName: hei_name,
                         appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -453,6 +456,7 @@ export default {
                         program: "BSIT",
                         HeiName: hei_name,
                         appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -497,6 +501,7 @@ export default {
                         program: "BSIT",
                         HeiName: hei_name,
                         appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -540,6 +545,7 @@ export default {
                         program: "BSIT",
                         HeiName: hei_name,
                         appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
                     });
                 }
                 this.totalEntries = querResult.length;
@@ -640,10 +646,12 @@ export default {
                     program: program.get("programName"),
                     HeiName: hei_name,
                     appID: application.id,
+                    selectedRqat: application.get("selectedRQAT")
                 });
             }
             this.totalEntries = querResult.length;
             this.tables = storedApplications;
+
             const applicationsFA = Parse.Object.extend("Applications");
             const queryFA = new Parse.Query(applicationsFA);
             queryFA.equalTo("applicationStatus", "For Approval");
@@ -651,12 +659,15 @@ export default {
             const applicationsFR = Parse.Object.extend("Applications");
             const queryFR = new Parse.Query(applicationsFR);
             queryFR.equalTo("applicationStatus", "For Revision");
+
             const applicationsFI = Parse.Object.extend("Applications");
             const queryFI = new Parse.Query(applicationsFI);
             queryFI.equalTo("applicationStatus", "For Issuance ");
+
             const applicationsFE = Parse.Object.extend("Applications");
             const queryFE = new Parse.Query(applicationsFE);
             queryFE.equalTo("applicationStatus", "For Evaluation");
+
             const applicationsFC = Parse.Object.extend("Applications");
             const queryFC = new Parse.Query(applicationsFC);
             queryFC.equalTo("applicationStatus", "For Completed");

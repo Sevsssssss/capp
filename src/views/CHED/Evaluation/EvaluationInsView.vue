@@ -204,7 +204,7 @@ export default {
 
                 const program = await programQuery.first();
 
-                console.log("test" + program.id)
+                // console.log("test" + program.id)
 
                 storedEvalInstruments.push({
                     id: evalInst.id,
