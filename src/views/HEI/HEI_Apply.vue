@@ -268,6 +268,8 @@ export default {
                         applicationStatus: "For Approval",
                         createdBy: Parse.User.current().id,
                         program: this.programSelect,
+                        selectedRQAT: '',
+                        selectedSupervisor: '',
                     })
                     .then(
                         (newApplication) => {
