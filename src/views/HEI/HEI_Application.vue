@@ -18,10 +18,12 @@
             </div>
             <div class="dropdown flex">
                 <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none" v-model="sort_type" @change="filterApplications()">
-                    <option selected>All</option>
-                    <option>For Approval</option>
-                    <option>For Revision</option>
-                    <option>Completed</option>
+                    <option selected>ALL</option>
+                    <option>FOR APPROVAL</option>
+                    <option>FOR REVISION</option>
+                    <option>FOR EVALUATION</option>
+                    <option>FOR ISSUANCE</option>
+                    <option>COMPLETED</option>
                 </select>
             </div>
         </div>
@@ -36,7 +38,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-if="sort_type_var == false">
                 <tr v-for="table in searchApplication" :key="table" class="bg-white border-b hover:bg-gray-50">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ table.dateApplied }}
@@ -70,24 +72,59 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a v-if="table.status === 'COMPLETED'"></a>
                         <router-link :to="{
-                  name: 'EditHEIapplication',
-                  params: {
-                    id: table.id,
-                    HeiName: table.HeiName,
-                    type: table.type,
-                    status: table.status,
-                    dateApplied: table.dateApplied,
-                  },
-                }">
-                            <a v-if="statusChecker(table.status) && table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            <a v-if="statusChecker(table.status) && table.status != 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                         name: 'EditHEIapplication',
+                         params: {
+                         id: table.appID,
+                         statusA: table.status
+                        },
+                        }">
+                            <a v-if="
+                    statusChecker(table.status) &&
+                    table.status === 'For Revision'
+                  " href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                        </router-link>
+                        <router-link :to="{
+                        name: 'ForApprovalView',
+                        params: {
+                        id: table.appID,
+                        },
+                        }">
+                            <a v-if="
+                    statusChecker(table.status) &&
+                    table.status === 'For Approval'
+                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                        </router-link>
+                        <a v-if="
+                    table.status === 'For Evaluation'
+                  " href="#"></a>
+                        <a v-if="
+                    table.status === 'For Issuance'
+                  " href="#"></a>
+                        <router-link :to="{
+                        name: 'ForApprovalView',
+                        params: {
+                        id: table.appID,
+                        },
+                        }">
+                            <a v-if="
+                    statusChecker(table.status) &&
+                    table.status === 'For Completed'
+                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div v-if="searchApplication.length == 0" class="p-5 font-medium">
+            <!-- NO DATA FOUND {{search}} -->
+            Sorry, the keyword "{{ search }}" cannot be found in the database.
+        </div>
+        <div v-if="sort_type_var == true" class="p-5 font-medium">
+            <!-- NO DATA FOUND {{search}} -->
+            Sorry, there is no data with the type of "{{ sort_type }}" in the
+            database.
+        </div>
         <!-- Table Footer -->
         <div class="table-footer flex flex-row justify-between">
             <div class="flex flex-row pl-4 justify-center items-center">
@@ -132,7 +169,7 @@ import Parse from "parse";
 export default {
     name: "ApplicationView",
     components: {
-        NoDataAvail
+        NoDataAvail,
     },
     data() {
         return {
@@ -140,6 +177,7 @@ export default {
             numPerPage: 10,
             sort_type: "All",
             search: "",
+            sort_type_var: false,
             headers: [{
                     title: "DATE APPLIED",
                 },
@@ -240,7 +278,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsAll;
+                if (storedApplicationsAll.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsAll;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             } else if (this.sort_type == "For Approval") {
                 var storedApplicationsFA = [];
                 const applications = Parse.Object.extend("Applications");
@@ -269,7 +313,12 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFA;
+                if (storedApplicationsFA.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFA;
+                } else {
+                    this.sort_type_var = true;
+                }
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
                 const applications = Parse.Object.extend("Applications");
@@ -298,7 +347,12 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFR;
+                if (storedApplicationsFR.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFR;
+                } else {
+                    this.sort_type_var = true;
+                }
             } else if (this.sort_type == "Completed") {
                 var storedApplicationsC = [];
                 const applications = Parse.Object.extend("Applications");
@@ -327,7 +381,12 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsC;
+                if (storedApplicationsC.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsC;
+                } else {
+                    this.sort_type_var = true;
+                }
             }
         },
     },
@@ -380,10 +439,7 @@ export default {
 
                 const applicationTypes = Parse.Object.extend("ApplicationTypes");
                 const appTypeQuery = new Parse.Query(applicationTypes);
-                appTypeQuery.equalTo(
-                    "objectId",
-                    application.get("applicationType")
-                );
+                appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
                 const applicationType = await appTypeQuery.first();
 

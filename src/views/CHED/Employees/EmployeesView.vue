@@ -3,7 +3,6 @@
     <NoDataAvail names="EmployeeView" />
 </div>
 <div v-else class="p-3">
-    {{sort_type}}
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
@@ -108,7 +107,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="sort_type_var == false">
                     <tr class="bg-white border-b" v-for="table in searchEmployee" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
                             {{ table.Name }}
@@ -146,6 +145,11 @@
             <div v-if="searchEmployee.length == 0" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
                 Sorry, the keyword "{{ search }}" cannot be found in the database.
+            </div>
+            <div v-if="sort_type_var == true" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, there is no data with the type of "{{ sort_type }}" in the
+                database.
             </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
@@ -267,6 +271,7 @@ export default {
             designations: [],
             search: "",
             sort_type: "All",
+            sort_type_var: false,
         };
     },
     components: {
@@ -330,7 +335,13 @@ export default {
                         AccessType: emp.get("access_type"),
                     });
                 }
-                this.tables = employees;
+                if (employees.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = employees;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             } else {
                 var employeesFiltered = [];
                 const query = new Parse.Query(Parse.User);
@@ -358,7 +369,13 @@ export default {
                         AccessType: emp.get("access_type"),
                     });
                 }
-                this.tables = employeesFiltered;
+                if (employeesFiltered.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = employeesFiltered;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             }
 
             

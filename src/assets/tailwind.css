@@ -398,6 +398,10 @@
     width: 30%;
   }
 
+  .aoe2 {
+    width: 50%;
+  }
+
   .eval-table :where(th, td) {
     white-space: normal;
     padding: 1rem;

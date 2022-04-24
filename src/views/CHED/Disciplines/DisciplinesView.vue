@@ -137,7 +137,7 @@
                     </td>
                     <td class="px-6 py-4 flex flex-row">
                         <div class="hover:text-brand-red/60">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="deleteDiscipline(i.id)">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
                         </div>
@@ -584,6 +584,22 @@ export default {
                     this.programs.splice(i, 1);
                     i--;
                 }
+            }
+        },
+
+        async deleteDiscipline(id){
+            const disciplines = Parse.Object.extend("Disciplines");
+            const discQuery = new Parse.Query(disciplines);
+            discQuery.equalTo("objectId", id);
+
+            const discipline = await discQuery.first();
+
+            if(confirm("Delete Discipline?")){
+                discipline.destroy().then((disc) => {
+                    console.log("Deleted object: " + disc.id);
+                }, (error) => {
+                    console.log("Error: " + error)
+                })
             }
         },
 

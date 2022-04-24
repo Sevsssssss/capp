@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <!-- Filter -->
-                <div class="flex flex-row">
+                <div v-if="!supervisorChecker()" class="flex flex-row">
                     <!-- sort -->
                     <div class="month-sort flex flex-row">
                         <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="application_sort" v-model="sort_type" @change="filterApplications()">
@@ -51,7 +51,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="sort_type_var == false">
                     <tr class="bg-white border-b" v-for="table in searchApplication" :key="table">
                         <td class="px-6 py-4">
                             <div class="">
@@ -91,11 +91,11 @@
                         <td class="px-6 py-4 text-center">
                             <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
                             <router-link :to="{
-                    name: 'StatusApplication',
-                    params: {
-                      appID: table.appID,
-                    },
-                  }">
+                                name: 'StatusApplication',
+                                params: {
+                                appID: table.appID,
+                                },
+                            }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                         </td>
@@ -117,6 +117,11 @@
             <div v-if="searchApplication.length == 0" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
                 Sorry, the keyword "{{ search }}" cannot be found in the database.
+            </div>
+            <div v-if="sort_type_var == true" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, there is no data with the type of "{{ sort_type }}" in the
+                database.
             </div>
             <div class="table-footer flex flex-row justify-between">
                 <div class="flex flex-row pl-4 justify-center items-center">
@@ -188,6 +193,8 @@ export default {
                     title: "STATUS",
                 },
             ],
+            supervisor: false,
+            sort_type_var: false,
 
             datas: [{
                     title: "FOR APPROVAL",
@@ -215,63 +222,7 @@ export default {
                     color: "pink",
                 },
             ],
-            tables: [
-                //{
-                //         id: 1,
-                //         HeiName: "Ateneo De Naga University",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         program: "BSIT",
-                //         dateApplied: "2022-06-10",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 2,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Bicol University",
-                //         address: "Legazpi City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "2022-06-10",
-                //         status: "FOR REVISION",
-                //     },
-                //     {
-                //         id: 3,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Catanduanes State University",
-                //         address: "Virac",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "2022-06-10",
-                //         status: "FOR EVALUATION",
-                //     },
-                //     {
-                //         id: 3,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Aquinas University of Legazpi",
-                //         address: "Legazpi City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "2022-06-10",
-                //         status: "FOR ISSUANCE",
-                //     },
-                //     {
-                //         id: 4,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Universidad de Sta. Isabel",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "2022-06-10",
-                //         status: "COMPLETED",
-                //     },
-            ],
+            tables: [],
         };
     },
     computed: {
@@ -289,6 +240,9 @@ export default {
     },
 
     methods: {
+        supervisorChecker() {
+            return this.supervisor;
+        },
         statusChecker(status) {
             if (status != "COMPLETED") {
                 return true;
@@ -363,7 +317,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsAll;
+                if (storedApplicationsAll.length > 0) {
+                    this.sort_type_var = false;
+                     this.tables = storedApplicationsAll;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             }
 
             //If Selected For Approval
@@ -403,7 +363,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFA;
+                if (storedApplicationsFA.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFA;
+                } else {
+                    this.sort_type_var = true;
+                }
+
             }
 
             //If selected For Issuance
@@ -443,7 +409,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFI;
+                if (storedApplicationsFI.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFI;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             }
 
             //If Selected For Evaluation
@@ -483,7 +455,14 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFE;
+                if (storedApplicationsFE.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFE;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
+                
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
                 const applications = Parse.Object.extend("Applications");
@@ -520,7 +499,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFR;
+                if (storedApplicationsFR.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFR;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             } else if (this.sort_type == "Completed") {
                 var storedApplicationsC = [];
                 const applications = Parse.Object.extend("Applications");
@@ -557,7 +542,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsC;
+                if (storedApplicationsC.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsC;
+                } else {
+                    this.sort_type_var = true;
+                }
+                
             }
         },
     },
@@ -586,6 +577,13 @@ export default {
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
+
+            //Get to view applications to specific user (Education Supervisor)
+            if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
+                query.equalTo("selectedSupervisor", Parse.User.current().id);
+                query.equalTo("applicationStatus", "For Evaluation");
+                this.supervisor = true;
+            }
             const querResult = await query.find();
 
             //Get details of the applications
@@ -594,6 +592,7 @@ export default {
                 const application = querResult[i];
                 const user = new Parse.Query(Parse.User);
                 user.equalTo("objectId", application.get("createdBy"));
+                // console.log(application.get("createdBy"));
                 const hei = await user.first();
                 hei_name = hei.get("hei_name");
                 var months = [
