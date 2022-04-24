@@ -200,7 +200,6 @@
 
 <script>
 import Parse from "parse";
-import DropZoneVue from '../CHED/Hei/DropZone.vue';
 export default {
     props: ["id"],
     name: "rqatEvaluate",
@@ -407,7 +406,7 @@ export default {
             // console.log(this.categories[i].Category);
             this.eval.push({
                 id: this.categories[z].id,
-                Requirement: this.categories[DropZoneVue].Category,
+                Requirement: this.categories[z].Category,
                 type: "Category",
             });
             //this.catCounter++;
