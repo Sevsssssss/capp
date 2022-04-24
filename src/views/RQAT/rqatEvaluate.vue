@@ -369,33 +369,33 @@ export default {
         }
         this.categories = categories;
 
-        for (var i = 0; i < this.categories.length; i++) {
+        for (var q = 0; q < this.categories.length; q++) {
             //console.log(i)
             // console.log(this.categories[i].Category);
             this.eval.push({
-                id: this.categories[i].id,
-                Requirement: this.categories[i].Category,
+                id: this.categories[q].id,
+                Requirement: this.categories[q].Category,
                 type: "Category",
             });
             //this.catCounter++;
             //this.subcatCounter = this.categories[i].subcategory.length;
-            for (var x = 0; x < this.categories[i].subcategory.length; x++) {
+            for (var x = 0; x < this.categories[q].subcategory.length; x++) {
                 // console.log(this.categories[i].subcategory[x].Subcategory);
                 this.eval.push({
-                    id: this.categories[i].subcategory[x].id,
-                    Requirement: this.categories[i].subcategory[x].Subcategory,
+                    id: this.categories[q].subcategory[x].id,
+                    Requirement: this.categories[q].subcategory[x].Subcategory,
                     type: "SubCategory",
                 });
                 //var itemLen = this.categories[i].subcategory[x].items.length;
                 //this.subcatCounter++;
                 //this.itemCounter =this.categories[i].subcategory[x].items.length;
                 for (
-                    var y = 0; y < this.categories[i].subcategory[x].items.length; y++
+                    var y = 0; y < this.categories[q].subcategory[x].items.length; y++
                 ) {
                     //console.log(this.categories[i].subcategory[x].items[y].Item);
                     this.eval.push({
-                        id: this.categories[i].subcategory[x].items[y].id,
-                        Requirement: this.categories[i].subcategory[x].items[y].Item,
+                        id: this.categories[q].subcategory[x].items[y].id,
+                        Requirement: this.categories[q].subcategory[x].items[y].Item,
                         type: "Item",
                     });
                     //this.itemCounter++;
