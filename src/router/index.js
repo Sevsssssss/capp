@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LandingView from "../views/LandingView.vue";
 import CHEDViewLayout from "../layout/CHEDViewLayout.vue";
 import HEIViewLayout from "../layout/HEIViewLayout.vue";
+import RQATViewLayout from "../layout/RQATViewLayout.vue";
+
 import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
 
@@ -33,9 +35,13 @@ import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
-import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
+
+import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
+import rqatEvaluate from '../views/RQAT/rqatEvaluate.vue';
+import rqatHistory from '../views/RQAT/rqatHistory.vue';
+
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
@@ -323,8 +329,8 @@ const routes = [
         }
       },
       {
-        path: "/rqat-assignment",
-        name: "rqat-assignment",
+        path: "/assignment",
+        name: "assignment",
         component: rqatEvaluationView,
         meta: {
           breadcrumb: [
@@ -397,6 +403,42 @@ const routes = [
           breadcrumb: [
             { name: 'Application', link: '/HEIapplication' },
             { name: 'Edit' }
+          ]
+        }
+      },
+    ]
+  },
+  {
+    path: "/RQATPage",
+    component: RQATViewLayout,
+    children: [
+      {
+        path: "/assignments",
+        name: "Assignments",
+        component: rqatEvaluationView,
+        meta: {
+          breadcrumb: [
+            { name: 'Assignments' },
+          ]
+        }
+      },
+      {
+        path: "/evaluate",
+        name: "Evaluate",
+        component: rqatEvaluate,
+        meta: {
+          breadcrumb: [
+            { name: 'Evaluate' },
+          ]
+        }
+      },
+      {
+        path: "/history",
+        name: "History",
+        component: rqatHistory,
+        meta: {
+          breadcrumb: [
+            { name: 'History' },
           ]
         }
       },

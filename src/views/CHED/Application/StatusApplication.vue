@@ -1,10 +1,9 @@
 <template>
 <div class="m-3">
-    <div>
         <div>
             <div class="flex flex-row justify-between">
                 <div class="flex flex-col p-4 text-left space-y-2">
-                    <span class="text-2xl font-semibold uppercase">{{ HeiName }}</span>
+                    <!-- <span class="text-2xl font-semibold uppercase">{{ HeiName }}</span> -->
                     <div class="font-normal text-sm uppercase">
                         APPLICATION FOR: <span class="font-semibold">{{ type }}</span>
                     </div>
@@ -16,28 +15,18 @@
                 </div>
                 <div class="flex flex-col">
                     <div class="text-left p-4 pr-6 space-y-2">
-                        <div class="font-semibold text-md uppercase">
-                            APPLICATION STATUS - <span class=""> {{ status }}</span>
+                        <div class="font-normal text-sm uppercase">
+                            APPLICATION STATUS - <span class="font-semibold"> {{ status }}</span>
                         </div>
-                        <div class="font-semibold text-sm">
+                        <div class="font-normal text-sm uppercase">
                             Date Applied:
-                            <span class="font-normal">{{ dateApplied }}</span>
+                            <span class="font-semibold">{{ dateApplied }}</span>
                         </div>
                     </div>
                     <!-- <p>ID Number: {{id}}</p> -->
                 </div>
             </div>
             <hr />
-            <div class="py-4 px-4">
-                <div class="flex justify-start space-x-4">
-                    <div class="font-semibold text-sm">
-                        Point Person: <span class="font-normal">{{ rep }}</span>
-                    </div>
-                    <div class="font-semibold text-sm">
-                        Email: <span class="font-normal">{{ email }}</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
@@ -54,63 +43,8 @@
         </div>
         <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>
-            <div class="space-x-6 py-8 px-3 flex justify-center">
-                <!-- <div v-else-if="status === 'COMPLETED'">
-        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-            BACK</label>
-    </div> -->
-            </div>
-            <!-- For Approval Modal -->
         </div>
-        <!-- For Evaluation Modal -->
-        <input type="checkbox" id="for-evaluation" class="modal-toggle" />
-        <div class="modal">
-            <div class="modal-box relative rounded-md text-left">
-                <div class="font-semibold text-md">RE-ASSIGN SUPERVISOR</div>
-                <p class="py-2 text-sm">
-                    You've been selected for a chance to get one year of subscription to
-                    use Wikipedia for free!
-                </p>
-                <!-- Filter -->
-                <div class="flex flex-row py-6 justify-start items-start">
-                    <!-- sort -->
-                    <div class="month-sort flex flex-row border rounded-md w-full">
-                        <select class="
-                font-normal
-                rounded-md
-                select select-ghost select-sm
-                w-full
-              " style="outline: none" id="application_sort">
-                            <option disabled selected>Select Supervisor</option>
-                            <option>Joshua Sarmiento</option>
-                            <option>Sev Sarate</option>
-                            <option>Duane</option>
-                            <option>Jeff</option>
-                            <option>Saq</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <label for="for-evaluation" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                    <label @click="submitChanges()" class="
-              btn btn-sm
-              rounded-md
-              bg-blue-700
-              hover:bg-blue-800
-              border-none
-            ">Assign</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+</div>
 </template>
 
 <script>
@@ -158,42 +92,7 @@ export default {
                     title: "COMMENTS",
                 },
             ],
-            tables: [{
-                    id: 1,
-                    credential: "Articles of Incorporation and By-Laws..",
-                    file: "ArticlesofInc.pdf",
-                },
-                {
-                    id: 2,
-                    credential: "Copy(ies) of Transfer of Certificate(s) Title (TCT)",
-                    file: "Copy(ies)ofTransferof.pdf",
-                },
-                {
-                    id: 3,
-                    credential: "Ownership of School Building",
-                    file: "OwnershipofSchoolBuilding.pdf",
-                },
-                {
-                    id: 4,
-                    credential: "Campus Development and Landscaping Plan",
-                    file: "CampusDevelopme.pdf",
-                },
-                {
-                    id: 5,
-                    credential: "Pictures of School Buildings, offices and other facilities",
-                    file: "PicturesofSchool.pdf",
-                },
-                {
-                    id: 6,
-                    credential: "Certificate of Occupancy for the building(s)",
-                    file: "CertificateofOccupancy.pdf",
-                },
-                {
-                    id: 7,
-                    credential: "Feasibility study",
-                    file: "Feasibilitystudy.pdf",
-                },
-            ],
+            tables: [],
         };
     },
     mounted: async function () {
@@ -218,7 +117,6 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
             // Query the application from the db
-            var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("objectId", this.appID);
@@ -243,8 +141,7 @@ export default {
 
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
-            this.email = application.get("email");
-            this.rep = application.get("pointPerson");
+
             this.program = program.get("programName");
             var months = [
                 "January",
@@ -264,8 +161,6 @@ export default {
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
             this.dateApplied = months[month] + " " + day + ", " + year;
-
-            this.tables = storedApplications;
         }
     },
 };

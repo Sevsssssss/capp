@@ -1,15 +1,6 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="
-        card
-        over
-        p-4
-        w-fit
-        bg-white
-        rounded-lg
-        border border-gray-200
-        shadow-md
-      ">
+    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -27,10 +18,10 @@
                         <span class="label-text">Last Name</span>
                     </label>
                     <input type="text" placeholder="Last Name" :class="{ 'input-error': validationStatus(v$.lastname) }" class="input input-bordered w-full" v-model="v$.lastname.$model" />
-                    <label class="label">
+                    <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.lastname) }" v-if="validationStatus(v$.lastname)">
                             Lastname is Required</span>
-                    </label>
+                    </label> -->
                 </div>
 
                 <div class="form-control w-full pr-4">
@@ -38,10 +29,10 @@
                         <span class="label-text">First Name</span>
                     </label>
                     <input type="text" placeholder="First Name" :class="{ 'input-error': validationStatus(v$.firstname) }" class="input input-bordered w-full" v-model="v$.firstname.$model" />
-                    <label class="label">
+                    <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.firstname) }" v-if="validationStatus(v$.firstname)">
                             Firstname is Required</span>
-                    </label>
+                    </label> -->
                 </div>
 
                 <div class="form-control" style="width: 200px">
@@ -49,10 +40,10 @@
                         <span class="label-text">M.I.</span>
                     </label>
                     <input type="text" placeholder="M.I." :class="{ 'input-error': validationStatus(v$.midinit) }" class="input input-bordered w-full" v-model="v$.midinit.$model" />
-                    <label class="label">
+                    <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.midinit) }" v-if="validationStatus(v$.midinit)">
                             Required</span>
-                    </label>
+                    </label> -->
                 </div>
             </div>
             <div class="form-control w-full">
@@ -60,30 +51,30 @@
                     <span class="label-text">Username</span>
                 </label>
                 <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
                         Username is Required</span>
-                </label>
+                </label> -->
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
                 <input type="email" placeholder="Enter email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
                         Email is Required</span>
-                </label>
+                </label> -->
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.contactnum) }" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.contactnum) }" v-if="validationStatus(v$.contactnum)">
                         Contact Number is Required</span>
-                </label>
+                </label> -->
             </div>
             <div class="flex flex-row">
                 <div class="form-control w-full pr-2">
@@ -122,7 +113,7 @@
 
                     <select class="select select-bordered w-full" v-model="v$.discipline.$model">
                         <option v-for="discipline in disciplines" :key="discipline">
-                            <div class="discipline">{{discipline.title}}</div>
+                            <div class="discipline">{{ discipline.title }}</div>
                         </option>
                     </select>
                 </div>
@@ -131,13 +122,7 @@
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="
-              border-none
-              btn btn-m
-              submit
-              bg-brand-darkblue
-              hover:bg-brand-blue
-            " @click="modal()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal(), scrollToTop()">
                     Add Employee
                 </button>
             </div>
@@ -153,62 +138,27 @@
             <form>
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
-                    <input type="text" id="base-input" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter designation" />
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createEmType" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label class="
-              btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            ">Submit</label>
+                <label for="createEmType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
             </div>
         </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
-            <div class="text-brand-darkblue font-bold label-xl">
+    <div :class="{ 'modal-open ': validate() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold">
                 Add Employee Account
             </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            " @click="addEmployee()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addEmployee(), scrollToTop()">Continue</label>
             </div>
         </div>
     </div>
@@ -301,6 +251,9 @@ export default {
         },
         validate() {
             return this.showModal1;
+        },
+        scrollToTop() {
+            window.scrollTo(0, 0);
         },
         async addEmployee() {
             const newEmployee = new Parse.User();
@@ -407,19 +360,19 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             for (var e = 0; e < queryResult.length; e++) {
                 this.accessTypes.push({
-                    title: queryResult[e].get('name')
-                })
+                    title: queryResult[e].get("name"),
+                });
             }
-            this.access_type = queryResult[0].get('name');
+            this.access_type = queryResult[0].get("name");
             const Designations = Parse.Object.extend("Designations");
             const queryD = new Parse.Query(Designations);
             const queryResultDesig = await queryD.find();
             for (var w = 0; w < queryResultDesig.length; w++) {
                 this.designations.push({
-                    title: queryResultDesig[w].get('name')
-                })
+                    title: queryResultDesig[w].get("name"),
+                });
             }
-            this.emp_designation = queryResultDesig[0].get('name');
+            this.emp_designation = queryResultDesig[0].get("name");
 
             const Discipline = Parse.Object.extend("Disciplines");
             const queryDiscipline = new Parse.Query(Discipline);
@@ -427,11 +380,10 @@ export default {
             console.log(queryResultDiscipline);
             for (var z = 0; z < queryResultDiscipline.length; z++) {
                 this.disciplines.push({
-                    title: queryResultDiscipline[z].get('disciplineName')
-                })
+                    title: queryResultDiscipline[z].get("disciplineName"),
+                });
             }
-            this.discipline = queryResultDiscipline[0].get('disciplineName');
-
+            this.discipline = queryResultDiscipline[0].get("disciplineName");
         }
     },
 };

@@ -73,9 +73,9 @@
         </div>
     </form>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+    <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">
+            <div class="font-semibold text-md">
                 Add Application Type
             </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
@@ -83,7 +83,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
             </div>
         </div>
     </div>

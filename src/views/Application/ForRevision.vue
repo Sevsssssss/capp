@@ -1,5 +1,15 @@
 <template>
-<div class="m-3">
+<div class="mx-3">
+    <div class="py-4 px-1">
+        <div class="flex justify-start space-x-4">
+            <div class="font-normal text-sm">
+                Point Person: <span class="font-semibold">{{ rep }}</span>
+            </div>
+            <div class="font-normal text-sm">
+                Email: <span class="font-semibold">{{ email }}</span>
+            </div>
+        </div>
+    </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 ">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -18,7 +28,7 @@
                         <a :href="table.file" target="_blank" class="text-blue-400">view</a>
                     </td>
                     <td class="px-6 py-4">
-                        <svg v-if="table.status == 'Approved'" :name="table.id" :id="table.id"  class="check" width="24" height="24" style="fill: green">
+                        <svg v-if="table.status == 'Approved'" :name="table.id" :id="table.id" class="check" width="24" height="24" style="fill: green">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
                         </svg>
@@ -30,11 +40,10 @@
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
                         </svg>
-
                         <!--<input type="radio" :id="'disapproved ' + table.id" :value="'disapproved ' + table.id" class="radio" v-model="statusShow">-->
                     </td>
                     <td class="px-6 py-4">
-                        <p :name="table.id" :id="table.id" :v-model="comment[table.id - 1]"  @change="comment[table.id - 1]"> {{table.comment}} </p>
+                        <p :name="table.id" :id="table.id" :v-model="comment[table.id - 1]" @change="comment[table.id - 1]"> {{table.comment}} </p>
                     </td>
                 </tr>
             </tbody>
@@ -50,7 +59,6 @@
             <label for="for-approval" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                 Re-Submit</label>
         </div> -->
-
     </div>
 </div>
 </template>
@@ -87,7 +95,7 @@ export default {
         }
     },
     computed: {
-       searchHEI() {
+        searchHEI() {
             return this.tables.filter((p) => {
                 return (
                     p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
@@ -104,7 +112,8 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
-
+        this.email = application.get("email");
+        this.rep = application.get("pointPerson");
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
         const appTypeQuery = new Parse.Query(applicationTypes);
         appTypeQuery.equalTo(

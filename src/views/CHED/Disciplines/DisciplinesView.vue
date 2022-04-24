@@ -126,8 +126,8 @@
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ i.Name }}
                     </td>
-                    <td v-for="program in i.Programs" :key="program" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ program.name }}
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{ i.Programs }}
                     </td>
                     <td class="py-4 text-right">
                         <label for="editDisciplines" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)">Edit Disciplines</label>
@@ -304,15 +304,40 @@
               rounded-md
               hover:bg-blue-800
               border-none
-            " @click="newDiscName()">Submit</label>
+            " @click="modal1()">Submit</label>
             </div>
         </div>
     </label>
 
+    <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="text-brand-darkblue font-bold label-xl">Edit Discipline</div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to edit this discipline?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            " @click="modal1()">Cancel</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              bg-red-500
+              hover:bg-red-600
+              rounded-md
+              border-none
+            " @click="newDiscName()">Continue</label>
+            </div>
+        </div>
+    </div>
+
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            {{programs}}
             <div class="flex flex-row justify-between">
                 <div>
                     <div class="font-semibold text-md">ADD A PROGRAM</div>
@@ -337,7 +362,7 @@
                 <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
                     <div class="flex flex-row">
-                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.programs) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
                         <div class="pl-4">
                             <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -372,7 +397,33 @@
               rounded-md
               hover:bg-blue-800
               border-none
-            " @click="addProgram()">Submit</label>
+            " @click="modal2()">Submit</label>
+            </div>
+        </div>
+    </div>
+
+    <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="text-brand-darkblue font-bold label-xl">Add Program</div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this program?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            " @click="modal2()">Cancel</label>
+                <label for="my-modal-6" class="
+              btn btn-sm
+              bg-red-500
+              hover:bg-red-600
+              rounded-md
+              border-none
+            " @click="addProgram()">Continue</label>
             </div>
         </div>
     </div>
@@ -393,7 +444,7 @@
                 <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
                     <div class="flex flex-row">
-                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
                         <div class="pl-4">
                             <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -428,7 +479,7 @@
               rounded-md
               hover:bg-blue-800
               border-none
-            " @click="addProgram()">Submit</label>
+            " @click="editProgram()">Submit</label>
             </div>
         </div>
     </div>
@@ -460,6 +511,8 @@ export default {
     data() {
         return {
             showModal1: false,
+            showModal2: false,
+            showModal3: false,
             v$: useVuelidate(),
             currentpage: 0,
             numPerPage: 10,
@@ -478,8 +531,7 @@ export default {
             editID: "",
 
             disciplines: [],
-            atname: "",
-            editAtName: "",
+            editProgramName: "",
             selectedDiscipline: "",
             programs: [],
             progCounter: 0,
@@ -493,10 +545,10 @@ export default {
             editDisciplineName: {
                 required,
             },
-            atname: {
+            programs: {
                 required,
             },
-            editAtName: {
+            editProgramName: {
                 required,
             },
         };
@@ -542,12 +594,23 @@ export default {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
+
+        
         validate() {
             return this.showModal1;
         },
+
+        validate1() {
+            return this.showModal2;
+        },
+        validate2() {
+            return this.showModal3;
+        },
+
+
         modal() {
             var has_error = 0;
-            if (this.disciplineName == "" && this.editDisciplineName == "" && this.atname == "" && this.editAtName == "") {
+            if (this.disciplineName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -560,6 +623,40 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
+
+        modal1() {
+            var has_error = 0;
+            if (this.editDisciplineName == "" ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showModal2 = !this.showModal2;
+            }
+        },
+
+        modal2() {
+            var has_error = 0;
+            if (this.programs == "" ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showModal3 = !this.showModal3;
+            }
+        },
+
+
         editDiscipline(name, id) {
             this.editDisciplineName = name;
             this.editID = id;
@@ -626,13 +723,15 @@ export default {
         },
         addProgram() {
             this.$refs.Spinner.show();
-            const programs = Parse.Object.extend("Programs");
-            const newProgram = new programs();
             try {
-                newProgram.save({
-                    programName: this.atname,
-                    programDiscipline: this.selectedDiscipline,
-                });
+                for (var i = 0; i < this.programs.length; i++) {
+                    const programs = Parse.Object.extend("Programs");
+                    const newProgram = new programs();
+                    newProgram.save({
+                        programName: this.programs[i].programName,
+                        programDiscipline: this.selectedDiscipline,
+                    });
+                }
                 //alert("New Discipline Added: " + this.atname);
                 toast("New Program Added: " + this.atname, {
                         type: TYPE.SUCCESS,
@@ -723,8 +822,15 @@ export default {
                 queryProg.equalTo("programDiscipline", discipline.id);
                 const progResult = await queryProg.find();
                 var programsMat = [];
+                var programsText = "";
                 for (var j = 0; j < progResult.length; j++) {
                     const prog = progResult[j];
+
+                    if (programsText === "") {
+                        programsText = programsText + prog.get("programName");
+                    } else {
+                        programsText = programsText + ", " + prog.get("programName");
+                    }
                     programsMat.push({
                         id: prog.id,
                         name: prog.get("programName"),
@@ -734,7 +840,7 @@ export default {
                 disciplineTable.push({
                     id: discipline.id,
                     Name: discipline.get("disciplineName"),
-                    Programs: programsMat,
+                    Programs: programsText,
                 });
                 disciplinesNames.push({
                     id: discipline.id,

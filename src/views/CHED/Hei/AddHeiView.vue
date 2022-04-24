@@ -15,20 +15,20 @@
                     <span class="label-text">HEI Name</span>
                 </label>
                 <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span v-if="validationStatus(v$.hei_name)" :class="{ 'text-error': validationStatus(v$.hei_name) }" class="label-text-alt">
                         HEI Name is Required</span>
-                </label>
+                </label> -->
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Username</span>
                 </label>
                 <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
                         Username is Required</span>
-                </label>
+                </label> -->
             </div>
 
             <div class="form-control w-full">
@@ -36,10 +36,10 @@
                     <span class="label-text">Email</span>
                 </label>
                 <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
                         Email is Required</span>
-                </label>
+                </label> -->
             </div>
 
             <div class="form-control w-full">
@@ -47,20 +47,20 @@
                     <span class="label-text">Address</span>
                 </label>
                 <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.address) }" class="input input-bordered w-full" v-model="v$.address.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
                         Address is Required</span>
-                </label>
+                </label> -->
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.number) }" class="input input-bordered w-full" v-model="v$.number.$model" />
-                <label class="label">
+                <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.number) }" v-if="validationStatus(v$.number)">
                         Contact Number is Required</span>
-                </label>
+                </label> -->
             </div>
             <div class="flex flex-row justify-between">
                 <div class="form-control">
@@ -68,10 +68,10 @@
                         <span class="label-text">Institutional Code</span>
                     </label>
                     <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" style="width: 170px" v-model="v$.inst_code.$model" />
-                    <label class="label">
+                    <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
                             Institutional Code is Required</span>
-                    </label>
+                    </label> -->
                 </div>
 
                 <div class="form-control w-full pl-4">
@@ -120,15 +120,15 @@
         </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box text-left">
+    <div :class="{ 'modal-open ': validate() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold">ADD HEI ACCOUNT</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addHEI(), scrollToTop()">
                     Continue
                 </button>
             </div>

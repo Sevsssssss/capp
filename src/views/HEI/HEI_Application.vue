@@ -8,30 +8,12 @@
             <div class="">
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative mt-1">
-                    <div class="
-                absolute
-                inset-y-0
-                left-0
-                flex
-                items-center
-                pl-3
-                pointer-events-none
-              ">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
-                    <input v-model="search" type="text" id="search" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-lg
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-80
-                pl-10
-                p-2.5
-              " placeholder="Search for items" />
+                    <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
                 </div>
             </div>
             <div class="dropdown flex">
@@ -77,12 +59,12 @@
                         <div v-else-if="table.status === 'For Revision'" class="btn-sm1 p-2 font-normal revision rounded-md">
                             {{ table.status }}
                         </div>
-                        <!-- <div v-else-if="table.status === 'FOR EVALUATION'" class="btn-sm1 p-2 font-normal evaluation rounded-md">
+                        <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 p-2 font-normal evaluation rounded-md">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'FOR ISSUANCE'" class="btn-sm1 p-2 font-normal issuance rounded-md">
+                        <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 p-2 font-normal issuance rounded-md">
                             {{ table.status }}
-                        </div> -->
+                        </div>
                         <div v-else-if="table.status === 'Completed'" class="btn-sm1 p-2 font-normal completed rounded-md">
                             {{ table.status }}
                         </div>
@@ -99,7 +81,8 @@
                     dateApplied: table.dateApplied,
                   },
                 }">
-                            <a v-if="statusChecker(table.status)" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a v-if="statusChecker(table.status) && table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a v-if="statusChecker(table.status) && table.status != 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                     </td>
                 </tr>
@@ -128,29 +111,10 @@
                 <div class="btn-group">
                     <ul class="inline-flex -space-x-px">
                         <li>
-                            <a href="#" class="
-                    py-2
-                    px-3
-                    ml-0
-                    leading-tight
-                    text-gray-500
-                    bg-white
-                    rounded-l-lg
-                    border border-gray-300
-                    hover:bg-gray-100 hover:text-gray-700
-                  " @click="prevPage()">Previous</a>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
                         </li>
                         <li>
-                            <a href="#" class="
-                    py-2
-                    px-3
-                    leading-tight
-                    text-gray-500
-                    bg-white
-                    rounded-r-lg
-                    border border-gray-300
-                    hover:bg-gray-100 hover:text-gray-700
-                  " @click="nextPage()">Next</a>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -189,63 +153,7 @@ export default {
                     title: "STATUS",
                 },
             ],
-            tables: [
-                //{
-                //         id: 1,
-                //         HeiName: "Bicol University",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         rep: "San Goku",
-                //         email: "aadnu@adnu.edu.ph",
-                //         program: "BSIT",
-                //         dateApplied: "June 1, 2015",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 2,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Ateneo De Naga University",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 2, 2015",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 3,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Universidad de Sta. Isabel",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 3, 2015",
-                //         status: "FOR APPROVAL",
-                //     },
-                //     {
-                //         id: 4,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "Aquinas University of Legazpi",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 4, 2015",
-                //         status: "FOR REVISION",
-                //     },
-                //     {
-                //         id: 5,
-                //         rep: "Aiden Gibbs",
-                //         email: "aadnu@adnu.edu.ph",
-                //         HeiName: "La Consolacion College",
-                //         address: "Naga City",
-                //         type: "Initial Offering",
-                //         program: "BSIT",
-                //         dateApplied: "June 5, 2015",
-                //         status: "COMPLETED",
-                //     },
-            ],
+            tables: [],
         };
     },
     computed: {
@@ -272,109 +180,186 @@ export default {
                 return true;
             }
         },
-        data() {
-            return {
-                currentpage: 0,
-                numPerPage: 10,
-                sort_type: "All",
-                search: "",
-                headers: [{
-                        title: "DATE APPLIED",
-                    },
-                    {
-                        title: "REPRESENTATIVE",
-                    },
-                    {
-                        title: "TYPE",
-                    },
-                    {
-                        title: "STATUS",
-                    },
-                ],
-                tables: [
-                    //{
-                    //         id: 1,
-                    //         HeiName: "Bicol University",
-                    //         address: "Naga City",
-                    //         type: "Initial Offering",
-                    //         rep: "San Goku",
-                    //         email: "aadnu@adnu.edu.ph",
-                    //         program: "BSIT",
-                    //         dateApplied: "June 1, 2015",
-                    //         status: "FOR APPROVAL",
-                    //     },
-                    //     {
-                    //         id: 2,
-                    //         rep: "Aiden Gibbs",
-                    //         email: "aadnu@adnu.edu.ph",
-                    //         HeiName: "Ateneo De Naga University",
-                    //         address: "Naga City",
-                    //         type: "Initial Offering",
-                    //         program: "BSIT",
-                    //         dateApplied: "June 2, 2015",
-                    //         status: "FOR APPROVAL",
-                    //     },
-                    //     {
-                    //         id: 3,
-                    //         rep: "Aiden Gibbs",
-                    //         email: "aadnu@adnu.edu.ph",
-                    //         HeiName: "Universidad de Sta. Isabel",
-                    //         address: "Naga City",
-                    //         type: "Initial Offering",
-                    //         program: "BSIT",
-                    //         dateApplied: "June 3, 2015",
-                    //         status: "FOR APPROVAL",
-                    //     },
-                    //     {
-                    //         id: 4,
-                    //         rep: "Aiden Gibbs",
-                    //         email: "aadnu@adnu.edu.ph",
-                    //         HeiName: "Aquinas University of Legazpi",
-                    //         address: "Naga City",
-                    //         type: "Initial Offering",
-                    //         program: "BSIT",
-                    //         dateApplied: "June 4, 2015",
-                    //         status: "FOR REVISION",
-                    //     },
-                    //     {
-                    //         id: 5,
-                    //         rep: "Aiden Gibbs",
-                    //         email: "aadnu@adnu.edu.ph",
-                    //         HeiName: "La Consolacion College",
-                    //         address: "Naga City",
-                    //         type: "Initial Offering",
-                    //         program: "BSIT",
-                    //         dateApplied: "June 5, 2015",
-                    //         status: "COMPLETED",
-                    //     },
-                ],
-            };
+        newEntCount() {
+            this.totalEntries = this.tables.filter((p) => {
+                return p.rep.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            }).length;
         },
-        methods: {
-            statusChecker(status) {
-                if (
-                    status != "COMPLETED" &&
-                    status != "FOR EVALUATION" &&
-                    status != "FOR ISSUANCE"
-                ) {
-                    return true;
+        prevPage() {
+            if (this.currentpage > 0) this.currentpage -= 1;
+        },
+        nextPage() {
+            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+                this.currentpage += 1;
+            }
+        },
+        async filterApplications() {
+            var i = 0;
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var month;
+            var day;
+            var year;
+
+            if (this.sort_type == "All") {
+                var storedApplicationsAll = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("createdBy", Parse.User.current().id);
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsAll.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                    });
                 }
-            },
-            newEntCount() {
-                this.totalEntries = this.tables.filter((p) => {
-                    return p.rep.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-                }).length;
-            },
-            prevPage() {
-                if (this.currentpage > 0) this.currentpage -= 1;
-            },
-            nextPage() {
-                if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
-                    this.currentpage += 1;
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsAll;
+            } else if (this.sort_type == "For Approval") {
+                var storedApplicationsFA = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Approval");
+                query.equalTo("createdBy", Parse.User.current().id);
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsFA.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                    });
                 }
-            },
-            async filterApplications() {
-                var i = 0;
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsFA;
+            } else if (this.sort_type == "For Revision") {
+                var storedApplicationsFR = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Revision");
+                query.equalTo("createdBy", Parse.User.current().id);
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsFR.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                    });
+                }
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsFR;
+            } else if (this.sort_type == "Completed") {
+                var storedApplicationsC = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "Completed");
+                query.equalTo("createdBy", Parse.User.current().id);
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsC.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                    });
+                }
+                this.totalEntries = querResult.length;
+                this.tables = storedApplicationsC;
+            }
+        },
+    },
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("name", Parse.User.current().get("access_type"));
+
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var y = 0; y < accType.length; y++) {
+            if (accType[y] === this.$route.path) {
+                flag = 1;
+            }
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            var storedApplications = [];
+            const applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(applications);
+            query.equalTo("createdBy", Parse.User.current().id);
+            const querResult = await query.find();
+
+            for (var i = 0; i < querResult.length; i++) {
+                const application = querResult[i];
+
                 var months = [
                     "January",
                     "February",
@@ -389,189 +374,34 @@ export default {
                     "November",
                     "December",
                 ];
-                var month;
-                var day;
-                var year;
+                var month = application.createdAt.getMonth();
+                var day = application.createdAt.getDate();
+                var year = application.createdAt.getFullYear();
 
-                if (this.sort_type == "All") {
-                    var storedApplicationsAll = [];
-                    const applications = Parse.Object.extend("Applications");
+                const applicationTypes = Parse.Object.extend("ApplicationTypes");
+                const appTypeQuery = new Parse.Query(applicationTypes);
+                appTypeQuery.equalTo(
+                    "objectId",
+                    application.get("applicationType")
+                );
 
-                    const query = new Parse.Query(applications);
-                    query.equalTo("createdBy", Parse.User.current().id);
+                const applicationType = await appTypeQuery.first();
 
-                    const querResult = await query.find();
-
-                    for (i = 0; i < querResult.length; i++) {
-                        const application = querResult[i];
-
-                        month = application.createdAt.getMonth();
-                        day = application.createdAt.getDate();
-                        year = application.createdAt.getFullYear();
-                        storedApplicationsAll.push({
-                            id: i + 1,
-                            rep: application.get("pointPerson"),
-                            email: application.get("email"),
-                            phoneNumber: application.get("phoneNumber"),
-                            type: application.get("applicationType"),
-                            requirements: application.get("requirements"),
-                            dateApplied: months[month] + " " + day + ", " + year,
-                            status: application.get("applicationStatus"),
-                        });
-                    }
-                    this.totalEntries = querResult.length;
-                    this.tables = storedApplicationsAll;
-                } else if (this.sort_type == "For Approval") {
-                    var storedApplicationsFA = [];
-                    const applications = Parse.Object.extend("Applications");
-
-                    const query = new Parse.Query(applications);
-                    query.equalTo("applicationStatus", "For Approval");
-                    query.equalTo("createdBy", Parse.User.current().id);
-
-                    const querResult = await query.find();
-
-                    for (i = 0; i < querResult.length; i++) {
-                        const application = querResult[i];
-
-                        month = application.createdAt.getMonth();
-                        day = application.createdAt.getDate();
-                        year = application.createdAt.getFullYear();
-                        storedApplicationsFA.push({
-                            id: i + 1,
-                            rep: application.get("pointPerson"),
-                            email: application.get("email"),
-                            phoneNumber: application.get("phoneNumber"),
-                            type: application.get("applicationType"),
-                            requirements: application.get("requirements"),
-                            dateApplied: months[month] + " " + day + ", " + year,
-                            status: application.get("applicationStatus"),
-                        });
-                    }
-                    this.totalEntries = querResult.length;
-                    this.tables = storedApplicationsFA;
-                } else if (this.sort_type == "For Revision") {
-                    var storedApplicationsFR = [];
-                    const applications = Parse.Object.extend("Applications");
-
-                    const query = new Parse.Query(applications);
-                    query.equalTo("applicationStatus", "For Revision");
-                    query.equalTo("createdBy", Parse.User.current().id);
-
-                    const querResult = await query.find();
-
-                    for (i = 0; i < querResult.length; i++) {
-                        const application = querResult[i];
-
-                        month = application.createdAt.getMonth();
-                        day = application.createdAt.getDate();
-                        year = application.createdAt.getFullYear();
-                        storedApplicationsFR.push({
-                            id: i + 1,
-                            rep: application.get("pointPerson"),
-                            email: application.get("email"),
-                            phoneNumber: application.get("phoneNumber"),
-                            type: application.get("applicationType"),
-                            requirements: application.get("requirements"),
-                            dateApplied: months[month] + " " + day + ", " + year,
-                            status: application.get("applicationStatus"),
-                        });
-                    }
-                    this.totalEntries = querResult.length;
-                    this.tables = storedApplicationsFR;
-                } else if (this.sort_type == "Completed") {
-                    var storedApplicationsC = [];
-                    const applications = Parse.Object.extend("Applications");
-
-                    const query = new Parse.Query(applications);
-                    query.equalTo("applicationStatus", "Completed");
-                    query.equalTo("createdBy", Parse.User.current().id);
-
-                    const querResult = await query.find();
-
-                    for (i = 0; i < querResult.length; i++) {
-                        const application = querResult[i];
-
-                        month = application.createdAt.getMonth();
-                        day = application.createdAt.getDate();
-                        year = application.createdAt.getFullYear();
-                        storedApplicationsC.push({
-                            id: i + 1,
-                            rep: application.get("pointPerson"),
-                            email: application.get("email"),
-                            phoneNumber: application.get("phoneNumber"),
-                            type: application.get("applicationType"),
-                            requirements: application.get("requirements"),
-                            dateApplied: months[month] + " " + day + ", " + year,
-                            status: application.get("applicationStatus"),
-                        });
-                    }
-                    this.totalEntries = querResult.length;
-                    this.tables = storedApplicationsC;
-                }
-            },
-        },
-        mounted: async function () {
-            // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-            const AccessTypes = Parse.Object.extend("AccessTypes");
-            const query = new Parse.Query(AccessTypes);
-            query.equalTo("name", Parse.User.current().get("access_type"));
-
-            const querResult = await query.find();
-            var accType = querResult[0].get("privileges");
-            var flag = 0;
-            for (var y = 0; y < accType.length; y++) {
-                if (accType[y] === this.$route.path) {
-                    flag = 1;
-                }
+                storedApplications.push({
+                    appID: application.id,
+                    id: i + 1,
+                    rep: application.get("pointPerson"),
+                    email: application.get("email"),
+                    phoneNumber: application.get("phoneNumber"),
+                    type: applicationType.get("applicationTypeName"),
+                    requirements: application.get("requirements"),
+                    dateApplied: months[month] + " " + day + ", " + year,
+                    status: application.get("applicationStatus"),
+                });
             }
-            if (flag === 0) {
-                this.$router.push("/403");
-            } else {
-                console.log("Hi!, You have permission to access this Page");
-                //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-                //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-                var storedApplications = [];
-                const applications = Parse.Object.extend("Applications");
-                const query = new Parse.Query(applications);
-                query.equalTo("createdBy", Parse.User.current().id);
-                const querResult = await query.find();
-
-                for (var i = 0; i < querResult.length; i++) {
-                    const application = querResult[i];
-
-                    var months = [
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December",
-                    ];
-                    var month = application.createdAt.getMonth();
-                    var day = application.createdAt.getDate();
-                    var year = application.createdAt.getFullYear();
-                    storedApplications.push({
-                        id: i + 1,
-                        rep: application.get("pointPerson"),
-                        email: application.get("email"),
-                        phoneNumber: application.get("phoneNumber"),
-                        type: application.get("applicationType"),
-                        requirements: application.get("requirements"),
-                        dateApplied: months[month] + " " + day + ", " + year,
-                        status: application.get("applicationStatus"),
-                    });
-                }
-                this.totalEntries = querResult.length;
-                this.tables = storedApplications;
-            }
-        },
+            this.totalEntries = querResult.length;
+            this.tables = storedApplications;
+        }
     },
 };
 </script>
