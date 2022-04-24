@@ -4,6 +4,26 @@
 </div> -->
 <div>
     <div class="p-3">
+        <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
+            <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
+                <div class="flex flex-col justify-between text-left">
+                    <div class="flex flex-row">
+                        <div :class="'homeIcon ' + data.color" class="mr-3">
+                            <svg class="icon" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z" />
+                            </svg>
+                        </div>
+                        <div class="text-sm font-semibold" style="color: #8fa0b9">
+                            {{ data.title }}
+                        </div>
+                    </div>
+                    <div class="text-2xl text-right font-semibold text-grey-300">
+                        {{ data.num }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Table -->
         <div class="overflow-x-auto shadow-lg rounded-lg m-2">
             <!-- Table header -->
@@ -108,31 +128,30 @@
         <input type="checkbox" id="createAccessType" class="modal-toggle" />
         <label for="createAccessType" class="modal cursor-pointer">
             <div class="modal-box relative  w-11/12 max-w-5xl rounded-md text-left">
-
                 <div class="font-semibold text-md">ADD ACCESS TYPES</div>
                 <p class="py-2 text-sm">Input the name and choose its priviliges</p>
                 <form v-on:submit.prevent="submit">
                     <div class="mb-6">
+                        <label for="base-input" class="block pb-2 text-sm font-medium text-gray-900">Access Type:</label>
+                        <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
                         <div class="font-medium text-sm mt-2">
-                            <div class="pb-2">Choose Account Type:</div>
+                            <div class="pb-2">Choose Home Type:</div>
                             <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
                                 <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
-                                    CHED Account
+                                    CHED Home
                                 </div>
                                 <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/HEIhome" class="radio mr-1" v-model="homeType" />
-                                    HEI Account
+                                    HEI Home
                                 </div>
                                 <div class="label-text viewSubCatbool" style="align-self: center">
                                     <input type="radio" id="homeType" value="/assignments" class="radio mr-1" v-model="homeType" />
-                                    RQAT Account
+                                    RQAT Home
                                 </div>
                             </label>
                         </div>
                         <div v-if="homeType == '/home'" class="font-medium text-sm mt-2">
-                            <label for="base-input" class="block pb-2 text-sm font-medium text-gray-900">Access Type:</label>
-                            <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-6" placeholder="Enter Name" v-model="v$.atname.$model" />
                             <div class="pb-2">CHED Privileges:</div>
                             <div class="grid xxl:grid-cols-3 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left">
                                 <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
@@ -259,7 +278,7 @@
                             </div>
                         </div>
 
-                        <!-- <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
+                        <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
                             <div class="pb-2">HEI Privileges:</div>
                             <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
@@ -299,7 +318,7 @@
                                     </div>
                                 </label>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </form>
                 <div class="modal-action">
@@ -329,27 +348,26 @@
                 <p class="py-2 text-sm">Input the name and choose its priviliges</p>
                 <form v-on:submit.prevent="submit">
                     <div class="mb-6">
-
+                        <label for="base-input" class="block pb-2 text-sm font-medium text-gray-900">Access Type:</label>
+                        <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.atname.$model" />
                         <div class="font-medium text-sm mt-2">
-                            <div class="pb-2">Choose Account Type:</div>
+                            <div class="pb-2">Choose Home Type:</div>
                             <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
                                 <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
-                                    CHED Account
+                                    CHED Home
                                 </div>
-                                <!-- <div class="label-text viewSubCatbool pr-3" style="align-self: center">
+                                <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/HEIhome" class="radio mr-1" v-model="homeType" />
-                                    HEI Account
+                                    HEI Home
                                 </div>
                                 <div class="label-text viewSubCatbool" style="align-self: center">
                                     <input type="radio" id="homeType" value="/assignments" class="radio mr-1" v-model="homeType" />
-                                    RQAT Account
-                                </div> -->
+                                    RQAT Home
+                                </div>
                             </label>
                         </div>
                         <div v-if="homeType == '/home'" class="font-medium text-sm mt-2">
-                            <label for="base-input" class="block pb-2 text-sm font-medium text-gray-900">Access Type:</label>
-                            <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-6" placeholder="Enter Name" v-model="v$.atname.$model" />
                             <div class="pb-2">CHED Privileges:</div>
                             <div class="grid xxl:grid-cols-3 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left">
                                 <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
@@ -476,7 +494,7 @@
                             </div>
                         </div>
 
-                        <!-- <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
+                        <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
                             <div class="pb-2">HEI Privileges:</div>
                             <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
@@ -516,7 +534,7 @@
                                     </div>
                                 </label>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </form>
                 <div class="modal-action">
@@ -579,7 +597,6 @@ export default {
             },
         };
     },
-
     computed: {
         searchAccessType() {
             return this.tables
@@ -603,17 +620,9 @@ export default {
         validate() {
             return this.showModal1;
         },
-        heiPriv() {
-            // this.checkedAccessTypes.push({
-
-            // })
-        },
-        rqatPriv() {
-
-        },
         modal() {
             var has_error = 0;
-            if (this.atname == "" && this.homeType == "/home") {
+            if (this.atname == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -630,28 +639,12 @@ export default {
             this.$refs.Spinner.show();
             const accessType = Parse.Object.extend("AccessTypes");
             const newAccessType = new accessType();
-
             try {
-                if (this.homeType == "/home") {
-                    newAccessType.save({
-                        name: this.atname.toUpperCase(),
-                        hometype: this.homeType,
-                        privileges: this.checkedAccessTypes,
-                    });
-                } else if (this.homeType == "/HEIhome") {
-                    newAccessType.save({
-                        name: "HEI",
-                        hometype: this.homeType,
-                        privileges: ["/HEIapply", "/HEIapplication", "/HEIapplication/:id", "/account"],
-                    });
-
-                } else if (this.homeType == "/assignments") {
-                    newAccessType.save({
-                        name: "RQAT",
-                        hometype: this.homeType,
-                        privileges: ["/evaluate", "/history", "/account"],
-                    });
-                }
+                newAccessType.save({
+                    name: this.atname.toUpperCase(),
+                    hometype: this.homeType,
+                    privileges: this.checkedAccessTypes,
+                });
                 toast("Access Type Added", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,

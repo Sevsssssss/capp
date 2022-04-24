@@ -200,6 +200,7 @@
 
 <script>
 import Parse from "parse";
+import DropZoneVue from '../CHED/Hei/DropZone.vue';
 export default {
     props: ["id"],
     name: "rqatEvaluate",
@@ -369,33 +370,33 @@ export default {
         }
         this.categories = categories;
 
-        for (var i = 0; i < this.categories.length; i++) {
+        for (var z = 0; z < this.categories.length; z++) {
             //console.log(i)
             // console.log(this.categories[i].Category);
             this.eval.push({
-                id: this.categories[i].id,
-                Requirement: this.categories[i].Category,
+                id: this.categories[z].id,
+                Requirement: this.categories[DropZoneVue].Category,
                 type: "Category",
             });
             //this.catCounter++;
             //this.subcatCounter = this.categories[i].subcategory.length;
-            for (var x = 0; x < this.categories[i].subcategory.length; x++) {
+            for (var x = 0; x < this.categories[z].subcategory.length; x++) {
                 // console.log(this.categories[i].subcategory[x].Subcategory);
                 this.eval.push({
-                    id: this.categories[i].subcategory[x].id,
-                    Requirement: this.categories[i].subcategory[x].Subcategory,
+                    id: this.categories[z].subcategory[x].id,
+                    Requirement: this.categories[z].subcategory[x].Subcategory,
                     type: "SubCategory",
                 });
                 //var itemLen = this.categories[i].subcategory[x].items.length;
                 //this.subcatCounter++;
                 //this.itemCounter =this.categories[i].subcategory[x].items.length;
                 for (
-                    var y = 0; y < this.categories[i].subcategory[x].items.length; y++
+                    var y = 0; y < this.categories[z].subcategory[x].items.length; y++
                 ) {
                     //console.log(this.categories[i].subcategory[x].items[y].Item);
                     this.eval.push({
-                        id: this.categories[i].subcategory[x].items[y].id,
-                        Requirement: this.categories[i].subcategory[x].items[y].Item,
+                        id: this.categories[z].subcategory[x].items[y].id,
+                        Requirement: this.categories[z].subcategory[x].items[y].Item,
                         type: "Item",
                     });
                     //this.itemCounter++;
