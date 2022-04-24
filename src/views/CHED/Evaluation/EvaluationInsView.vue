@@ -196,10 +196,19 @@ export default {
 
             for (var i = 0; i < evalInsResult.length; i++) {
                 const evalInst = evalInsResult[i];
-                console.log(evalInst)
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", evalInst.get("evaluationFormProgram"));
+
+                const program = await programQuery.first();
+
+                console.log("test" + program.id)
+
                 storedEvalInstruments.push({
                     id: evalInst.id,
-                    programName: evalInst.get("evaluationFormProgram"),
+                    programName: program.get("programName"),
                     description: evalInst.get("evaluationFormName"),
                 });
             }

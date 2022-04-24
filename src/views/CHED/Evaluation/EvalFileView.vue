@@ -168,7 +168,15 @@ export default {
 
                 }
                 this.Name = evalInstrument.get("evaluationFormName");
-                this.Program = evalInstrument.get("evaluationFormProgram");
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", evalInstrument.get("evaluationFormProgram"));
+
+                const program = await programQuery.first();
+
+                this.Program = program.get("programName");
                 this.cmoNo = evalInstrument.get("evaluationFormCMOno");
                 this.seriesYear = evalInstrument.get("evaluationFormSeries");
                 categories.push({
