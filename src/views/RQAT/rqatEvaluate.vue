@@ -27,10 +27,10 @@
                 <span class="">Date of Evalution</span>
             </div>
             <div class="flex flex-col items-start">
-                <p class="">Ateneo De Naga University</p>
-                <p class="">Naga City</p>
-                <p class="">BSIT</p>
-                <p class="">March 12, 2050</p>
+                <p class="">{{instName}}</p>
+                <p class="">{{address}}</p>
+                <p class="">{{program}}</p>
+                <p class="">{{dateApplied}}</p>
             </div>
         </div>
     </div>
@@ -200,6 +200,7 @@
 
 <script>
 import Parse from "parse";
+import DropZoneVue from '../CHED/Hei/DropZone.vue';
 export default {
     props: ["id"],
     name: "rqatEvaluate",
@@ -234,6 +235,7 @@ export default {
             Program:"",
             cmoNo: "",
             seriesYear: "",
+            dateApplied: "",
 
             instName: "",
             address: "",
@@ -309,28 +311,63 @@ export default {
             useMasterKey: true,
         });
 
+        var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+        var month = application.createdAt.getMonth();
+        var day = application.createdAt.getDate();
+        var year = application.createdAt.getFullYear();
 
-        // const Users = Parse.Object.extend("User");
-        // const userQuery = new Parse.Query(Users);
-        // userQuery.equalTo("objectId", application.get("createdBy"));
-        // const user = await appQuery.first({
-        //     useMasterKey: true,
-        // });
-
-        //  this.instName = user.get("hei_name")
-        //  this.address = user.get("address")
+        this.dateApplied = months[month] + " " + day + ", " + year;
 
 
+        const Users = Parse.Object.extend("User");
+        const userQuery = new Parse.Query(Users);
+        userQuery.equalTo("objectId", application.get("createdBy"));
+        const user = await userQuery.first({
+            useMasterKey: true,
+        });
+
+         this.instName = user.get("hei_name")
+         this.address = user.get("address")
+
+        console.log("Hello" + user.get("hei_name"));
 
 
         
-
+        //Query Evaluation Instrument
         const evalInstruments = Parse.Object.extend("EvaluationForms");
         const evalQuery = new Parse.Query(evalInstruments);
         evalQuery.equalTo("evaluationFormProgram", application.get("program"));
         const evalInstrument = await evalQuery.first({
             useMasterKey: true,
         });
+
+        this.Name = evalInstrument.get("evaluationFormName");
+        this.cmoNo = evalInstrument.get("evaluationFormCMOno");
+        this.seriesYear = evalInstrument.get("evaluationFormSeries");
+
+        //Query the program of the application
+        const programs = Parse.Object.extend("Programs");
+        const programQuery = new Parse.Query(programs);
+        programQuery.equalTo("objectId", application.get("program"));
+
+        const program = await programQuery.first();
+
+        this.program = program.get("programName");
+
+
 
         var categories = [];
 
@@ -356,10 +393,6 @@ export default {
                     items: items,
                 })
             }
-            this.Name = evalInstrument.get("evaluationFormName");
-            this.Program = evalInstrument.get("evaluationFormProgram");
-            this.cmoNo = evalInstrument.get("evaluationFormCMOno");
-            this.seriesYear = evalInstrument.get("evaluationFormSeries");
             categories.push({
                 id: evalInstrument.get("evaluationFormReqs")[i].id,
                 Category: evalInstrument.get("evaluationFormReqs")[i].Category,
@@ -369,33 +402,33 @@ export default {
         }
         this.categories = categories;
 
-        for (var q = 0; q < this.categories.length; q++) {
+        for (var z = 0; z < this.categories.length; z++) {
             //console.log(i)
             // console.log(this.categories[i].Category);
             this.eval.push({
-                id: this.categories[q].id,
-                Requirement: this.categories[q].Category,
+                id: this.categories[z].id,
+                Requirement: this.categories[DropZoneVue].Category,
                 type: "Category",
             });
             //this.catCounter++;
             //this.subcatCounter = this.categories[i].subcategory.length;
-            for (var x = 0; x < this.categories[q].subcategory.length; x++) {
+            for (var x = 0; x < this.categories[z].subcategory.length; x++) {
                 // console.log(this.categories[i].subcategory[x].Subcategory);
                 this.eval.push({
-                    id: this.categories[q].subcategory[x].id,
-                    Requirement: this.categories[q].subcategory[x].Subcategory,
+                    id: this.categories[z].subcategory[x].id,
+                    Requirement: this.categories[z].subcategory[x].Subcategory,
                     type: "SubCategory",
                 });
                 //var itemLen = this.categories[i].subcategory[x].items.length;
                 //this.subcatCounter++;
                 //this.itemCounter =this.categories[i].subcategory[x].items.length;
                 for (
-                    var y = 0; y < this.categories[q].subcategory[x].items.length; y++
+                    var y = 0; y < this.categories[z].subcategory[x].items.length; y++
                 ) {
                     //console.log(this.categories[i].subcategory[x].items[y].Item);
                     this.eval.push({
-                        id: this.categories[q].subcategory[x].items[y].id,
-                        Requirement: this.categories[q].subcategory[x].items[y].Item,
+                        id: this.categories[z].subcategory[x].items[y].id,
+                        Requirement: this.categories[z].subcategory[x].items[y].Item,
                         type: "Item",
                     });
                     //this.itemCounter++;

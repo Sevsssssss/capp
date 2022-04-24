@@ -70,7 +70,7 @@
                         <td class="px-6 py-4">
                             {{ table.dateApplied }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 relative">
                             <!-- :class="'homeIcon.' + data.color" -->
                             <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval">
                                 {{ table.status }}
@@ -78,8 +78,9 @@
                             <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 rounded-md p-2 font-normal evaluation">
-                                {{ table.status }}
+                            <div v-else-if="table.status === 'For Evaluation'" class=" btn-sm1 rounded-md p-2 font-normal evaluation">
+                                {{ table.status }} 
+                                <!-- <div class="absolute top-1 right-5 badge badge-accent">assigned</div> -->
                             </div>
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
