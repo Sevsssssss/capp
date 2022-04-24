@@ -275,9 +275,16 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const applications = Parse.Object.extend("Applications");
+            const appQuery = new Parse.Query(applications);
+            appQuery.equalTo("objectId", this.id);
+            const application = await appQuery.first({
+                useMasterKey: true,
+            });
+
             const evalInstruments = Parse.Object.extend("EvaluationForms");
             const evalQuery = new Parse.Query(evalInstruments);
-            evalQuery.equalTo("objectId", this.id);
+            evalQuery.equalTo("evaluationFormProgram", application.get("program"));
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
