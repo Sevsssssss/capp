@@ -262,24 +262,25 @@ export default {
         },
     },
     mounted: async function () {
-        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-        // const AccessTypes = Parse.Object.extend("AccessTypes");
-        // const query = new Parse.Query(AccessTypes);
-        // query.equalTo("name", Parse.User.current().get("access_type"));
+        //THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("name", Parse.User.current().get("access_type"));
 
-        // const querResult = await query.find();
-        // var accType = querResult[0].get("privileges");
-        // var flag = 0;
-        // for (var y = 0; y < accType.length; y++) {
-        //     console.log(accType[y])
-        //     if (accType[y] === "/evaluationins") {
-        //         flag = 1;
-        //     }
-        // }
-        // if (flag === 0) {
-        //     console.log(this.$route.path)
-        //     this.$router.push("/403");
-        // } else {
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var y = 0; y < accType.length; y++) {
+            console.log(accType[y])
+            if (accType[y] === "/assignments") {
+                flag = 1;
+            }
+        }
+        if (flag === 0) {
+            console.log(this.$route.path)
+            console.log("heheh")
+            this.$router.push("/403");
+        } else {
         console.log("Hi!, You have permission to access this Page");
         //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
         //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
@@ -412,19 +413,19 @@ export default {
                 //this.subcatCounter++;
                 //this.itemCounter =this.categories[i].subcategory[x].items.length;
                 for (
-                    var y = 0; y < this.categories[z].subcategory[x].items.length; y++
+                    var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                 ) {
                     //console.log(this.categories[i].subcategory[x].items[y].Item);
                     this.eval.push({
-                        id: this.categories[z].subcategory[x].items[y].id,
-                        Requirement: this.categories[z].subcategory[x].items[y].Item,
+                        id: this.categories[z].subcategory[x].items[a].id,
+                        Requirement: this.categories[z].subcategory[x].items[a].Item,
                         type: "Item",
                     });
                     //this.itemCounter++;
                 }
             }
         }
-        //}
+        }
     },
 };
 </script>
