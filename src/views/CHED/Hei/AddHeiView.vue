@@ -1,6 +1,5 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    test{{hei_acc_id}}
     <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
