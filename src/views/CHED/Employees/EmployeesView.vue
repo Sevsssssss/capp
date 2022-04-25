@@ -385,7 +385,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -401,15 +401,35 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
+
+            const accQuerResult = await queryACC.first();
+
             var employees = [];
             const query = new Parse.Query(Parse.User);
-            query.notEqualTo("access_type", "HEI");
+            query.notEqualTo("access_type", accQuerResult.id);
             query.notEqualTo("designation", null);
             const querResult = await query.find({
                 useMasterKey: true,
             });
             for (var i = 0; i < querResult.length; i++) {
                 const emp = querResult[i];
+
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("objectId", emp.get("access_type"));
+
+                const accQuerResult = await queryACC.first();
+
+                const Designation = Parse.Object.extend("Designations");
+                const queryDes = new Parse.Query(Designation);
+                queryDes.equalTo("objectId", emp.get("designation"));
+
+                const desigResult = await queryDes.first();
+
                 employees.push({
                     id: emp.id,
                     Name: emp.get("name")["lastname"] +
@@ -421,8 +441,8 @@ export default {
                     Email: emp.get("email"),
                     ContactNo: emp.get("contact_num"),
                     Username: emp.get("username"),
-                    Designation: emp.get("designation"),
-                    AccessType: emp.get("access_type"),
+                    Designation: desigResult.get("name"),
+                    AccessType: accQuerResult.get("name"),
                 });
             }
             this.totalEntries = querResult.length;

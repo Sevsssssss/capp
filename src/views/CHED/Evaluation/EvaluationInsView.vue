@@ -129,10 +129,7 @@ export default {
                 },
             ],
 
-            tables: [{
-                programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-            }, ],
+            tables: [],
         };
     },
     components: {
@@ -173,7 +170,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -196,10 +193,19 @@ export default {
 
             for (var i = 0; i < evalInsResult.length; i++) {
                 const evalInst = evalInsResult[i];
-                console.log(evalInst)
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", evalInst.get("evaluationFormProgram"));
+
+                const program = await programQuery.first();
+
+                // console.log("test" + program.id)
+
                 storedEvalInstruments.push({
                     id: evalInst.id,
-                    programName: evalInst.get("evaluationFormProgram"),
+                    programName: program.get("programName"),
                     description: evalInst.get("evaluationFormName"),
                 });
             }

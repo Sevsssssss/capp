@@ -83,7 +83,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
             </div>
         </div>
     </div>
@@ -243,7 +243,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");

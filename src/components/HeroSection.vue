@@ -153,12 +153,16 @@ export default {
         },
         async Login() {
             Parse.User.logIn(this.username, this.password)
-                .then((user) => {
+                .then(async (user) => {
+                    const AccessTypes = Parse.Object.extend("AccessTypes");
+                    const query = new Parse.Query(AccessTypes);
+                    query.equalTo("objectId", user.get("access_type")); 
+                    const querResult = await query.first();
                     if (
-                        user.get("access_type") === "SUPER ADMIN" ||
-                        user.get("access_type") === "ADMIN" ||
-                        user.get("access_type") === "EDUCATION SUPERVISOR" ||
-                        user.get("access_type") === "REPORTS"
+                        querResult.get("name") === "SUPER ADMIN" ||
+                        querResult.get("name") === "ADMIN" ||
+                        querResult.get("name") === "EDUCATION SUPERVISOR" ||
+                        querResult.get("name") === "REPORTS"
                     ) {
                         this.$router
 
@@ -168,7 +172,7 @@ export default {
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
                             });
-                    } else if (user.get("access_type") === "HEI") {
+                    } else if (querResult.get("name") === "HEI") {
                         this.$router
                             .push({
                                 path: "/HEIhome",
@@ -176,7 +180,7 @@ export default {
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
                             });
-                    } else if (user.get("access_type") === "RQAT") {
+                    } else if (querResult.get("name") === "RQAT") {
                         this.$router
 
                             .push({
@@ -203,14 +207,20 @@ export default {
                 });
 
         },
-        toggleModal() {
+        async toggleModal() {
             if (Parse.User.current() !== null) {
                 const user = Parse.User.current();
+
+                const AccessTypes = Parse.Object.extend("AccessTypes");
+                const query = new Parse.Query(AccessTypes);
+                query.equalTo("objectId", user.get("access_type")); 
+                const querResult = await query.first();
+                
                 if (
-                    user.get("access_type") === "SUPER ADMIN" ||
-                    user.get("access_type") === "ADMIN" ||
-                    user.get("access_type") === "EDUCATION SUPERVISOR" ||
-                    user.get("access_type") === "REPORTS"
+                    querResult.get("name") === "SUPER ADMIN" ||
+                    querResult.get("name") === "ADMIN" ||
+                    querResult.get("name") === "EDUCATION SUPERVISOR" ||
+                    querResult.get("name") === "REPORTS"
                 ) {
                     this.$router
                         .push({
@@ -219,7 +229,7 @@ export default {
                         .catch((err) => {
                             throw new Error(`Problem handling something: ${err}.`);
                         });
-                } else if (user.get("access_type") === "HEI") {
+                } else if (querResult.get("name") === "HEI") {
                     this.$router
                         .push({
                             path: "/HEIhome",
@@ -227,7 +237,7 @@ export default {
                         .catch((err) => {
                             throw new Error(`Problem handling something: ${err}.`);
                         });
-                } else if (user.get("access_type") === "RQAT") {
+                } else if (querResult.get("name") === "RQAT") {
                     this.$router
 
                         .push({

@@ -1,6 +1,6 @@
 <template>
 <div class="mx-3">
-    <div class="py-4 px-1 flex justify-between">
+    <div class="py-4 px-1 flex">
         <div class="flex justify-start space-x-4">
             <div class="font-normal text-sm">
                 Point Person: <span class="font-semibold">{{ rep }}</span>
@@ -9,12 +9,7 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div>
-            <div class="font-normal text-sm">
-                Evalutaion Instrument:
-                <a href="#" target="_blank" class="text-blue-400"> Click here </a>
-            </div>
-        </div>
+       
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
@@ -43,54 +38,16 @@
                 <div>Dismiss</div>
             </button>
         </div>
-        <div v-if="supervisorChecker()" class="pr-5">
-            <div class="btn border text-white bg-brand-red hover:bg-brand-red/60">
-                Request Re-Assign
-            </div>
-        </div>
-        <div>
-            <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                Assign RQAT</label>
-        </div>
-    </div>
-    <input type="checkbox" id="for-evaluation" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
-
-            <!-- Filter -->
-            <div class="flex flex-row py-6 justify-start items-start">
-                <!-- sort -->
-                <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedRQAT">
-                        <option v-for="rqat in Rqat" :key="rqat" :value="rqat.id">
-                            {{ rqat.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-action">
-                <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="this.selectedRQAT != 'Select RQAT Member' ? assignRQAT() : showToastSupervisor()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
-            </div>
-        </div>
     </div>
 </div>
 </template>
 
 <script>
-import {
-    useToast,
-    TYPE,
-    POSITION
-} from "vue-toastification";
 import Parse from "parse";
-
-const toast = useToast();
 
 export default {
     props: ["appID"],
-    name: "ForEvaluation",
+    name: "ForEvalAssigned",
     data() {
         return {
             // id: this.$route.params.id,
@@ -121,52 +78,6 @@ export default {
         },
     },
     methods: {
-        supervisorChecker() {
-            return this.supervisor;
-        },
-        async assignRQAT() {
-            try {
-                const applications = Parse.Object.extend("Applications");
-                const query = new Parse.Query(applications);
-                query.equalTo("objectId", this.appID);
-
-                const application = await query.first();
-
-                application.set("selectedRQAT", this.selectedRQAT);
-
-                application.save().then((application) => {
-                    toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
-                            type: TYPE.INFO,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
-                            hideProgressBar: false,
-                            closeButton: false,
-
-                        }),
-                        console.log("Object Updated: " + application.id);
-                });
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
-                    })
-                }, 2000);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-
-            } catch (error) {
-                alert(error.message)
-            }
-
-        },
-        showToastSupervisor() {
-            toast("Please select the required supervisor", {
-                type: TYPE.ERROR,
-                timeout: 3000,
-                hideProgressBar: true,
-                position: POSITION.TOP_RIGHT,
-            });
-        }
     },
 
     mounted: async function () {
@@ -206,14 +117,8 @@ export default {
         this.tables = storedApplications;
 
         //Query RQAT
-        const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
-        const queryACCR = new Parse.Query(AccessTypeRQAT);
-        queryACCR.equalTo("name", "RQAT");
-
-        const accQuerResultRQAT = await queryACCR.first();
-
         const user = new Parse.Query(Parse.User);
-        user.equalTo("access_type", accQuerResultRQAT.id);
+        user.equalTo("access_type", "RQAT");
         const rqatResult = await user.find();
 
         var dbRqat = [];

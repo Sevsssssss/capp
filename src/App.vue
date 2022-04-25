@@ -15,29 +15,8 @@ Parse.initialize(
     "master"
 );
 Parse.masterKey = "master"
-// RUN THIS CODE TO HAVE A TEMPORARY SUPER ADMIN ACCOUNT
-// const user = new Parse.User();
-// var employeeName = {
-//   lastname: "Ched",
-//   firstname: "Region V",
-//   middleinitial: "N/A",
-// };
-// user.set("name", employeeName);
-// user.set("contact_num", "09123456789");
-// user.set("username", "CHEDROV");
-// user.set("password", "password");
-// user.set("email", "chedrov@gmail.com");
-// user.set("access_type", "SUPER ADMIN");
-// user.set("designation", "SUPER ADMIN");
-// try {
-//   user.save();
-//   // Hooray! Let them use the app now.
-// } catch (error) {
-//   // Show the error message somewhere and let the user try again.
-//   alert("Error: " + error.code + " " + error.message);
-// }
 
-// RUN THIS CODE TO HAVE SUPER ADMIN ACCESS TYPE
+// RUN THIS CODE TO HAVE SUPER ADMIN ACCESS TYPE (Edited - Jeff)
 
 // const accessType = Parse.Object.extend("AccessTypes");
 // const newAccessType = new accessType();
@@ -65,18 +44,45 @@ Parse.masterKey = "master"
 //             "/employees/add",
 //             "/rqat",
 //             "/application:id",
-//             "/hei/add"
+//             "/hei/add",
+//             "/hei/edit",
+//             "/rqat/edit",
+//             "/employee/edit",
 //         ],
+//     }).then((accesstype) => {
+//         const Designations = Parse.Object.extend("Designations");
+//         const newDesignation = new Designations();
+
+//         newDesignation.save({
+//             name: "SUPER ADMIN",
+//         }).then((designation) => {
+//             const user = new Parse.User();
+//             var employeeName = {
+//             lastname: "Ched",
+//             firstname: "Region V",
+//             middleinitial: "N/A",
+//             };
+//             user.set("name", employeeName);
+//             user.set("contact_num", "09123456789");
+//             user.set("username", "CHEDROV");
+//             user.set("password", "password");
+//             user.set("email", "chedrov@gmail.com");
+//             user.set("access_type", accesstype.id);
+//             user.set("designation", designation.id);
+//             try {
+//             user.save();
+//             // Hooray! Let them use the app now.
+//             } catch (error) {
+//             // Show the error message somewhere and let the user try again.
+//             alert("Error: " + error.code + " " + error.message);
+//             }
+//         }, (error) => {
+//             console.log('error: ' + error.message)
+//         })
+        
+//     }, (error) => {
+//         console.log('error: ' + error.message);
 //     });
-//     if (
-//         confirm(
-//             "Application Type added. Would you like to add another Application Type?"
-//         )
-//     ) {
-//         document.location.reload();
-//     } else {
-//         document.location.reload();
-//     }
 // } catch (error) {
 //     alert("Error: " + error.code + " " + error.message);
 // }

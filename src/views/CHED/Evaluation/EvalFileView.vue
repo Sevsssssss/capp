@@ -118,7 +118,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -168,7 +168,15 @@ export default {
 
                 }
                 this.Name = evalInstrument.get("evaluationFormName");
-                this.Program = evalInstrument.get("evaluationFormProgram");
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", evalInstrument.get("evaluationFormProgram"));
+
+                const program = await programQuery.first();
+
+                this.Program = program.get("programName");
                 this.cmoNo = evalInstrument.get("evaluationFormCMOno");
                 this.seriesYear = evalInstrument.get("evaluationFormSeries");
                 categories.push({

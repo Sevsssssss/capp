@@ -38,6 +38,9 @@
         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
             <ForEvaluation :appID="appID" />
         </div>
+         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION ASSIGNED'">
+            <ForEvalAssigned :appID="appID" />
+        </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
             <ForIssuance></ForIssuance>
         </div>
@@ -53,6 +56,7 @@ import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
 import ForIssuance from "../../Application/ForIssuance.vue";
 import ForCompleted from "../../Application/ForCompletedView.vue";
+import ForEvalAssigned from "../../Application/ForEvalAssigned.vue";
 import Parse from "parse";
 
 export default {
@@ -64,6 +68,7 @@ export default {
         ForRevision,
         ForIssuance,
         ForCompleted,
+        ForEvalAssigned,
     },
     data() {
         return {
@@ -99,13 +104,15 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var i = 0; i < accType.length; i++) {
+            //console.log(accType[i])
             if (accType[i] === "/application") {
+                console.log(accType[i])
                 flag = 1;
             }
         }

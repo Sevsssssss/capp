@@ -128,7 +128,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addHEI(), scrollToTop()">
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">
                     Continue
                 </button>
             </div>
@@ -207,6 +207,8 @@ export default {
             inst_codeError: "",
             hei_typeError: "",
             password: "",
+            hei_acc_id: "",
+
         };
     },
     validations() {
@@ -291,6 +293,13 @@ export default {
         },
         async addHEI() {
             this.$refs.Spinner.show();
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
+
+            const accQuerResult = await queryACC.first();
+
+            this.hei_acc_id = accQuerResult.id;
             try {
                 this.password = "password";
                 const newHEI = new Parse.User();
@@ -302,7 +311,7 @@ export default {
                 newHEI.set("number", this.number);
                 newHEI.set("inst_code", this.inst_code);
                 newHEI.set("hei_type", this.hei_type);
-                newHEI.set("access_type", "HEI");
+                newHEI.set("access_type", this.hei_acc_id);
                 newHEI.set("hasTransactions", false);
                 await newHEI.save()
                     .then(() => {
@@ -343,7 +352,7 @@ export default {
             // }
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
-             if (
+            if (
                 this.hei_name == "" ||
                 this.username == "" ||
                 this.address == "" ||
@@ -362,60 +371,61 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
-    mounted: async function () {
-      // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-      const AccessTypes = Parse.Object.extend("AccessTypes");
-      const query = new Parse.Query(AccessTypes);
-      query.equalTo("name", Parse.User.current().get("access_type"));
+        mounted: async function () {
+            // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+            const AccessTypes = Parse.Object.extend("AccessTypes");
+            const query = new Parse.Query(AccessTypes);
+            query.equalTo("objectId", Parse.User.current().get("access_type"));
 
-      const querResult = await query.find();
-      var accType = querResult[0].get("privileges");
-      var flag = 0;
-      for (var i = 0; i < accType.length; i++) {
-        if (accType[i] === this.$route.path) {
-          flag = 1;
-        }
-      }
-      if (flag === 0) {
-        this.$router.push("/403");
-      } else {
-        console.log("Hi!, You have permission to access this Page");
-        //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-        //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-        
-      }
+            const querResult = await query.find();
+            var accType = querResult[0].get("privileges");
+            var flag = 0;
+            for (var i = 0; i < accType.length; i++) {
+                if (accType[i] === this.$route.path) {
+                    flag = 1;
+                }
+            }
+            if (flag === 0) {
+                this.$router.push("/403");
+            } else {
+                console.log("Hi!, You have permission to access this Page");
+                //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+                //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+
+            }
+        },
     },
-  },
 };
 </script>
 
 <style>
 .main-page {
-  align-items: center;
+    align-items: center;
 }
 
 .add-hei {
-  width: 783px;
+    width: 783px;
 }
 
 .line {
-  border-width: 1px;
+    border-width: 1px;
 }
 
 .btn-margin {
-  margin-left: 10px;
-  margin-right: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .text-error {
-  color: red;
+    color: red;
 }
 
 .backdrop {
-  top: 0;
-  position: fixed;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
+    top: 0;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
 }
 </style>

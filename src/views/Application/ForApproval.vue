@@ -126,10 +126,7 @@ export default {
             v$: useVuelidate(),
             comment: [],
             type: "",
-            supervisors: [{
-                id: 1,
-                name: "Maging Sino ka Man",
-            }, ],
+            supervisors: [],
             selectedSupervisor: "Select A Supervisor",
             el: document.body,
             headers: [{
@@ -360,8 +357,14 @@ export default {
         this.rep = application.get("pointPerson");
 
         //Query Supervisors
+        const Designations = Parse.Object.extend("Designations");
+        const queryDes = new Parse.Query(Designations);
+        queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+
+        const desigQueryResult = await queryDes.first();
+
         const user = new Parse.Query(Parse.User);
-        user.equalTo("designation", "EDUCATION SUPERVISOR");
+        user.equalTo("designation", desigQueryResult.id);
         const supervisorResult = await user.find();
 
         var dbSupervisors = [];

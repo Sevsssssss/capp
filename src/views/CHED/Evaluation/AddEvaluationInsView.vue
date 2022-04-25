@@ -7,9 +7,11 @@
                 <label class="label">
                     <span class="label-text">Program*</span>
                 </label>
-                
+
                 <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="programName">
-                    <option v-for="program in programs" :key="program" :value="program.name">{{program.name}}</option>
+                    <option v-for="program in programs" :key="program" :value="program.id">
+                        {{ program.name }}
+                    </option>
                 </select>
                 <!-- <input v-model="programName" type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" required /> -->
                 <!-- <input type="text" placeholder="Enter Program" class="input input-bordered w-full max-w-xs" v-model="v$.programName.$model" /> -->
@@ -126,11 +128,7 @@
                 <input v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="input input-bordered w-full mr-4 flex" />
                 <div class="flex flex-row justify-center items-center">
                     <!-- Delete Sub-Category -->
-                    <button data-tip="Remove Sub-Category" class="
-                      btn btn-outline
-                      tooltip tooltip-left
-                      hover:bg-brand-red/60
-                    " @click="removeSubCategory(subcategory.id)">
+                    <button data-tip="Remove Sub-Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeSubCategory(subcategory.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
@@ -142,24 +140,12 @@
         <div class="flex flex-row pt-5 justify-between">
             <div class="label">ITEMS:</div>
             <div>
-                <button data-tip="Add Item" @click="addItem(subcategory.items)" class="
-                    btn
-                    tooltip tooltip-left
-                    bg-brand-darkblue
-                    hover:bg-brand-blue
-                    border-none
-                    mr-2
-                  ">
+                <button data-tip="Add Item" @click="addItem(subcategory.items)" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-brand-blue border-none mr-2">
                     <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                     </svg>
                 </button>
-                <button data-tip="Remove Item" @click="pop(subcategory.items)" class="
-                    btn
-                    tooltip tooltip-left
-                    btn-outline
-                    hover:bg-brand-red/60
-                  ">
+                <button data-tip="Remove Item" @click="pop(subcategory.items)" class="btn tooltip tooltip-left btn-outline hover:bg-brand-red/60">
                     <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H5V11H19V13Z" />
                     </svg>
@@ -190,13 +176,7 @@
             for="my-modal-6"
             id="my-modal-6"
             type="submit"
-            class="
-              border-none
-              btn btn-m
-              submit
-              bg-brand-darkblue
-              hover:bg-brand-blue
-            "
+            class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue"
             @click="modal()"
           >
             Create
@@ -219,25 +199,12 @@
         <div class="modal-action">
           <label
             for="my-modal-6"
-            class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            "
+            class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white"
             >Cancel</label
           >
           <label
             for="my-modal-6"
-            class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            "
+            class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none"
             @click="saveEvalForm()"
             >Continue</label
           >
@@ -332,7 +299,7 @@ export default {
 
             for (var i = 0; i < this.categories.length; i++) {
                 console.log(this.categories[i].Category);
-                if (this.categories[i].Category != '') {
+                if (this.categories[i].Category != "") {
                     errCat = errCat - 0;
                 } else {
                     errCat = errCat + 1;
@@ -345,18 +312,25 @@ export default {
                     subcat = 0;
                 } else {
                     for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-                        console.log("ITEMS:" + this.categories[i].subcategory[x].items.length);
-                        console.log("name:" + this.categories[i].subcategory[x].Subcategory);
+                        console.log(
+                            "ITEMS:" + this.categories[i].subcategory[x].items.length
+                        );
+                        console.log(
+                            "name:" + this.categories[i].subcategory[x].Subcategory
+                        );
                         if (this.categories[i].subcategory[x].Subcategory != null) {
-
                             subcat = subcat - 0;
                             console.log("EYY");
                             console.log(this.categories[i].subcategory[x].Subcategory.length);
                             if (this.categories[i].subcategory[x].items.length == 0) {
                                 items = 0;
                             } else {
-                                for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
-                                    console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
+                                for (
+                                    var y = 0; y < this.categories[i].subcategory[x].items.length; y++
+                                ) {
+                                    console.log(
+                                        "name1:" + this.categories[i].subcategory[x].items[y].Item
+                                    );
                                     if (this.categories[i].subcategory[x].items[y].Item != null) {
                                         console.log("EYYS");
                                         items = items - 0;
@@ -364,7 +338,9 @@ export default {
                                         console.log("EdsYY");
                                         items = items + 1;
                                     }
-                                    if (this.categories[i].subcategory[x].items[y].Item.length == 0) {
+                                    if (
+                                        this.categories[i].subcategory[x].items[y].Item.length == 0
+                                    ) {
                                         console.log("EYdasdasY");
                                         items = 1;
                                     }
@@ -374,8 +350,7 @@ export default {
                             }
                         } else {
                             subcat = subcat + 1;
-                            console.log("HELL")
-
+                            console.log("HELL");
                         }
                         if (this.categories[i].subcategory[x].Subcategory.length == 0) {
                             subcat = 1;
@@ -404,7 +379,8 @@ export default {
                 this.seriesYear == "" ||
                 this.evalDesc == "" ||
                 subcat == 1 ||
-                items == 1 || errCat >= 1
+                items == 1 ||
+                errCat >= 1
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -412,7 +388,6 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(this.programName);
                 has_error = 1;
             }
 
@@ -437,16 +412,16 @@ export default {
                 const EvaluationForm = Parse.Object.extend("EvaluationForms");
                 const newEvaluationForm = new EvaluationForm();
 
-                newEvaluationForm.set(
-                    "evaluationFormProgram",
-                    this.programName.toUpperCase()
-                );
+                newEvaluationForm.set("evaluationFormProgram", this.programName);
                 newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
                 newEvaluationForm.set(
                     "evaluationFormSeries",
                     this.seriesYear.toUpperCase()
                 );
-                newEvaluationForm.set("evaluationFormName", this.evalDesc.toUpperCase());
+                newEvaluationForm.set(
+                    "evaluationFormName",
+                    this.evalDesc.toUpperCase()
+                );
                 newEvaluationForm.set("evaluationFormReqs", this.categories);
 
                 // await newEvaluationForm.save();
@@ -460,7 +435,7 @@ export default {
                     }),
                     // window.location.reload()
                     setTimeout(() => {
-                        this.$router.push("/evaluationins")
+                        this.$router.push("/evaluationins");
                     }, 2000);
                 // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
                 //     document.location.reload();
@@ -475,7 +450,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
             setTimeout(
                 function () {
@@ -576,7 +551,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
