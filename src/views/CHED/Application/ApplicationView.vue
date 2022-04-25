@@ -586,7 +586,13 @@ export default {
             const query = new Parse.Query(applications);
 
             //Get to view applications to specific user (Education Supervisor)
-            if (Parse.User.current().get("designation") == "bnyiQ5IJe9") {
+            const Designations = Parse.Object.extend("Designations");
+            const queryDes = new Parse.Query(Designations);
+            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+
+            const desigQueryResult = await queryDes.first();
+
+            if (Parse.User.current().get("designation") == desigQueryResult.id) {
                 query.equalTo("selectedSupervisor", Parse.User.current().id);
                 query.equalTo("applicationStatus", "For Evaluation");
                 this.supervisor = true;

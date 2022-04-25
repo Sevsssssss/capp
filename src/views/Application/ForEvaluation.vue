@@ -206,8 +206,14 @@ export default {
         this.tables = storedApplications;
 
         //Query RQAT
+        const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+        const queryACCR = new Parse.Query(AccessTypeRQAT);
+        queryACCR.equalTo("name", "RQAT");
+
+        const accQuerResultRQAT = await queryACCR.first();
+
         const user = new Parse.Query(Parse.User);
-        user.equalTo("access_type", "XZoPbmb6Xp");
+        user.equalTo("access_type", accQuerResultRQAT.id);
         const rqatResult = await user.find();
 
         var dbRqat = [];
