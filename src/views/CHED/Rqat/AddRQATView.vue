@@ -167,6 +167,7 @@ export default {
             username: "",
             contactnum: "",
             hei_affil: "None",
+            rqat_acc_id: "",
         };
     },
     validations() {
@@ -244,6 +245,15 @@ export default {
         },
         async addRQAT() {
             this.$refs.Spinner.show();
+
+            const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+            const queryACCR = new Parse.Query(AccessTypeRQAT);
+            queryACCR.equalTo("name", "RQAT");
+
+            const accQuerResultRQAT = await queryACCR.first();
+
+            this.rqat_acc_id = accQuerResultRQAT.id;
+
             try {
                 const newRQAT = new Parse.User();
                 var rqatName = {
@@ -256,7 +266,7 @@ export default {
                 newRQAT.set("password", "password");
                 newRQAT.set("contact_num", this.contactnum);
                 newRQAT.set("hei_affil", this.hei_affil);
-                newRQAT.set("access_type", "RQAT");
+                newRQAT.set("access_type", this.rqat_acc_id);
                 newRQAT.set("hasTransactions", false);
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
@@ -347,6 +357,7 @@ export default {
             queryACC.equalTo("name", "HEI");
 
             const accQuerResult = await queryACC.first();
+
 
             var heis = [];
             const query = new Parse.Query(Parse.User);
