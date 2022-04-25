@@ -32,52 +32,19 @@
                 <div class="mr-5">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative mt-1">
-                        <div class="
-                  absolute
-                  inset-y-0
-                  left-0
-                  flex
-                  items-center
-                  pl-3
-                  pointer-events-none
-                ">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <input v-model="search" type="text" id="search" class="
-                  bg-gray-50
-                  border border-gray-300
-                  text-gray-900 text-sm
-                  rounded-lg
-                  focus:ring-blue-500 focus:border-blue-500
-                  block
-                  w-80
-                  pl-10
-                  p-2.5
-                " placeholder="Search for items" />
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
                     </div>
                 </div>
             </div>
             <div class="flex flex-row">
                 <!-- button -->
                 <div class="h-fit pr-2 pt-3 items-center">
-                    <label type="button" for="createDisciplines" class="
-                flex
-                items-center
-                text-white
-                bg-brand-darkblue
-                hover:bg-blue-800
-                focus:ring-4 focus:ring-blue-300
-                font-medium
-                rounded-lg
-                text-sm
-                px-3
-                py-2.5
-                mr-2
-                mb-2
-                focus:outline-none
-              ">
+                    <label type="button" for="createDisciplines" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -86,22 +53,7 @@
                     </label>
                 </div>
                 <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
-                    <label type="button" for="createPrograms" class="
-                flex
-                items-center
-                text-white
-                bg-brand-darkblue
-                hover:bg-blue-800
-                focus:ring-4 focus:ring-blue-300
-                font-medium
-                rounded-lg
-                text-sm
-                px-3
-                py-2.5
-                mr-2
-                mb-2
-                focus:outline-none
-              ">
+                    <label type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -112,7 +64,6 @@
             </div>
         </div>
         <!-- Table body -->
-
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
@@ -172,29 +123,10 @@
                 <div class="btn-group">
                     <ul class="inline-flex -space-x-px">
                         <li>
-                            <a href="javascript:void(0)" class="
-                    py-2
-                    px-3
-                    ml-0
-                    leading-tight
-                    text-gray-500
-                    bg-white
-                    rounded-l-lg
-                    border border-gray-300
-                    hover:bg-gray-100 hover:text-gray-700
-                  " @click="prevPage()">Previous</a>
+                            <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="
-                    py-2
-                    px-3
-                    leading-tight
-                    text-gray-500
-                    bg-white
-                    rounded-r-lg
-                    border border-gray-300
-                    hover:bg-gray-100 hover:text-gray-700
-                  " @click="nextPage()">Next</a>
+                            <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -210,64 +142,28 @@
             <form v-on:submit.prevent="submit">
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.disciplineName) }" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="v$.disciplineName.$model" />
+                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.disciplineName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.disciplineName.$model" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createDisciplines" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="modal()">Submit</label>
+                <label for="createDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
             </div>
         </div>
     </label>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Add Discipline</div>
+            <div class="font-semibold text-md">Add Discipline</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this discipline?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " @click="modal()">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            " @click="addDiscipline()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addDiscipline()">Continue</label>
             </div>
         </div>
     </div>
-
     <!-- edit -->
     <input type="checkbox" id="editDisciplines" class="modal-toggle" />
     <label for="editDisciplines" class="modal cursor-pointer">
@@ -277,64 +173,32 @@
             <form v-on:submit.prevent="submit">
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editDisciplineName) }" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="v$.editDisciplineName.$model" />
+                    <input type="text" id="base-input" :class="{
+                'input-error': validationStatus(v$.editDisciplineName),
+              }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editDisciplineName.$model" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="editDisciplines" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="modal1()">Submit</label>
+                <label for="editDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal1()">Submit</label>
             </div>
         </div>
     </label>
 
     <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Edit Discipline</div>
+            <div class="font-semibold text-md">
+                Edit Discipline
+            </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to edit this discipline?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " @click="modal1()">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            " @click="newDiscName()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal1()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="newDiscName()">Continue</label>
             </div>
         </div>
     </div>
-
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -345,7 +209,7 @@
                         Input the Program Name and the Designated Discipline.
                     </p>
                 </div>
-                <div class="space-x-4 " style="text-align-last: right">
+                <div class="space-x-4" style="text-align-last: right">
                     <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
                         Add Category
                     </button> -->
@@ -354,7 +218,6 @@
                             <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                         </svg>
                     </button>
-
                 </div>
             </div>
 
@@ -383,51 +246,24 @@
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createPrograms" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="modal2()">Submit</label>
+                <label for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal2()">Submit</label>
             </div>
         </div>
     </div>
 
     <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Add Program</div>
+            <div class="font-semibold text-md">Add Program</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this program?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " @click="modal2()">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            " @click="addProgram()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal2()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addProgram()">Continue</label>
             </div>
         </div>
     </div>
-
     <input type="checkbox" id="editPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -465,21 +301,8 @@
                 </div>
             </form>
             <div class="modal-action">
-                <label for="editPrograms" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="editProgram()">Submit</label>
+                <label for="editPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="editProgram()">Submit</label>
             </div>
         </div>
     </div>
@@ -506,7 +329,7 @@ export default {
     name: "DisciplinesView",
     components: {
         // NoDataAvail,
-        VueInstantLoadingSpinner
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -587,19 +410,22 @@ export default {
             }
         },
 
-        async deleteDiscipline(id){
+        async deleteDiscipline(id) {
             const disciplines = Parse.Object.extend("Disciplines");
             const discQuery = new Parse.Query(disciplines);
             discQuery.equalTo("objectId", id);
 
             const discipline = await discQuery.first();
 
-            if(confirm("Delete Discipline?")){
-                discipline.destroy().then((disc) => {
-                    console.log("Deleted object: " + disc.id);
-                }, (error) => {
-                    console.log("Error: " + error)
-                })
+            if (confirm("Delete Discipline?")) {
+                discipline.destroy().then(
+                    (disc) => {
+                        console.log("Deleted object: " + disc.id);
+                    },
+                    (error) => {
+                        console.log("Error: " + error);
+                    }
+                );
             }
         },
 
@@ -611,7 +437,6 @@ export default {
             if (!this.v$.$pending || !this.v$.$error) return;
         },
 
-        
         validate() {
             return this.showModal1;
         },
@@ -622,7 +447,6 @@ export default {
         validate2() {
             return this.showModal3;
         },
-
 
         modal() {
             var has_error = 0;
@@ -642,7 +466,7 @@ export default {
 
         modal1() {
             var has_error = 0;
-            if (this.editDisciplineName == "" ) {
+            if (this.editDisciplineName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -658,7 +482,7 @@ export default {
 
         modal2() {
             var has_error = 0;
-            if (this.programs == "" ) {
+            if (this.programs == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -671,7 +495,6 @@ export default {
                 this.showModal3 = !this.showModal3;
             }
         },
-
 
         editDiscipline(name, id) {
             this.editDisciplineName = name;
@@ -703,11 +526,10 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
 
             console.log("Edit Successful");
-
         },
         addDiscipline() {
             this.$refs.Spinner.show();
@@ -734,7 +556,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
         },
         addProgram() {
@@ -765,7 +587,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
         },
         addAccessType() {

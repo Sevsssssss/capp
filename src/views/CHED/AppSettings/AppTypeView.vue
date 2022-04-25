@@ -30,10 +30,10 @@
                     <tbody>
                         <tr v-for="i in appicationReqs" :key="i" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-6 py-4">
-                            <th class="text-center">{{ i.id}}</th>
+                            <th class="text-left">{{ i.id}}</th>
                             </td>
                             <td class="px-6 py-4">
-                            <th class="text-center">{{ i.name}}</th>
+                            <th class="text-left">{{ i.name}}</th>
                             </td>
 
                         </tr>
