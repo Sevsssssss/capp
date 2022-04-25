@@ -163,7 +163,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var homeType = querResult[0].get("hometype");

@@ -86,7 +86,7 @@
                         </div>
                     </label>
                     <select class="select select-bordered w-full" v-model="v$.emp_designation.$model">
-                        <option v-for="designation in designations" :key="designation">
+                        <option v-for="designation in designations" :key="designation" :value="designation.id">
                             <div class="designation">{{ designation.title }}</div>
                         </option>
                     </select>
@@ -98,21 +98,21 @@
                     </label>
 
                     <select class="select select-bordered w-full" v-model="v$.access_type.$model">
-                        <option v-for="accessType in accessTypes" :key="accessType">
+                        <option v-for="accessType in accessTypes" :key="accessType" :value="accessType.id">
                             <div class="accessType">{{ accessType.title }}</div>
                         </option>
                     </select>
                 </div>
             </div>
 
-            <div v-if="v$.emp_designation.$model == 'EDUCATION SUPERVISOR'">
+            <div v-if="v$.emp_designation.$model == this.educSupId">
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Assigned Discipline:</span>
                     </label>
 
                     <select class="select select-bordered w-full" v-model="v$.discipline.$model">
-                        <option v-for="discipline in disciplines" :key="discipline">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
                             <div class="discipline">{{ discipline.title }}</div>
                         </option>
                     </select>
@@ -202,6 +202,7 @@ export default {
             username: "",
             contactnum: "",
             emp_designation: "",
+            educSupId: "",
             access_type: "",
             discipline: "",
         };
@@ -342,7 +343,8 @@ export default {
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
         const queryResult = await query.find();
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        console.log(Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
@@ -360,6 +362,7 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             for (var e = 0; e < queryResult.length; e++) {
                 this.accessTypes.push({
+                    id: queryResult[e].id,
                     title: queryResult[e].get("name"),
                 });
             }
@@ -369,10 +372,14 @@ export default {
             const queryResultDesig = await queryD.find();
             for (var w = 0; w < queryResultDesig.length; w++) {
                 this.designations.push({
+                    id: queryResultDesig[w].id,
                     title: queryResultDesig[w].get("name"),
                 });
+                if(queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR'){
+                    this.educSupId = queryResultDesig[w].id;
+                }
             }
-            this.emp_designation = queryResultDesig[0].get("name");
+            this.emp_designation = queryResultDesig[0].id;
 
             const Discipline = Parse.Object.extend("Disciplines");
             const queryDiscipline = new Parse.Query(Discipline);
@@ -380,6 +387,7 @@ export default {
             console.log(queryResultDiscipline);
             for (var z = 0; z < queryResultDiscipline.length; z++) {
                 this.disciplines.push({
+                    id: queryResultDiscipline[z].id,
                     title: queryResultDiscipline[z].get("disciplineName"),
                 });
             }
