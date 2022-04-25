@@ -201,7 +201,7 @@ export default {
       //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
       const AccessTypes = Parse.Object.extend("AccessTypes");
       const query = new Parse.Query(AccessTypes);
-      query.equalTo("name", Parse.User.current().get("access_type"));
+      query.equalTo("objectId", Parse.User.current().get("access_type"));
 
       const querResult = await query.find();
       var userPriv = querResult[0].get("privileges");

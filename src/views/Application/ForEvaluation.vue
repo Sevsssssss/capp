@@ -207,7 +207,7 @@ export default {
 
         //Query RQAT
         const user = new Parse.Query(Parse.User);
-        user.equalTo("access_type", "RQAT");
+        user.equalTo("access_type", "XZoPbmb6Xp");
         const rqatResult = await user.find();
 
         var dbRqat = [];

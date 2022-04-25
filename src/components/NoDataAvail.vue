@@ -38,16 +38,6 @@
         </button>
     </div>
 
-    <div v-else-if="names === 'DisciplinesView'">
-        <label type="button" for="createDisciplines" class="btn-table">
-            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-            </svg>
-            <div class="pl-2">Add Discipline</div>
-        </label>
-    </div>
-
     <div v-else-if="names === 'AccessTypesView'">
         <label type="button" for="createAccessType" class="btn-table">
             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -68,23 +58,6 @@
         </button>
     </div>
 
-    <input type="checkbox" id="createDisciplines" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD A DISCIPLINE</div>
-            <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="disciplineName" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addDiscipline()">Submit</label>
-            </div>
-        </div>
-    </div>
 
     <input type="checkbox" id="createAccessType" class="modal-toggle" />
     <div class="modal">

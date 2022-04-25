@@ -613,7 +613,7 @@ export default {
         },
         modal() {
             var has_error = 0;
-            if (this.atname == "" && this.homeType == "/home") {
+            if (this.atname == "" && this.homeType == "/home" || this.homeType == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -649,7 +649,7 @@ export default {
                     newAccessType.save({
                         name: "RQAT",
                         hometype: this.homeType,
-                        privileges: ["/evaluate", "/history", "/account"],
+                        privileges: ["/assignments", "/history", "/account"],
                     });
                 }
                 toast("Access Type Added", {

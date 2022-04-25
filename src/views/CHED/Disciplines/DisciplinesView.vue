@@ -1,8 +1,51 @@
 <template>
-<!-- <div v-if="!tables.length" style="height: 100%">
-    <NoDataAvail names="DisciplinesView" />
-</div> -->
-<div class="p-3">
+<div v-if="!tables.length" style="height: 100%">
+    <div class="flex flex-col center h-full p-5">
+        <div class="noDataAvail">No Data Available</div>
+        <!-- button -->
+        <div class="h-fit pr-2 pt-3 items-center">
+            <label type="button" for="createDisciplines" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                </svg>
+                <div class="pl-2">Add Discipline</div>
+            </label>
+        </div>
+
+        <input type="checkbox" id="createDisciplines" class="modal-toggle" />
+        <label for="createDisciplines" class="modal cursor-pointer">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">ADD A DISCIPLINE</div>
+                <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
+                <form v-on:submit.prevent="submit">
+                    <div class="mb-6">
+                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.disciplineName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.disciplineName.$model" />
+                    </div>
+                </form>
+                <div class="modal-action">
+                    <label for="createDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+                </div>
+            </div>
+        </label>
+        <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+        <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">Add Discipline</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+                    Are you sure you want to add this discipline?
+                </p>
+                <div class="modal-action">
+                    <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                    <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addDiscipline()">Continue</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div v-else class="p-3">
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
