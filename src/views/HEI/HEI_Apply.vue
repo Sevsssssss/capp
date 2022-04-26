@@ -231,77 +231,96 @@ export default {
     },
     methods: {
         submitApplication(values) {
-            try {
-                var reqFiles = [];
-                let requirement = null;
-                for (var i = 0; i < this.reqs.length; i++) {
-                    const file = values.target[5 + i].files[0];
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
-                    requirement = new Parse.File(
-                        file.name.replace(/[^a-zA-Z]/g, ""),
-                        file,
-                        file.type
-                    );
-                    reqFiles.push({
-                        id: i + 1,
-                        file: requirement,
-                        status: "",
-                        comment: "",
-                    });
-                }
-                // const file = values.target[4].files[0];
-                // console.log(file);
-                // console.log(file.name);
-                // console.log(file.type);
-                const application = Parse.Object.extend("Applications");
-                const newApplication = new application();
-                //requirement = new Parse.File(file.name, file, file.type);
-                newApplication
-                    .save({
-                        pointPerson: this.pointPerson,
-                        email: this.email,
-                        phoneNumber: this.phoneNumber,
-                        requirements: reqFiles,
-                        applicationType: this.selected,
-                        applicationStatus: "For Approval",
-                        createdBy: Parse.User.current().id,
-                        program: this.programSelect,
-                        selectedRQAT: '',
-                        selectedSupervisor: '',
-                    })
-                    .then(
-                        (newApplication) => {
-                            toast("Application Added: " + newApplication.id, {
-                                    type: TYPE.SUCCESS,
-                                    timeout: 3000,
-                                    position: POSITION.TOP_RIGHT,
-                                }),
-                               setTimeout(() => {
-                                   this.$router.replace({path: "/HEIapplication"})
-                               }, 3000);
-                            // console.log("New Access Type Added:" + newApplication.id)
-                        },
-                        (e) => {
-                            toast("Application Adding Failed: " + e.message, {
-                                type: TYPE.ERROR,
-                                timeout: 2000,
-                                hideProgressBar: true,
-                                position: POSITION.TOP_RIGHT,
-                            });
-                            // alert("Access Type Adding Failed: " + error)
-                        }
-                    );
-            } catch (error) {
+            var has_error = 0;
+
+            if (this.pointPerson == "" ||
+                this.email == "" ||
+                this.phoneNumber == ""
+            ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error);
+                has_error = 1;
             }
+            if (has_error < 1) {
+                try {
+                    var reqFiles = [];
+                    let requirement = null;
+                    for (var i = 0; i < this.reqs.length; i++) {
+                        const file = values.target[5 + i].files[0];
+                        console.log(file);
+                        console.log(file.name);
+                        console.log(file.type);
+                        requirement = new Parse.File(
+                            file.name.replace(/[^a-zA-Z]/g, ""),
+                            file,
+                            file.type
+                        );
+                        reqFiles.push({
+                            id: i + 1,
+                            file: requirement,
+                            status: "",
+                            comment: "",
+                        });
+                    }
+                    // const file = values.target[4].files[0];
+                    // console.log(file);
+                    // console.log(file.name);
+                    // console.log(file.type);
+                    const application = Parse.Object.extend("Applications");
+                    const newApplication = new application();
+                    //requirement = new Parse.File(file.name, file, file.type);
+                    newApplication
+                        .save({
+                            pointPerson: this.pointPerson,
+                            email: this.email,
+                            phoneNumber: this.phoneNumber,
+                            requirements: reqFiles,
+                            applicationType: this.selected,
+                            applicationStatus: "For Approval",
+                            createdBy: Parse.User.current().id,
+                            program: this.programSelect,
+                            selectedRQAT: '',
+                            selectedSupervisor: '',
+                        })
+                        .then(
+                            (newApplication) => {
+                                toast("Application Added: " + newApplication.id, {
+                                        type: TYPE.SUCCESS,
+                                        timeout: 3000,
+                                        position: POSITION.TOP_RIGHT,
+                                    }),
+                                    setTimeout(() => {
+                                        this.$router.replace({
+                                            path: "/HEIapplication"
+                                        })
+                                    }, 3000);
+                                // console.log("New Access Type Added:" + newApplication.id)
+                            },
+                            (e) => {
+                                toast("Application Adding Failed: " + e.message, {
+                                    type: TYPE.ERROR,
+                                    timeout: 2000,
+                                    hideProgressBar: true,
+                                    position: POSITION.TOP_RIGHT,
+                                });
+                                // alert("Access Type Adding Failed: " + error)
+                            }
+                        );
+                } catch (error) {
+                    toast("Please fill out the required information", {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    console.log(error);
+                }
+            }
+
         },
         changeItem: function changeItem(event) {
             for (var i = 0; i < this.applicationTypes.length; i++) {
