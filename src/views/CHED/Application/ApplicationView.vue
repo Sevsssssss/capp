@@ -52,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="sort_type_var == false">
-                    <tr class="bg-white border-b" v-for="table in searchApplication" :key="table">
+                    <tr class="bg-white border-b " v-for="table in searchApplication" :key="table">
                         <td class="px-6 py-4">
                             <div class="">
                                 <div class="font-semibold text-grey-300">
@@ -70,7 +70,7 @@
                         <td class="px-6 py-4">
                             {{ table.dateApplied }}
                         </td>
-                        <td class="px-6 py-4 relative">
+                        <td class="px-6 py-4 ">
                             <!-- :class="'homeIcon.' + data.color" -->
                             <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval">
                                 {{ table.status }}
@@ -78,10 +78,15 @@
                             <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class=" btn-sm1 rounded-md p-2 font-normal evaluation">
-                                {{ table.status }} 
-                                 <div v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-1 right-5 badge badge-accent">assigned</div>
+                            <div v-else-if="table.status === 'For Evaluation'" class="relative pt-3">
+                                 <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
+                                <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
+                                   
+                                    {{ table.status }}
+
+                                </div>
                             </div>
+
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
                             </div>
@@ -321,11 +326,11 @@ export default {
                 this.totalEntries = querResult.length;
                 if (storedApplicationsAll.length > 0) {
                     this.sort_type_var = false;
-                     this.tables = storedApplicationsAll;
+                    this.tables = storedApplicationsAll;
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             }
 
             //If Selected For Approval
@@ -419,7 +424,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             }
 
             //If Selected For Evaluation
@@ -466,8 +471,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
-                
+
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
                 const applications = Parse.Object.extend("Applications");
@@ -511,7 +515,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             } else if (this.sort_type == "Completed") {
                 var storedApplicationsC = [];
                 const applications = Parse.Object.extend("Applications");
@@ -555,7 +559,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             }
         },
     },
