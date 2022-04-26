@@ -356,8 +356,16 @@ export default {
             var i = 0;
             if (this.sort_type == "Private") {
                 var heisPriv = [];
+                
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("name", "HEI");
+
+                const accQuerResult = await queryACC.first();
+
+    
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
+                query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "PRIVATE COLLEGES");
                 const querResult = await query.find({
                     useMasterKey: true,
@@ -382,8 +390,16 @@ export default {
             }
             if (this.sort_type == "State Univeristies") {
                 var heisState = [];
+                
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("name", "HEI");
+
+                const accQuerResult = await queryACC.first();
+
+    
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
+                query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
                 const querResult = await query.find({
                     useMasterKey: true,
@@ -406,10 +422,18 @@ export default {
                     this.sort_type_var = true;
                 }
             }
-            if (this.sort_type == "Local Universities") {
+            else if (this.sort_type == "Local Universities") {
                 var heisLocal = [];
+                
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("name", "HEI");
+
+                const accQuerResult = await queryACC.first();
+
+    
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
+                query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
                 const querResult = await query.find({
                     useMasterKey: true,
@@ -434,8 +458,15 @@ export default {
             }
             if (this.sort_type == "Others") {
                 var heisOthers = [];
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("name", "HEI");
+
+                const accQuerResult = await queryACC.first();
+
+    
                 const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
+                query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
                 const querResult = await query.find({
                     useMasterKey: true,
@@ -495,8 +526,6 @@ export default {
             });
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];
-                console.log(heis);
-                console.log(hei.id);
                 heis.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
