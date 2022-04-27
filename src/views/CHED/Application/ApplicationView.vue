@@ -79,18 +79,25 @@
                                 {{ table.status }}
                             </div>
                             <div v-else-if="table.status === 'For Evaluation'" class="relative pt-3">
-                                 <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
+                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
                                 <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
-                                   
+
                                     {{ table.status }}
 
                                 </div>
                             </div>
-
+                            <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
+                                {{ table.status }}
+                            </div>
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
                             </div>
+
                             <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
+                                {{ table.status }}
+                            </div>
+
+                            <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
                                 {{ table.status }}
                             </div>
                         </td>
@@ -672,7 +679,7 @@ export default {
 
             const applicationsFI = Parse.Object.extend("Applications");
             const queryFI = new Parse.Query(applicationsFI);
-            queryFI.equalTo("applicationStatus", "For Issuance ");
+            queryFI.equalTo("applicationStatus", "For Issuance");
 
             const applicationsFE = Parse.Object.extend("Applications");
             const queryFE = new Parse.Query(applicationsFE);
@@ -680,7 +687,15 @@ export default {
 
             const applicationsFC = Parse.Object.extend("Applications");
             const queryFC = new Parse.Query(applicationsFC);
-            queryFC.equalTo("applicationStatus", "For Completed");
+            queryFC.equalTo("applicationStatus", "For Compliance");
+
+            const applicationsC = Parse.Object.extend("Applications");
+            const queryC = new Parse.Query(applicationsC);
+            queryC.equalTo("applicationStatus", "Completed");
+
+            const applicationsNC = Parse.Object.extend("Applications");
+            const queryNC = new Parse.Query(applicationsNC);
+            queryNC.equalTo("applicationStatus", "Non Compliant");
 
             this.datas = [{
                     title: "FOR APPROVAL",
@@ -693,19 +708,29 @@ export default {
                     color: "blue",
                 },
                 {
+                    title: "FOR EVALUATION",
+                    num: await queryFE.count(),
+                    color: "pink",
+                },
+                {
+                    title: "FOR COMPLIANCE",
+                    num: await queryFC.count(),
+                    color: "yellow",
+                },
+                {
                     title: "FOR ISSUANCE",
                     num: await queryFI.count(),
                     color: "violet",
                 },
                 {
-                    title: "FOR EVALUATION",
-                    num: await queryFE.count(),
+                    title: "COMPLETED",
+                    num: await queryC.count(),
                     color: "green",
                 },
                 {
-                    title: "COMPLETED",
-                    num: await queryFC.count(),
-                    color: "pink",
+                    title: "NON COMPLIANT",
+                    num: await queryNC.count(),
+                    color: "red",
                 },
             ];
         }

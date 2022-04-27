@@ -102,7 +102,9 @@
                         {{ i.Name }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ i.Programs }}
+                        <div v-for="x in i.Programs" :key="x">
+                            {{x.name}}
+                        </div>
                     </td>
                     <td class="py-4 text-right">
                         <label for="editDisciplines" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)">Edit Disciplines</label>
@@ -702,7 +704,7 @@ export default {
                 disciplineTable.push({
                     id: discipline.id,
                     Name: discipline.get("disciplineName"),
-                    Programs: programsText,
+                    Programs: programsMat,
                 });
                 disciplinesNames.push({
                     id: discipline.id,
