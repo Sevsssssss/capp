@@ -21,7 +21,7 @@
         </button>
     </div>
     <div>
-        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+        <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800" @click="submitFile()">
             Complete</label>
     </div>
 
@@ -33,6 +33,7 @@
 import {
     ref
 } from "vue";
+import DropZoneVue from '../CHED/Hei/DropZone.vue';
 export default {
     setup() {
         const active = ref(false);
@@ -54,6 +55,39 @@ export default {
             selectedFile
         };
     },
+    methods: {
+        async submitFile(){
+            // const applications = Parse.Object.extend("Applications");
+            // const query = new Parse.Query(applications);
+            // query.equalTo("objectId", this.appID);
+            
+            // const application = await query.first();
+
+            // let certification = null;
+            // certification = new Parse.File(
+            //     dropzoneFile.name.replace(/[^a-zA-Z]/g, ""),
+            //     dropzoneFile,
+            //     dropzoneFile.type
+            // );
+
+            // application.set("certificate", certification);
+            // application.set("applicationStatus", "Completed");
+            
+            // application
+            //         .save()
+            //         .then((application) => {
+            //             // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+            //             //         type: TYPE.INFO,
+            //             //         timeout: 2000,
+            //             //         position: POSITION.TOP_RIGHT,
+            //             //         hideProgressBar: false,
+            //             //         closeButton: false,
+
+            //             //     }),
+            //                 console.log("Object Updated: " + application.id);
+            //         })
+        }
+    }
 }
 </script>
 
