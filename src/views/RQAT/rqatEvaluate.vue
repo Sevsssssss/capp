@@ -321,6 +321,7 @@ export default {
                 })
         },
         getSummary() {
+            this.summary = "";
             for (var i = 0; i < this.comment1.length; i++) {
                 if (this.comment1[i] != undefined && this.comment1[i] != "")
                     this.summary = this.summary + " " + this.comment1[i];
