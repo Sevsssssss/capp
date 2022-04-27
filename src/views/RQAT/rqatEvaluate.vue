@@ -1,6 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-{{summary}}
 <div class="shadow-lg rounded-lg my-3 py-5">
     <div class="flex flex-row justify-center items-center space-x-4 text-sm">
         <div class="">
@@ -102,12 +101,15 @@
                         <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 <p class="py-2 font-semibold">Summary</p>
-                                <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" @click="getSummary()">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                                </svg>
+                                <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                             </th>
 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 <p class="py-2 font-semibold">Recommendation</p>
-                                <textarea  id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                <textarea  id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
                             </th>
                         </tr>
                     </tbody>
@@ -118,7 +120,7 @@
             <button  type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                 Cancel
             </button>
-            <button @click="modal(), scrollToTop()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+            <button @click="submitEvaluation()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                 Submit
             </button>
         </div>
@@ -180,8 +182,8 @@ export default {
             notcomplied: '',
             comment1: [],
             comment2: [],
-            summary: [],
-            recommendation: [],
+            summary: "",
+            recommendation: "",
         };
     },
     validations() {
@@ -214,6 +216,112 @@ export default {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
+        async submitEvaluation() {
+            const Applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(Applications);
+            query.equalTo("objectId", this.id);
+
+            const application = await query.first();
+
+            var actualSituations = [];
+
+            var counter = 0;
+
+            //ACTUAL SITUATIONS
+            for(var i = 0; i < this.categories.length; i++) {
+                actualSituations.push({
+                    id: counter,
+                    content: this.comment1[counter],
+                    type: "Category",
+                });
+                counter++;
+                for(var j = 0; j < this.categories[i].subcategory.length; j++) {
+                    actualSituations.push({
+                        id: counter,
+                        content: this.comment1[counter],
+                        type: "SubCategory",
+                    });
+                    counter++;
+
+                    for(var k = 0; k < this.categories[i].subcategory[j].items.length; k++) {
+                        actualSituations.push({
+                            id: counter,
+                            content: this.comment1[counter],
+                            type: "Item",
+                        });
+                        counter++;
+                    }
+
+                }
+
+            }
+
+            //REMARKS
+            var remarks = [];
+            counter = 0;
+            for(i = 0; i < this.categories.length; i++) {
+                remarks.push({
+                    id: counter,
+                    content: this.comment1[counter],
+                    type: "Category",
+                });
+                counter++;
+                for(j = 0; j < this.categories[i].subcategory.length; j++) {
+                    remarks.push({
+                        id: counter,
+                        content: this.comment1[counter],
+                        type: "SubCategory",
+                    });
+                    counter++;
+
+                    for(k = 0; k < this.categories[i].subcategory[j].items.length; k++) {
+                        remarks.push({
+                            id: counter,
+                            content: this.comment1[counter],
+                            type: "Item",
+                        });
+                        counter++;
+                    }
+
+                }
+
+            }
+
+            if(this.statusShow.includes("NotComplied")) {
+                application.set("applicationStatus", "Non Compliant");
+                application.set("actualSituations", actualSituations);
+                application.set("remarks", remarks);
+                application.set("summary", this.summary);
+                application.set("recommendation", this.recommendation);
+            }
+            else{
+                application.set("applicationStatus", "For Issuance");
+                application.set("actualSituations", actualSituations);
+                application.set("remarks", remarks);
+                application.set("summary", this.summary);
+                application.set("recommendation", this.recommendation);
+            }
+
+            application
+                    .save()
+                    .then((application) => {
+                        // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+                        //         type: TYPE.INFO,
+                        //         timeout: 2000,
+                        //         position: POSITION.TOP_RIGHT,
+                        //         hideProgressBar: false,
+                        //         closeButton: false,
+
+                        //     }),
+                            console.log("Object Updated: " + application.id);
+                    })
+        },
+        getSummary() {
+            for(var i = 0; i < this.comment1.length; i++){
+                if(this.comment1[i] != undefined && this.comment1[i] != "")
+                this.summary = this.summary + " " + this.comment1[i];
+            }
+        },
         scrollToTop() {
             window.scrollTo(0, 0);
         },
@@ -222,43 +330,6 @@ export default {
                 alert("No data to submit")
             } catch (error) {
                 alert(error.message)
-            }
-        },
-        evalitems() {
-            console.log(this.categories.length);
-            //this.catCounter = this.categories.length;
-            for (var i = 0; i < this.categories.length; i++) {
-                //console.log(i)
-                // console.log(this.categories[i].Category);
-                this.eval.push({
-                    id: this.categories[i].id,
-                    Requirement: this.categories[i].Category,
-                    type: "Category",
-                });
-                //this.catCounter++;
-                //this.subcatCounter = this.categories[i].subcategory.length;
-                for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-                    // console.log(this.categories[i].subcategory[x].Subcategory);
-                    this.eval.push({
-                        id: this.categories[i].subcategory[x].id,
-                        Requirement: this.categories[i].subcategory[x].Subcategory,
-                        type: "SubCategory",
-                    });
-                    //var itemLen = this.categories[i].subcategory[x].items.length;
-                    //this.subcatCounter++;
-                    //this.itemCounter =this.categories[i].subcategory[x].items.length;
-                    for (
-                        var y = 0; y < this.categories[i].subcategory[x].items.length; y++
-                    ) {
-                        //console.log(this.categories[i].subcategory[x].items[y].Item);
-                        this.eval.push({
-                            id: this.categories[i].subcategory[x].items[y].id,
-                            Requirement: this.categories[i].subcategory[x].items[y].Item,
-                            type: "Item",
-                        });
-                        //this.itemCounter++;
-                    }
-                }
             }
         },
     },
@@ -349,10 +420,15 @@ export default {
 
         for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
             var subcat = [];
-            
+            this.comment1.push("");
+            this.comment2.push("");
             for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
                 var items = [];
+                this.comment1.push("");
+                this.comment2.push("");
                 for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                    this.comment1.push("");
+                    this.comment2.push("");
                     items.push({
                         id: k+1,
                         Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
