@@ -159,10 +159,8 @@ export default {
                     query.equalTo("objectId", user.get("access_type")); 
                     const querResult = await query.first();
                     if (
-                        querResult.get("name") === "SUPER ADMIN" ||
-                        querResult.get("name") === "ADMIN" ||
-                        querResult.get("name") === "EDUCATION SUPERVISOR" ||
-                        querResult.get("name") === "REPORTS"
+                        querResult.get("name") != "HEI" ||
+                        querResult.get("name") != "RQAT"
                     ) {
                         this.$router
 
@@ -217,10 +215,8 @@ export default {
                 const querResult = await query.first();
                 
                 if (
-                    querResult.get("name") === "SUPER ADMIN" ||
-                    querResult.get("name") === "ADMIN" ||
-                    querResult.get("name") === "EDUCATION SUPERVISOR" ||
-                    querResult.get("name") === "REPORTS"
+                    querResult.get("name") != "HEI" ||
+                    querResult.get("name") != "RQAT"
                 ) {
                     this.$router
                         .push({

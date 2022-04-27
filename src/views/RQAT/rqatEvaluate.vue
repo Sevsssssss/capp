@@ -1,5 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
+{{summary}}
 <div class="shadow-lg rounded-lg my-3 py-5">
     <div class="flex flex-row justify-center items-center space-x-4 text-sm">
         <div class="">
@@ -47,39 +48,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr scope="row" v-for="req in eval" :key="req" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                        <tr scope="row" v-for="(req, index) in eval" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                             <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{ req.id }}
                             </td>
-                            <td v-if="req.type == 'Category'" class="aoe font-bold">
+                            <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
                                 {{ req.Requirement }}
                             </td>
-                            <td v-else-if="req.type == 'SubCategory'" class="ml-5">
+                            <td v-else-if="req.type == 'SubCategory'" class="aoe p-5 ml-5">
                                 {{ req.Requirement }}
                             </td>
-                            <td v-else-if="req.type == 'Item'" class="ml-12">
+                            <td v-else-if="req.type == 'Item'" class="aoe p-10 ml-12">
                                 {{ req.Requirement }}
                             </td>
                             <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
                             <td class="">
                                 <div class="flex justify-start items-start">
-                                    <textarea v-model="comment1[req.id - 1]" rows="3" id="message1" class="textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-model="comment1[index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-center">
-                                    <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id - 1] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[req.id - 1, v$.complied.$model]">
+                                    <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[req.id - 1, v$.complied.$model]">
                                     <label class="sr-only">checkbox</label>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-center">
-                                    <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id - 1] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[req.id - 1, v$.notcomplied.$model]" />
+                                    <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[req.id - 1, v$.notcomplied.$model]" />
                                     <label class="sr-only">checkbox</label>
                                 </div>
                             </td>
                             <td class="text-end">
-                                <textarea v-model="comment2[req.id - 1]" rows="3" id="message2" class="textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                <textarea v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -101,7 +102,7 @@
                         <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 <p class="py-2 font-semibold">Summary</p>
-                                <textarea  id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..."></textarea>
                             </th>
 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
@@ -349,42 +350,27 @@ export default {
         for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
             var subcat = [];
             var catID = evalInstrument.get("evaluationFormReqs")[i].id;
-            for (
-                var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++
-            ) {
+            for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
                 var items = [];
                 var subcatID =
                     evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id;
-
-                for (
-                    var k = 0; k <
-                    evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items
-                    .length; k++
-                ) {
+                for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                     items.push({
-                        id: catID +
-                            "." +
-                            subcatID +
-                            "." +
-                            evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[
-                                k
-                            ].id,
+                        id: k+1,
                         Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
                             .items[k].Item,
                     });
                 }
 
                 subcat.push({
-                    id: catID +
-                        "." +
-                        evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
+                    id: j+1,
                     Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
                         .Subcategory,
                     items: items,
                 });
             }
             categories.push({
-                id: evalInstrument.get("evaluationFormReqs")[i].id,
+                id: i+1,
                 Category: evalInstrument.get("evaluationFormReqs")[i].Category,
                 Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
                 subcategory: subcat,
@@ -405,7 +391,7 @@ export default {
             for (var x = 0; x < this.categories[z].subcategory.length; x++) {
                 // console.log(this.categories[i].subcategory[x].Subcategory);
                 this.eval.push({
-                    id: this.categories[z].subcategory[x].id,
+                    id: this.categories[z].id +"."+ this.categories[z].subcategory[x].id,
                     Requirement: this.categories[z].subcategory[x].Subcategory,
                     type: "SubCategory",
                 });
@@ -417,7 +403,7 @@ export default {
                 ) {
                     //console.log(this.categories[i].subcategory[x].items[y].Item);
                     this.eval.push({
-                        id: this.categories[z].subcategory[x].items[a].id,
+                        id: this.categories[z].id +"."+ this.categories[z].subcategory[x].id +"."+ this.categories[z].subcategory[x].items[a].id,
                         Requirement: this.categories[z].subcategory[x].items[a].Item,
                         type: "Item",
                     });
