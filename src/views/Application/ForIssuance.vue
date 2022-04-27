@@ -1,5 +1,7 @@
 <template>
 <div class="my-3 mx-2">
+
+    {{appID}}
     <div class="overflow-x-auto shadow-lg rounded-lg">
     <div class="py-5 h-full flex flex-col justify-center items-center bg-white">
         <span class="text-2xl m-5">Upload File</span>
@@ -35,6 +37,7 @@ import {
 } from "vue";
 import DropZoneVue from '../CHED/Hei/DropZone.vue';
 export default {
+    props: ["appID"],
     setup() {
         const active = ref(false);
         let dropzoneFile = ref("");
