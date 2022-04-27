@@ -1,5 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
+    {{statusShow}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -68,13 +69,13 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-center">
-                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[req.id - 1, v$.complied.$model]">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[index, v$.complied.$model]">
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-center">
-                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[req.id] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[req.id - 1, v$.notcomplied.$model]" />
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[index, v$.notcomplied.$model]" />
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
