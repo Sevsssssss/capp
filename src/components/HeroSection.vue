@@ -158,21 +158,8 @@ export default {
                     const query = new Parse.Query(AccessTypes);
                     query.equalTo("objectId", user.get("access_type")); 
                     const querResult = await query.first();
-                    if (
-                        querResult.get("name") === "SUPER ADMIN" ||
-                        querResult.get("name") === "ADMIN" ||
-                        querResult.get("name") === "EDUCATION SUPERVISOR" ||
-                        querResult.get("name") === "REPORTS"
-                    ) {
-                        this.$router
-
-                            .push({
-                                path: "/home",
-                            })
-                            .catch((err) => {
-                                throw new Error(`Problem handling something: ${err}.`);
-                            });
-                    } else if (querResult.get("name") === "HEI") {
+                    
+                    if (querResult.get("name") === "HEI") {
                         this.$router
                             .push({
                                 path: "/HEIhome",
@@ -185,6 +172,15 @@ export default {
 
                             .push({
                                 path: "/assignments",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    } else{
+                        this.$router
+
+                            .push({
+                                path: "/home",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
@@ -216,37 +212,33 @@ export default {
                 query.equalTo("objectId", user.get("access_type")); 
                 const querResult = await query.first();
                 
-                if (
-                    querResult.get("name") === "SUPER ADMIN" ||
-                    querResult.get("name") === "ADMIN" ||
-                    querResult.get("name") === "EDUCATION SUPERVISOR" ||
-                    querResult.get("name") === "REPORTS"
-                ) {
-                    this.$router
-                        .push({
-                            path: "/home",
-                        })
-                        .catch((err) => {
-                            throw new Error(`Problem handling something: ${err}.`);
-                        });
-                } else if (querResult.get("name") === "HEI") {
-                    this.$router
-                        .push({
-                            path: "/HEIhome",
-                        })
-                        .catch((err) => {
-                            throw new Error(`Problem handling something: ${err}.`);
-                        });
-                } else if (querResult.get("name") === "RQAT") {
-                    this.$router
+                if (querResult.get("name") === "HEI") {
+                        this.$router
+                            .push({
+                                path: "/HEIhome",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    } else if (querResult.get("name") === "RQAT") {
+                        this.$router
 
-                        .push({
-                            path: "/assignments",
-                        })
-                        .catch((err) => {
-                            throw new Error(`Problem handling something: ${err}.`);
-                        });
-                }
+                            .push({
+                                path: "/assignments",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    } else{
+                        this.$router
+
+                            .push({
+                                path: "/home",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    }
             } else {
                 this.showModal = !this.showModal;
             }
