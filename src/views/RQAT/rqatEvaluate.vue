@@ -349,11 +349,9 @@ export default {
 
         for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
             var subcat = [];
-            var catID = evalInstrument.get("evaluationFormReqs")[i].id;
+            
             for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
                 var items = [];
-                var subcatID =
-                    evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id;
                 for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                     items.push({
                         id: k+1,
