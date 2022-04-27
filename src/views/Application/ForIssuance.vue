@@ -1,7 +1,5 @@
 <template>
 <div class="my-3 mx-2">
-
-    {{appID}}
     <div class="overflow-x-auto shadow-lg rounded-lg">
     <div class="py-5 h-full flex flex-col justify-center items-center bg-white">
         <span class="text-2xl m-5">Upload File</span>
@@ -35,7 +33,8 @@
 import {
     ref
 } from "vue";
-import DropZoneVue from '../CHED/Hei/DropZone.vue';
+//import DropZoneVue from '../CHED/Hei/DropZone.vue';
+import Parse from "parse";
 export default {
     props: ["appID"],
     setup() {
@@ -60,35 +59,35 @@ export default {
     },
     methods: {
         async submitFile(){
-            // const applications = Parse.Object.extend("Applications");
-            // const query = new Parse.Query(applications);
-            // query.equalTo("objectId", this.appID);
+            const applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(applications);
+            query.equalTo("objectId", this.appID);
             
-            // const application = await query.first();
+            const application = await query.first();
 
-            // let certification = null;
-            // certification = new Parse.File(
-            //     dropzoneFile.name.replace(/[^a-zA-Z]/g, ""),
-            //     dropzoneFile,
-            //     dropzoneFile.type
-            // );
+            let certification = null;
+            certification = new Parse.File(
+                this.dropzoneFile.name.replace(/[^a-zA-Z]/g, ""),
+                this.dropzoneFile,
+                this.dropzoneFile.type
+            );
 
-            // application.set("certificate", certification);
-            // application.set("applicationStatus", "Completed");
+            application.set("certificate", certification);
+            application.set("applicationStatus", "Completed");
             
-            // application
-            //         .save()
-            //         .then((application) => {
-            //             // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-            //             //         type: TYPE.INFO,
-            //             //         timeout: 2000,
-            //             //         position: POSITION.TOP_RIGHT,
-            //             //         hideProgressBar: false,
-            //             //         closeButton: false,
+            application
+                    .save()
+                    .then((application) => {
+                        // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+                        //         type: TYPE.INFO,
+                        //         timeout: 2000,
+                        //         position: POSITION.TOP_RIGHT,
+                        //         hideProgressBar: false,
+                        //         closeButton: false,
 
-            //             //     }),
-            //                 console.log("Object Updated: " + application.id);
-            //         })
+                        //     }),
+                            console.log("Object Updated: " + application.id);
+                    })
         }
     }
 }
