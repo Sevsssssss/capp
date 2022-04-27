@@ -18,8 +18,8 @@ Parse.masterKey = "master"
 
 // RUN THIS CODE TO HAVE SUPER ADMIN ACCESS TYPE (Edited - Jeff)
 
-// const accessType = Parse.Object.extend("AccessTypes");
-// const newAccessType = new accessType();
+const accessType = Parse.Object.extend("AccessTypes");
+const newAccessType = new accessType();
 // try {
 //     newAccessType.save({
 //         name: "SUPER ADMIN",
@@ -79,13 +79,37 @@ Parse.masterKey = "master"
 //         }, (error) => {
 //             console.log('error: ' + error.message)
 //         })
-        
+
 //     }, (error) => {
 //         console.log('error: ' + error.message);
 //     });
 // } catch (error) {
 //     alert("Error: " + error.code + " " + error.message);
 // }
+
+// const accessType1 = Parse.Object.extend("AccessTypes");
+// const newAccessType1 = new accessType1();
+// try {
+//     newAccessType1.save({
+//         name: "HEI",
+//         hometype: "/HEIhome",
+//         privileges: ["/HEIapply", "/HEIapplication", "/HEIapplication/:id", "/account"],
+//     });
+// } catch (error) {
+//     alert("Error: " + error.code + " " + error.message);
+// }
+// const accessType2 = Parse.Object.extend("AccessTypes");
+// const newAccessType2 = new accessType2();
+// try {
+//     newAccessType2.save({
+//         name: "RQAT",
+//         hometype: "/assignments",
+//         privileges: ["/assignments", "/history", "/account"],
+//     });
+// } catch (error) {
+//     alert("Error: " + error.code + " " + error.message);
+// }
+
 
 export default {};
 </script>
