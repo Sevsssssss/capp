@@ -80,7 +80,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="saveAppType()" type="submit">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="editAppType()" type="submit">Continue</label>
             </div>
         </div>
     </div>
@@ -165,17 +165,19 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
-        async saveAppType() {
+        async editAppType() {
             this.$refs.Spinner.show();
-            const ApplicationType = Parse.Object.extend("ApplicationTypes");
-            const newApplicationType = new ApplicationType();
-            newApplicationType.set(
+            const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+            const atQuery = new Parse.Query(ApplicationTypes);
+            atQuery.equalTo("applicationTypeName", this.appID);
+            const applicationType = await atQuery.first();
+            applicationType.set(
                 "applicationTypeName",
                 this.applicationTypeName.toUpperCase()
             );
-            newApplicationType.set("applicationReqs", this.appReqs);
+            applicationType.set("applicationReqs", this.appReqs);
             try {
-                await newApplicationType.save();
+                await applicationType.save();
                 toast("Application Type Added", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
@@ -257,6 +259,14 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+            const query = new Parse.Query(ApplicationTypes);
+            query.equalTo("applicationTypeName", this.appID);
+
+            const querResult = await query.first();
+
+            this.applicationTypeName = querResult.get("applicationTypeName");
+            this.appReqs = querResult.get("applicationReqs")
         }
     },
 };
