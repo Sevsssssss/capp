@@ -573,14 +573,28 @@ export default {
 
             const accessType = await atQuery.first();
             if(confirm("Are You sure you want to delete this access type?")){
-                accessType.destroy().then(
-                    (accType) => {
-                        console.log("Deleted object: " + accType.id);
-                    },
-                    (error) => {
-                        console.log("Error: " + error);
-                    }
-                );
+                const query = new Parse.Query(Parse.User);
+                query.equalTo("access_type", id);
+
+                const querResult = await query.find();
+
+                console.log(querResult.length)
+
+                if(querResult.length < 1){
+                    accessType.destroy().then(
+                        (accType) => {
+                            console.log("Deleted object: " + accType.id);
+                        },
+                        (error) => {
+                            console.log("Error: " + error);
+                        }
+                    );
+                }
+                else {
+                    console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
+                    accessType.set("isArchived", true);
+                    accessType.save();
+                }
             }
         },
         validationStatus: function (validation) {
