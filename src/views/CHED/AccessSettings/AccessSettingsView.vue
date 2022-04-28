@@ -259,7 +259,7 @@
                             </div>
                         </div>
 
-                        <!-- <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
+                        <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
                             <div class="pb-2">HEI Privileges:</div>
                             <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
@@ -299,7 +299,7 @@
                                     </div>
                                 </label>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </form>
                 <div class="modal-action">
@@ -337,14 +337,14 @@
                                     <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
                                     CHED Account
                                 </div>
-                                <!-- <div class="label-text viewSubCatbool pr-3" style="align-self: center">
+                                <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                     <input type="radio" id="homeType" value="/HEIhome" class="radio mr-1" v-model="homeType" />
                                     HEI Account
                                 </div>
                                 <div class="label-text viewSubCatbool" style="align-self: center">
                                     <input type="radio" id="homeType" value="/assignments" class="radio mr-1" v-model="homeType" />
                                     RQAT Account
-                                </div> -->
+                                </div>
                             </label>
                         </div>
                         <div v-if="homeType == '/home'" class="font-medium text-sm mt-2">
@@ -476,7 +476,7 @@
                             </div>
                         </div>
 
-                        <!-- <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
+                        <div v-if="homeType == '/HEIhome'" class="font-medium text-sm mt-2">
                             <div class="pb-2">HEI Privileges:</div>
                             <div class="form-control grid xxl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 xxs:grid-cols-1">
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
@@ -516,7 +516,7 @@
                                     </div>
                                 </label>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </form>
                 <div class="modal-action">

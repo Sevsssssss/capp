@@ -270,7 +270,6 @@ export default {
             newEmployee.set("contact_num", this.contactnum);
             newEmployee.set("access_type", this.access_type);
             newEmployee.set("designation", this.emp_designation);
-            newEmployee.set("user_type", "employee");
             newEmployee.set("discipline", this.discipline);
             try {
                 await newEmployee.save().then(() => {
