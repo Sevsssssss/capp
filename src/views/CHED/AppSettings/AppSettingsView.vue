@@ -50,7 +50,15 @@
                         <td class="px-6 py-4 text-right ">
                             <div class="flex space-x-4 items-end justify-end">
                                 <a @click="goToAppTypeView(table.Name)" href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                                <a @click="nothing" href="#" class="ml-3 font-medium text-blue-600 hover:underline">Edit</a>
+                                <router-link :to="{
+                                    name: 'EditEvalInstView',
+                                    params: {
+                                    appID: table.Id,
+                                    },
+                                }">
+                                    <a @click="nothing" href="#" class="ml-3 font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
+                                
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
