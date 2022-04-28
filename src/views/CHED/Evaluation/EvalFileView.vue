@@ -18,7 +18,7 @@
                     <div class="btn-text">EDIT</div>
                 </div>
             </button>
-            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
+            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteEvalInst()">
                 <div class="flex flex-row">
                     <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -113,7 +113,25 @@ export default {
             Program: "",
         };
     },
-    methods: {},
+    methods: {
+        async deleteEvalInst(){
+            const EvalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalQuery = new Parse.Query(EvalInstruments);
+            evalQuery.equalTo("objectId", this.id);
+
+            const evalInstrument = await evalQuery.first();
+            if(confirm("Are You sure you want to delete this evaluation instrument?")){
+                evalInstrument.destroy().then(
+                    (evalinst) => {
+                        console.log("Deleted object: " + evalinst.id);
+                    },
+                    (error) => {
+                        console.log("Error: " + error);
+                    }
+                );
+            }
+        }
+    },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");

@@ -18,8 +18,8 @@ Parse.masterKey = "master"
 
 // RUN THIS CODE TO HAVE SUPER ADMIN ACCESS TYPE (Edited - Jeff)
 
-const accessType = Parse.Object.extend("AccessTypes");
-const newAccessType = new accessType();
+// const accessType = Parse.Object.extend("AccessTypes");
+// const newAccessType = new accessType();
 // try {
 //     newAccessType.save({
 //         name: "SUPER ADMIN",

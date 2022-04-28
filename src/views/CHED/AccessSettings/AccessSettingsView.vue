@@ -53,11 +53,11 @@
                             {{ i.Privileges }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <label for="editAccessType" class="font-medium text-blue-600 hover:underline">Edit</label>
+                            <label for="editAccessType" @click="changeSelectedAT(i.id, i.Name)" class="font-medium text-blue-600 hover:underline">Edit</label>
                         </td>
                         <td class="px-6 py-4">
                             <div class="hover:text-brand-red/60">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="deleteAT(i.id)">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                 </svg>
                             </div>
@@ -268,14 +268,14 @@
         <input type="checkbox" id="editAccessType" class="modal-toggle" />
         <label for="editAccessType" class="modal cursor-pointer">
             <div class="modal-box relative  w-11/12 max-w-5xl rounded-md text-left">
-                <div class="font-semibold text-md">ADD ACCESS TYPES</div>
+                <div class="font-semibold text-md">EDIT ACCESS TYPES</div>
                 <p class="py-2 text-sm">Input the name and choose its priviliges</p>
                 <form v-on:submit.prevent="submit">
                     <div class="mb-6">
 
                         <div class="font-medium text-sm mt-2">
                             <label for="base-input" class="block pb-2 text-sm font-medium text-gray-900">Access Type:</label>
-                            <input type="text" :class="{ 'input-error': validationStatus(v$.atname) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-6" placeholder="Enter Name" v-model="v$.atname.$model" />
+                            <input type="text" :class="{ 'input-error': validationStatus(v$.selectedATName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-6" placeholder="Enter Name" v-model="v$.selectedATName.$model" />
                             <div class="pb-2">CHED Privileges:</div>
                             <div class="grid xxl:grid-cols-3 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left">
                                 <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
@@ -447,7 +447,7 @@
                 </form>
                 <div class="modal-action">
                     <label for="editAccessType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="editAccessType()">Submit</label>
                 </div>
             </div>
         </label>
@@ -496,11 +496,16 @@ export default {
             atname: "",
             checkedAccessTypes: [],
             homeType: "",
+            selectedAT: "",
+            selectedATName: "",
         };
     },
     validations() {
         return {
             atname: {
+                required,
+            },
+            selectedATName: {
                 required,
             },
         };
@@ -519,6 +524,65 @@ export default {
         },
     },
     methods: {
+        async editAccessType() {
+            const AccessTypes = Parse.Object.extend("AccessTypes");
+            const atQuery = new Parse.Query(AccessTypes);
+            atQuery.equalTo("objectId", this.selectedAT);
+            
+            const accessType = await atQuery.first();
+
+            try {
+                accessType.save({
+                    name: this.selectedATName.toUpperCase(),
+                    hometype: '/home',
+                    privileges: this.checkedAccessTypes,
+                });
+
+                toast("Access Type Added", {
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    }),
+                    // window.location.reload()
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 2000);
+                // if (
+                //     confirm(
+                //         "Application Type added. Would you like to add another Application Type?"
+                //     )
+                // ) {
+                //     document.location.reload();
+                // } else {
+                //     document.location.reload();
+                // }
+            } catch (error) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log(error.message)
+            }
+        },
+        async deleteAT(id){
+            const AccessTypes = Parse.Object.extend("AccessTypes");
+            const atQuery = new Parse.Query(AccessTypes);
+            atQuery.equalTo("objectId", id);
+
+            const accessType = await atQuery.first();
+            if(confirm("Are You sure you want to delete this access type?")){
+                accessType.destroy().then(
+                    (accType) => {
+                        console.log("Deleted object: " + accType.id);
+                    },
+                    (error) => {
+                        console.log("Error: " + error);
+                    }
+                );
+            }
+        },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -528,6 +592,10 @@ export default {
         },
         validate() {
             return this.showModal1;
+        },
+        changeSelectedAT(atID, atName) {
+            this.selectedAT = atID;
+            this.selectedATName = atName;
         },
         heiPriv() {
             // this.checkedAccessTypes.push({
@@ -644,6 +712,7 @@ export default {
                     }
                 }
                 accessTypesTable.push({
+                    id: accessType.id,
                     Name: accessType.get("name"),
                     Privileges: accessPriv,
                 });
