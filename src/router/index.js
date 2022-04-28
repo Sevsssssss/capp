@@ -31,6 +31,7 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
+import Comply_HEI_Application from '../views/HEI/ComplyApplication.vue';
 import AccountDetails from '../views/HEI/AccountDetails.vue';
 import ForApprovalView from '../views/HEI/ForApprovalView.vue';
 
@@ -422,6 +423,18 @@ const routes = [
           breadcrumb: [
             { name: 'Application', link: '/HEIapplication' },
             { name: 'Edit' }
+          ]
+        }
+      },
+      {
+        path: "/HEIapplication/:id",
+        name: "ComplyApplication",
+        component: Comply_HEI_Application,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Application', link: '/HEIapplication' },
+            { name: 'Comply' }
           ]
         }
       },
