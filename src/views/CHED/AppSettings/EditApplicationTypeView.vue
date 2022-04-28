@@ -1,8 +1,8 @@
 <template>
 <!--Header-->
 <div class="m-5">
-    {{appReqs}}
     <form v-on:submit.prevent="submit">
+        {{appReqs}}
         <div class="overflow-x-auto shadow-lg rounded-lg px-8 py-5">
             <div class="" style="justify-content: space-between">
                 <div class="form-control mr-3 w-full">
@@ -16,11 +16,6 @@
                         <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
                             <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                            </svg>
-                        </button>
-                        <button data-tip="Remove Requirement" @click="pop" class="btn tooltip tooltip-left btn-outline hover:bg-brand-red/60">
-                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M19,13H5V11H19V13Z" />
                             </svg>
                         </button>
                     </div>
@@ -42,7 +37,7 @@
                             <div class="flex flex-row">
                                 <input type="text" placeholder="Enter Requirement Name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="req.applicationReq" />
                                 <div class="pl-4">
-                                    <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                                    <button data-tip="Remove Requirement" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeRequirement(req.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                             <path fill="none" d="M0 0h24v24H0z" />
                                             <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
@@ -63,7 +58,7 @@
                         Cancel
                     </button>
                     <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
-                        Create
+                        Edit
                     </button>
                 </div>
             </div>
@@ -169,7 +164,7 @@ export default {
             this.$refs.Spinner.show();
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const atQuery = new Parse.Query(ApplicationTypes);
-            atQuery.equalTo("applicationTypeName", this.appID);
+            atQuery.equalTo("objectId", this.appID);
             const applicationType = await atQuery.first();
             applicationType.set(
                 "applicationTypeName",
@@ -178,7 +173,7 @@ export default {
             applicationType.set("applicationReqs", this.appReqs);
             try {
                 await applicationType.save();
-                toast("Application Type Added", {
+                toast("Application Type Edited", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
@@ -214,21 +209,27 @@ export default {
         },
         addRequirement() {
             this.counter++;
+            console.log(this.counter)
             this.appReqs.push({
                 id: this.counter,
                 applicationReq: "",
             });
         },
-        pop() {
-            if (this.counter > 0) {
-                this.counter--;
+        removeRequirement(id) {
+            if(id < this.counter){
+                var tick = id;
+                console.log(tick + " " + (this.counter - 1))
+                while(tick <= this.counter - 1){
+                    console.log(this.appReqs[tick].id)
+                    console.log(this.appReqs[tick].id - 1)
+                    this.appReqs[tick].id = this.appReqs[tick].id - 1;
+                    tick++;
+                }
             }
-            //var cat = 'cat' + this.cat1;
-            this.appReqs.pop({
-                id: this.cat1,
-                name: "",
-            });
+            this.appReqs.splice(id - 1, 1)
+            this.counter = this.counter - 1;
         },
+        
         isZero() {
             if (this.counter != 0) {
                 this.checker = false;
@@ -261,12 +262,13 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const query = new Parse.Query(ApplicationTypes);
-            query.equalTo("applicationTypeName", this.appID);
+            query.equalTo("objectId", this.appID);
 
             const querResult = await query.first();
 
             this.applicationTypeName = querResult.get("applicationTypeName");
-            this.appReqs = querResult.get("applicationReqs")
+            this.appReqs = querResult.get("applicationReqs");
+            this.counter = querResult.get("applicationReqs").length;
         }
     },
 };
