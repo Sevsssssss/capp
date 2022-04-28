@@ -79,7 +79,7 @@
                                 {{ table.status }}
                             </div>
                             <div v-else-if="table.status === 'For Evaluation'" class="relative pt-3">
-                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
+                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 right-0 badge badge-accent text-sm">assigned</span>
                                 <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
 
                                     {{ table.status }}
@@ -209,32 +209,7 @@ export default {
             supervisor: false,
             sort_type_var: false,
 
-            datas: [{
-                    title: "FOR APPROVAL",
-                    num: 300,
-                    color: "orange",
-                },
-                {
-                    title: "FOR REVISION",
-                    num: 200,
-                    color: "blue",
-                },
-                {
-                    title: "FOR ISSUANCE",
-                    num: 120,
-                    color: "violet",
-                },
-                {
-                    title: "FOR EVALUATION",
-                    num: 123,
-                    color: "green",
-                },
-                {
-                    title: "COMPLETED",
-                    num: 12,
-                    color: "pink",
-                },
-            ],
+            datas: [],
             tables: [],
         };
     },
