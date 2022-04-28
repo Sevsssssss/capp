@@ -64,10 +64,18 @@
                         <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 p-2 font-normal evaluation rounded-md">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 p-2 font-normal issuance rounded-md">
+                        <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'Completed'" class="btn-sm1 p-2 font-normal completed rounded-md">
+                        <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
+                            {{ table.status }}
+                        </div>
+
+                        <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
+                            {{ table.status }}
+                        </div>
+
+                        <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
                             {{ table.status }}
                         </div>
                     </td>
@@ -79,39 +87,13 @@
                          statusA: table.status
                         },
                         }">
-                            <a v-if="
-                    statusChecker(table.status) &&
-                    table.status === 'For Revision'
-                  " href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                         </router-link>
-                        <router-link :to="{
-                        name: 'ForApprovalView',
-                        params: {
-                        id: table.appID,
-                        },
-                        }">
-                            <a v-if="
-                    statusChecker(table.status) &&
-                    table.status === 'For Approval'
-                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                        </router-link>
-                        <a v-if="
-                    table.status === 'For Evaluation'
-                  " href="#"></a>
-                        <a v-if="
-                    table.status === 'For Issuance'
-                  " href="#"></a>
-                        <router-link :to="{
-                        name: 'ForApprovalView',
-                        params: {
-                        id: table.appID,
-                        },
-                        }">
-                            <a v-if="
-                    statusChecker(table.status) &&
-                    table.status === 'For Completed'
-                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                        </router-link>
+                        <a v-if="statusChecker(table.status) &&table.status === 'Completed'" @click="download()" href="#" class="text-blue-400 hover:text-blue-700">
+                            <svg style="width:20px;height:20px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
+                            </svg>
+                        </a>
                     </td>
                 </tr>
             </tbody>
@@ -231,6 +213,9 @@ export default {
                 this.currentpage += 1;
             }
         },
+        download() {
+            alert('Certificate Download');
+        },
         async filterApplications() {
             var i = 0;
             var months = [
@@ -284,7 +269,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             } else if (this.sort_type == "For Approval") {
                 var storedApplicationsFA = [];
                 const applications = Parse.Object.extend("Applications");

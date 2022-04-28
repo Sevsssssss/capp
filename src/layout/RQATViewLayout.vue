@@ -210,7 +210,7 @@ export default {
 
             const querResult = await query.find();
             var userPriv = querResult[0].get("privileges");
-            if (userPriv.find((e) => e === "/evaluate")) {
+            if (userPriv.find((e) => e === "/assignments")) {
                 this.menu.push({
                     href: "/history",
                     title: "History",

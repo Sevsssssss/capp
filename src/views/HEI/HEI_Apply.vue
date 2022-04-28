@@ -251,9 +251,9 @@ export default {
                     let requirement = null;
                     for (var i = 0; i < this.reqs.length; i++) {
                         const file = values.target[5 + i].files[0];
-                        console.log(file);
-                        console.log(file.name);
-                        console.log(file.type);
+                        // console.log(file);
+                        // console.log(file.name);
+                        // console.log(file.type);
                         requirement = new Parse.File(
                             file.name.replace(/[^a-zA-Z]/g, ""),
                             file,

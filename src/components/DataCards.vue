@@ -1,5 +1,5 @@
 <template>
-<div class=" grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
+<div class=" grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4">
     <div class="bg-brand-white shadow-md rounded-md m-2 p-4" v-for="data in datas" :key="data">
         <div class="flex flex-col justify-between text-left">
             <div class="flex flex-row">
@@ -30,6 +30,7 @@ export default {
                 {color: "blue",},
                 {color: "violet",},
                 {color: "green",},
+                {color: "red",},
                 {color: "pink",},
             ],
         };

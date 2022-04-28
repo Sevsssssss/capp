@@ -9,11 +9,12 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div>
-            <div class="font-normal text-sm">
-                Evalutaion Instrument:
-                <a href="#" target="_blank" class="text-blue-400"> Click here </a>
-            </div>
+        <div v-if="this.selectedRqat != null && this.selectedRqat  != ''">
+            <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm">ASSIGNED To: {{selectedRqat}}</p>
+        </div>
+        <div v-else class="font-normal text-sm">
+            Evaluation Instrument:
+            <a href="#" target="_blank" class="text-blue-400"> Click here </a>
         </div>
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -48,10 +49,14 @@
                 Request Re-Assign
             </div>
         </div>
-        <div>
-            <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                Assign RQAT</label>
+        <div v-if="this.selectedRqat != null && this.selectedRqat  != ''">
         </div>
+        <div v-else>
+            <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                Assign RQAT
+            </label>
+        </div>
+
     </div>
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
@@ -107,6 +112,7 @@ export default {
             tables: [],
             search: "",
             Rqat: [],
+            selectedRqat: '',
             selectedRQAT: "Select RQAT Member",
             supervisor: false,
         };
@@ -182,6 +188,7 @@ export default {
         const appTypeQuery = new Parse.Query(applicationTypes);
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+        this.selectedRqat = application.get("selectedRQAT");
 
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {

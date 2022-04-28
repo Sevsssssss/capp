@@ -42,7 +42,7 @@
             <ForEvalAssigned :appID="appID" />
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
-            <ForIssuance></ForIssuance>
+            <ForIssuance :appID="appID"/>>
         </div>
         <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>
