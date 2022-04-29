@@ -675,37 +675,47 @@ export default {
             this.datas = [{
                     title: "FOR APPROVAL",
                     num: await queryFA.count(),
-                    color: "orange",
+                    type: "approval",
                 },
                 {
                     title: "FOR REVISION",
                     num: await queryFR.count(),
-                    color: "blue",
+                    type: "revision",
+                },
+                {
+                    title: "FOR PAYMENT",
+                    num: await queryFR.count(),
+                    type: "payment",
                 },
                 {
                     title: "FOR EVALUATION",
                     num: await queryFE.count(),
-                    color: "pink",
+                    type: "evaluation",
                 },
                 {
                     title: "FOR COMPLIANCE",
                     num: await queryFC.count(),
-                    color: "yellow",
+                    type: "forcompliance",
+                },
+                {
+                    title: "FOR VERIFICATION",
+                    num: await queryFR.count(),
+                    type: "verification",
                 },
                 {
                     title: "FOR ISSUANCE",
                     num: await queryFI.count(),
-                    color: "violet",
+                    type: "issuance",
                 },
                 {
                     title: "COMPLETED",
                     num: await queryC.count(),
-                    color: "green",
+                    type: "completed",
                 },
                 {
                     title: "NON COMPLIANT",
                     num: await queryNC.count(),
-                    color: "red",
+                    type: "noncompliant",
                 },
             ];
         }
