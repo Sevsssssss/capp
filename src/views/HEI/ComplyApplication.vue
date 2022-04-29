@@ -1,6 +1,7 @@
 <template>
 <div>
     <div class="mx-3">
+        {{tables}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
@@ -91,7 +92,7 @@
                                 <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a>
                             </th>
                             <td class="px-6 py-4 w-2/5">
-                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..."></textarea>
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="tables[index].desc"></textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -140,6 +141,7 @@ export default {
             disapprovedCount: 0,
             disapprovedReqs: [],
             reqs: [],
+            comments: [],
             summary: "",
             recommendation: "",
             headers: [{
@@ -284,8 +286,6 @@ export default {
 </script>
 
 <style scoped>
-.dropzone1 {}
-
 .dropzone1 label {
     padding: 8px 12px;
     color: #fff;
