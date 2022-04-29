@@ -83,10 +83,10 @@ export default {
                 console.log('onMessage')
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeHEIs(
+                    self.storeEmployees(
                         event.data.rows,
                     ).then(() => {
-                        toast("HEI Accounts Added!", {
+                        toast("EMPLOYEE Accounts Added!", {
                             type: TYPE.SUCCESS,
                             timeout: 3000,
                             position: POSITION.TOP_RIGHT,
@@ -121,36 +121,43 @@ export default {
             }
         },
 
-        async storeHEIs(heiData) {
+        async storeEmployees(employeesData) {
             console.log("store")
-            for (let i = 0; i < heiData.length; i++) {
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
+            for (let i = 0; i < employeesData.length; i++) {
+                const newEmployee = new Parse.User();
+                var employeeName = {
+                    lastname: employeesData[i].A,
+                    firstname: employeesData[i].B,
+                    middleinitial: employeesData[i].C,
+                };
+                newEmployee.set("name", employeeName);
+                newEmployee.set("username", employeesData[i].D);
+                newEmployee.set("password", "password");
+                newEmployee.set("email", employeesData[i].E);
+                newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
 
-                const accQuerResult = await queryACC.first();
+                const accesstype = Parse.Object.extend("AccessTypes");
+                const accesstypeQuery = new Parse.Query(accesstype);
+                accesstypeQuery.equalTo('name', employeesData[i].G);
+                const accesstypeResult = await accesstypeQuery.find();
 
-                this.hei_acc_id = accQuerResult.id;
+                const designations = Parse.Object.extend("Designations");
+                const designationQuery = new Parse.Query(designations);
+                designationQuery.equalTo('name', employeesData[i].H);
+                const designationResult = await designationQuery.find();
+
+                newEmployee.set("access_type", accesstypeResult[0].id);
+                newEmployee.set("designation",  designationResult[0].id);
+
+                newEmployee.set("discipline", employeesData[i].I);
                 try {
-                    const newHEI = new Parse.User();
-                    newHEI.set("hei_name", heiData[i].A);
-                    newHEI.set("username", heiData[i].B);
-                    newHEI.set("password", "password");
-                    newHEI.set("email", heiData[i].C);
-                    newHEI.set("address", heiData[i].D);
-                    newHEI.set("number", heiData[i].E.toString());
-                    newHEI.set("inst_code", heiData[i].F.toString());
-                    newHEI.set("hei_type", heiData[i].G);
-                    newHEI.set("access_type", this.hei_acc_id);
-                    newHEI.set("hasTransactions", false);
-                    await newHEI.save();
-
+                    await newEmployee.save();
                 } catch (error) {
                     console.log(error.message);
                 }
             }
             this.$refs.Spinner.hide();
-            this.$router.push("/hei");
+            this.$router.push("/employees");
             this.pending = false;
         },
     },

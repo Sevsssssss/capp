@@ -23,12 +23,12 @@
             <div class="flex flex-row">
                 <!-- button -->
                 <div class="h-fit pt-3 items-center">
-                    <button @click="csvRQAT()" type="button" class="btn-table">
+                    <button @click="excelRQAT()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
                         </svg>
-                        <div class="pl-2">Upload CSV</div>
+                        <div class="pl-2">Upload Excel</div>
                     </button>
                 </div>
                 <!-- button -->
@@ -142,6 +142,7 @@
     </div>
 </div>
 </template>
+
 <script>
 import Parse from "parse";
 // var dataNumber = 10;
@@ -150,146 +151,146 @@ import Parse from "parse";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 
 export default {
-  name: "RqatView",
-  data() {
-    return {
-      currentpage: 0,
-      numPerPage: 10,
-      totalEntries: 0,
-      headers: [
-        {
-          title: "RQAT MEMBER NAME",
-        },
-        {
-          title: "HEI",
-        },
-        {
-          title: "CONTACT NUMBER",
-        },
-        {
-          title: "USERNAME",
-        },
-      ],
+    name: "RqatView",
+    data() {
+        return {
+            currentpage: 0,
+            numPerPage: 10,
+            totalEntries: 0,
+            headers: [{
+                    title: "RQAT MEMBER NAME",
+                },
+                {
+                    title: "HEI",
+                },
+                {
+                    title: "CONTACT NUMBER",
+                },
+                {
+                    title: "USERNAME",
+                },
+            ],
 
-      datas: [
-        {
-          title: "FOR APPROVAL",
-          num: 300,
+            datas: [{
+                    title: "FOR APPROVAL",
+                    num: 300,
+                },
+                {
+                    title: "FOR REVISION",
+                    num: 300,
+                },
+                {
+                    title: "FOR ISSUANCE",
+                    num: 300,
+                },
+                {
+                    title: "FOR EVALUATION",
+                    num: 300,
+                },
+                {
+                    title: "FOR COMPLETION",
+                    num: 300,
+                },
+            ],
+            tables: [],
+            search: "",
+        };
+    },
+    components: {
+        NoDataAvail,
+    },
+    computed: {
+        searchRqat() {
+            this.newEntCount();
+            return this.tables
+                .filter((p) => {
+                    return (
+                        p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                    );
+                })
+                .slice(
+                    this.numPerPage * this.currentpage,
+                    (this.currentpage + 1) * this.numPerPage
+                );
         },
-        {
-          title: "FOR REVISION",
-          num: 300,
+    },
+    methods: {
+        addRQAT() {
+            this.$router.push("/rqat/add");
         },
-        {
-          title: "FOR ISSUANCE",
-          num: 300,
+        viewAssignments() {
+            this.$router.push("/rqat-assignment");
         },
-        {
-          title: "FOR EVALUATION",
-          num: 300,
+        newEntCount() {
+            this.totalEntries = this.tables.filter((p) => {
+                return (
+                    p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                );
+            }).length;
         },
-        {
-          title: "FOR COMPLETION",
-          num: 300,
+        prevPage() {
+            if (this.currentpage > 0) this.currentpage -= 1;
         },
-      ],
-      tables: [],
-      search: "",
-    };
-  },
-  components: {
-    NoDataAvail,
-  },
-  computed: {
-    searchRqat() {
-      this.newEntCount();
-      return this.tables
-        .filter((p) => {
-          return (
-            p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-          );
-        })
-        .slice(
-          this.numPerPage * this.currentpage,
-          (this.currentpage + 1) * this.numPerPage
-        );
+        nextPage() {
+            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+                this.currentpage += 1;
+            }
+        },
+        excelRQAT() {
+            this.$router.push("/rqat/upload");
+        },
     },
-  },
-  methods: {
-    addRQAT() {
-      this.$router.push("/rqat/add");
-    },
-    viewAssignments() {
-      this.$router.push("/rqat-assignment");
-    },
-    newEntCount() {
-      this.totalEntries = this.tables.filter((p) => {
-        return (
-          p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-        );
-      }).length;
-    },
-    prevPage() {
-      if (this.currentpage > 0) this.currentpage -= 1;
-    },
-    nextPage() {
-      if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
-        this.currentpage += 1;
-      }
-    },
-  },
-  mounted: async function () {
-    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes);
-    query.equalTo("objectId", Parse.User.current().get("access_type"));
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
-    const querResult = await query.find();
-    var accType = querResult[0].get("privileges");
-    var flag = 0;
-    for (var y = 0; y < accType.length; y++) {
-      if (accType[y] === this.$route.path) {
-        flag = 1;
-      }
-    }
-    if (flag === 0) {
-      this.$router.push("/403");
-    } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var y = 0; y < accType.length; y++) {
+            if (accType[y] === this.$route.path) {
+                flag = 1;
+            }
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-      const AccessType = Parse.Object.extend("AccessTypes");
-      const queryACC = new Parse.Query(AccessType);
-      queryACC.equalTo("name", "RQAT");
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "RQAT");
 
-      const accQuerResult = await queryACC.first();
+            const accQuerResult = await queryACC.first();
 
-      var rqats = [];
-      const query = new Parse.Query(Parse.User);
-      query.equalTo("access_type", accQuerResult.id);
-      query.notEqualTo("hei_affil", null);
-      const querResult = await query.find();
-      for (var i = 0; i < querResult.length; i++) {
-        const rqat = querResult[i];
-        rqats.push({
-          id: rqat.id,
-          rqatName:
-            rqat.get("name")["lastname"] +
-            ", " +
-            rqat.get("name")["firstname"] +
-            " " +
-            rqat.get("name")["middleinitial"] +
-            ".",
-          hei: rqat.get("hei_affil"),
-          contactNum: rqat.get("contact_num"),
-          username: rqat.get("username"),
-        });
-      }
-      this.totalEntries = querResult.length;
-      this.tables = rqats;
-    }
-  },
+            var rqats = [];
+            const query = new Parse.Query(Parse.User);
+            query.equalTo("access_type", accQuerResult.id);
+            query.notEqualTo("hei_affil", null);
+            const querResult = await query.find();
+            for (var i = 0; i < querResult.length; i++) {
+                const rqat = querResult[i];
+                rqats.push({
+                    id: rqat.id,
+                    rqatName: rqat.get("name")["lastname"] +
+                        ", " +
+                        rqat.get("name")["firstname"] +
+                        " " +
+                        rqat.get("name")["middleinitial"] +
+                        ".",
+                    hei: rqat.get("hei_affil"),
+                    contactNum: rqat.get("contact_num"),
+                    username: rqat.get("username"),
+                });
+            }
+            this.totalEntries = querResult.length;
+            this.tables = rqats;
+        }
+    },
 };
 </script>
 

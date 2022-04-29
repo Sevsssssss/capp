@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col justify-center items-center bg-white">
-    <span class="text-2xl m-5">Upload CSV File</span>
+    <span class="text-2xl m-5">Upload Excel File</span>
     <DropZoneVue></DropZoneVue>
     <span class="mt-12 font-semibold">{{ dropzoneFile.name }}</span>
   </div>
@@ -12,7 +12,7 @@ import { ref } from "vue";
 import Parse from 'parse'
 
 export default {
-  name: "uploadCSV",
+  name: "uploadExcel",
   components: {
     DropZoneVue,
   },
@@ -32,7 +32,7 @@ export default {
     var accType = querResult[0].get("privileges");
     var flag = 0;
     for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === '/hei') {
+      if (accType[i] === '/rqat') {
         flag = 1;
       }
     }

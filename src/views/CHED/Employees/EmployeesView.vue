@@ -77,12 +77,12 @@
             <div class="flex flex-row">
                 <!-- button -->
                 <div class="h-fit pt-3 items-center">
-                    <button @click="csvEmployee()" type="button" class="btn-table">
+                    <button @click="excelEmployees()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
                         </svg>
-                        <div class="pl-2">Upload CSV</div>
+                        <div class="pl-2">Upload Excel</div>
                     </button>
                 </div>
                 <!-- button -->
@@ -379,6 +379,9 @@ export default {
             }
 
             
+        },
+        excelEmployees() {
+            this.$router.push("/employees/upload");
         },
     },
     mounted: async function () {

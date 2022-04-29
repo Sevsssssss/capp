@@ -32,6 +32,11 @@ export default {
     components: {
         VueInstantLoadingSpinner
     },
+    data() {
+        return {
+            pending: false
+        }
+    },
     setup() {
         const active = ref(false);
         let dropzoneFile = ref("");
@@ -83,17 +88,20 @@ export default {
                 console.log('onMessage')
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeHEIs(
+                    self.storeRqat(
                         event.data.rows,
                     ).then(() => {
-                        toast("HEI Accounts Added!", {
+                        toast("RQAT Accounts Added!", {
                             type: TYPE.SUCCESS,
                             timeout: 3000,
                             position: POSITION.TOP_RIGHT,
                         });
                     })
+
+                      
                 } else {
                     self.pending = false;
+                    this.$refs.Spinner.hide();
                     alert(event.data.reason);
                 }
             };
@@ -121,36 +129,40 @@ export default {
             }
         },
 
-        async storeHEIs(heiData) {
+        async storeRqat(rqatData) {
             console.log("store")
-            for (let i = 0; i < heiData.length; i++) {
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
+            for (let i = 0; i < rqatData.length; i++) {
 
-                const accQuerResult = await queryACC.first();
+                const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+                const queryACCR = new Parse.Query(AccessTypeRQAT);
+                queryACCR.equalTo("name", "RQAT");
 
-                this.hei_acc_id = accQuerResult.id;
+                const accQuerResultRQAT = await queryACCR.first();
+
+                this.rqat_acc_id = accQuerResultRQAT.id;
+
                 try {
-                    const newHEI = new Parse.User();
-                    newHEI.set("hei_name", heiData[i].A);
-                    newHEI.set("username", heiData[i].B);
-                    newHEI.set("password", "password");
-                    newHEI.set("email", heiData[i].C);
-                    newHEI.set("address", heiData[i].D);
-                    newHEI.set("number", heiData[i].E.toString());
-                    newHEI.set("inst_code", heiData[i].F.toString());
-                    newHEI.set("hei_type", heiData[i].G);
-                    newHEI.set("access_type", this.hei_acc_id);
-                    newHEI.set("hasTransactions", false);
-                    await newHEI.save();
-
+                    const newRQAT = new Parse.User();
+                    var rqatName = {
+                        lastname: rqatData[i].A,
+                        firstname: rqatData[i].B,
+                        middleinitial: rqatData[i].C,
+                    };
+                    newRQAT.set("name", rqatName);
+                    newRQAT.set("username", rqatData[i].D);
+                    newRQAT.set("password", "password");
+                    newRQAT.set("contact_num", "0" + rqatData[i].E.toString());
+                    newRQAT.set("hei_affil", rqatData[i].F);
+                    newRQAT.set("email", rqatData[i].G);
+                    newRQAT.set("access_type", this.rqat_acc_id);
+                    newRQAT.set("hasTransactions", false);
+                    await newRQAT.save();
                 } catch (error) {
                     console.log(error.message);
                 }
             }
             this.$refs.Spinner.hide();
-            this.$router.push("/hei");
+            this.$router.push("/rqat");
             this.pending = false;
         },
     },

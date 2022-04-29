@@ -8,16 +8,18 @@ import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
 
 import HeiView from "../views/CHED/Hei/HeiView.vue";
-import UploadCSV from '../views/CHED/Hei/UploadCSV.vue'
+import UploadExcel from '../views/CHED/Hei/UploadExcel.vue';
 import AddHeiView from "../views/CHED/Hei/AddHeiView.vue";
 import EditHeiView from "../views/CHED/Hei/EditHeiView.vue"
 
 import RqatView from "../views/CHED/Rqat/RqatView.vue";
+import UploadExcelRqat from '../views/CHED/Rqat/UploadExcel.vue';
 import AddRQATView from "../views/CHED/Rqat/AddRQATView.vue";
 import EditRQATView from "../views/CHED/Rqat/EditRQATView.vue"
 
 import EmployeesView from "../views/CHED/Employees/EmployeesView.vue";
 import AddEmployeeView from "../views/CHED/Employees/AddEmployeeView.vue";
+import UploadExcelEmployees from '../views/CHED/Employees/UploadExcel.vue';
 import EditEmployeeView from "../views/CHED/Employees/EditEmployeeView.vue";
 
 import EvaluationInsView from "../views/CHED/Evaluation/EvaluationInsView.vue";
@@ -144,12 +146,12 @@ const routes = [
       },
       {
         path: "/hei/upload",
-        name: "uploadCSV",
-        component: UploadCSV,
+        name: "uploadExcel",
+        component: UploadExcel,
         meta: {
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
-            { name: 'UPLOAD CSV' }
+            { name: 'UPLOAD EXCEL' }
           ]
         }
       },
@@ -160,6 +162,17 @@ const routes = [
         meta: {
           breadcrumb: [
             { name: 'RQAT' },
+          ]
+        }
+      },
+      {
+        path: "/rqat/upload",
+        name: "uploadExcelRqat",
+        component: UploadExcelRqat,
+        meta: {
+          breadcrumb: [
+            { name: 'RQAT', link: '/rqat' },
+            { name: 'UPLOAD EXCEL' }
           ]
         }
       },
@@ -203,6 +216,17 @@ const routes = [
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
             { name: 'ADD EMPLOYEE ACCOUNT' }
+          ]
+        }
+      },
+      {
+        path: "/employees/upload",
+        name: "uploadExcelExmployees",
+        component: UploadExcelEmployees,
+        meta: {
+          breadcrumb: [
+            { name: 'EMPLOYEE', link: '/employees' },
+            { name: 'UPLOAD EXCEL' }
           ]
         }
       },
