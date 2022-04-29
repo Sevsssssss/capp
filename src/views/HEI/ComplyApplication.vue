@@ -58,7 +58,7 @@
             <div class="overflow-x-auto shadow-lg rounded-lg">
                 <div class="py-5 h-full flex flex-col justify-center items-center bg-white">
                     <span class="text-2xl m-5">Upload File</span>
-                    <div @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
+                    <div @drop.prevent="drop; addFile" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
                         <span>Drag or Drop File</span>
                         <span>OR</span>
                         <label for="dropzoneFile">Select File</label>
@@ -69,7 +69,7 @@
                 </div>
 
             </div>
-
+            {{tables}}
             <!-- BUTTONS -->
             <div class="space-x-6 p-10">
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
@@ -112,6 +112,7 @@ export default {
             disapprovedCount: 0,
             disapprovedReqs: [],
             reqs: [],
+            counter: 0,
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -122,38 +123,31 @@ export default {
                     title: "COMMENTS",
                 },
             ],
-            tables: [{
-                    credential: "Articles of Incorporation and By-Laws..",
-                    file: "ArticlesofInc.pdf",
-                    comment: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit.",
-                },
-                {
-                    credential: "Copy(ies) of Transfer of Certificate(s) Title (TCT)",
-                    file: "Copy(ies)ofTransferof.pdf",
-                    comment: "",
-                },
-                {
-                    credential: "Ownership of School Building",
-                    file: "OwnershipofSchoolBuilding.pdf",
-                    comment: "",
-                },
-                {
-                    credential: "Campus Development and Landscaping Plan",
-                    file: "CampusDevelopme.pdf",
-                    comment: "",
-                },
-            ],
             search: "",
         };
     },
     setup() {
         const active = ref(false);
         let dropzoneFile = ref("");
+        let tables = ref([])
+        let counter = ref(0)
         const drop = (e) => {
             dropzoneFile.value = e.dataTransfer.files[0];
+            counter.value += 1;
+            tables.value.push({
+                id: counter.value,
+                file: dropzoneFile.value,
+                name: dropzoneFile.value.name,
+            });
         };
         const selectedFile = () => {
             dropzoneFile.value = document.querySelector(".dropzoneFile").files[0];
+            counter.value += 1;
+            tables.value.push({
+                id: counter.value,
+                file: dropzoneFile.value,
+                name: dropzoneFile.value.name,
+            });
         };
         const toggleActive = () => {
             active.value = !active.value;
@@ -162,11 +156,13 @@ export default {
             active,
             toggleActive,
             dropzoneFile,
+            tables,
             drop,
             selectedFile
         };
     },
     methods: {
+        
         async submitApplication(values) {
             //count how many rows have uploader
             try {
@@ -267,61 +263,6 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            var storedReqs = [];
-            // Query the application from the db
-            const applications = Parse.Object.extend("Applications");
-            const appQuery = new Parse.Query(applications);
-            appQuery.equalTo("objectId", this.id);
-            const application = await appQuery.first({
-                useMasterKey: true,
-            });
-
-            //Query the program of the application
-            const programs = Parse.Object.extend("Programs");
-            const progQuery = new Parse.Query(programs);
-            progQuery.equalTo("objectId", application.get("program"));
-            const program = await progQuery.first();
-
-            //Query the applicationType of the application
-            const appTypes = Parse.Object.extend("ApplicationTypes");
-            const appTypeQuery = new Parse.Query(appTypes);
-            appTypeQuery.equalTo("objectId", application.get("applicationType"));
-            const appType = await appTypeQuery.first();
-            this.status = application.get("applicationStatus");
-            this.type = appType.get("applicationTypeName");
-            this.program = program.get("programName");
-            this.reqs = application.get("requirements");
-            var months = [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December",
-            ];
-            var month = application.createdAt.getMonth();
-            var day = application.createdAt.getDate();
-            var year = application.createdAt.getFullYear();
-            this.dateApplied = months[month] + " " + day + ", " + year;
-            for (var i = 0; i < application.get("requirements").length; i++) {
-                if (application.get("requirements")[i].status == "Disapproved") {
-                    this.disapprovedReqs.push(i);
-                    this.disapprovedCount++;
-                }
-
-                storedReqs.push({
-                    credential: appType.get("applicationReqs")[i].applicationReq,
-                    file: application.get("requirements")[i].file.name(),
-                    comment: application.get("requirements")[i].comment,
-                });
-            }
-            this.tables = storedReqs;
         }
     },
 };
