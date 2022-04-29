@@ -31,6 +31,7 @@ import HEI_Application from "../views/HEI/HEI_Application.vue";
 import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
+import Comply_HEI_Application from '../views/HEI/ComplyApplication.vue';
 import AccountDetails from '../views/HEI/AccountDetails.vue';
 import ForApprovalView from '../views/HEI/ForApprovalView.vue';
 
@@ -39,6 +40,8 @@ import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
+import EditApplicationView from '../views/CHED/AppSettings/EditApplicationTypeView.vue';
+
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
 
@@ -301,6 +304,18 @@ const routes = [
         }
       },
       {
+        path: "/app-settings/edit/:appID",
+        name: "EditEvalInstView",
+        component: EditApplicationView,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'APPLICATION SETTINGS', link: '/app-settings' },
+            { name: 'EDIT APPLICATION TYPE' }
+          ]
+        }
+      },
+      {
         path: "/app-settings/appTypeView",
         name: "AppTypeView",
         component: ApplicationTypeView,
@@ -408,6 +423,18 @@ const routes = [
           breadcrumb: [
             { name: 'Application', link: '/HEIapplication' },
             { name: 'Edit' }
+          ]
+        }
+      },
+      {
+        path: "/HEIapplication/comply/:id",
+        name: "ComplyApplication",
+        component: Comply_HEI_Application,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Application', link: '/HEIapplication' },
+            { name: 'Comply' }
           ]
         }
       },

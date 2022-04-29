@@ -48,8 +48,27 @@
                             {{ table.Name }}
                         </th>
                         <td class="px-6 py-4 text-right ">
-                            <a @click="goToAppTypeView(table.Name)" href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            <div class="flex space-x-4 items-end justify-end">
+                                <a @click="goToAppTypeView(table.Name)" href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                                <router-link :to="{
+                                    name: 'EditEvalInstView',
+                                    params: {
+                                    appID: table.Id,
+                                    },
+                                }">
+                                    <a @click="nothing" href="#" class="ml-3 font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
+                                
+                                <div>
+                                    <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
+                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                        </svg>
+                                    </label>
+                                </div>
+                            </div>
                         </td>
+
                     </tr>
                 </tbody>
             </table>

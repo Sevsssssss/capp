@@ -294,7 +294,7 @@ export default {
             }
 
             if (this.statusShow.includes("NotComplied")) {
-                application.set("applicationStatus", "Non Compliant");
+                application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
