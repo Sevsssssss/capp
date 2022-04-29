@@ -55,7 +55,7 @@
         </div>
         <form @submit.prevent="submitApplication" class="p-4">
 
-            <div class="overflow-x-auto shadow-lg rounded-lg">
+            <div v-if="tables.length < 1" class="overflow-x-auto shadow-lg rounded-lg">
                 <div class="py-5 h-full flex flex-col justify-center items-center bg-white">
                     <span class="text-2xl m-5">Upload File</span>
                     <div @drop.prevent="drop; addFile" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
@@ -64,12 +64,40 @@
                         <label for="dropzoneFile">Select File</label>
                         <input type="file" id="dropzoneFile" class="dropzoneFile" />
                     </div>
-                    <span class="m-3 font-semibold">File: <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
-
                 </div>
-
             </div>
-            {{tables}}
+            <div v-if="tables.length > 0" class="overflow-x-auto shadow-lg rounded-lg">
+                <div class="flex flex-row py-3 px-4 justify-between">
+                    <div>
+                        DOCUMENTS FOR COMPLIANCE
+                    </div>
+                    <div @drop.prevent="drop; addFile" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone1 text-right">
+
+                        <label for="dropzoneFile">Add File</label>
+                        <input type="file" id="dropzoneFile" class="dropzoneFile" />
+                    </div>
+                </div>
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
+                        <tr>
+                            <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
+                                {{ header.title }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(table, index) in tables" :key="(table, index)" class="bg-white border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+                                <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a>
+                            </th>
+                            <td class="px-6 py-4 w-2/5">
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..."></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {{table}}
             <!-- BUTTONS -->
             <div class="space-x-6 p-10">
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
@@ -115,13 +143,10 @@ export default {
             summary: "",
             recommendation: "",
             headers: [{
-                    title: "CREDENTIALS",
-                },
-                {
                     title: "FILES",
                 },
                 {
-                    title: "COMMENTS",
+                    title: "DESCRIPTION",
                 },
             ],
             search: "",
@@ -148,6 +173,7 @@ export default {
                 id: counter.value,
                 file: dropzoneFile.value,
                 name: dropzoneFile.value.name,
+                desc: "",
             });
         };
         const toggleActive = () => {
@@ -175,12 +201,12 @@ export default {
             application.set("resubmittedFiles", this.tables);
             application.set("applicationStatus", "For Evaluation")
             application
-                    .save()
-                    .then((application) => {
-                        console.log("Object Updated: " + application.id);
-                    })
+                .save()
+                .then((application) => {
+                    console.log("Object Updated: " + application.id);
+                })
         },
-        
+
     },
 
     computed: {
@@ -257,4 +283,29 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.dropzone1 {}
+
+.dropzone1 label {
+    padding: 8px 12px;
+    color: #fff;
+    background-color: #0E3385;
+    transition: 0.3s ease all;
+    border-radius: 5px;
+}
+
+.dropzone1 input {
+    display: none;
+}
+
+.active-dropzone {
+    color: #fff;
+    border-color: #fff;
+    background-color: #C4C4C4;
+}
+
+.active-dropzone label {
+    background-color: #fff;
+    color: #41b883;
+}
+</style>

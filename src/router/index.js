@@ -427,7 +427,7 @@ const routes = [
         }
       },
       {
-        path: "/HEIapplication/:id",
+        path: "/HEIapplication/comply/:id",
         name: "ComplyApplication",
         component: Comply_HEI_Application,
         props: true,
