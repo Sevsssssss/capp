@@ -1,19 +1,25 @@
 <template>
 <div>
-<div @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
-    <span>Drag or Drop File</span>
-    <span>OR</span>
-    <label for="dropzoneFile">Select File</label>
-    <input type="file" id="dropzoneFile" class="dropzoneFile" />
+    <div fileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
+        <span>Drag or Drop File</span>
+        <span>OR</span>
+        <label for="dropzoneFile">Select File</label>
+        <input type="file" id="dropzoneFile" class="dropzoneFile" />
+    </div>
+    <span class="mt-5 font-semibold">File:
+        <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
+    <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue" type="submit">
+        Submit
+    </button>
 </div>
-<span class="mt-5 font-semibold">File: <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
-<button class="btn-small mt-4 font-normal bg-brand-darkblue">Submit</button></div>
 </template>
 
 <script>
 import {
     ref
 } from "vue";
+import Parse from 'parse';
+import Worker from "@/js/hei.worker.js";
 export default {
     setup() {
         const active = ref(false);
@@ -32,9 +38,100 @@ export default {
             toggleActive,
             dropzoneFile,
             drop,
-            selectedFile
+            selectedFile,
         };
+    },
+    methods: {
+        validate(filename) {
+            console.log("validate")
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+            if (filename === "") {
+                this.className = "alert-error";
+                return false;
+            } else if (regex.test(filename.name)) {
+                return true;
+            } else {
+                alert("Please upload a .xlsx file!");
+                return false;
+            }
+        },
+        createWorker(data, self) {
+            console.log("worker")
+            // var worker1 = new Worker();
+            // if (typeof Worker !== "undefined") {
+                console.log("in worker")
+                if (typeof self.worker == "undefined") {
+                    console.log('setWorker')
+                    self.worker = new Worker();
+                }
+                self.worker.postMessage({
+                    d: data
+                });
 
+                self.worker.onmessage = function (event) {
+                    console.log('onMessage')
+                    if (event.data.complete) {
+                        console.log("Successfully parsed xlsx file!");
+                        self.storeHEIs(
+                            event.data.rows,
+                        );
+                    } else {
+                        self.pending = false;
+                        alert(event.data.reason);
+                    }
+                };
+            // }
+        },
+        upload() {
+            console.log("upload")
+            var validation = this.validate(this.dropzoneFile);
+            if (validation) {
+                this.pending = true;
+                const self = this;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    try {
+                        self.createWorker(data, self);
+                    } catch (e) {
+                        console.log(e);
+                        this.pending = false;
+                    }
+                };
+                reader.readAsArrayBuffer(this.dropzoneFile);
+            }
+        },
+        
+        async storeHEIs(heiData) {
+            console.log("store")
+            for (let i = 0; i < heiData.length; i++) {
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("name", "HEI");
+
+                const accQuerResult = await queryACC.first();
+
+                this.hei_acc_id = accQuerResult.id;
+                try {
+                    const newHEI = new Parse.User();
+                    newHEI.set("hei_name", heiData[i].A);
+                    newHEI.set("username", heiData[i].B);
+                    newHEI.set("password", "password");
+                    newHEI.set("email", heiData[i].C);
+                    newHEI.set("address", heiData[i].D);
+                    newHEI.set("number", heiData[i].E.toString());
+                    newHEI.set("inst_code", heiData[i].F.toString());
+                    newHEI.set("hei_type", heiData[i].G);
+                    newHEI.set("access_type", this.hei_acc_id);
+                    newHEI.set("hasTransactions", false);
+                    await newHEI.save();
+            
+                } catch (error) {
+                    console.log(error.message);
+                }
+            }
+            this.pending = false;
+        },
     },
 };
 </script>
@@ -48,7 +145,7 @@ export default {
     justify-content: center;
     align-items: center;
     row-gap: 16px;
-    border: 2px dashed #C4C4C4;
+    border: 2px dashed #c4c4c4;
     background-color: #fff;
     transition: 0.3s ease all;
 }
@@ -56,7 +153,7 @@ export default {
 .dropzone label {
     padding: 8px 12px;
     color: #fff;
-    background-color: #0E3385;
+    background-color: #0e3385;
     transition: 0.3s ease all;
     border-radius: 5px;
 }
@@ -68,7 +165,7 @@ export default {
 .active-dropzone {
     color: #fff;
     border-color: #fff;
-    background-color: #C4C4C4;
+    background-color: #c4c4c4;
 }
 
 .active-dropzone label {
