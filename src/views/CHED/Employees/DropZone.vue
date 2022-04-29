@@ -12,6 +12,8 @@
         Submit
     </button>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+
+    
 </div>
 </template>
 
