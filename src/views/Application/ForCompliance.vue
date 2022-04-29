@@ -152,6 +152,7 @@ export default {
             type: "",
             supervisors: [],
             selectedSupervisor: "Select A Supervisor",
+            files: [],
             el: document.body,
             headers: [{
                     title: "CREDENTIALS",
@@ -418,6 +419,7 @@ export default {
                 file: application.get("requirements")[i].file.url(),
             });
         }
+        this.files = application.get("resubmittedFiles")
 
         this.tables = storedApplications;
     },

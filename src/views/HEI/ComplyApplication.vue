@@ -75,7 +75,7 @@
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
                 </button>
-                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click="submitFiles()">
                     Submit
                 </button>
             </div>
@@ -85,16 +85,16 @@
 </template>
 
 <script>
-import {
-    useToast,
-    TYPE,
-    POSITION
-} from "vue-toastification";
+// import {
+//     useToast,
+//     TYPE,
+//     POSITION
+// } from "vue-toastification";
 import {
     ref
 } from "vue";
 import Parse from "parse";
-const toast = useToast();
+//const toast = useToast();
 export default {
     props: ["id"],
     name: "ComplyApplication",
@@ -112,7 +112,8 @@ export default {
             disapprovedCount: 0,
             disapprovedReqs: [],
             reqs: [],
-            counter: 0,
+            summary: "",
+            recommendation: "",
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -157,82 +158,29 @@ export default {
             toggleActive,
             dropzoneFile,
             tables,
+            counter,
             drop,
             selectedFile
         };
     },
     methods: {
-        
-        async submitApplication(values) {
-            //count how many rows have uploader
-            try {
-                let requirement = null;
-                const applications = Parse.Object.extend("Applications");
-                const appQuery = new Parse.Query(applications);
-                appQuery.equalTo("objectId", this.id);
-                const application = await appQuery.first({
-                    useMasterKey: true,
-                });
+        async submitFiles() {
+            const ApplicationCollect = Parse.Object.extend("Applications");
+            const applQuery = new Parse.Query(ApplicationCollect);
+            applQuery.equalTo("objectId", this.id);
+            const application = await applQuery.first({
+                useMasterKey: true,
+            });
 
-                for (var i = 0; i < this.disapprovedCount; i++) {
-                    const file = values.target[i].files[0];
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
-                    requirement = new Parse.File(
-                        file.name.replace(/[^a-zA-Z]/g, ""),
-                        file,
-                        file.type
-                    );
-                    this.reqs[this.disapprovedReqs[i]].file = requirement;
-                    this.reqs[this.disapprovedReqs[i]].status = "";
-                    this.reqs[this.disapprovedReqs[i]].comment = "";
-                }
-                for (var j = 0; j < this.reqs.length; j++) {
-                    this.reqs[j].status = "";
-                    this.reqs[j].comment = "";
-                }
-
-                application
-                    .save({
-                        requirements: this.reqs,
-                        applicationStatus: "For Approval",
-                        selectedSupervisor: "",
+            application.set("resubmittedFiles", this.tables);
+            application.set("applicationStatus", "For Evaluation")
+            application
+                    .save()
+                    .then((application) => {
+                        console.log("Object Updated: " + application.id);
                     })
-                    .then(
-                        (application) => {
-                            toast("Application Updated: " + application.id, {
-                                    type: TYPE.SUCCESS,
-                                    timeout: 3000,
-                                    position: POSITION.TOP_RIGHT,
-                                }),
-                                setTimeout(() => {
-                                    this.$router.replace({
-                                        path: "/HEIapplication"
-                                    });
-                                }, 3000);
-                            // console.log("New Access Type Added:" + newApplication.id)
-                        },
-                        (e) => {
-                            toast("Application Update Failed: " + e.message, {
-                                type: TYPE.ERROR,
-                                timeout: 2000,
-                                hideProgressBar: true,
-                                position: POSITION.TOP_RIGHT,
-                            });
-                            // alert("Access Type Adding Failed: " + error)
-                        }
-                    );
-            } catch (error) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error);
-            }
         },
+        
     },
 
     computed: {
@@ -263,6 +211,47 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const applications = Parse.Object.extend("Applications");
+            const appQuery = new Parse.Query(applications);
+            appQuery.equalTo("objectId", this.id);
+            const application = await appQuery.first({
+                useMasterKey: true,
+            });
+
+            //Query the program of the application
+            const programs = Parse.Object.extend("Programs");
+            const progQuery = new Parse.Query(programs);
+            progQuery.equalTo("objectId", application.get("program"));
+            const program = await progQuery.first();
+            //Query the applicationType of the application
+            const appTypes = Parse.Object.extend("ApplicationTypes");
+            const appTypeQuery = new Parse.Query(appTypes);
+            appTypeQuery.equalTo("objectId", application.get("applicationType"));
+            const appType = await appTypeQuery.first();
+            this.status = application.get("applicationStatus");
+            this.type = appType.get("applicationTypeName");
+            this.program = program.get("programName");
+            this.reqs = application.get("requirements");
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var month = application.createdAt.getMonth();
+            var day = application.createdAt.getDate();
+            var year = application.createdAt.getFullYear();
+            this.dateApplied = months[month] + " " + day + ", " + year;
+            this.summary = application.get("summary");
+            this.recommendation = application.get("recommendation")
         }
     },
 };
