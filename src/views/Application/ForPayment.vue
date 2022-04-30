@@ -185,18 +185,6 @@ export default {
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-
-                var requirements = [];
-
-                for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
-                        status: this.statusShow[i],
-                        comment: this.comment[i],
-                    });
-                }
-                application.set("requirements", requirements);
                 application.set("applicationStatus", "For Evaluation");
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
