@@ -22,9 +22,34 @@
             </div>
         </div>
         <hr />
+
+        <div class="m-2">
+            <div class="alert alert-info shadow-lg my-5">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Please Proceed with payment to CHED Region V and upload the receipts here.</span>
+                </div>
+            </div>
+            <div class="">
+                <label class="label">
+                    <span class="label-text">Upload Proof of Payment for Application:</span>
+                    <span class="label-text-alt">required</span>
+                </label>
+                <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+            </div>
+            <div class="">
+                <label class="label">
+                    <span class="label-text">Upload Proof of Payment for Evaluation:</span>
+                    <span class="label-text-alt">required</span>
+                </label>
+                <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+            </div>
+        </div>
     </div>
     <div class="m-3">
-        
+
     </div>
 </div>
 </template>
@@ -38,7 +63,7 @@ import {
 import Parse from "parse";
 const toast = useToast();
 export default {
-    props: ["id", "statusA"], 
+    props: ["id", "statusA"],
     name: "PaymentApplication",
     data() {
         return {

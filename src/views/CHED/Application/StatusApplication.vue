@@ -32,6 +32,9 @@
         <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
             <ForApproval :appID="appID" />
         </div>
+        <div v-if="status.toUpperCase() === 'FOR PAYMENT'">
+            <ForPayment :appID="appID" />
+        </div>
         <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
             <ForRevision :appID="appID" />
         </div>
@@ -55,6 +58,7 @@
 
 <script>
 import ForApproval from "../../Application/ForApproval.vue";
+import ForPayment from "../../Application/ForPayment.vue";
 import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
 import ForCompliance from "../../Application/ForCompliance.vue";
@@ -68,6 +72,7 @@ export default {
     name: "StatusApplication",
     components: {
         ForApproval,
+        ForPayment,
         ForEvaluation,
         ForRevision,
         ForCompliance,

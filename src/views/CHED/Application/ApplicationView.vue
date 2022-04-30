@@ -92,11 +92,15 @@
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
                             </div>
-
                             <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
                                 {{ table.status }}
                             </div>
-
+                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                                {{ table.status }}
+                            </div>
                             <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
                                 {{ table.status }}
                             </div>
