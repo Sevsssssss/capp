@@ -56,23 +56,13 @@
         </div>
         <form @submit.prevent="submitApplication" class="p-4">
 
-            <div v-if="tables.length < 1" class="overflow-x-auto shadow-lg rounded-lg">
-                <div class="py-5 h-full flex flex-col justify-center items-center bg-white">
-                    <span class="text-2xl m-5">Upload File</span>
-                    <div @drop.prevent="drop; addFile" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
-                        <span>Drag or Drop File</span>
-                        <span>OR</span>
-                        <label for="dropzoneFile">Select File</label>
-                        <input type="file" id="dropzoneFile" class="dropzoneFile" />
-                    </div>
-                </div>
-            </div>
-            <div v-if="tables.length > 0" class="overflow-x-auto shadow-lg rounded-lg">
+            
+            <div class="overflow-x-auto shadow-lg rounded-lg">
                 <div class="flex flex-row py-3 px-4 justify-between">
                     <div>
                         DOCUMENTS FOR COMPLIANCE
                     </div>
-                    <div @drop.prevent="drop; addFile" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone1 text-right">
+                    <div class="dropzone1 text-right">
 
                         <label for="dropzoneFile">Add File</label>
                         <input type="file" id="dropzoneFile" class="dropzoneFile" />
@@ -88,14 +78,13 @@
                     </thead>
                     <tbody>
                         <tr v-for="(table, index) in tables" :key="(table, index)" class="bg-white border-b">
+                            
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                                <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a>
+                                <input  accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
+                                <!-- <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a> -->
                             </th>
                             <td class="px-6 py-4 w-2/5">
                                 <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="tables[index].desc"></textarea>
-                            </td>
-                            <td>
-                                <input  accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                             </td>
                         </tr>
                     </tbody>
