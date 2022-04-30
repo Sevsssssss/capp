@@ -44,8 +44,8 @@
          <div v-else-if="status.toUpperCase() === 'FOR EVALUATION ASSIGNED'">
             <ForEvalAssigned :appID="appID" />
         </div>
-        <div v-else-if="status.toUpperCase() === 'FOR COMPLIANCE'">
-            <ForCompliance :appID="appID"/>
+        <div v-else-if="status.toUpperCase() === 'FOR VERIFICATION'">
+            <ForVerification :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
             <ForIssuance :appID="appID"/>>
@@ -61,7 +61,7 @@ import ForApproval from "../../Application/ForApproval.vue";
 import ForPayment from "../../Application/ForPayment.vue";
 import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
-import ForCompliance from "../../Application/ForCompliance.vue";
+import ForVerification from "../../Application/ForVerification.vue";
 import ForIssuance from "../../Application/ForIssuance.vue";
 import ForCompleted from "../../Application/ForCompletedView.vue";
 import ForEvalAssigned from "../../Application/ForEvalAssigned.vue";
@@ -75,7 +75,7 @@ export default {
         ForPayment,
         ForEvaluation,
         ForRevision,
-        ForCompliance,
+        ForVerification,
         ForIssuance,
         ForCompleted,
         ForEvalAssigned,

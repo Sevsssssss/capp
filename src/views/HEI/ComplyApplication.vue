@@ -94,6 +94,9 @@
                             <td class="px-6 py-4 w-2/5">
                                 <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="tables[index].desc"></textarea>
                             </td>
+                            <td>
+                                <input  accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -201,7 +204,7 @@ export default {
             });
 
             application.set("resubmittedFiles", this.tables);
-            application.set("applicationStatus", "For Evaluation")
+            application.set("applicationStatus", "For Verification")
             application
                 .save()
                 .then((application) => {
