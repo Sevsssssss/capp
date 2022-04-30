@@ -389,7 +389,7 @@ export default {
             setTimeout(
               () =>
                 this.$router.push({
-                  path: "/hei",
+                  path: "/hei/account",
                 }),
               2000
             );

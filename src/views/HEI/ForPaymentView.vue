@@ -22,38 +22,34 @@
             </div>
         </div>
         <hr />
-    </div>
-    <div class="m-3">
-        <form @submit.prevent="submitApplication">
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
-                                {{ header.title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                                {{ table.credential }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ table.file }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ table.comment }}
-                            </td>
-                            <td class="flex items-end px-6 py-4">
-                                <a v-if="table.comment === ''"></a>
-                                <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+        <form @submit.prevent="submitPayment" class="m-5">
+            <div class="alert alert-info shadow-lg my-5">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Please Proceed with payment to CHED Region V and upload the receipts here.</span>
+                </div>
             </div>
-            <!-- BUTTONS -->
+            <div class="overflow-x-auto shadow-lg rounded-lg p-5">
+                <div class="">
+                    <label class="label">
+                        <span class="label-text">Upload Proof of Payment for Application:</span>
+                        <span class="label-text-alt">required</span>
+                    </label>
+                    <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+                </div>
+                <div class="">
+                    <label class="label">
+                        <span class="label-text">Upload Proof of Payment for Evaluation:</span>
+                        <span class="label-text-alt">required</span>
+                    </label>
+                    <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+                </div>
+            </div>
+
+        <!-- BUTTONS -->
             <div class="space-x-6 p-10">
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
@@ -63,6 +59,9 @@
                 </button>
             </div>
         </form>
+    </div>
+    <div class="m-3">
+
     </div>
 </div>
 </template>
@@ -76,8 +75,8 @@ import {
 import Parse from "parse";
 const toast = useToast();
 export default {
-    props: ["id"],
-    name: "EditHEIapplication",
+    props: ["id", "statusA"],
+    name: "PaymentApplication",
     data() {
         return {
             // id: this.$route.params.id,
@@ -91,15 +90,12 @@ export default {
             program: "",
             disapprovedCount: 0,
             disapprovedReqs: [],
-            reqs: [],
+            payment: [],
             headers: [{
                     title: "CREDENTIALS",
                 },
                 {
                     title: "FILES",
-                },
-                {
-                    title: "COMMENTS",
                 },
             ],
             tables: [{
@@ -127,10 +123,10 @@ export default {
         };
     },
     methods: {
-        async submitApplication(values) {
+        async submitPayment(values) {
             //count how many rows have uploader
             try {
-                let requirement = null;
+                let pay = null;
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
                 appQuery.equalTo("objectId", this.id);
@@ -138,30 +134,22 @@ export default {
                     useMasterKey: true,
                 });
 
-                for (var i = 0; i < this.disapprovedCount; i++) {
+                for (var i = 0; i < 2; i++) {
                     const file = values.target[i].files[0];
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
-                    requirement = new Parse.File(
+                    pay = new Parse.File(
                         file.name.replace(/[^a-zA-Z]/g, ""),
                         file,
                         file.type
                     );
-                    this.reqs[this.disapprovedReqs[i]].file = requirement;
-                    this.reqs[this.disapprovedReqs[i]].status = "";
-                    this.reqs[this.disapprovedReqs[i]].comment = "";
-                }
-                for (var j = 0; j < this.reqs.length; j++) {
-                    this.reqs[j].status = "";
-                    this.reqs[j].comment = "";
+                    this.payment.push({
+                        file: pay,
+                        paymentFor: i == 0 ? "Application" : "Evaluation",
+                    })
                 }
 
                 application
                     .save({
-                        requirements: this.reqs,
-                        applicationStatus: "For Approval",
-                        selectedSupervisor: "",
+                        payment: this.payment,
                     })
                     .then(
                         (application) => {
@@ -172,7 +160,7 @@ export default {
                                 }),
                                 setTimeout(() => {
                                     this.$router.replace({
-                                        path: "/HEIapplication"
+                                        path: "/hei/application"
                                     });
                                 }, 3000);
                             // console.log("New Access Type Added:" + newApplication.id)

@@ -346,11 +346,12 @@ export default {
         query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
+        var homeType = querResult[0].get("hometype");
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
             console.log(accType[y])
-            if (accType[y] === "/assignments") {
+            if (homeType === "/rqat/assignments") {
                 flag = 1;
             }
         }

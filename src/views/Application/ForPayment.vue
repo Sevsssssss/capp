@@ -1,6 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{comment}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">
@@ -16,27 +15,22 @@
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                     <tr>
-                        <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
-                            {{ header.title }}
+                        <th scope="col" class="px-6 py-3">
+                            Proof of Payment for Application:
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Proof of Payment for Evaluation:
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
+                    <tr class="bg-white border-b">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="table.file" target="_blank" class="text-blue-400">{{ table.credential }}</a>
+                            <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment1</a>
                         </th>
-                        <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" />
-                        </td>
-                        <td class="px-6 py-4 ">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
-                        </td>
-                        <td class="px-6 py-4 w-2/5">
-                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id - 1]"></textarea>
-                            <textarea v-else-if="statusShow[table.id - 1] === 'Approved' || statusShow[table.id - 1] === null " disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
-                            <textarea v-else disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
-                        </td>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment2</a>
+                        </th>
                     </tr>
                 </tbody>
             </table>
@@ -61,13 +55,10 @@
     </div>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ACCEPT APPLICATION?</div>
+            <div class="font-semibold text-md">ASSIGN SUPERVISOR</div>
 
-            <div class="modal-action">
-                <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitApproval()">Continue</label>
-            </div>
-            <!-- <div class="flex flex-row py-6 justify-start items-start">
+            
+            <div class="flex flex-row py-6 justify-start items-start">
                 <div class="month-sort flex flex-row border rounded-md w-full">
                     <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
                         <option disabled>
@@ -82,7 +73,7 @@
             <div class="modal-action">
                 <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
-            </div> -->
+            </div>
         </div>
     </div>
     <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
@@ -127,6 +118,8 @@ export default {
             v$: useVuelidate(),
             comment: [],
             type: "",
+            applicationPaymentURL: "",
+            evaluationPaymentURL: "",
             supervisors: [],
             selectedSupervisor: "Select A Supervisor",
             el: document.body,
@@ -192,18 +185,6 @@ export default {
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-
-                var requirements = [];
-
-                for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
-                        status: this.statusShow[i],
-                        comment: this.comment[i],
-                    });
-                }
-                application.set("requirements", requirements);
                 application.set("applicationStatus", "For Evaluation");
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
@@ -283,70 +264,21 @@ export default {
                 console.log(error);
             }
         },
-        async submitApproval() {
-            try {
-                const applications = Parse.Object.extend("Applications");
-                const query = new Parse.Query(applications);
-                query.equalTo("objectId", this.appID);
-
-                const application = await query.first();
-
-                var requirements = [];
-
-                for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
-                        status: this.statusShow[i],
-                        comment: this.comment[i],
-                    });
-                }
-                application.set("requirements", requirements);
-                application.set("applicationStatus", "For Payment");
-                application.set("selectedSupervisor", "");
-
-                application
-                    .save()
-                    .then((application) => {
-                        toast(this.type.toLowerCase() + " has been accepted and moved for payment", {
-                                type: TYPE.INFO,
-                                timeout: 2000,
-                                position: POSITION.TOP_RIGHT,
-                                hideProgressBar: false,
-                                closeButton: false,
-
-                            }),
-                            console.log("Object Updated: " + application.id);
-                    })
-
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
-                    })
-                }, 2000);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-
-            } catch (error) {
-                alert("Error" + error.message);
-                console.log(error);
-            }
-        },
+        
         modal() {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
-            if (
-                this.statusShow.filter(x => x == "Approved").length != this.statusShow.length
-            ) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                has_error = 1;
-            }
+            // if (
+            //     this.statusShow.filter(x => x == "Approved").length != this.statusShow.length
+            // ) {
+            //     toast("Please fill out the required information", {
+            //         type: TYPE.ERROR,
+            //         timeout: 3000,
+            //         hideProgressBar: true,
+            //         position: POSITION.TOP_RIGHT,
+            //     });
+            //     has_error = 1;
+            // }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
             }
@@ -394,6 +326,8 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        this.applicationPaymentURL = application.get("payment")[0].file.url()
+        this.evaluationPaymentURL = application.get("payment")[1].file.url()
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

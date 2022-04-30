@@ -92,11 +92,15 @@
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                                 {{ table.status }}
                             </div>
-
                             <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
                                 {{ table.status }}
                             </div>
-
+                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                                {{ table.status }}
+                            </div>
                             <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
                                 {{ table.status }}
                             </div>
@@ -107,6 +111,7 @@
                                 name: 'StatusApplication',
                                 params: {
                                 appID: table.appID,
+                                status: table.status,
                                 },
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
@@ -675,37 +680,47 @@ export default {
             this.datas = [{
                     title: "FOR APPROVAL",
                     num: await queryFA.count(),
-                    color: "orange",
+                    type: "approval",
                 },
                 {
                     title: "FOR REVISION",
                     num: await queryFR.count(),
-                    color: "blue",
+                    type: "revision",
+                },
+                {
+                    title: "FOR PAYMENT",
+                    num: await queryFR.count(),
+                    type: "payment",
                 },
                 {
                     title: "FOR EVALUATION",
                     num: await queryFE.count(),
-                    color: "pink",
+                    type: "evaluation",
                 },
                 {
                     title: "FOR COMPLIANCE",
                     num: await queryFC.count(),
-                    color: "yellow",
+                    type: "forcompliance",
+                },
+                {
+                    title: "FOR VERIFICATION",
+                    num: await queryFR.count(),
+                    type: "verification",
                 },
                 {
                     title: "FOR ISSUANCE",
                     num: await queryFI.count(),
-                    color: "violet",
+                    type: "issuance",
                 },
                 {
                     title: "COMPLETED",
                     num: await queryC.count(),
-                    color: "green",
+                    type: "completed",
                 },
                 {
                     title: "NON COMPLIANT",
                     num: await queryNC.count(),
-                    color: "red",
+                    type: "noncompliant",
                 },
             ];
         }
