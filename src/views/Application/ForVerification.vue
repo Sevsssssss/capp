@@ -1,5 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
+    {{tables}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">
@@ -49,9 +50,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
+                    <tr v-for="table in tables" :key="table" class="bg-white border-b">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="table.file" target="_blank" class="text-blue-400">{{ table.credential }}</a>
+                            <a :href="table.file" target="_blank" class="text-blue-400">{{ table.desc }}</a>
                         </th>
                         <td class="px-6 py-4">
                             <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" />
@@ -110,7 +111,7 @@
     </div>
     <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">REVISE {{ type }}</div>
+            <div class="font-semibold text-md">RETURN {{ type }}</div>
             <p class="py-2 text-sm">
                 Are you sure??
             </p>
@@ -186,15 +187,6 @@ export default {
             },
         }
     },
-    computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
-                return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                );
-            });
-        },
-    },
     methods: {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
@@ -267,23 +259,26 @@ export default {
 
                 const application = await query.first();
 
-                var requirements = [];
+                var filesToResubmit = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
+                    filesToResubmit.push({
+                        id: application.get("resubmittedFiles")[i].id,
+                        file: application.get("resubmittedFiles")[i].file.url(),
+                        desc: application.get("resubmittedFiles")[i].desc,
                         status: this.statusShow[i],
                         comment: this.comment[i],
                     });
                 }
-                application.set("requirements", requirements);
-                application.set("applicationStatus", "For Revision");
+
+                application.set("resubmittedFiles", filesToResubmit);
+                // application.set("requirements", requirements);
+                application.set("applicationStatus", "For Compliance");
 
                 application
                     .save()
                     .then((application) => {
-                        toast(this.type.toLowerCase() + " has been moved for revision", {
+                        toast(this.type.toLowerCase() + " has been moved for compliance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
@@ -295,7 +290,7 @@ export default {
 
                 setTimeout(() => {
                     this.$router.replace({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
+                        path: "/application",
                     })
                 }, 2000);
                 setTimeout(() => {
@@ -304,7 +299,7 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
+                // console.log(error);
             }
         },
         modal() {
@@ -377,7 +372,6 @@ export default {
             application.get("applicationType")
         );
 
-        const applicationType = await appTypeQuery.first();
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
 
@@ -410,13 +404,13 @@ export default {
 
         this.supervisors = dbSupervisors;
 
-        for (var i = 0; i < application.get("requirements").length; i++) {
+        for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
             this.statusShow.push("");
             this.comment.push("");
             storedApplications.push({
-                id: application.get("requirements")[i].id,
-                credential: applicationType.get("applicationReqs")[i].applicationReq,
-                file: application.get("requirements")[i].file.url(),
+                id: application.get("resubmittedFiles")[i].id,
+                file: application.get("resubmittedFiles")[i].file.url(),
+                desc: application.get("resubmittedFiles")[i].desc,
             });
         }
         this.files = application.get("resubmittedFiles")

@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="mx-3">
-        {{tables}}
+        {{filesReturned}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
@@ -61,7 +61,7 @@
                     <div>
                         DOCUMENTS FOR COMPLIANCE
                     </div>
-                    <div class="h-fit pr-5 pt-3 items-center">
+                    <div v-if="filesReturned.length < 1" class="h-fit pr-5 pt-3 items-center">
                         <button @click="addFile()" type="button" class="btn-table">
                             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="none" d="M0 0h24v24H0z" />
@@ -71,7 +71,7 @@
                         </button>
                     </div>
                 </div>
-                <table class="w-full text-sm text-left text-gray-500">
+                <table v-if="filesReturned.length < 1" class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                         <tr>
                             <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
@@ -86,7 +86,33 @@
                                 <!-- <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a> -->
                             </th>
                             <td class="px-6 py-4 w-2/5">
-                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="desc[index]"></textarea>
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="desc.desc"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                File
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Comments
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="table in filesReturned" :key="table" class="bg-white border-b">
+                            <th v-if="table.comment !== ''" scope="row" class="px-6 py-4 font-medium text-gray-900">
+                                <a :href="table.file" target="_blank" class="text-blue-400">{{ table.desc }}</a>
+                            </th>
+                            <td v-if="table.comment !== ''" class="px-6 py-4">
+                                {{ table.comment }}
+                            </td>
+                            <td v-if="table.comment !== ''" class="flex items-end px-6 py-4">
+                                <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                             </td>
                         </tr>
                     </tbody>
@@ -134,6 +160,7 @@ export default {
             disapprovedReqs: [],
             reqs: [],
             desc: [],
+            filesReturned: [],
             summary: "",
             recommendation: "",
             headers: [{
@@ -161,19 +188,20 @@ export default {
                 useMasterKey: true,
             });
 
-            for (var i = 1; i < this.desc.length*2; i+=2) {
+            for (var i = 1; i < this.desc.length * 2; i += 2) {
                 const file = values.target[i].files[0];
                 console.log(file.name)
-                
+
                 files = new Parse.File(
                     file.name.replace(/[^a-zA-Z]/g, ""),
                     file,
                     file.type
                 );
                 filesToResubmit.push({
+                    id: this.counter,
                     file: files,
                     name: files.name,
-                    desc: this.desc[counter],
+                    desc: this.desc[counter].desc,
                 })
                 counter++;
             }
@@ -181,7 +209,7 @@ export default {
             application.set("resubmittedFiles", filesToResubmit);
             application.set("applicationStatus", "For Verification")
             application
-            .save()
+                .save()
                 .then(
                     (application) => {
                         toast("Application Updated: " + application.id, {
@@ -207,9 +235,8 @@ export default {
                     }
                 );
         },
-        addFile(){
+        addFile() {
             this.desc.push({
-                id: this.counter,
                 desc: "",
             })
             this.counter = this.counter + 1;
@@ -286,6 +313,8 @@ export default {
             this.dateApplied = months[month] + " " + day + ", " + year;
             this.summary = application.get("summary");
             this.recommendation = application.get("recommendation")
+
+            this.filesReturned = application.get("resubmittedFiles");
         }
     },
 };
