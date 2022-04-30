@@ -56,16 +56,19 @@
         </div>
         <form @submit.prevent="submitApplication" class="p-4">
 
-            
             <div class="overflow-x-auto shadow-lg rounded-lg">
-                <div class="flex flex-row py-3 px-4 justify-between">
+                <div class="flex flex-row py-3 px-4 items-center justify-between">
                     <div>
                         DOCUMENTS FOR COMPLIANCE
                     </div>
-                    <div class="dropzone1 text-right">
-
-                        <label for="dropzoneFile">Add File</label>
-                        <input type="file" id="dropzoneFile" class="dropzoneFile" />
+                    <div class="h-fit pr-5 pt-3 items-center">
+                        <button @click="addFile()" type="button" class="btn-table">
+                            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                            </svg>
+                            <div class="pl-2">Add File</div>
+                        </button>
                     </div>
                 </div>
                 <table class="w-full text-sm text-left text-gray-500">
@@ -77,14 +80,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(table, index) in tables" :key="(table, index)" class="bg-white border-b">
-                            
+                        <tr v-for="(desc, index) in desc" :key="(desc, index)" class="bg-white border-b">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                                <input  accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
+                                <input accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                                 <!-- <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a> -->
                             </th>
                             <td class="px-6 py-4 w-2/5">
-                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="tables[index].desc"></textarea>
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="desc[index]"></textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -111,9 +113,7 @@
 //     TYPE,
 //     POSITION
 // } from "vue-toastification";
-import {
-    ref
-} from "vue";
+
 import Parse from "parse";
 //const toast = useToast();
 export default {
@@ -133,7 +133,7 @@ export default {
             disapprovedCount: 0,
             disapprovedReqs: [],
             reqs: [],
-            comments: [],
+            desc: [],
             summary: "",
             recommendation: "",
             headers: [{
@@ -144,43 +144,7 @@ export default {
                 },
             ],
             search: "",
-        };
-    },
-    setup() {
-        const active = ref(false);
-        let dropzoneFile = ref("");
-        let tables = ref([])
-        let counter = ref(0)
-        const drop = (e) => {
-            dropzoneFile.value = e.dataTransfer.files[0];
-            counter.value += 1;
-            tables.value.push({
-                id: counter.value,
-                file: dropzoneFile.value,
-                name: dropzoneFile.value.name,
-            });
-        };
-        const selectedFile = () => {
-            dropzoneFile.value = document.querySelector(".dropzoneFile").files[0];
-            counter.value += 1;
-            tables.value.push({
-                id: counter.value,
-                file: dropzoneFile.value,
-                name: dropzoneFile.value.name,
-                desc: "",
-            });
-        };
-        const toggleActive = () => {
-            active.value = !active.value;
-        };
-        return {
-            active,
-            toggleActive,
-            dropzoneFile,
-            tables,
-            counter,
-            drop,
-            selectedFile
+            descCounter: 0,
         };
     },
     methods: {
@@ -200,6 +164,13 @@ export default {
                     console.log("Object Updated: " + application.id);
                 })
         },
+        addFile(){
+            this.desc.push({
+                id: this.counter,
+                desc: "",
+            })
+            this.counter = this.counter + 1;
+        }
 
     },
 
