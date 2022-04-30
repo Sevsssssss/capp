@@ -54,7 +54,7 @@
                 </tbody>
             </table>
         </div>
-        <form @submit.prevent="submitApplication" class="p-4">
+        <form @submit.prevent="submitFiles" class="p-4">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
                 <div class="flex flex-row py-3 px-4 items-center justify-between">
@@ -98,7 +98,7 @@
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
                 </button>
-                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click="submitFiles()">
+                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Submit
                 </button>
             </div>
@@ -108,14 +108,14 @@
 </template>
 
 <script>
-// import {
-//     useToast,
-//     TYPE,
-//     POSITION
-// } from "vue-toastification";
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 
 import Parse from "parse";
-//const toast = useToast();
+const toast = useToast();
 export default {
     props: ["id"],
     name: "ComplyApplication",
@@ -148,21 +148,64 @@ export default {
         };
     },
     methods: {
-        async submitFiles() {
-            const ApplicationCollect = Parse.Object.extend("Applications");
-            const applQuery = new Parse.Query(ApplicationCollect);
-            applQuery.equalTo("objectId", this.id);
-            const application = await applQuery.first({
+        async submitFiles(values) {
+            console.log(values)
+            var filesToResubmit = [];
+            var counter = 0;
+
+            let files = null;
+            const applications = Parse.Object.extend("Applications");
+            const appQuery = new Parse.Query(applications);
+            appQuery.equalTo("objectId", this.id);
+            const application = await appQuery.first({
                 useMasterKey: true,
             });
 
-            application.set("resubmittedFiles", this.tables);
+            for (var i = 1; i < this.desc.length*2; i+=2) {
+                const file = values.target[i].files[0];
+                console.log(file.name)
+                
+                files = new Parse.File(
+                    file.name.replace(/[^a-zA-Z]/g, ""),
+                    file,
+                    file.type
+                );
+                filesToResubmit.push({
+                    file: files,
+                    name: files.name,
+                    desc: this.desc[counter],
+                })
+                counter++;
+            }
+
+            application.set("resubmittedFiles", filesToResubmit);
             application.set("applicationStatus", "For Verification")
             application
-                .save()
-                .then((application) => {
-                    console.log("Object Updated: " + application.id);
-                })
+            .save()
+                .then(
+                    (application) => {
+                        toast("Application Updated: " + application.id, {
+                                type: TYPE.SUCCESS,
+                                timeout: 3000,
+                                position: POSITION.TOP_RIGHT,
+                            }),
+                            setTimeout(() => {
+                                this.$router.replace({
+                                    path: "/hei/application"
+                                });
+                            }, 3000);
+                        // console.log("New Access Type Added:" + newApplication.id)
+                    },
+                    (e) => {
+                        toast("Application Update Failed: " + e.message, {
+                            type: TYPE.ERROR,
+                            timeout: 2000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                        // alert("Access Type Adding Failed: " + error)
+                    }
+                );
         },
         addFile(){
             this.desc.push({
