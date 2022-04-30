@@ -34,8 +34,9 @@ import HEI_Apply from "../views/HEI/HEI_Apply.vue";
 import HEI_Home from "../views/HEI/HEI_Home.vue";
 import Edit_HEI_Application from '../views/HEI/EditApplication.vue';
 import Comply_HEI_Application from '../views/HEI/ComplyApplication.vue';
+import Payment_HEI_Application from '../views/HEI/ForPaymentView.vue';
 import AccountDetails from '../views/HEI/AccountDetails.vue';
-import ForApprovalView from '../views/HEI/ForApprovalView.vue';
+// import ForApprovalView from '../views/HEI/ForApprovalView.vue';
 
 
 import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
@@ -351,7 +352,7 @@ const routes = [
         }
       },
       {
-        path: "/application/:appID",
+        path: "/application/:status=:appID",
         name: "StatusApplication",
         component: StatusApplication,
         props: true,
@@ -405,11 +406,11 @@ const routes = [
     ]
   },
   {
-    path: "/HEIPage",
+    path: "/HEIPage ",
     component: HEIViewLayout,
     children: [
       {
-        path: "/HEIhome",
+        path: "/hei/home",
         name: "HEIhome",
         component: HEI_Home,
         meta: {
@@ -419,7 +420,7 @@ const routes = [
         }
       },
       {
-        path: "/HEIapply",
+        path: "/hei/apply",
         name: "HEIapply",
         component: HEI_Apply,
         meta: {
@@ -429,59 +430,71 @@ const routes = [
         }
       },
       {
-        path: "/HEIapplication",
+        path: "/hei/application",
         name: "HEIapplication",
         component: HEI_Application,
         meta: {
           breadcrumb: [
             { name: 'Application' },
           ]
-        }
+        },
       },
       {
-        path: "/HEIapplication/:id",
+        path: "/hei/application/revise=:id",
         name: "EditHEIapplication",
         component: Edit_HEI_Application,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Application', link: '/HEIapplication' },
+            { name: 'Application', link: "/hei/application" },
             { name: 'Edit' }
           ]
         }
       },
       {
-        path: "/HEIapplication/comply/:id",
+        path: "/hei/application/comply=:id",
         name: "ComplyApplication",
         component: Comply_HEI_Application,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Application', link: '/HEIapplication' },
+            { name: 'Application', link: "/hei/application" },
             { name: 'Comply' }
           ]
         }
       },
       {
-        path: "/HEIapplication/:id",
-        name: "ForApprovalView",
-        component: ForApprovalView,
+        path: "/hei/application/payment=:id",
+        name: "PaymentApplication",
+        component: Payment_HEI_Application,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Application', link: '/HEIapplication' },
-            { name: 'View' }
+            { name: 'Application', link: "/hei/application" },
+            { name: 'Payment' }
           ]
         }
       },
+      // {
+      //   path: "/hei/application/:id",
+      //   name: "ForApprovalView",
+      //   component: ForApprovalView,
+      //   props: true,
+      //   meta: {
+      //     breadcrumb: [
+      //       { name: 'Application', link: "/hei/application" },
+      //       { name: 'View' }
+      //     ]
+      //   }
+      // },
       {
-        path: "/account",
+        path: "/hei/account",
         name: "AccountDetails",
         component: AccountDetails,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Account Details', link: '/HEIapplication' },
+            { name: 'Account Details', link: "/hei/application" },
             { name: 'View' }
           ]
         }
@@ -493,7 +506,7 @@ const routes = [
     component: RQATViewLayout,
     children: [
       {
-        path: "/assignments",
+        path: "/rqat/assignments",
         name: "Assignments",
         component: rqatEvaluationView,
         meta: {
@@ -503,19 +516,19 @@ const routes = [
         }
       },
       {
-        path: "/assignments/:id",
+        path: "/rqat/assignments/evaluate=:id",
         name: "Evaluate",
         component: rqatEvaluate,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Assignments', link: '/assignments' },
+            { name: 'Assignments', link: '/rqat/assignments' },
             { name: 'Evaluate' }
           ]
         }
       },
       {
-        path: "/history",
+        path: "/rqat/history",
         name: "History",
         component: rqatHistory,
         meta: {
@@ -524,6 +537,18 @@ const routes = [
           ]
         }
       },
+      // {
+      //   path: "/rqat/account=:id",
+      //   name: "rqatAccountDetails",
+      //   component: rqatAccountDetails,
+      //   props: true,
+      //   meta: {
+      //     breadcrumb: [
+      //       { name: 'Account Details', link: "/rqat/applications" },
+      //       { name: 'View' }
+      //     ]
+      //   }
+      // },
     ]
   },
   {

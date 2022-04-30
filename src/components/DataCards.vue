@@ -25,14 +25,7 @@ export default {
     props: ["datas"],
     data() {
         return {
-            colors: [
-                {color: "orange",},
-                {color: "blue",},
-                {color: "violet",},
-                {color: "green",},
-                {color: "red",},
-                {color: "pink",},
-            ],
+            
         };
     },
     components: {},

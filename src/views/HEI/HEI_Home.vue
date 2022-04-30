@@ -98,11 +98,12 @@ export default {
     const querResult = await query.find();
     var homeType = querResult[0].get("hometype");
     var flag = 0;
-      if (homeType === '/HEIhome') {
+      if (homeType === '/hei/home') {
         flag = 1;
       }
     if (flag === 0) {
       this.$router.push("/403");
+      console.log("HEI Home page");
     } else {
       console.log("Hi!, You have permission to access this Page");
       //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT

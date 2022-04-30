@@ -107,6 +107,7 @@
                                 name: 'StatusApplication',
                                 params: {
                                 appID: table.appID,
+                                status: table.status,
                                 },
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>

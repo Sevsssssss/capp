@@ -185,10 +185,10 @@ export default {
         const querResult = await query.find();
         var homeType = querResult[0].get("hometype");
         var flag = 0;
-        if (homeType === "/assignments") {
+        if (homeType === "/rqat/assignments") {
             flag = 1;
             this.menu.push({
-                href: "/assignments",
+                href: "/rqat/assignments",
                 title: "Assignments",
                 icon: {
                     element: "img",
@@ -210,9 +210,9 @@ export default {
 
             const querResult = await query.find();
             var userPriv = querResult[0].get("privileges");
-            if (userPriv.find((e) => e === "/assignments")) {
+            if (userPriv.find((e) => e === "/rqat/assignments")) {
                 this.menu.push({
-                    href: "/history",
+                    href: "/rqat/history",
                     title: "History",
                     icon: {
                         element: "img",

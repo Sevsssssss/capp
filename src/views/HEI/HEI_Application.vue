@@ -70,11 +70,15 @@
                         <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                             {{ table.status }}
                         </div>
-
                         <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
                             {{ table.status }}
                         </div>
-
+                        <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
+                            {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                            {{ table.status }}
+                        </div>
                         <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
                             {{ table.status }}
                         </div>
@@ -88,6 +92,15 @@
                         },
                         }">
                             <a v-if="statusChecker(table.status) &&table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                        </router-link>
+                         <router-link :to="{
+                         name: 'PaymentApplication',
+                         params: {
+                         id: table.appID,
+                         statusA: table.status
+                        },
+                        }">
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Payment'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                         <router-link :to="{
                          name: 'ComplyApplication',

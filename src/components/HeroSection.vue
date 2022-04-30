@@ -162,7 +162,7 @@ export default {
                     if (querResult.get("name") === "HEI") {
                         this.$router
                             .push({
-                                path: "/HEIhome",
+                                path: "/hei/home",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
@@ -171,7 +171,7 @@ export default {
                         this.$router
 
                             .push({
-                                path: "/assignments",
+                                path: "/rqat/assignments",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
@@ -215,7 +215,7 @@ export default {
                 if (querResult.get("name") === "HEI") {
                         this.$router
                             .push({
-                                path: "/HEIhome",
+                                path: "/hei/home",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
@@ -224,7 +224,7 @@ export default {
                         this.$router
 
                             .push({
-                                path: "/assignments",
+                                path: "/rqat/assignments",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);

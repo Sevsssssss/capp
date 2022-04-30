@@ -193,10 +193,10 @@ export default {
         const querResult = await query.find();
         var homeType = querResult[0].get("hometype");
         var flag = 0;
-        if (homeType === "/HEIhome") {
+        if (homeType === "/hei/home") {
             flag = 1;
             this.menu.push({
-                href: "/HEIhome",
+                href: "/hei/home",
                 title: "Home",
                 icon: {
                     element: "img",
@@ -218,9 +218,9 @@ export default {
 
             const querResult = await query.find();
             var userPriv = querResult[0].get("privileges");
-            if (userPriv.find((e) => e === "/HEIapply")) {
+            if (userPriv.find((e) => e === "/hei/apply")) {
                 this.menu.push({
-                    href: "/HEIapply",
+                    href: "/hei/apply",
                     title: "Apply",
                     icon: {
                         element: "img",
@@ -230,9 +230,9 @@ export default {
                     },
                 });
             }
-            if (userPriv.find((e) => e === "/HEIapplication")) {
+            if (userPriv.find((e) => e === "/hei/application")) {
                 this.menu.push({
-                    href: "/HEIapplication",
+                    href: "/hei/application",
                     title: "Application",
                     icon: {
                         element: "img",
@@ -248,7 +248,7 @@ export default {
     },
     methods: {
         accountDetails() {
-            this.$router.push("/account");
+            this.$router.push("/hei/account");
         },
         validate1() {
             return this.showModal1;

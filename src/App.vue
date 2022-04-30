@@ -92,8 +92,8 @@ Parse.masterKey = "master"
 // try {
 //     newAccessType1.save({
 //         name: "HEI",
-//         hometype: "/HEIhome",
-//         privileges: ["/HEIapply", "/HEIapplication", "/HEIapplication/:id", "/account"],
+//         hometype: "/hei/home",
+//         privileges: ["/hei/apply", "/hei/application", "/hei/application/:id", "/hei/account"],
 //     });
 // } catch (error) {
 //     alert("Error: " + error.code + " " + error.message);
@@ -103,8 +103,8 @@ Parse.masterKey = "master"
 // try {
 //     newAccessType2.save({
 //         name: "RQAT",
-//         hometype: "/assignments",
-//         privileges: ["/assignments", "/history", "/account"],
+//         hometype: "/rqat/assignments",
+//         privileges: ["/rqat/assignments", "/rqat/history", "/rqat/account"],
 //     });
 // } catch (error) {
 //     alert("Error: " + error.code + " " + error.message);
