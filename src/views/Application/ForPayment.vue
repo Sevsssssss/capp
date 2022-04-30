@@ -1,6 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{comment}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">
@@ -27,10 +26,10 @@
                 <tbody>
                     <tr class="bg-white border-b">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a href="" target="_blank" class="text-blue-400">Payment1</a>
+                            <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment1</a>
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a href="" target="_blank" class="text-blue-400">Payment2</a>
+                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment2</a>
                         </th>
                     </tr>
                 </tbody>
@@ -119,6 +118,8 @@ export default {
             v$: useVuelidate(),
             comment: [],
             type: "",
+            applicationPaymentURL: "",
+            evaluationPaymentURL: "",
             supervisors: [],
             selectedSupervisor: "Select A Supervisor",
             el: document.body,
@@ -337,6 +338,8 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        this.applicationPaymentURL = application.get("payment")[0].file.url()
+        this.evaluationPaymentURL = application.get("payment")[1].file.url()
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

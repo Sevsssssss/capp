@@ -23,7 +23,7 @@
         </div>
         <hr />
 
-        <form @submit.prevent="submitApplication" class="m-5">
+        <form @submit.prevent="submitPayment" class="m-5">
             <div class="alert alert-info shadow-lg my-5">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
@@ -48,17 +48,17 @@
                     <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
                 </div>
             </div>
-        </form>
 
         <!-- BUTTONS -->
-        <div class="space-x-6 p-10">
-            <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
-                Cancel
-            </button>
-            <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click="submitFiles()">
-                Submit
-            </button>
-        </div>
+            <div class="space-x-6 p-10">
+                <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
+                    Cancel
+                </button>
+                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                    Submit
+                </button>
+            </div>
+        </form>
     </div>
     <div class="m-3">
 
@@ -90,7 +90,7 @@ export default {
             program: "",
             disapprovedCount: 0,
             disapprovedReqs: [],
-            reqs: [],
+            payment: [],
             headers: [{
                     title: "CREDENTIALS",
                 },
@@ -123,10 +123,10 @@ export default {
         };
     },
     methods: {
-        async submitApplication(values) {
+        async submitPayment(values) {
             //count how many rows have uploader
             try {
-                let requirement = null;
+                let pay = null;
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
                 appQuery.equalTo("objectId", this.id);
@@ -134,30 +134,22 @@ export default {
                     useMasterKey: true,
                 });
 
-                for (var i = 0; i < this.disapprovedCount; i++) {
+                for (var i = 0; i < 2; i++) {
                     const file = values.target[i].files[0];
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
-                    requirement = new Parse.File(
+                    pay = new Parse.File(
                         file.name.replace(/[^a-zA-Z]/g, ""),
                         file,
                         file.type
                     );
-                    this.reqs[this.disapprovedReqs[i]].file = requirement;
-                    this.reqs[this.disapprovedReqs[i]].status = "";
-                    this.reqs[this.disapprovedReqs[i]].comment = "";
-                }
-                for (var j = 0; j < this.reqs.length; j++) {
-                    this.reqs[j].status = "";
-                    this.reqs[j].comment = "";
+                    this.payment.push({
+                        file: pay,
+                        paymentFor: i == 0 ? "Application" : "Evaluation",
+                    })
                 }
 
                 application
                     .save({
-                        requirements: this.reqs,
-                        applicationStatus: "For Approval",
-                        selectedSupervisor: "",
+                        payment: this.payment,
                     })
                     .then(
                         (application) => {
@@ -168,7 +160,7 @@ export default {
                                 }),
                                 setTimeout(() => {
                                     this.$router.replace({
-                                        path: "/HEIapplication"
+                                        path: "/hei/application"
                                     });
                                 }, 3000);
                             // console.log("New Access Type Added:" + newApplication.id)
