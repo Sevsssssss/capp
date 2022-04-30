@@ -341,7 +341,7 @@ const routes = [
         }
       },
       {
-        path: "/app-settings/appTypeView",
+        path: "/app-settings/view",
         name: "AppTypeView",
         component: ApplicationTypeView,
         meta: {

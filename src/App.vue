@@ -32,7 +32,7 @@ Parse.masterKey = "master"
 //             "/rqat-assignment",
 //             "/evaluationins",
 //             "/evaluationins/add",
-//             "/app-settings/appTypeView",
+//             "/app-settings/view",
 //             "/app-settings",
 //             "/designations",
 //             "/disciplines",
