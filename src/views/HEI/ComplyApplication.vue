@@ -18,12 +18,26 @@
                     <div class="font-normal text-md">
                         Status: <span class="font-semibold">{{ status }}</span>
                     </div>
+
                 </div>
                 <!-- <p>ID Number: {{id}}</p> -->
             </div>
         </div>
         <hr />
     </div>
+    <div class="alert alert-warning shadow-lg m-5">
+            <div>
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 2h2v2H6v-2zm0 4h2v2H6v-2zm4-4h8v2h-8v-2zm0 4h5v2h-5v-2z" /></svg>
+                <span>
+                    <div class="font-semibold text-md">
+                        Deadline: <span class="font-normal">Tuesday, {{  dateApplied }}</span>
+                    </div>
+                </span>
+            </div>
+        </div>
     <div class="m-3">
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
@@ -54,6 +68,8 @@
                 </tbody>
             </table>
         </div>
+
+        
         <form @submit.prevent="submitFiles" class="p-4">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
@@ -187,7 +203,7 @@ export default {
     methods: {
         async submitFiles(values) {
             console.log(values)
-            if(this.filesReturned.length < 1){
+            if (this.filesReturned.length < 1) {
                 var filesToResubmit = [];
                 var counter = 0;
 
@@ -245,8 +261,7 @@ export default {
                             // alert("Access Type Adding Failed: " + error)
                         }
                     );
-            }
-            else {
+            } else {
 
                 let resubmittedFile = null;
                 const applications = Parse.Object.extend("Applications");
@@ -305,7 +320,7 @@ export default {
                         }
                     );
             }
-            
+
         },
         addFile() {
             this.desc.push({
