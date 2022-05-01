@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="mx-3">
-        {{filesReturned}}
+        {{resubmittedDesc}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
@@ -18,12 +18,26 @@
                     <div class="font-normal text-md">
                         Status: <span class="font-semibold">{{ status }}</span>
                     </div>
+
                 </div>
                 <!-- <p>ID Number: {{id}}</p> -->
             </div>
         </div>
         <hr />
     </div>
+    <div class="alert alert-warning shadow-lg m-5">
+            <div>
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 2h2v2H6v-2zm0 4h2v2H6v-2zm4-4h8v2h-8v-2zm0 4h5v2h-5v-2z" /></svg>
+                <span>
+                    <div class="font-semibold text-md">
+                        Deadline: <span class="font-normal">Tuesday, {{  dateApplied }}</span>
+                    </div>
+                </span>
+            </div>
+        </div>
     <div class="m-3">
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
@@ -54,6 +68,8 @@
                 </tbody>
             </table>
         </div>
+
+        
         <form @submit.prevent="submitFiles" class="p-4">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
@@ -110,7 +126,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="table in filesReturned" :key="table" class="bg-white border-b">
+                        <tr v-for="(table, index) in filesReturned" :key="(table, index)" class="bg-white border-b">
                             <th v-if="table.comment !== ''" scope="row" class="px-6 py-4 font-medium text-gray-900">
                                 <a :href="table.file" target="_blank" class="text-blue-400">{{ table.desc }}</a>
                             </th>
@@ -121,7 +137,7 @@
                                 <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                             </td>
                             <td v-if="table.comment !== ''" class="px-6 py-4 w-2/5">
-                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="table.desc"></textarea>
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="resubmittedDesc[index]"></textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -168,6 +184,7 @@ export default {
             disapprovedFiles: [],
             reqs: [],
             desc: [],
+            resubmittedDesc: [],
             complianceDueDate: new Date(),
             filesReturned: [],
             summary: "",
@@ -186,7 +203,7 @@ export default {
     methods: {
         async submitFiles(values) {
             console.log(values)
-            if(this.filesReturned.length < 1){
+            if (this.filesReturned.length < 1) {
                 var filesToResubmit = [];
                 var counter = 0;
 
@@ -244,8 +261,7 @@ export default {
                             // alert("Access Type Adding Failed: " + error)
                         }
                     );
-            }
-            else {
+            } else {
 
                 let resubmittedFile = null;
                 const applications = Parse.Object.extend("Applications");
@@ -268,6 +284,7 @@ export default {
                     this.filesReturned[this.disapprovedFiles[i]].file = resubmittedFile;
                     this.filesReturned[this.disapprovedFiles[i]].status = "";
                     this.filesReturned[this.disapprovedFiles[i]].comment = "";
+                    this.filesReturned[this.disapprovedFiles[i]].desc = this.resubmittedDesc[i];
                 }
 
                 for (var j = 0; j < this.filesReturned.length; j++) {
@@ -303,7 +320,7 @@ export default {
                         }
                     );
             }
-            
+
         },
         addFile() {
             this.desc.push({
@@ -377,6 +394,7 @@ export default {
             for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
                 if (application.get("resubmittedFiles")[i].status == "Disapproved") {
                     this.disapprovedFiles.push(i);
+                    this.resubmittedDesc.push(application.get("resubmittedFiles")[i].desc);
                     this.disapprovedCount++;
                 }
 
