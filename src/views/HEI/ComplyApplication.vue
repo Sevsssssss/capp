@@ -118,7 +118,6 @@
                     </tbody>
                 </table>
             </div>
-            {{table}}
             <!-- BUTTONS -->
             <div class="space-x-6 p-10">
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
@@ -157,7 +156,7 @@ export default {
             dateApplied: "",
             program: "",
             disapprovedCount: 0,
-            disapprovedReqs: [],
+            disapprovedFiles: [],
             reqs: [],
             desc: [],
             filesReturned: [],
@@ -177,63 +176,124 @@ export default {
     methods: {
         async submitFiles(values) {
             console.log(values)
-            var filesToResubmit = [];
-            var counter = 0;
+            if(this.filesReturned.length < 1){
+                var filesToResubmit = [];
+                var counter = 0;
 
-            let files = null;
-            const applications = Parse.Object.extend("Applications");
-            const appQuery = new Parse.Query(applications);
-            appQuery.equalTo("objectId", this.id);
-            const application = await appQuery.first({
-                useMasterKey: true,
-            });
+                let files = null;
+                const applications = Parse.Object.extend("Applications");
+                const appQuery = new Parse.Query(applications);
+                appQuery.equalTo("objectId", this.id);
+                const application = await appQuery.first({
+                    useMasterKey: true,
+                });
 
-            for (var i = 1; i < this.desc.length * 2; i += 2) {
-                const file = values.target[i].files[0];
-                console.log(file.name)
+                for (var i = 1; i < this.desc.length * 2; i += 2) {
+                    const file = values.target[i].files[0];
+                    console.log(file.name)
 
-                files = new Parse.File(
-                    file.name.replace(/[^a-zA-Z]/g, ""),
-                    file,
-                    file.type
-                );
-                filesToResubmit.push({
-                    id: this.counter,
-                    file: files,
-                    name: files.name,
-                    desc: this.desc[counter].desc,
-                })
-                counter++;
-            }
+                    files = new Parse.File(
+                        file.name.replace(/[^a-zA-Z]/g, ""),
+                        file,
+                        file.type
+                    );
+                    filesToResubmit.push({
+                        id: counter,
+                        file: files,
+                        name: files.name,
+                        desc: this.desc[counter].desc,
+                    })
+                    counter++;
+                }
 
-            application.set("resubmittedFiles", filesToResubmit);
-            application.set("applicationStatus", "For Verification")
-            application
-                .save()
-                .then(
-                    (application) => {
-                        toast("Application Updated: " + application.id, {
-                                type: TYPE.SUCCESS,
-                                timeout: 3000,
+                application.set("resubmittedFiles", filesToResubmit);
+                application.set("applicationStatus", "For Verification")
+                application
+                    .save()
+                    .then(
+                        (application) => {
+                            toast("Application Updated: " + application.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                                setTimeout(() => {
+                                    this.$router.replace({
+                                        path: "/hei/application"
+                                    });
+                                }, 3000);
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Update Failed: " + e.message, {
+                                type: TYPE.ERROR,
+                                timeout: 2000,
+                                hideProgressBar: true,
                                 position: POSITION.TOP_RIGHT,
-                            }),
-                            setTimeout(() => {
-                                this.$router.replace({
-                                    path: "/hei/application"
-                                });
-                            }, 3000);
-                        // console.log("New Access Type Added:" + newApplication.id)
-                    },
-                    (e) => {
-                        toast("Application Update Failed: " + e.message, {
-                            type: TYPE.ERROR,
-                            timeout: 2000,
-                            hideProgressBar: true,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                        // alert("Access Type Adding Failed: " + error)
-                    }
-                );
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        }
+                    );
+            }
+            else {
+
+                let resubmittedFile = null;
+                const applications = Parse.Object.extend("Applications");
+                const appQuery = new Parse.Query(applications);
+                appQuery.equalTo("objectId", this.id);
+                const application = await appQuery.first({
+                    useMasterKey: true,
+                });
+
+                for (i = 0; i < this.disapprovedCount; i++) {
+                    const file = values.target[i].files[0];
+                    console.log(file);
+                    console.log(file.name);
+                    console.log(file.type);
+                    resubmittedFile = new Parse.File(
+                        file.name.replace(/[^a-zA-Z]/g, ""),
+                        file,
+                        file.type
+                    );
+                    this.filesReturned[this.disapprovedFiles[i]].file = resubmittedFile;
+                    this.filesReturned[this.disapprovedFiles[i]].status = "";
+                    this.filesReturned[this.disapprovedFiles[i]].comment = "";
+                }
+
+                for (var j = 0; j < this.filesReturned.length; j++) {
+                    this.filesReturned[j].status = "";
+                    this.filesReturned[j].comment = "";
+                }
+                application.set("resubmittedFiles", this.filesReturned);
+                application.set("applicationStatus", "For Verification")
+                application
+                    .save()
+                    .then(
+                        (application) => {
+                            toast("Application Updated: " + application.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                                setTimeout(() => {
+                                    this.$router.replace({
+                                        path: "/hei/application"
+                                    });
+                                }, 3000);
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Update Failed: " + e.message, {
+                                type: TYPE.ERROR,
+                                timeout: 2000,
+                                hideProgressBar: true,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        }
+                    );
+            }
+            
         },
         addFile() {
             this.desc.push({
@@ -242,16 +302,6 @@ export default {
             this.counter = this.counter + 1;
         }
 
-    },
-
-    computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
-                return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                );
-            });
-        },
     },
     mounted: async function () {
         console.log("hi");
@@ -313,8 +363,20 @@ export default {
             this.dateApplied = months[month] + " " + day + ", " + year;
             this.summary = application.get("summary");
             this.recommendation = application.get("recommendation")
+            for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
+                if (application.get("resubmittedFiles")[i].status == "Disapproved") {
+                    this.disapprovedFiles.push(i);
+                    this.disapprovedCount++;
+                }
 
-            this.filesReturned = application.get("resubmittedFiles");
+                this.filesReturned.push({
+                    id: application.get("resubmittedFiles")[i].id,
+                    file: application.get("resubmittedFiles")[i].file,
+                    desc: application.get("resubmittedFiles")[i].desc,
+                    status: application.get("resubmittedFiles")[i].status,
+                    comment: application.get("resubmittedFiles")[i].comment,
+                });
+            }
         }
     },
 };

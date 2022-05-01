@@ -52,17 +52,17 @@
                 <tbody>
                     <tr v-for="table in tables" :key="table" class="bg-white border-b">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="table.file" target="_blank" class="text-blue-400">{{ table.desc }}</a>
+                            <a :href="table.file.url()" target="_blank" class="text-blue-400">{{ table.desc }}</a>
                         </th>
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id, v$.approved.$model]" />
                         </td>
                         <td class="px-6 py-4 ">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id, v$.disapproved.$model]" />
                         </td>
                         <td class="px-6 py-4 w-2/5">
-                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id - 1]"></textarea>
-                            <textarea v-else-if="statusShow[table.id - 1] === 'Approved' || statusShow[table.id - 1] === null " disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
+                            <textarea v-if=" statusShow[table.id] === 'Disapproved' " id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id]"></textarea>
+                            <textarea v-else-if="statusShow[table.id] === 'Approved' || statusShow[table.id] === null " disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                             <textarea v-else disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                         </td>
                     </tr>
@@ -264,7 +264,7 @@ export default {
                 for (var i = 0; i < this.statusShow.length; i++) {
                     filesToResubmit.push({
                         id: application.get("resubmittedFiles")[i].id,
-                        file: application.get("resubmittedFiles")[i].file.url(),
+                        file: application.get("resubmittedFiles")[i].file,
                         desc: application.get("resubmittedFiles")[i].desc,
                         status: this.statusShow[i],
                         comment: this.comment[i],
@@ -274,6 +274,15 @@ export default {
                 application.set("resubmittedFiles", filesToResubmit);
                 // application.set("requirements", requirements);
                 application.set("applicationStatus", "For Compliance");
+                if(application.get("complianceRejected") != true || application.get("complianceRejected") == undefined){
+                    var currentDate = new Date();
+                    var complianceDueDate = currentDate.setDate(currentDate.getDate() + 45);
+
+                    
+                    application.set("complianceRejected", true);
+                    application.set("complianceDueDate", new Date(complianceDueDate));
+                }
+                
 
                 application
                     .save()
@@ -409,7 +418,7 @@ export default {
             this.comment.push("");
             storedApplications.push({
                 id: application.get("resubmittedFiles")[i].id,
-                file: application.get("resubmittedFiles")[i].file.url(),
+                file: application.get("resubmittedFiles")[i].file,
                 desc: application.get("resubmittedFiles")[i].desc,
             });
         }
