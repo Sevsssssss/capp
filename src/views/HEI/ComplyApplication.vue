@@ -159,6 +159,7 @@ export default {
             disapprovedFiles: [],
             reqs: [],
             desc: [],
+            complianceDueDate: new Date(),
             filesReturned: [],
             summary: "",
             recommendation: "",
@@ -362,7 +363,8 @@ export default {
             var year = application.createdAt.getFullYear();
             this.dateApplied = months[month] + " " + day + ", " + year;
             this.summary = application.get("summary");
-            this.recommendation = application.get("recommendation")
+            this.recommendation = application.get("recommendation");
+            this.complianceDueDate = application.get("complianceDueDate");
             for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
                 if (application.get("resubmittedFiles")[i].status == "Disapproved") {
                     this.disapprovedFiles.push(i);

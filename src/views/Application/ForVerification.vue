@@ -274,12 +274,10 @@ export default {
                 application.set("resubmittedFiles", filesToResubmit);
                 // application.set("requirements", requirements);
                 application.set("applicationStatus", "For Compliance");
-                if(application.get("complianceRejected") != true || application.get("complianceRejected") == undefined){
+                if(application.get("complianceDueDate") == undefined){
                     var currentDate = new Date();
                     var complianceDueDate = currentDate.setDate(currentDate.getDate() + 45);
 
-                    
-                    application.set("complianceRejected", true);
                     application.set("complianceDueDate", new Date(complianceDueDate));
                 }
                 
