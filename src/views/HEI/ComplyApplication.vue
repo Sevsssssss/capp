@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="mx-3">
-        {{tables}}
+        {{filesReturned}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
@@ -54,14 +54,14 @@
                 </tbody>
             </table>
         </div>
-        <form @submit.prevent="submitApplication" class="p-4">
+        <form @submit.prevent="submitFiles" class="p-4">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
                 <div class="flex flex-row py-3 px-4 items-center justify-between">
                     <div>
                         DOCUMENTS FOR COMPLIANCE
                     </div>
-                    <div class="h-fit pr-5 pt-3 items-center">
+                    <div v-if="filesReturned.length < 1" class="h-fit pr-5 pt-3 items-center">
                         <button @click="addFile()" type="button" class="btn-table">
                             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="none" d="M0 0h24v24H0z" />
@@ -71,7 +71,7 @@
                         </button>
                     </div>
                 </div>
-                <table class="w-full text-sm text-left text-gray-500">
+                <table v-if="filesReturned.length < 1" class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                         <tr>
                             <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
@@ -86,19 +86,53 @@
                                 <!-- <a :href="table.file" target="_blank" class="text-blue-400">{{ table.name }}</a> -->
                             </th>
                             <td class="px-6 py-4 w-2/5">
-                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="desc[index]"></textarea>
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="desc.desc"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table v-if="filesReturned.length > 0" class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                File
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Comments
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Upload File
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="table in filesReturned" :key="table" class="bg-white border-b">
+                            <th v-if="table.comment !== ''" scope="row" class="px-6 py-4 font-medium text-gray-900">
+                                <a :href="table.file" target="_blank" class="text-blue-400">{{ table.desc }}</a>
+                            </th>
+                            <td v-if="table.comment !== ''" class="px-6 py-4">
+                                {{ table.comment }}
+                            </td>
+                            <td v-if="table.comment !== ''" class="px-6 py-4 items-center">
+                                <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
+                            </td>
+                            <td v-if="table.comment !== ''" class="px-6 py-4 w-2/5">
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="table.desc"></textarea>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            {{table}}
             <!-- BUTTONS -->
             <div class="space-x-6 p-10">
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
                 </button>
-                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click="submitFiles()">
+                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Submit
                 </button>
             </div>
@@ -108,14 +142,14 @@
 </template>
 
 <script>
-// import {
-//     useToast,
-//     TYPE,
-//     POSITION
-// } from "vue-toastification";
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 
 import Parse from "parse";
-//const toast = useToast();
+const toast = useToast();
 export default {
     props: ["id"],
     name: "ComplyApplication",
@@ -131,9 +165,11 @@ export default {
             dateApplied: "",
             program: "",
             disapprovedCount: 0,
-            disapprovedReqs: [],
+            disapprovedFiles: [],
             reqs: [],
             desc: [],
+            complianceDueDate: new Date(),
+            filesReturned: [],
             summary: "",
             recommendation: "",
             headers: [{
@@ -148,40 +184,134 @@ export default {
         };
     },
     methods: {
-        async submitFiles() {
-            const ApplicationCollect = Parse.Object.extend("Applications");
-            const applQuery = new Parse.Query(ApplicationCollect);
-            applQuery.equalTo("objectId", this.id);
-            const application = await applQuery.first({
-                useMasterKey: true,
-            });
+        async submitFiles(values) {
+            console.log(values)
+            if(this.filesReturned.length < 1){
+                var filesToResubmit = [];
+                var counter = 0;
 
-            application.set("resubmittedFiles", this.tables);
-            application.set("applicationStatus", "For Verification")
-            application
-                .save()
-                .then((application) => {
-                    console.log("Object Updated: " + application.id);
-                })
+                let files = null;
+                const applications = Parse.Object.extend("Applications");
+                const appQuery = new Parse.Query(applications);
+                appQuery.equalTo("objectId", this.id);
+                const application = await appQuery.first({
+                    useMasterKey: true,
+                });
+
+                for (var i = 1; i < this.desc.length * 2; i += 2) {
+                    const file = values.target[i].files[0];
+                    console.log(file.name)
+
+                    files = new Parse.File(
+                        file.name.replace(/[^a-zA-Z]/g, ""),
+                        file,
+                        file.type
+                    );
+                    filesToResubmit.push({
+                        id: counter,
+                        file: files,
+                        name: files.name,
+                        desc: this.desc[counter].desc,
+                    })
+                    counter++;
+                }
+
+                application.set("resubmittedFiles", filesToResubmit);
+                application.set("applicationStatus", "For Verification")
+                application
+                    .save()
+                    .then(
+                        (application) => {
+                            toast("Application Updated: " + application.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                                setTimeout(() => {
+                                    this.$router.replace({
+                                        path: "/hei/application"
+                                    });
+                                }, 3000);
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Update Failed: " + e.message, {
+                                type: TYPE.ERROR,
+                                timeout: 2000,
+                                hideProgressBar: true,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        }
+                    );
+            }
+            else {
+
+                let resubmittedFile = null;
+                const applications = Parse.Object.extend("Applications");
+                const appQuery = new Parse.Query(applications);
+                appQuery.equalTo("objectId", this.id);
+                const application = await appQuery.first({
+                    useMasterKey: true,
+                });
+
+                for (i = 0; i < this.disapprovedCount; i++) {
+                    const file = values.target[i].files[0];
+                    console.log(file);
+                    console.log(file.name);
+                    console.log(file.type);
+                    resubmittedFile = new Parse.File(
+                        file.name.replace(/[^a-zA-Z]/g, ""),
+                        file,
+                        file.type
+                    );
+                    this.filesReturned[this.disapprovedFiles[i]].file = resubmittedFile;
+                    this.filesReturned[this.disapprovedFiles[i]].status = "";
+                    this.filesReturned[this.disapprovedFiles[i]].comment = "";
+                }
+
+                for (var j = 0; j < this.filesReturned.length; j++) {
+                    this.filesReturned[j].status = "";
+                    this.filesReturned[j].comment = "";
+                }
+                application.set("resubmittedFiles", this.filesReturned);
+                application.set("applicationStatus", "For Verification")
+                application
+                    .save()
+                    .then(
+                        (application) => {
+                            toast("Application Updated: " + application.id, {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                }),
+                                setTimeout(() => {
+                                    this.$router.replace({
+                                        path: "/hei/application"
+                                    });
+                                }, 3000);
+                            // console.log("New Access Type Added:" + newApplication.id)
+                        },
+                        (e) => {
+                            toast("Application Update Failed: " + e.message, {
+                                type: TYPE.ERROR,
+                                timeout: 2000,
+                                hideProgressBar: true,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            // alert("Access Type Adding Failed: " + error)
+                        }
+                    );
+            }
+            
         },
-        addFile(){
+        addFile() {
             this.desc.push({
-                id: this.counter,
                 desc: "",
             })
             this.counter = this.counter + 1;
         }
 
-    },
-
-    computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
-                return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                );
-            });
-        },
     },
     mounted: async function () {
         console.log("hi");
@@ -242,7 +372,22 @@ export default {
             var year = application.createdAt.getFullYear();
             this.dateApplied = months[month] + " " + day + ", " + year;
             this.summary = application.get("summary");
-            this.recommendation = application.get("recommendation")
+            this.recommendation = application.get("recommendation");
+            this.complianceDueDate = application.get("complianceDueDate");
+            for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
+                if (application.get("resubmittedFiles")[i].status == "Disapproved") {
+                    this.disapprovedFiles.push(i);
+                    this.disapprovedCount++;
+                }
+
+                this.filesReturned.push({
+                    id: application.get("resubmittedFiles")[i].id,
+                    file: application.get("resubmittedFiles")[i].file,
+                    desc: application.get("resubmittedFiles")[i].desc,
+                    status: application.get("resubmittedFiles")[i].status,
+                    comment: application.get("resubmittedFiles")[i].comment,
+                });
+            }
         }
     },
 };

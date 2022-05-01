@@ -1,5 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
+    {{tables}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">
@@ -49,19 +50,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
+                    <tr v-for="table in tables" :key="table" class="bg-white border-b">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="table.file" target="_blank" class="text-blue-400">{{ table.credential }}</a>
+                            <a :href="table.file.url()" target="_blank" class="text-blue-400">{{ table.desc }}</a>
                         </th>
                         <td class="px-6 py-4">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id - 1, v$.approved.$model]" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id] = 'Approved'" value="Approved" class="radio" :v-model="statusShow[table.id, v$.approved.$model]" />
                         </td>
                         <td class="px-6 py-4 ">
-                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id - 1] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id - 1, v$.disapproved.$model]" />
+                            <input type="radio" :name="table.id" :id="table.id" @change="statusShow[table.id] = 'Disapproved'" value="Disapproved" class="radio" :v-model="statusShow[table.id, v$.disapproved.$model]" />
                         </td>
                         <td class="px-6 py-4 w-2/5">
-                            <textarea v-if=" statusShow[table.id - 1] === 'Disapproved' " id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id - 1]"></textarea>
-                            <textarea v-else-if="statusShow[table.id - 1] === 'Approved' || statusShow[table.id - 1] === null " disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
+                            <textarea v-if=" statusShow[table.id] === 'Disapproved' " id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="comment[table.id]"></textarea>
+                            <textarea v-else-if="statusShow[table.id] === 'Approved' || statusShow[table.id] === null " disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                             <textarea v-else disabled id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Comment disabled..."></textarea>
                         </td>
                     </tr>
@@ -80,13 +81,13 @@
                 </button>
             </div>
             <div v-else>
-                <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                <button @click="submitEvaluation()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
                 </button>
             </div>
         </div>
     </div>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+    <!-- <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT SUPERVISOR</div>
 
@@ -107,10 +108,10 @@
                 <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
             </div>
         </div>
-    </div>
+    </div> -->
     <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">REVISE {{ type }}</div>
+            <div class="font-semibold text-md">RETURN {{ type }}</div>
             <p class="py-2 text-sm">
                 Are you sure??
             </p>
@@ -186,15 +187,6 @@ export default {
             },
         }
     },
-    computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
-                return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                );
-            });
-        },
-    },
     methods: {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
@@ -267,23 +259,32 @@ export default {
 
                 const application = await query.first();
 
-                var requirements = [];
+                var filesToResubmit = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
+                    filesToResubmit.push({
+                        id: application.get("resubmittedFiles")[i].id,
+                        file: application.get("resubmittedFiles")[i].file,
+                        desc: application.get("resubmittedFiles")[i].desc,
                         status: this.statusShow[i],
                         comment: this.comment[i],
                     });
                 }
-                application.set("requirements", requirements);
-                application.set("applicationStatus", "For Revision");
+
+                application.set("resubmittedFiles", filesToResubmit);
+                // application.set("requirements", requirements);
+                application.set("applicationStatus", "For Compliance");
+                if (application.get("complianceDueDate") == undefined) {
+                    var currentDate = new Date();
+                    var complianceDueDate = currentDate.setDate(currentDate.getDate() + 45);
+
+                    application.set("complianceDueDate", new Date(complianceDueDate));
+                }
 
                 application
                     .save()
                     .then((application) => {
-                        toast(this.type.toLowerCase() + " has been moved for revision", {
+                        toast(this.type.toLowerCase() + " has been moved for compliance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
@@ -295,7 +296,7 @@ export default {
 
                 setTimeout(() => {
                     this.$router.replace({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
+                        path: "/application",
                     })
                 }, 2000);
                 setTimeout(() => {
@@ -304,7 +305,58 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
+                // console.log(error);
+            }
+        },
+        async submitEvaluation() {
+            try {
+                const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.equalTo("objectId", this.appID);
+
+                const application = await query.first();
+
+                var filesToResubmit = [];
+
+                for (var i = 0; i < this.statusShow.length; i++) {
+                    filesToResubmit.push({
+                        id: application.get("resubmittedFiles")[i].id,
+                        file: application.get("resubmittedFiles")[i].file,
+                        desc: application.get("resubmittedFiles")[i].desc,
+                        status: this.statusShow[i],
+                        comment: this.comment[i],
+                    });
+                }
+
+                application.set("resubmittedFiles", filesToResubmit);
+                application.set("applicationStatus", "For Issuance");
+                
+
+                application
+                    .save()
+                    .then((application) => {
+                        toast(this.type.toLowerCase() + " has been moved for issuance", {
+                                type: TYPE.INFO,
+                                timeout: 2000,
+                                position: POSITION.TOP_RIGHT,
+                                hideProgressBar: false,
+                                closeButton: false,
+                            }),
+                            console.log("Object Updated: " + application.id);
+                    })
+
+                setTimeout(() => {
+                    this.$router.replace({
+                        path: "/application",
+                    })
+                }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            } catch (error) {
+                alert("Error" + error.message);
+                // console.log(error);
             }
         },
         modal() {
@@ -377,7 +429,6 @@ export default {
             application.get("applicationType")
         );
 
-        const applicationType = await appTypeQuery.first();
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
 
@@ -410,13 +461,13 @@ export default {
 
         this.supervisors = dbSupervisors;
 
-        for (var i = 0; i < application.get("requirements").length; i++) {
+        for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
             this.statusShow.push("");
             this.comment.push("");
             storedApplications.push({
-                id: application.get("requirements")[i].id,
-                credential: applicationType.get("applicationReqs")[i].applicationReq,
-                file: application.get("requirements")[i].file.url(),
+                id: application.get("resubmittedFiles")[i].id,
+                file: application.get("resubmittedFiles")[i].file,
+                desc: application.get("resubmittedFiles")[i].desc,
             });
         }
         this.files = application.get("resubmittedFiles")

@@ -106,7 +106,6 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
                             <router-link :to="{
                                 name: 'StatusApplication',
                                 params: {
@@ -114,7 +113,7 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                         </td>
                     </tr>
