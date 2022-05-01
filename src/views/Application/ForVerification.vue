@@ -81,13 +81,13 @@
                 </button>
             </div>
             <div v-else>
-                <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                <button @click="submitEvaluation()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
                 </button>
             </div>
         </div>
     </div>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+    <!-- <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT SUPERVISOR</div>
 
@@ -108,7 +108,7 @@
                 <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
             </div>
         </div>
-    </div>
+    </div> -->
     <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">RETURN {{ type }}</div>
@@ -274,18 +274,68 @@ export default {
                 application.set("resubmittedFiles", filesToResubmit);
                 // application.set("requirements", requirements);
                 application.set("applicationStatus", "For Compliance");
-                if(application.get("complianceDueDate") == undefined){
+                if (application.get("complianceDueDate") == undefined) {
                     var currentDate = new Date();
                     var complianceDueDate = currentDate.setDate(currentDate.getDate() + 45);
 
                     application.set("complianceDueDate", new Date(complianceDueDate));
                 }
-                
 
                 application
                     .save()
                     .then((application) => {
                         toast(this.type.toLowerCase() + " has been moved for compliance", {
+                                type: TYPE.INFO,
+                                timeout: 2000,
+                                position: POSITION.TOP_RIGHT,
+                                hideProgressBar: false,
+                                closeButton: false,
+                            }),
+                            console.log("Object Updated: " + application.id);
+                    })
+
+                setTimeout(() => {
+                    this.$router.replace({
+                        path: "/application",
+                    })
+                }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            } catch (error) {
+                alert("Error" + error.message);
+                // console.log(error);
+            }
+        },
+        async submitEvaluation() {
+            try {
+                const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.equalTo("objectId", this.appID);
+
+                const application = await query.first();
+
+                var filesToResubmit = [];
+
+                for (var i = 0; i < this.statusShow.length; i++) {
+                    filesToResubmit.push({
+                        id: application.get("resubmittedFiles")[i].id,
+                        file: application.get("resubmittedFiles")[i].file,
+                        desc: application.get("resubmittedFiles")[i].desc,
+                        status: this.statusShow[i],
+                        comment: this.comment[i],
+                    });
+                }
+
+                application.set("resubmittedFiles", filesToResubmit);
+                application.set("applicationStatus", "For Issuance");
+                
+
+                application
+                    .save()
+                    .then((application) => {
+                        toast(this.type.toLowerCase() + " has been moved for issuance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,

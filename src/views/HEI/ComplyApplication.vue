@@ -92,7 +92,7 @@
                     </tbody>
                 </table>
 
-                <table class="w-full text-sm text-left text-gray-500">
+                <table v-if="filesReturned.length > 0" class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -100,6 +100,12 @@
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Comments
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Upload File
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Description
                             </th>
                         </tr>
                     </thead>
@@ -111,8 +117,11 @@
                             <td v-if="table.comment !== ''" class="px-6 py-4">
                                 {{ table.comment }}
                             </td>
-                            <td v-if="table.comment !== ''" class="flex items-end px-6 py-4">
+                            <td v-if="table.comment !== ''" class="px-6 py-4 items-center">
                                 <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
+                            </td>
+                            <td v-if="table.comment !== ''" class="px-6 py-4 w-2/5">
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="table.desc"></textarea>
                             </td>
                         </tr>
                     </tbody>
