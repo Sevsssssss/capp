@@ -295,7 +295,7 @@ export default {
                                     }),
                                     setTimeout(() => {
                                         this.$router.replace({
-                                            path: "/HEIapplication"
+                                            path: "/hei/application"
                                         })
                                     }, 3000);
                                 // console.log("New Access Type Added:" + newApplication.id)
