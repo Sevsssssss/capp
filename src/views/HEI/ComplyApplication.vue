@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="mx-3">
-        {{filesReturned}}
+        {{resubmittedDesc}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
@@ -110,7 +110,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="table in filesReturned" :key="table" class="bg-white border-b">
+                        <tr v-for="(table, index) in filesReturned" :key="(table, index)" class="bg-white border-b">
                             <th v-if="table.comment !== ''" scope="row" class="px-6 py-4 font-medium text-gray-900">
                                 <a :href="table.file" target="_blank" class="text-blue-400">{{ table.desc }}</a>
                             </th>
@@ -121,7 +121,7 @@
                                 <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                             </td>
                             <td v-if="table.comment !== ''" class="px-6 py-4 w-2/5">
-                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="table.desc"></textarea>
+                                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Leave a comment..." v-model="resubmittedDesc[index]"></textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -168,6 +168,7 @@ export default {
             disapprovedFiles: [],
             reqs: [],
             desc: [],
+            resubmittedDesc: [],
             complianceDueDate: new Date(),
             filesReturned: [],
             summary: "",
@@ -268,6 +269,7 @@ export default {
                     this.filesReturned[this.disapprovedFiles[i]].file = resubmittedFile;
                     this.filesReturned[this.disapprovedFiles[i]].status = "";
                     this.filesReturned[this.disapprovedFiles[i]].comment = "";
+                    this.filesReturned[this.disapprovedFiles[i]].desc = this.resubmittedDesc[i];
                 }
 
                 for (var j = 0; j < this.filesReturned.length; j++) {
@@ -377,6 +379,7 @@ export default {
             for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
                 if (application.get("resubmittedFiles")[i].status == "Disapproved") {
                     this.disapprovedFiles.push(i);
+                    this.resubmittedDesc.push(application.get("resubmittedFiles")[i].desc);
                     this.disapprovedCount++;
                 }
 
