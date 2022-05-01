@@ -26,6 +26,7 @@
         </div>
 
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -34,9 +35,19 @@ import {
     ref
 } from "vue";
 //import DropZoneVue from '../CHED/Hei/DropZone.vue';
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
+const toast = useToast();
 export default {
     props: ["appID"],
+    components: {
+        VueInstantLoadingSpinner,
+    },
     setup() {
         const active = ref(false);
         let dropzoneFile = ref("");
@@ -58,36 +69,77 @@ export default {
         };
     },
     methods: {
+        validate(filename) {
+            console.log("validate")
+            var regex = /^.+\.(([pP][dD][fF])|([jJ][pP][gG]))$/;
+            if (filename === "") {
+                this.className = "alert-error";
+                return false;
+            } else if (regex.test(filename.name)) {
+                return true;
+            } else {
+                toast("Please upload a .pdf or .jpg file!", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                return false;
+            }
+        },
         async submitFile() {
-            const applications = Parse.Object.extend("Applications");
-            const query = new Parse.Query(applications);
-            query.equalTo("objectId", this.appID);
+            if (this.dropzoneFile === "") {
+                toast("Error", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+            } else {
+                var validation = this.validate(this.dropzoneFile);
+                if (validation) {
+                    const applications = Parse.Object.extend("Applications");
+                    const query = new Parse.Query(applications);
+                    query.equalTo("objectId", this.appID);
 
-            const application = await query.first();
+                    const application = await query.first();
 
-            let certification = null;
-            certification = new Parse.File(
-                this.dropzoneFile.name.replace(/[^a-zA-Z]/g, ""),
-                this.dropzoneFile,
-                this.dropzoneFile.type
-            );
+                    let certification = null;
+                    certification = new Parse.File(
+                        this.dropzoneFile.name.replace(/[^a-zA-Z]/g, ""),
+                        this.dropzoneFile,
+                        this.dropzoneFile.type
+                    );
 
-            application.set("certificate", certification);
-            application.set("applicationStatus", "Completed");
+                    application.set("certificate", certification);
+                    application.set("applicationStatus", "Completed");
 
-            application
-                .save()
-                .then((application) => {
-                    // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-                    //         type: TYPE.INFO,
-                    //         timeout: 2000,
-                    //         position: POSITION.TOP_RIGHT,
-                    //         hideProgressBar: false,
-                    //         closeButton: false,
-
-                    //     }),
-                    console.log("Object Updated: " + application.id);
-                })
+                    application
+                        .save()
+                        .then((application) => {
+                            toast("For Issuance Completed!", {
+                                type: TYPE.SUCCESS,
+                                timeout: 2000,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            setTimeout(
+                                () =>
+                                this.$router.push({
+                                    path: "/application",
+                                }),
+                                1000
+                            );
+                            this.$refs.Spinner.show();
+                            setTimeout(
+                                function () {
+                                    this.$refs.Spinner.hide();
+                                }.bind(this),
+                                2000
+                            );
+                            console.log("Object Updated: " + application.id);
+                        })
+                }
+            }
         }
     }
 }
