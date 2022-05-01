@@ -62,7 +62,12 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                alert("Please upload a .xlsx file!");
+                toast("Please upload a .pdf or .jpg file!", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
                 return false;
             }
         },
@@ -100,24 +105,33 @@ export default {
             // }
         },
         upload() {
-            console.log("upload")
-            var validation = this.validate(this.dropzoneFile);
-            if (validation) {
-                this.pending = true;
-                this.$refs.Spinner.show();
-                const self = this;
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var data = e.target.result;
-                    try {
-                        self.createWorker(data, self);
-                    } catch (e) {
-                        console.log(e);
-                        this.pending = false;
-                        this.$refs.Spinner.hide();
-                    }
-                };
-                reader.readAsArrayBuffer(this.dropzoneFile);
+            if (this.dropzoneFile === "") {
+                toast("Please select a file", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+            } else {
+                console.log("upload")
+                var validation = this.validate(this.dropzoneFile);
+                if (validation) {
+                    this.pending = true;
+                    this.$refs.Spinner.show();
+                    const self = this;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result;
+                        try {
+                            self.createWorker(data, self);
+                        } catch (e) {
+                            console.log(e);
+                            this.pending = false;
+                            this.$refs.Spinner.hide();
+                        }
+                    };
+                    reader.readAsArrayBuffer(this.dropzoneFile);
+                }
             }
         },
 
