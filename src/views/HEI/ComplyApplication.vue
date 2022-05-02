@@ -32,8 +32,8 @@
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 2h2v2H6v-2zm0 4h2v2H6v-2zm4-4h8v2h-8v-2zm0 4h5v2h-5v-2z" /></svg>
                 <span>
-                    <div class="font-semibold text-md">
-                        Deadline: <span class="font-normal">Tuesday, {{  dateApplied }}</span>
+                    <div v-if="compInitDate != undefined" class="font-semibold text-md">
+                        Deadline: <span class="font-normal">{{  complianceDueDate }}</span>
                     </div>
                 </span>
             </div>
@@ -186,6 +186,7 @@ export default {
             desc: [],
             resubmittedDesc: [],
             complianceDueDate: new Date(),
+            compInitDate: new Date(),
             filesReturned: [],
             summary: "",
             recommendation: "",
@@ -202,7 +203,6 @@ export default {
     },
     methods: {
         async submitFiles(values) {
-            console.log(values)
             if (this.filesReturned.length < 1) {
                 var filesToResubmit = [];
                 var counter = 0;
@@ -262,7 +262,7 @@ export default {
                         }
                     );
             } else {
-
+                console.log(values);
                 let resubmittedFile = null;
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
@@ -270,9 +270,9 @@ export default {
                 const application = await appQuery.first({
                     useMasterKey: true,
                 });
-
+                var count = 0;
                 for (i = 0; i < this.disapprovedCount; i++) {
-                    const file = values.target[i].files[0];
+                    const file = values.target[i + count].files[0];
                     console.log(file);
                     console.log(file.name);
                     console.log(file.type);
@@ -285,6 +285,7 @@ export default {
                     this.filesReturned[this.disapprovedFiles[i]].status = "";
                     this.filesReturned[this.disapprovedFiles[i]].comment = "";
                     this.filesReturned[this.disapprovedFiles[i]].desc = this.resubmittedDesc[i];
+                    count++;
                 }
 
                 for (var j = 0; j < this.filesReturned.length; j++) {
@@ -387,10 +388,39 @@ export default {
             var month = application.createdAt.getMonth();
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
+            
+            this.compInitDate = application.get("complianceDueDate");
+
+            var compDateCalc = this.compInitDate;
+
+            if(Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15){
+                compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
+                console.log(compDateCalc)
+            } 
+
+            var compMonth = compDateCalc.getMonth();
+            var compDay = compDateCalc.getDate();
+            var compYear = compDateCalc.getFullYear();
+
+            var compHour;
+            var timePeriod;
+
+            if(compDateCalc.getHours() > 11){
+                compHour = compDateCalc.getHours() - 12;
+                timePeriod = "PM";
+            }
+            else{
+                compHour = compDateCalc.getHours();
+                timePeriod = "AM";
+            }
+            var compMinute = compDateCalc.getMinutes();
+            var compSeconds = compDateCalc.getSeconds();
+
             this.dateApplied = months[month] + " " + day + ", " + year;
             this.summary = application.get("summary");
             this.recommendation = application.get("recommendation");
-            this.complianceDueDate = application.get("complianceDueDate");
+            this.complianceDueDate = months[compMonth] + " " + compDay + ", " + compYear + " " + compHour + ":" + compMinute + ":" + compSeconds + " " + timePeriod;
+
             for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
                 if (application.get("resubmittedFiles")[i].status == "Disapproved") {
                     this.disapprovedFiles.push(i);
