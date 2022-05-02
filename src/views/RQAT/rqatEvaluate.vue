@@ -1,76 +1,135 @@
 <template>
 <form v-on:submit.prevent="submit">
-
-    <div class="flex flex-col text-sm w-full pl-10">
-        <div class="flex space-x-8">
-            <div class="flex flex-col items-start uppercase font-semibold">
-                <span class="">Name of Institution: </span>
-                <span class="">address: </span>
-                <span class="">Porgram(s): </span>
-                <span class="">Date of Evalution</span>
+    {{statusShow}}
+    <div class="shadow-lg rounded-lg my-3 py-5">
+        <div class="flex flex-row justify-center items-center space-x-4 text-sm">
+            <div class="">
+                <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
             </div>
-            <div class="flex flex-col items-start">
-                <p class="">{{ instName }}</p>
-                <p class="">{{ address }}</p>
-                <p class="">{{ program }}</p>
-                <p class="">{{ dateApplied }}</p>
+            <div class="text-left">
+                <div class="text-xl font-semibold">Republic of the Philippines</div>
+                <div class="">OFFICE OF THE PRESIDENT</div>
+                <div class="">COMMISSION ON HIGHER EDUCATION</div>
+                <div class="">Regional Office V, Legazpi City</div>
             </div>
         </div>
-    </div>
-    <div>
-        <div class="py-4">
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5 p-5">
-                <div class="flex flex-row justify-between p-1">
-                    <div>
-                        Evaluation Form for "THIS PROGRAM"
-                    </div>
-                    <a class="font-medium text-blue-600 hover:underline">
-                        Download
-                    </a>
-                </div>
-                <div>
-                    <label class="label">
-                        <span class="label-text">Evaluation Form File*</span>
-                    </label>
-                    <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
-                </div>
+        <div class="text-center p-5 text-sm">
+            <div class="font-semibold">
+                REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr class="divide-x-2">
-                            <th scope="col" class="px-6 py-3">FINAL REMARKS</th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="sr-only">Edit</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                <div class="flex flex-row justify-between">
-                                    <p class="py-2 font-semibold">Summary</p>
-                                </div>
-
-                                <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
-                            </th>
-
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                <p class="py-2 font-semibold">Recommendation</p>
-                                <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
+            <div>{{ Name }}</div>
+            <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
+        </div>
+        <div class="flex flex-col text-sm w-full pl-10">
+            <div class="flex space-x-8">
+                <div class="flex flex-col items-start uppercase font-semibold">
+                    <span class="">Name of Institution: </span>
+                    <span class="">address: </span>
+                    <span class="">Porgram(s): </span>
+                    <span class="">Date of Evalution</span>
+                </div>
+                <div class="flex flex-col items-start">
+                    <p class="">{{ instName }}</p>
+                    <p class="">{{ address }}</p>
+                    <p class="">{{ program }}</p>
+                    <p class="">{{ dateApplied }}</p>
+                </div>
             </div>
         </div>
-        <div class="space-x-6 p-10">
-            <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
-                Cancel
-            </button>
-            <button @click="submitEvaluation()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-                Submit
-            </button>
+        <div>
+            <div class="py-4">
+                <div class="relative overflow-x-auto shadow-md m-5">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="divide-x-2">
+                                <th scope="col" class="px-6 py-3 text-center" v-for="head in header" :key="head.title">
+                                    {{ head.title }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr scope="row" v-for="(req, index) in eval" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {{ req.id }}
+                                </td>
+                                <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
+                                    {{ req.Requirement }}
+                                </td>
+                                <td v-else-if="req.type == 'SubCategory'" class="aoe p-5 ml-5">
+                                    {{ req.Requirement }}
+                                </td>
+                                <td v-else-if="req.type == 'Item'" class="aoe p-10 ml-12">
+                                    {{ req.Requirement }}
+                                </td>
+                                <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
+                                <td class="">
+                                    <div class="flex justify-start items-start">
+                                        <textarea v-model="comment1[index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-center">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[index, v$.complied.$model]">
+                                        <label class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-center">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[index, v$.notcomplied.$model]" />
+                                        <label class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td class="text-end">
+                                    <textarea v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="py-4">
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="divide-x-2">
+                                <th scope="col" class="px-6 py-3">FINAL REMARKS</th>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="sr-only">Edit</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    <div class="flex flex-row justify-between">
+                                        <p class="py-2 font-semibold">Summary</p>
+                                        <a @click="getSummary()">Generate Summary</a>
+                                        <!-- <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" @click="getSummary()">
+                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                                        </svg> -->
+                                    </div>
+                                    
+
+                                    <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
+                                </th>
+
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    <p class="py-2 font-semibold">Recommendation</p>
+                                    <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="space-x-6 p-10">
+                <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
+                    Cancel
+                </button>
+                <button @click="submitEvaluation()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                    Submit
+                </button>
+            </div>
         </div>
     </div>
 </form>

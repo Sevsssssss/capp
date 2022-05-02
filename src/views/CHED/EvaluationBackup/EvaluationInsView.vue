@@ -53,16 +53,7 @@
                             {{ table.description }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <!-- {{table.id}} -->
-                            <router-link v-if="table && table.id" :to="{
-                                name: 'EvalFileView',
-                                params: {
-                                id: table.id,
-                                },
-                            }">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                            </router-link>
-
+                            <label for="updateFile" href="#" class="font-medium text-blue-600 hover:underline">Update File</label>
                         </td>
                     </tr>
                 </tbody>
@@ -107,6 +98,26 @@
             </div>
         </div>
     </div>
+
+    <input type="checkbox" id="updateFile" class="modal-toggle" />
+    <label for="updateFile" class="modal cursor-pointer">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">UPDATE THE EVALUATION FILE</div>
+            <p class="py-2 text-sm">Upload the evaluation form file for "THIS PROGRAM"</p>
+            <form v-on:submit.prevent="submit">
+                <div class="mb-6">
+                    <label class="label">
+                        <span class="label-text">Evaluation Form File*</span>
+                    </label>
+                    <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="updateFile" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+            </div>
+        </div>
+    </label>
 </div>
 </template>
 
