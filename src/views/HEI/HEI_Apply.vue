@@ -294,6 +294,12 @@ export default {
                             program: this.programSelect,
                             selectedRQAT: '',
                             selectedSupervisor: '',
+                            summary: '',
+                            certificate: '',
+                            resubmittedFiles: [],
+                            actualSituations: [],
+                            remarks: [],
+                            recommendation: '',
                         })
                         .then(
                             (newApplication) => {

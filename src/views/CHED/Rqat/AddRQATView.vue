@@ -267,7 +267,6 @@ export default {
                 newRQAT.set("contact_num", this.contactnum);
                 newRQAT.set("hei_affil", this.hei_affil);
                 newRQAT.set("access_type", this.rqat_acc_id);
-                newRQAT.set("hasTransactions", false);
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
                             type: TYPE.SUCCESS,
