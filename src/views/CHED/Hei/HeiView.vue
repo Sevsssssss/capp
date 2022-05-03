@@ -111,7 +111,15 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-4 items-end justify-end">
-                                <a href="#" @click="$router.replace({ path: '/hei/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                               <router-link :to="{
+                                name: 'EditHeiView',
+                                params: {
+                                heiID: table.id,
+                                },
+                            }">
+                                <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            </router-link>
+                                <!-- <a href="#" @click="$router.replace({ path: '/hei/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> -->
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
@@ -356,14 +364,13 @@ export default {
             var i = 0;
             if (this.sort_type == "Private") {
                 var heisPriv = [];
-                
+
                 const AccessType = Parse.Object.extend("AccessTypes");
                 const queryACC = new Parse.Query(AccessType);
                 queryACC.equalTo("name", "HEI");
 
                 const accQuerResult = await queryACC.first();
 
-    
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "PRIVATE COLLEGES");
@@ -390,14 +397,13 @@ export default {
             }
             if (this.sort_type == "State Univeristies") {
                 var heisState = [];
-                
+
                 const AccessType = Parse.Object.extend("AccessTypes");
                 const queryACC = new Parse.Query(AccessType);
                 queryACC.equalTo("name", "HEI");
 
                 const accQuerResult = await queryACC.first();
 
-    
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
@@ -421,17 +427,15 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-            }
-            else if (this.sort_type == "Local Universities") {
+            } else if (this.sort_type == "Local Universities") {
                 var heisLocal = [];
-                
+
                 const AccessType = Parse.Object.extend("AccessTypes");
                 const queryACC = new Parse.Query(AccessType);
                 queryACC.equalTo("name", "HEI");
 
                 const accQuerResult = await queryACC.first();
 
-    
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
@@ -464,7 +468,6 @@ export default {
 
                 const accQuerResult = await queryACC.first();
 
-    
                 const query = new Parse.Query(Parse.User);
                 query.equalTo("access_type", accQuerResult.id);
                 query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");

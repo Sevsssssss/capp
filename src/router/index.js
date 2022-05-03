@@ -90,7 +90,7 @@ const routes = [
         }
       },
       {
-        path: "/application/:id",
+        path: "/application/:status=:appID",
         name: "StatusApplication",
         component: StatusApplication,
         props: true,
@@ -122,22 +122,11 @@ const routes = [
           ]
         }
       },
-
       {
-        path: "/hei/edit/:id",
-        name: "edithei",
-        component: AddHeiView,
-        meta:{
-          breadcrumb: [
-            { name: 'HEI', link: '/hei' },
-            { name: 'EDIT HEI ACCOUNT'}
-          ]
-        }
-      },
-      {
-        path: "/hei/edit",
-        name: "edithei",
+        path: "/hei/edit=:heiID",
+        name: "EditHeiView",
         component: EditHeiView,
+        props: true,
         meta:{
           breadcrumb: [
             { name: 'HEI', link: '/hei' },
@@ -189,8 +178,9 @@ const routes = [
         }
       },
       {
-        path: "/rqat/edit",
-        name: "editrqat",
+        path: "/rqat/edit=:rqatID",
+        name: "EditRQATView",
+        props: true,
         component: EditRQATView,
         meta:{
           breadcrumb: [
@@ -232,14 +222,10 @@ const routes = [
         }
       },
       {
-        path: "/employees/edit",
-        name: "editemployee",
+        path: "/employees/edit=:empID",
+        name: "EditEmployeeView",
         component: EditEmployeeView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN") {
-            return { name: '403' }
-          }
-        },
+        props: true,
         meta:{
           breadcrumb: [
             { name: 'EMPLOYEE', link: '/employees' },
@@ -351,18 +337,7 @@ const routes = [
           ]
         }
       },
-      {
-        path: "/application/:status=:appID",
-        name: "StatusApplication",
-        component: StatusApplication,
-        props: true,
-        meta: {
-          breadcrumb: [
-            { name: 'Application', link: '/application' },
-            { name: 'Status' }
-          ]
-        }
-      },
+      
       {
         path: "/access-settings",
         name: "access-settings",

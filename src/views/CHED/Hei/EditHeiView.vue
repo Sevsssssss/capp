@@ -1,5 +1,6 @@
 <template>
   <div class="main-page flex justify-center items-center p-5">
+    {{heiID}}
     <div
       class="
         card
@@ -268,10 +269,12 @@ import emailjs from "emailjs-com";
 const toast = useToast();
 
 export default {
+  props: ["heiID"],
   name: "EditHeiView",
   components: {
     VueInstantLoadingSpinner,
   },
+  
   data() {
     return {
       showModal: false,
@@ -513,7 +516,7 @@ export default {
     var accType = querResult[0].get("privileges");
     var flag = 0;
     for (var y = 0; y < accType.length; y++) {
-      if (accType[y] === this.$route.path) {
+      if (accType[y] === "/hei") {
         flag = 1;
       }
     }

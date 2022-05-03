@@ -244,7 +244,8 @@ import { required } from "@vuelidate/validators";
 import emailjs from "emailjs-com";
 const toast = useToast();
 export default {
-  name: "AddRQATView",
+  props: ["rqatID"],
+  name: "EditRQATView",
   components: {
     VueInstantLoadingSpinner,
   },
@@ -435,7 +436,7 @@ export default {
     var accType = querResult[0].get("privileges");
     var flag = 0;
     for (var y = 0; y < accType.length; y++) {
-      if (accType[y] === this.$route.path) {
+      if (accType[y] === "/rqat") {
         flag = 1;
       }
     }

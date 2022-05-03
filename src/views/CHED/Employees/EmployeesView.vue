@@ -129,7 +129,14 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-2 items-end justify-end">
-                                <a href="#" @click="$router.replace({ path: '/employees/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <router-link :to="{
+                                name: 'EditEmployeeView',
+                                params: {
+                                empID: table.id,
+                                },
+                            }">
+                                <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            </router-link>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">

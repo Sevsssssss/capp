@@ -269,7 +269,8 @@ import { email, required } from "@vuelidate/validators";
 const toast = useToast();
 
 export default {
-  name: "AddEmployeeView",
+  props: ["empID"],
+  name: "EditEmployeeView",
   components: {
     VueInstantLoadingSpinner,
   },
@@ -368,7 +369,7 @@ export default {
             setTimeout(
               () =>
                 this.$router.push({
-                  path: "/hei",
+                  path: "/employee",
                 }),
               1000
             );
@@ -427,7 +428,7 @@ export default {
       var accType = querResult[0].get("privileges");
       var flag = 0;
       for (var y = 0; y < accType.length; y++) {
-        if (accType[y] === this.$route.path) {
+        if (accType[y] === "/employee") {
           flag = 1;
         }
       }

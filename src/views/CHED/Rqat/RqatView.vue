@@ -72,7 +72,15 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex  space-x-2 items-end justify-end">
-                                <a href="#" @click="$router.replace({path: '/rqat/edit'})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                 <router-link :to="{
+                                name: 'EditRQATView',
+                                params: {
+                                rqatID: table.id,
+                                },
+                            }">
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            </router-link>
+                                
                                 <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
