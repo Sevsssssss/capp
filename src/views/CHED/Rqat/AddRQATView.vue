@@ -58,6 +58,17 @@
 
             <div class="form-control w-full">
                 <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
+                <!-- <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label> -->
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.contactnum) }" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
@@ -71,10 +82,10 @@
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Select Affiliation:</span>
-                        <div class="text-sm font-medium text-gray-500">
+                        <!-- <div class="text-sm font-medium text-gray-500">
                             Add HEI Affiliation?
                             <label for="createAffilication" href="#" class="text-blue-700 hover:underline">Create</label>
-                        </div>
+                        </div> -->
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_affil">
                         <option v-for="hei in heis" :key="hei">
@@ -95,7 +106,7 @@
             </div>
         </form>
     </div>
-    <input type="checkbox" id="createAffilication" class="modal-toggle" />
+    <!-- <input type="checkbox" id="createAffilication" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD HEI AFFILIATION</div>
@@ -113,7 +124,7 @@
                 <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
             </div>
         </div>
-    </div>
+    </div> -->
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -143,6 +154,7 @@ import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
+    email,
     required
 } from "@vuelidate/validators";
 import emailjs from "emailjs-com";
@@ -182,6 +194,10 @@ export default {
                 required,
             },
             username: {
+                required,
+            },
+            email: {
+                email,
                 required,
             },
             contactnum: {
