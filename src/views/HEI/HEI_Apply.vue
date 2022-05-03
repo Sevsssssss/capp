@@ -300,6 +300,7 @@ export default {
                             actualSituations: [],
                             remarks: [],
                             recommendation: '',
+                            paymentStatus: '',
                         })
                         .then(
                             (newApplication) => {

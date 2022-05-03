@@ -251,6 +251,7 @@ export default {
                 }
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Revision");
+                application.set("paymentStatus", "Verified");
 
                 application
                     .save()
