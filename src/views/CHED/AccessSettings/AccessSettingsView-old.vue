@@ -263,6 +263,12 @@
                                         Access Types
                                     </div>
                                 </label>
+                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/heiTypes" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Hei Types
+                                    </div>
+                                </label>
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
                                     <input type="checkbox" class="checkbox mr-1" value="/designations" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
@@ -477,6 +483,12 @@
                                     <input type="checkbox" class="checkbox mr-1" value="/access-settings" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         Access Types
+                                    </div>
+                                </label>
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/heiTypes" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Hei Types
                                     </div>
                                 </label>
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">

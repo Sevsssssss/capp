@@ -79,7 +79,7 @@
                                 {{ table.status }}
                             </div>
                             <div v-else-if="table.status === 'For Evaluation'" class="relative pt-3">
-                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 right-0 badge badge-accent text-sm">assigned</span>
+                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
                                 <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
 
                                     {{ table.status }}
