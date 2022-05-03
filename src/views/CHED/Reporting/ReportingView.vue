@@ -1,14 +1,79 @@
 <template>
   <div class="px-3 py-4">
-    <div> {{numberOfHEI}} </div>
-    <div> {{listofPrograms}} </div>
+    <DataCards :datas="numberOfHEI" />
+    <!-- <div> {{numberOfHEI}} </div>
+    <div> {{listofPrograms}} </div> -->
+
+    <div v-for="appType in listofPrograms" :key="appType" class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        {{appType.applicationType}}
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        HEI Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        PROGRAM
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b " v-for="prog in appType.programList" :key="prog">
+                    <td class="px-6 py-4">
+                        {{prog.hei}}
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{prog.program}}
+                    </td>
+                </tr>
+            </tbody>
+            
+        </table>
+        <div class="table-footer flex flex-row justify-between">
+            <div class="flex flex-row pl-4 justify-center items-center">
+                <span class="text-sm text-gray-700">
+                    Showing
+                    <span class="font-semibold text-gray-900">{{
+            totalEntries > 0 ? 1 + numPerPage * currentpage : 0
+          }}</span>
+                    to
+                    <span class="font-semibold text-gray-900">{{
+            (currentpage + 1) * numPerPage > totalEntries
+              ? totalEntries
+              : (currentpage + 1) * numPerPage
+          }}</span>
+                    of
+                    <span class="font-semibold text-gray-900">{{
+            totalEntries
+          }}</span>
+                    Entries
+                </span>
+            </div>
+            <div class="p-2 pr-4">
+                <div class="btn-group">
+                    <ul class="inline-flex -space-x-px">
+                        <li>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
+                        </li>
+                        <li>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
+import DataCards from "@/components//DataCards.vue";
 import Parse from 'parse'
 export default {
   name: "ReportingView",
+  components: {
+        DataCards,
+    },
   data() {
     return {
       numberOfHEI: [],
@@ -128,8 +193,9 @@ export default {
           }
         }
         this.numberOfHEI.push({
-          applicationType: applicationType.get("applicationTypeName"),
-          count: counter,
+          title: applicationType.get("applicationTypeName"),
+          num: counter,
+          type: "approval",
         })
       }
 
@@ -150,7 +216,7 @@ export default {
 
           programList.push({
             program: progResults.get("programName"),
-            hei: application.get("createdBy"),
+            hei: application.get("createdBy"), // Change to Name of HEI
           })
         }
         this.listofPrograms.push({
@@ -158,7 +224,6 @@ export default {
           programList: programList,
         })
       }
-
     }
   },
 };

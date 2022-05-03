@@ -62,17 +62,23 @@
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
-
+            <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative mt-2">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search for RQAT name" />
+                    </div>
             <!-- Filter -->
-            <div class="flex flex-row py-6 justify-start items-start">
-                <!-- sort -->
-                <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedRQAT">
-                        <option v-for="rqat in Rqat" :key="rqat" :value="rqat.id">
-                            {{ rqat.name }}
-                        </option>
-                    </select>
-                </div>
+           <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-5">
+                <label v-for="rqat in Rqat" :key="rqat" :value="rqat.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
+                    <input type="checkbox" class="checkbox mr-1" value="/application" v-model="checkedAccessTypes" />
+                    <div class="label-text viewSubCatbool" style="align-self: center">
+                         {{ rqat.name }}
+                    </div>
+                </label>
             </div>
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
