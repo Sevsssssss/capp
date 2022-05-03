@@ -155,7 +155,7 @@
               ">
                             Cancel
                         </button>
-                        <button type="submit" class="
+                        <button @click="scrollToTop()" type="submit" class="
                 submit
                 w-40
                 text-white
@@ -176,6 +176,7 @@
             </div>
         </form>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </section>
 </template>
 
@@ -186,6 +187,7 @@ import {
     POSITION
 } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 // import NoDataAvail from "@/components//NoDataAvail.vue";
 import {
     required,
@@ -196,6 +198,9 @@ const toast = useToast();
 export default {
     name: "HEIapply",
     // components: { NoDataAvail,},
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             v$: useVuelidate(),
@@ -230,7 +235,11 @@ export default {
         };
     },
     methods: {
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
         submitApplication(values) {
+            this.$refs.Spinner.show();
             var has_error = 0;
 
             if (this.pointPerson == "" ||
@@ -320,7 +329,12 @@ export default {
                     console.log(error);
                 }
             }
-
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         changeItem: function changeItem(event) {
             for (var i = 0; i < this.applicationTypes.length; i++) {

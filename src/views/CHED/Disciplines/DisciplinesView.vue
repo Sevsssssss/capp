@@ -113,11 +113,11 @@
                         <label for="editPrograms" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
                     </td>
                     <td class="px-6 py-4 flex flex-row">
-                        <div class="hover:text-brand-red/60">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="deleteDiscipline(i.id)">
+                        <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
+                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
-                        </div>
+                        </label>
                     </td>
                 </tr>
             </tbody>
@@ -250,12 +250,12 @@
                     <div class="flex flex-row">
                         <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.programs) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
                         <div class="pl-4">
-                            <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                            <label data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" for="dele" @click="removeProgram(program.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
                                 </svg>
-                            </button>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -300,7 +300,7 @@
             </div>
 
             <form v-on:submit.prevent="submit">
-                
+
                 <div class="mb-6" v-for="i in searchDiscipline" :key="i">
                     <div v-for="x in i.Programs" :key="x">
                         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
@@ -316,7 +316,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
@@ -330,6 +329,20 @@
             <div class="modal-action">
                 <label for="editPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="editProgram()">Submit</label>
+            </div>
+        </div>
+    </div>
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Discipline</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                discipline?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteDiscipline()">Delete</label>
             </div>
         </div>
     </div>
@@ -360,6 +373,7 @@ export default {
     },
     data() {
         return {
+            deleteDis: '',
             showModal1: false,
             showModal2: false,
             showModal3: false,
@@ -423,6 +437,9 @@ export default {
                 programName: "",
             });
         },
+        selectedDisciplineDelete(id) {
+            this.deleteDis = id;
+        },
         removeProgram(id) {
             console.log(this.programs.length);
             for (var i = 0; i < this.programs.length; i++) {
@@ -437,23 +454,43 @@ export default {
             }
         },
 
-        async deleteDiscipline(id) {
+        async deleteDiscipline() {
+            this.$refs.Spinner.show();
             const disciplines = Parse.Object.extend("Disciplines");
             const discQuery = new Parse.Query(disciplines);
-            discQuery.equalTo("objectId", id);
+            discQuery.equalTo("objectId", this.deleteDis);
 
             const discipline = await discQuery.first();
 
-            if (confirm("Delete Discipline?")) {
-                discipline.destroy().then(
-                    (disc) => {
-                        console.log("Deleted object: " + disc.id);
-                    },
-                    (error) => {
-                        console.log("Error: " + error);
-                    }
-                );
-            }
+            discipline.destroy().then(
+                (disc) => {
+                    toast("Deleting...", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                    console.log("Deleted object: " + disc.id);
+                },
+                (error) => {
+                    toast("Error:" + error.message, {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    console.log(error.message);
+                }
+            )
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
 
         validationStatus: function (validation) {
@@ -567,7 +604,7 @@ export default {
                     disciplineName: this.disciplineName,
                 });
                 //alert("New Discipline Added: " + newDiscipline.id);
-                toast("New Discipline Added: " + newDiscipline.id, {
+                toast("New Discipline Added: " + this.disciplineName, {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
@@ -596,17 +633,18 @@ export default {
                         programName: this.programs[i].programName,
                         programDiscipline: this.selectedDiscipline,
                     });
+                    toast("New Program Added: " + this.programs[i].programName, {
+                            type: TYPE.SUCCESS,
+                            timeout: 3000,
+                            position: POSITION.TOP_RIGHT,
+                        }),
+                        // window.location.reload()
+                        setTimeout(() => {
+                            document.location.reload();
+                        }, 2000);
                 }
                 //alert("New Discipline Added: " + this.atname);
-                toast("New Program Added: " + this.atname, {
-                        type: TYPE.SUCCESS,
-                        timeout: 3000,
-                        position: POSITION.TOP_RIGHT,
-                    }),
-                    // window.location.reload()
-                    setTimeout(() => {
-                        document.location.reload();
-                    }, 2000);
+
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,

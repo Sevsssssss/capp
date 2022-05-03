@@ -16,20 +16,20 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Proof of Payment for Application:
+                            Proof of Payment for Application
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Proof of Payment for Evaluation:
+                            Proof of Payment for Evaluation
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="bg-white border-b">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment1</a>
+                            <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment for Application</a>
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment2</a>
+                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment for Evaluation</a>
                         </th>
                     </tr>
                 </tbody>
@@ -326,6 +326,7 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        
         this.applicationPaymentURL = application.get("payment")[0].file.url()
         this.evaluationPaymentURL = application.get("payment")[1].file.url()
 
