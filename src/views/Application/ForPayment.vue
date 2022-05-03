@@ -326,8 +326,10 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
-        this.applicationPaymentURL = application.get("payment")[0].file.url()
-        this.evaluationPaymentURL = application.get("payment")[1].file.url()
+        if(application.get("payment") != undefined && application.get("payment").length == 2){
+            this.applicationPaymentURL = application.get("payment")[0].file.url()
+            this.evaluationPaymentURL = application.get("payment")[1].file.url()
+        }
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

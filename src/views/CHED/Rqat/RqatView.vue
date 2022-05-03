@@ -84,7 +84,7 @@
                                 <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
-                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectAcc(table.id)">
                                             <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                         </svg>
                                     </label>
@@ -144,7 +144,7 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+                <label @click="deleteRQAT" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
             </div>
         </div>
     </div>
@@ -165,6 +165,7 @@ export default {
             currentpage: 0,
             numPerPage: 10,
             totalEntries: 0,
+            currentDelAcc: "",
             headers: [{
                     title: "RQAT MEMBER NAME",
                 },
@@ -225,6 +226,37 @@ export default {
     methods: {
         addRQAT() {
             this.$router.push("/rqat/add");
+        },
+        selectAcc(id) {
+            this.currentDelAcc = id;
+        },
+        async deleteRQAT() {
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("objectId", this.currentDelAcc);
+            const querResult = await acc.first({
+                useMasterKey: true,
+            });
+
+            const applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(applications);
+            queryApp.equalTo("selectedRQAT", querResult.id)
+            const application = await queryApp.find();
+
+            
+            if(application.length > 0){
+                if(confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")){
+                    querResult.set("isArchived", true);
+                    querResult.save({
+                        useMasterKey: true,
+                    });
+                }
+            }else {
+                if(confirm("Are you sure you would like to delete this account?")){
+                    querResult.destroy({
+                        useMasterKey: true,
+                    });
+                }
+            }
         },
         viewAssignments() {
             this.$router.push("/rqat-assignment");

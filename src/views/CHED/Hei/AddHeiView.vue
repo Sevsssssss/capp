@@ -312,7 +312,6 @@ export default {
                 newHEI.set("inst_code", this.inst_code);
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
-                newHEI.set("hasTransactions", false);
                 await newHEI.save()
                     .then(() => {
                         toast("HEI Account Added!", {

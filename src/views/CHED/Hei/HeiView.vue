@@ -335,11 +335,30 @@ export default {
         async deleteAccount() {
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
-            const querResult = await acc.find({
+            const querResult = await acc.first({
                 useMasterKey: true,
             });
-            const accDel = querResult[0];
-            alert(accDel.get("hei_name"));
+
+            const applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(applications);
+            queryApp.equalTo("createdBy", querResult.id)
+            const application = await queryApp.find();
+
+            
+            if(application.length > 0){
+                if(confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")){
+                    querResult.set("isArchived", true);
+                    querResult.save({
+                        useMasterKey: true,
+                    });
+                }
+            }else {
+                if(confirm("Are you sure you would like to delete this account?")){
+                    querResult.destroy({
+                        useMasterKey: true,
+                    });
+                }
+            }
         },
         excelHei() {
             this.$router.push("/hei/upload");

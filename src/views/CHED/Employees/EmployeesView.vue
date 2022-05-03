@@ -139,7 +139,7 @@
                             </router-link>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
-                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectAcc(table.id)">
                                             <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                         </svg>
                                     </label>
@@ -230,7 +230,7 @@
               border border-blue-700
               hover:bg-white
             ">Cancel</label>
-                <label class="
+                <label @click="deleteEmployee" class="
               btn btn-sm
               bg-red-500
               hover:bg-red-600
@@ -299,6 +299,53 @@ export default {
     methods: {
         addEmployee() {
             this.$router.push("/employees/add");
+        },
+        selectAcc(id) {
+            this.currentDelAcc = id;
+        },
+        async deleteEmployee() {
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("objectId", this.currentDelAcc);
+            const querResult = await acc.first({
+                useMasterKey: true,
+            });
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("objectId", querResult.get("access_type"));
+            const educSup = queryACC.first();
+
+            const applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(applications);
+            if(educSup != undefined){
+                queryApp.equalTo("selectedSupervisor", querResult.id)
+                const application = await queryApp.find();
+                if(application.length > 0){
+                if(confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")){
+                    querResult.set("isArchived", true);
+                    querResult.save({
+                        useMasterKey: true,
+                    });
+                }
+                }else {
+                    if(confirm("Are you sure you would like to delete this account?")){
+                        querResult.destroy({
+                            useMasterKey: true,
+                        });
+                    }
+                }
+            }
+            else{
+                if(confirm("Are you sure you would like to delete this account?")){
+                    querResult.destroy({
+                        useMasterKey: true,
+                    });
+                }
+            }
+            
+
+            
+            
         },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
