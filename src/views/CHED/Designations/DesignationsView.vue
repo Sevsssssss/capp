@@ -56,11 +56,11 @@
             </td> -->
                     <td class="px-6 py-4 flex flex-row justify-end">
                         <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3" @click="selectDesignation(i.id)">Edit</label>
-                        <div class="hover:text-brand-red/60 self-center">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="deleteDesignation(i.id)">
+                        <label for="deleteFunc" class="hover:text-brand-red/60 self-center">
+                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedDesignationDelete(i.id)">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
-                        </div>
+                        </label>
                     </td>
                 </tr>
             </tbody>
@@ -156,6 +156,20 @@
             </div>
         </div>
     </label>
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Discipline</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                discipline?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteDesignation()">Delete</label>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -181,6 +195,7 @@ export default {
     },
     data() {
         return {
+            deleteDis: '',
             showModal1: false,
             v$: useVuelidate(),
             currentpage: 0,
@@ -269,23 +284,43 @@ export default {
                     }, 2000);
             }
         },
-        async deleteDesignation(id){
+        selectedDesignationDelete(id) {
+            this.deleteDis = id;
+        },
+        async deleteDesignation() {
+            this.$refs.Spinner.show();
             const designations = Parse.Object.extend("Designations");
             const desigQuery = new Parse.Query(designations);
-            desigQuery.equalTo("objectId", id);
+            desigQuery.equalTo("objectId", this.deleteDis);
 
             const designation = await desigQuery.first();
 
-            if(confirm("Delete Designation?")){
-                designation.destroy().then((disc) => {
-                    console.log("Deleted object: " + disc.id);
-                    setTimeout(() => {
-                        window.location.reload()
-                    }, 2000);
-                }, (error) => {
-                    console.log("Error: " + error)
-                })
-            }
+            designation.destroy().then((disc) => {
+                console.log("Deleted object: " + disc.id);
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000);
+            }, (error) => {
+                toast("Error:" + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log("Error: " + error)
+            })
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
         addDesignation() {
             this.$refs.Spinner.show();
