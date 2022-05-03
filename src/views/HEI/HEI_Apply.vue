@@ -232,6 +232,9 @@ export default {
             phoneNumber: {
                 required,
             },
+            programSelect:{
+                required,
+            }
         };
     },
     methods: {
@@ -244,7 +247,8 @@ export default {
 
             if (this.pointPerson == "" ||
                 this.email == "" ||
-                this.phoneNumber == ""
+                this.phoneNumber == "" || 
+                this.programSelect == ""
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -295,7 +299,7 @@ export default {
                             selectedRQAT: '',
                             selectedSupervisor: '',
                             summary: '',
-                            certificate: '',
+                            //certificate: '',
                             resubmittedFiles: [],
                             actualSituations: [],
                             remarks: [],
