@@ -3,9 +3,9 @@
   <div class="m-3">
     <form
       v-on:submit.prevent="submit"
-      class="overflow-x-auto shadow-lg rounded-lg p-8 w-full"
+      class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between"
     >
-      <div class="flex w-full items-end justify-between">
+      <div class="flex w-full items-end">
         <div class="form-control w-full pr-3">
           <label class="label">
             <span class="label-text">Program*</span>
@@ -48,7 +48,7 @@
           <input
             type="text"
             placeholder="Enter CMO No."
-            class="input input-bordered w-full max-w-xs"
+            class="input input-bordered w-full"
             v-model="v$.cmoNo.$model"
           />
           <!-- <label class="label">
@@ -64,21 +64,13 @@
           <input
             type="text"
             placeholder="Enter Series Year"
-            class="input input-bordered w-full max-w-xs"
+            class="input input-bordered w-full"
             v-model="v$.seriesYear.$model"
           />
           <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.seriesYear) }" v-if="validationStatus(v$.seriesYear)">
                         Series Year is Required</span>
                 </label> -->
-        </div>
-        <div class="pl-5 w-auto">
-          <button
-            class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
-            @click="addCategory()"
-          >
-            Add Category
-          </button>
         </div>
       </div>
       <div class="form-control w-full pt-2">
@@ -97,15 +89,27 @@
                     Description is Required</span>
             </label> -->
       </div>
+      <div class="flex flex-row mt-5 justify-between items-center">
+        <div class="font-semibold">CATEGORY</div>
+        <div :class="{ hide: categories.length > 0 }" class="">
+          <button
+          class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
+          @click="addCategory()"
+        >
+          Add Category
+        </button>
+        </div>
+      </div>
       <!-- Body -->
-      <!-- category in categories" :key="category means it accesses the cateogies array which contains every category. -->
       <div
         v-for="category in categories"
         :key="category"
         class="overflow-x-auto rounded-lg"
         id="add-cat"
       >
-        <div class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2">
+        <div
+          class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2"
+        >
           <div class="flex flex-row justify-between items-end">
             <!-- <button v-if="category.subcategory.length == 0 || viewSubCat() == false" style="align-self: flex-end; margin-bottom: 10px;" @click="showSubCat()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="35" height="35">
@@ -165,27 +169,37 @@
               </button>
             </div>
           </div>
-          
-            <div class="flex flex-row mt-5 justify-between items-center">
-              <div class="font-semibold">SUB-CATEGORY</div>
-              <div class="">
-                <button
-                  class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
-                  @click="addSubCategory(category.subcategory)"
-                >
-                  Add Sub-Category
-                </button>
-              </div>
+
+          <div class="flex flex-row mt-5 justify-between items-center">
+            <div class="font-semibold">SUB-CATEGORY</div>
+            <div class="">
+              <button
+                class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
+                @click="addSubCategory(category.subcategory)"
+              >
+                Add Sub-Category
+              </button>
             </div>
-            
-            <!-- v-for="subcategory in category.subcategory" :key="subcategory" means it accesses each subcategory in the subcategory array inside each category in the categories array -->
+          </div>
+
+          <!-- v-for="subcategory in category.subcategory" :key="subcategory" means it accesses each subcategory in the subcategory array inside each category in the categories array -->
+          <div
+            v-for="subcategory in category.subcategory"
+            :key="subcategory"
+            class="overflow-x-auto rounded-lg"
+            id="add-subcat"
+          >
             <div
-              v-for="subcategory in category.subcategory"
-              :key="subcategory"
-              class="overflow-x-auto rounded-lg"
-              id="add-subcat"
+              class="
+                overflow-x-auto
+                shadow-lg
+                mt-5
+                rounded-lg
+                p-4
+                w-full
+                border-2
+              "
             >
-            <div class="overflow-x-auto shadow-lg mt-5 rounded-lg p-4 w-full border-2">
               <div v-if="viewSubCat()">
                 <div class="">
                   <label class="label"
@@ -310,8 +324,16 @@
           </div>
         </div>
       </div>
+      <div :class="{ hide: categories.length == 0 }" class="mt-5 flex flex-row justify-end">
+        <button
+          class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
+          @click="addCategory()"
+        >
+          Add Category
+        </button>
+      </div>
       <!-- Footer -->
-      <div class="table-footer flex flex-row" style="justify-content: center">
+      <div class="table-footer flex flex-row justify-center">
         <div class="flex flex-row pt-5">
           <button class="btn btn-margin btn-outline" @click="$router.go(-1)">
             Cancel

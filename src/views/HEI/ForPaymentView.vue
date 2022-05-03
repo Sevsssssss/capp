@@ -150,6 +150,7 @@ export default {
                 application
                     .save({
                         payment: this.payment,
+                        paymentStatus: "For Verification"
                     })
                     .then(
                         (application) => {

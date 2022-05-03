@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500">
+            <table v-if="fileCheck() == true" class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -34,6 +34,18 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-else>
+                <div class="noDataAvail h-full p-20 text-center">
+                    No Data Available
+                    <!-- <button  type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                        </svg>
+                        <div class="pl-2">Notify HEI</div>
+                    </button> -->
+                </div>
+            </div>
         </div>
         <div class="flex flex-row justify-center items-center space-x-6 py-10">
             <div class="">
@@ -41,12 +53,12 @@
                     <div>Dismiss</div>
                 </button>
             </div>
-            <div v-if="statusShow.includes('Disapproved')">
+            <!-- <div v-if="statusShow.includes('Disapproved')">
                 <button @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Revise
                 </button>
-            </div>
-            <div v-else>
+            </div> -->
+            <div v-if="fileCheck() == true">
                 <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
                 </button>
@@ -57,7 +69,6 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ASSIGN SUPERVISOR</div>
 
-            
             <div class="flex flex-row py-6 justify-start items-start">
                 <div class="month-sort flex flex-row border rounded-md w-full">
                     <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
@@ -140,6 +151,7 @@ export default {
             search: "",
             disapproved: '',
             approved: '',
+            fileCheker: false,
         };
     },
     validations() {
@@ -177,6 +189,9 @@ export default {
         },
         validate2() {
             return this.showModal2;
+        },
+        fileCheck() {
+            return this.fileCheker;
         },
         async submitChanges() {
             try {
@@ -264,7 +279,7 @@ export default {
                 console.log(error);
             }
         },
-        
+
         modal() {
             var has_error = 0;
             //var error_text = "Account not created due to the following reasons:\n";
@@ -326,9 +341,12 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
-        if(application.get("payment") != undefined && application.get("payment").length == 2){
+        if (application.get("payment") != undefined && application.get("payment").length == 2) {
             this.applicationPaymentURL = application.get("payment")[0].file.url()
             this.evaluationPaymentURL = application.get("payment")[1].file.url()
+            this.fileCheker = true;
+        } else {
+            this.fileCheker = false;
         }
 
         //Query Application Type

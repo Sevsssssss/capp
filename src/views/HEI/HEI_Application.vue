@@ -73,14 +73,17 @@
                         <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
-                            {{ table.status }}
+                        <div v-else-if="table.status === 'For Payment'" class="relative pt-3">
+                            <span v-if="table.paymentStatus != '' && table.paymentStatus != null" class="absolute top-0 right-14 badge badge-accent text-sm">{{table.paymentStatus}}</span>
+                            <div  class="btn-sm1 rounded-md font-normal payment">
+                                {{ table.status}}
+                            </div>
                         </div>
                         <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
                             {{ table.status }}
                         </div>
                         <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
-                            {{ table.status }}
+                            {{ table.status }} 
                         </div>
                     </td>
                     <td class="px-6 py-4 text-right">
@@ -100,7 +103,7 @@
                          statusA: table.status
                         },
                         }">
-                            <a v-if="statusChecker(table.status) &&table.status === 'For Payment'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Payment' && (table.paymentStatus === undefined || table.paymentStatus === null)" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                         <router-link :to="{
                          name: 'ComplyApplication',
@@ -450,6 +453,7 @@ export default {
 
                 const applicationType = await appTypeQuery.first();
 
+
                 storedApplications.push({
                     appID: application.id,
                     id: i + 1,
@@ -460,6 +464,7 @@ export default {
                     requirements: application.get("requirements"),
                     dateApplied: months[month] + " " + day + ", " + year,
                     status: application.get("applicationStatus"),
+                    paymentStatus: application.get("paymentStatus"),
                 });
             }
             this.totalEntries = querResult.length;
