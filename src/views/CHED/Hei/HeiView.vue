@@ -561,17 +561,16 @@ export default {
             this.tables = heis;
             console.log(heis);
             const queryPrivate = new Parse.Query(Parse.User);
-            queryPrivate.equalTo("access_type", "HEI");
             queryPrivate.equalTo("hei_type", "PRIVATE COLLEGES");
             const queryState = new Parse.Query(Parse.User);
-            queryState.equalTo("access_type", "HEI");
             queryState.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
             const queryLocal = new Parse.Query(Parse.User);
-            queryLocal.equalTo("access_type", "HEI");
             queryLocal.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
             const queryOthers = new Parse.Query(Parse.User);
-            queryOthers.equalTo("access_type", "HEI");
             queryOthers.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
+
+            
+
             this.datas = [{
                     title: "STATE UNIVERSITIES AND COLLEGES",
                     num: await queryState.count(),
