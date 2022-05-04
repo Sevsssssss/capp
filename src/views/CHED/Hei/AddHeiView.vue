@@ -77,13 +77,9 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
-                        <div class="text-sm font-medium text-gray-500">
-                            Add HEI Type?
-                            <label for="createHEI" href="#" class="text-blue-700 hover:underline"><a>Create</a></label>
-                        </div>
                     </label>
-                    <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                        <option v-for="hei in heis" :key="hei">
+                    <select class="select select-bordered w-full font-normal" v-model="v$.hei_type.$model">
+                        <option v-for="hei in heis" :key="hei" :value="hei.id">
                             <div class="hei-name">{{ hei.title }}</div>
                         </option>
                     </select>
@@ -179,26 +175,14 @@ export default {
             addAgain: false,
             text: "Account added!",
             v$: useVuelidate(),
-            heis: [{
-                    title: "STATE UNIVERSITIES AND COLLEGES",
-                },
-                {
-                    title: "LOCAL UNIVERSITIES AND COLLEGES",
-                },
-                {
-                    title: "PRIVATE COLLEGES",
-                },
-                {
-                    title: "OTHER GOVERNMENT SCHOOLS",
-                },
-            ],
+            heis: [],
             hei_name: "",
             username: "",
             email: "",
             address: "",
             number: "",
             inst_code: "",
-            hei_type: "STATE UNIVERSITIES AND COLLEGES",
+            hei_type: "",
             hei_nameError: "",
             usernameError: "",
             emailError: "",
@@ -310,7 +294,7 @@ export default {
                 newHEI.set("address", this.address);
                 newHEI.set("number", this.number);
                 newHEI.set("inst_code", this.inst_code);
-                newHEI.set("hei_type", this.hei_type);
+                newHEI.set("heiTypes", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
                 await newHEI.save()
                     .then(() => {
@@ -374,6 +358,7 @@ export default {
             // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const query = new Parse.Query(AccessTypes);
+            const queryResult = await query.find();
             query.equalTo("objectId", Parse.User.current().get("access_type"));
 
             const querResult = await query.find();
@@ -390,7 +375,26 @@ export default {
                 console.log("Hi!, You have permission to access this Page");
                 //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
                 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
+                for (var e = 0; e < queryResult.length; e++) {
+                    this.accessTypes.push({
+                        id: queryResult[e].id,
+                        title: queryResult[e].get("name"),
+                    });
+                }
+                this.access_type = queryResult[0].get("name");
+                const HeiTypes = Parse.Object.extend("heiTypes");
+                const queryD = new Parse.Query(HeiTypes);
+                const queryResultDesig = await queryD.find();
+                for (var w = 0; w < queryResultDesig.length; w++) {
+                    this.heis.push({
+                        id: queryResultDesig[w].id,
+                        title: queryResultDesig[w].get("name"),
+                    });
+                    if (queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR') {
+                        this.educSupId = queryResultDesig[w].id;
+                    }
+                }
+                this.hei_type = queryResultDesig[0].id;
 
             }
         },

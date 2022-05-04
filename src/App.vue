@@ -37,6 +37,7 @@ Parse.masterKey = "master"
 //             "/designations",
 //             "/disciplines",
 //             "/access-settings",
+//             "/heiTypes",
 //             "/app-settings/add",
 //             "/reporting",
 //             "/evaluationins/view",
