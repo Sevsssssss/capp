@@ -52,7 +52,8 @@ import EditApplicationView from '../views/CHED/AppSettings/EditApplicationTypeVi
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
-import HeiTypeView from '../views/CHED/HeiTypes/HeiTypeView.vue';
+import HeiTypesView from '../views/CHED/HeiTypes/HeiTypeView.vue';
+import UploadExcelHeiType from '../views/CHED/HeiTypes/UploadExcel.vue';
 
 import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
 import rqatEvaluate from '../views/RQAT/rqatEvaluate.vue';
@@ -416,10 +417,21 @@ const routes = [
       {
         path: "/heiTypes",
         name: "heiTypes",
-        component: HeiTypeView,
+        component: HeiTypesView,
         meta: {
           breadcrumb: [
             { name: 'HEI TYPES' },
+          ]
+        }
+      },
+      {
+        path: "/heiTypes/upload",
+        name: "uploadExcelHeiTypes",
+        component: UploadExcelHeiType,
+        meta: {
+          breadcrumb: [
+            { name: 'HEI TYPES', link: '/heiTypes' },
+            { name: 'UPLOAD EXCEL' }
           ]
         }
       },

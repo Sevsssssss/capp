@@ -74,7 +74,7 @@
                             {{ table.status }}
                         </div>
                         <div v-else-if="table.status === 'For Payment'" class="relative pt-3">
-                            <span v-if="table.paymentStatus != '' && table.paymentStatus != null" class="absolute top-0 right-14 badge badge-accent text-sm">{{table.paymentStatus}}</span>
+                            <span v-if="table.paymentStatus != ''" class="absolute top-0 right-14 badge badge-accent text-sm">{{table.paymentStatus}}</span>
                             <div  class="btn-sm1 rounded-md font-normal payment">
                                 {{ table.status}}
                             </div>
@@ -103,7 +103,7 @@
                          statusA: table.status
                         },
                         }">
-                            <a v-if="statusChecker(table.status) &&table.status === 'For Payment' && (table.paymentStatus === undefined || table.paymentStatus === null)" href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Payment' && (table.paymentStatus != 'For Verification')" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                         <router-link :to="{
                          name: 'ComplyApplication',

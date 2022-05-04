@@ -1,6 +1,7 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
     <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
+        {{hei_types}}
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -77,14 +78,10 @@
                 <div class="form-control w-full pl-4">
                     <label class="label">
                         <span class="label-text">HEI Type:</span>
-                        <div class="text-sm font-medium text-gray-500">
-                            Add HEI Type?
-                            <label for="createHEI" href="#" class="text-blue-700 hover:underline"><a>Create</a></label>
-                        </div>
                     </label>
-                    <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                        <option v-for="hei in heis" :key="hei">
-                            <div class="hei-name">{{ hei.title }}</div>
+                    <select class="select select-bordered w-full font-normal" v-model="v$.hei_type.$model">
+                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                            <div class="hei-name">{{ heiType.title }}</div>
                         </option>
                     </select>
                 </div>
@@ -179,26 +176,14 @@ export default {
             addAgain: false,
             text: "Account added!",
             v$: useVuelidate(),
-            heis: [{
-                    title: "STATE UNIVERSITIES AND COLLEGES",
-                },
-                {
-                    title: "LOCAL UNIVERSITIES AND COLLEGES",
-                },
-                {
-                    title: "PRIVATE COLLEGES",
-                },
-                {
-                    title: "OTHER GOVERNMENT SCHOOLS",
-                },
-            ],
+            hei_types: [],
             hei_name: "",
             username: "",
             email: "",
             address: "",
             number: "",
             inst_code: "",
-            hei_type: "STATE UNIVERSITIES AND COLLEGES",
+            hei_type: "",
             hei_nameError: "",
             usernameError: "",
             emailError: "",
@@ -310,7 +295,7 @@ export default {
                 newHEI.set("address", this.address);
                 newHEI.set("number", this.number);
                 newHEI.set("inst_code", this.inst_code);
-                newHEI.set("hei_type", this.hei_type);
+                newHEI.set("heiTypes", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
                 await newHEI.save()
                     .then(() => {
@@ -339,7 +324,7 @@ export default {
                 function () {
                     this.$refs.Spinner.hide();
                 }.bind(this),
-                2000
+                3000
             );
         },
         modal() {
@@ -370,7 +355,8 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
-        mounted: async function () {
+    },
+    mounted: async function () {
             // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const query = new Parse.Query(AccessTypes);
@@ -391,10 +377,23 @@ export default {
                 //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
                 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
+                const HeiTypes = Parse.Object.extend("HEI_Types");
+                const queryHT = new Parse.Query(HeiTypes);
+                const querResultHT = await queryHT.find();
+
+                var heiTypes = [];
+                for (var w = 0; w < querResultHT.length; w++) {
+                    const heitype = querResultHT[w];
+                    heiTypes.push({
+                        id: heitype.id,
+                        title: heitype.get("name"),
+                    });
+                }
+                this.hei_types = heiTypes;
+                this.hei_type = this.hei_types[0].id;
 
             }
         },
-    },
 };
 </script>
 

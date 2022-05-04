@@ -56,11 +56,11 @@
                             <label for="editAccessType" @click="changeSelectedAT(i.id, i.Name)" class="font-medium text-blue-600 hover:underline">Edit</label>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="hover:text-brand-red/60">
-                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="deleteAT(i.id)">
+                            <label for="deleteFunc" class="hover:text-brand-red/60">
+                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedAccessDelete(i.id)">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                 </svg>
-                            </div>
+                            </label>
                         </td>
                     </tr>
                 </tbody>
@@ -400,6 +400,12 @@
                                     </div>
                                 </label>
                                 <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/heiTypes" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Hei Types
+                                    </div>
+                                </label>
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
                                     <input type="checkbox" class="checkbox mr-1" value="/designations" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         Designations
@@ -464,6 +470,19 @@
             </div>
         </label>
     </div>
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Access Type</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are You sure you want to delete this access type?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="deleteFunc" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteAT()">Delete</label>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -490,6 +509,7 @@ export default {
     },
     data() {
         return {
+            deleteAccess: '',
             showModal1: false,
             v$: useVuelidate(),
             currentpage: 0,
@@ -540,7 +560,7 @@ export default {
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const atQuery = new Parse.Query(AccessTypes);
             atQuery.equalTo("objectId", this.selectedAT);
-            
+
             const accessType = await atQuery.first();
 
             try {
@@ -578,35 +598,65 @@ export default {
                 console.log(error.message)
             }
         },
-        async deleteAT(id){
+        selectedAccessDelete(id) {
+            this.deleteAccess = id;
+        },
+        async deleteAT() {
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const atQuery = new Parse.Query(AccessTypes);
-            atQuery.equalTo("objectId", id);
+            atQuery.equalTo("objectId", this.deleteAccess);
 
             const accessType = await atQuery.first();
-            if(confirm("Are You sure you want to delete this access type?")){
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", id);
+            const query = new Parse.Query(Parse.User);
+            query.equalTo("access_type", this.deleteAccess);
 
-                const querResult = await query.find();
+            const querResult = await query.find();
 
-                console.log(querResult.length)
+            console.log(querResult.length)
 
-                if(querResult.length < 1){
-                    accessType.destroy().then(
-                        (accType) => {
-                            console.log("Deleted object: " + accType.id);
-                        },
-                        (error) => {
-                            console.log("Error: " + error);
-                        }
-                    );
-                }
-                else {
-                    console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
-                    accessType.set("isArchived", true);
-                    accessType.save();
-                }
+            if (querResult.length < 1) {
+                accessType.destroy().then(
+                    (accType) => {
+                        toast("Deleting...", {
+                            type: TYPE.WARNING,
+                            timeout: 3000,
+                            hideProgressBar: false,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 3000);
+                        console.log("Deleted object: " + accType.id);
+                    },
+                    (error) => {
+                        toast("Error:" + error.message, {
+                            type: TYPE.ERROR,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                        console.log("Error: " + error);
+                    }
+                );
+            } else {
+                toast("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed): " + querResult, {
+                    type: TYPE.INFO,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                toast("Is Archived", {
+                    type: TYPE.INFO,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000);
+                console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
+                accessType.set("isArchived", true);
+                accessType.save();
             }
         },
         validationStatus: function (validation) {
