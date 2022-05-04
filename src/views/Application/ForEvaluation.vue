@@ -9,8 +9,8 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 0">
-            <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm">ASSIGNED To: {{selectedRqat}}</p>
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
+            <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm">ASSIGNED To: {{storedRqats}}</p>
         </div>
         <div v-else class="font-normal text-sm">
             Evaluation Instrument:
@@ -49,7 +49,7 @@
                 Request Re-Assign
             </div>
         </div>
-        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 0">
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
         </div>
         <div v-else>
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
@@ -120,6 +120,7 @@ export default {
             search: "",
             Rqat: [],
             selectedRqat: [],
+            storedRqats: [],
             supervisor: false,
         };
     },
@@ -272,7 +273,7 @@ export default {
         }
 
 
-        this.selectedRqat = selRQATS;
+        this.storedRqats = selRQATS;
 
     },
 };
