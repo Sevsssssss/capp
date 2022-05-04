@@ -323,7 +323,7 @@ export default {
                 function () {
                     this.$refs.Spinner.hide();
                 }.bind(this),
-                2000
+                3000
             );
         },
         modal() {
