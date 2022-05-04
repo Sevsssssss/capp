@@ -9,7 +9,7 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 1">
+        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 0">
             <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm">ASSIGNED To: {{selectedRqat}}</p>
         </div>
         <div v-else class="font-normal text-sm">
@@ -49,7 +49,7 @@
                 Request Re-Assign
             </div>
         </div>
-        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 1">
+        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 0">
         </div>
         <div v-else>
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
@@ -61,6 +61,7 @@
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
+            
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
                     <div class="relative mt-2">
