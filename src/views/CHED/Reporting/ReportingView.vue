@@ -214,9 +214,15 @@ export default {
           progQuery.equalTo("objectId", application.get("program"))
           const progResults = await progQuery.first();
 
+          const users = new Parse.Query(Parse.User);
+          users.equalTo("objectId", application.get("createdBy"));
+            const hei = await users.first({
+                useMasterKey: true,
+            });
+
           programList.push({
             program: progResults.get("programName"),
-            hei: application.get("createdBy"), // Change to Name of HEI
+            hei: hei.get("hei_name"), // Change to Name of HEI
           })
         }
         this.listofPrograms.push({
