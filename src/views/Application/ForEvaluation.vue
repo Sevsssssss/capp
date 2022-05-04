@@ -225,13 +225,22 @@ export default {
 
         const user = new Parse.Query(Parse.User);
         user.equalTo("access_type", accQuerResultRQAT.id);
+        const rqatResult = await user.find();
 
         const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
         const selRQATResult = await selectRqatQuery.find();
 
-        const rqatResult = await user.find();
-
         var dbRqat = [];
+
+        dbRqat.push({
+                id: Parse.User.current().id,
+                name: Parse.User.current().get("name")["lastname"] +
+                    ", " +
+                    Parse.User.current().get("name")["firstname"] +
+                    " " +
+                    Parse.User.current().get("name")["middleinitial"] +
+                    ".",
+            });
 
         for (var j = 0; j < rqatResult.length; j++) {
             const rqat = rqatResult[j];
