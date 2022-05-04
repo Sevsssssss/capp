@@ -252,7 +252,7 @@ export default {
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
                 console.log(this.heiTypeSelected)
-                const heiTypes = Parse.Object.extend("heiTypes");
+                const heiTypes = Parse.Object.extend("HEI_Types");
                 const htQuery = new Parse.Query(heiTypes);
                 htQuery.equalTo("objectId", this.heiTypeSelected);
 
@@ -281,7 +281,7 @@ export default {
         },
         async deleteHeiType() {
             this.$refs.Spinner.show();
-            const heiTypes = Parse.Object.extend("heiTypes");
+            const heiTypes = Parse.Object.extend("HEI_Types");
             const htQuery = new Parse.Query(heiTypes);
             htQuery.equalTo("objectId", this.deleteDis);
 
@@ -316,7 +316,7 @@ export default {
         },
         addHeiType() {
             this.$refs.Spinner.show();
-            const heiType = Parse.Object.extend("heiTypes");
+            const heiType = Parse.Object.extend("HEI_Types");
             const newHeiType = new heiType();
             try {
                 newHeiType.save({
@@ -386,10 +386,10 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var heiTypesTable = [];
 
-            const HeiTypes = Parse.Object.extend("heiTypes");
+            const HeiTypes = Parse.Object.extend("HEI_Types");
             const query = new Parse.Query(HeiTypes);
-
             const querResult = await query.find();
+            
             for (var i = 0; i < querResult.length; i++) {
                 const ht = querResult[i];
 

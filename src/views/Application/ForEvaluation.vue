@@ -9,7 +9,7 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div v-if="this.selectedRqat != null && this.selectedRqat  != ''">
+        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 1">
             <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm">ASSIGNED To: {{selectedRqat}}</p>
         </div>
         <div v-else class="font-normal text-sm">
@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
+                <tr v-for="table in tables" :key="table" class="bg-white border-b">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 text-wrap break-words">
                         {{ table.credential }}
                     </th>
@@ -49,7 +49,7 @@
                 Request Re-Assign
             </div>
         </div>
-        <div v-if="this.selectedRqat != null && this.selectedRqat  != ''">
+        <div v-if="this.selectedRqat != null && this.selectedRqat.length > 1">
         </div>
         <div v-else>
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
@@ -73,8 +73,8 @@
                     </div>
             <!-- Filter -->
            <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-5">
-                <label v-for="rqat in Rqat" :key="rqat" :value="rqat.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
-                    <input type="checkbox" class="checkbox mr-1" value="/application" v-model="checkedAccessTypes" />
+                <label v-for="rqat in searchRQAT" :key="rqat" :value="rqat.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
+                    <input type="checkbox" class="checkbox mr-1" :value="rqat.id" v-model="selectedRqat" />
                     <div class="label-text viewSubCatbool" style="align-self: center">
                          {{ rqat.name }}
                     </div>
@@ -82,7 +82,7 @@
             </div>
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="this.selectedRQAT != 'Select RQAT Member' ? assignRQAT() : showToastSupervisor()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                <label @click="this.selectedRqat.length > 0 ? assignRQAT() : showToastSupervisor()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
             </div>
         </div>
     </div>
@@ -118,16 +118,15 @@ export default {
             tables: [],
             search: "",
             Rqat: [],
-            selectedRqat: '',
-            selectedRQAT: "Select RQAT Member",
+            selectedRqat: [],
             supervisor: false,
         };
     },
     computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
+        searchRQAT() {
+            return this.Rqat.filter((p) => {
                 return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                    p.name.toLowerCase().indexOf(this.search.toLowerCase()) != -1
                 );
             });
         },
@@ -144,7 +143,7 @@ export default {
 
                 const application = await query.first();
 
-                application.set("selectedRQAT", this.selectedRQAT);
+                application.set("selectedRQAT", this.selectedRqat);
 
                 application.save().then((application) => {
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
@@ -194,7 +193,6 @@ export default {
         const appTypeQuery = new Parse.Query(applicationTypes);
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
-        this.selectedRqat = application.get("selectedRQAT");
 
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
@@ -227,6 +225,10 @@ export default {
 
         const user = new Parse.Query(Parse.User);
         user.equalTo("access_type", accQuerResultRQAT.id);
+
+        const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
+        const selRQATResult = await selectRqatQuery.find();
+
         const rqatResult = await user.find();
 
         var dbRqat = [];
@@ -244,8 +246,24 @@ export default {
                     ".",
             });
         }
-
         this.Rqat = dbRqat;
+
+        var selRQATS = [];
+
+        for (var k = 0; k < selRQATResult.length; k++) {
+            const selrqat = selRQATResult[k];
+
+            selRQATS.push(selrqat.get("name")["lastname"] +
+                    ", " +
+                    selrqat.get("name")["firstname"] +
+                    " " +
+                    selrqat.get("name")["middleinitial"] +
+                    ".");
+        }
+
+
+        this.selectedRqat = selRQATS;
+
     },
 };
 </script>

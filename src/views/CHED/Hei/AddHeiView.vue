@@ -1,6 +1,7 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
     <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
+        {{hei_types}}
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -79,8 +80,8 @@
                         <span class="label-text">HEI Type:</span>
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="v$.hei_type.$model">
-                        <option v-for="hei in heis" :key="hei" :value="hei.id">
-                            <div class="hei-name">{{ hei.title }}</div>
+                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                            <div class="hei-name">{{ heiType.title }}</div>
                         </option>
                     </select>
                 </div>
@@ -175,7 +176,7 @@ export default {
             addAgain: false,
             text: "Account added!",
             v$: useVuelidate(),
-            heis: [],
+            hei_types: [],
             hei_name: "",
             username: "",
             email: "",
@@ -354,11 +355,11 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
-        mounted: async function () {
+    },
+    mounted: async function () {
             // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const query = new Parse.Query(AccessTypes);
-            const queryResult = await query.find();
             query.equalTo("objectId", Parse.User.current().get("access_type"));
 
             const querResult = await query.find();
@@ -375,30 +376,24 @@ export default {
                 console.log("Hi!, You have permission to access this Page");
                 //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
                 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-                for (var e = 0; e < queryResult.length; e++) {
-                    this.accessTypes.push({
-                        id: queryResult[e].id,
-                        title: queryResult[e].get("name"),
+
+                const HeiTypes = Parse.Object.extend("HEI_Types");
+                const queryHT = new Parse.Query(HeiTypes);
+                const querResultHT = await queryHT.find();
+
+                var heiTypes = [];
+                for (var w = 0; w < querResultHT.length; w++) {
+                    const heitype = querResultHT[w];
+                    heiTypes.push({
+                        id: heitype.id,
+                        title: heitype.get("name"),
                     });
                 }
-                this.access_type = queryResult[0].get("name");
-                const HeiTypes = Parse.Object.extend("heiTypes");
-                const queryD = new Parse.Query(HeiTypes);
-                const queryResultDesig = await queryD.find();
-                for (var w = 0; w < queryResultDesig.length; w++) {
-                    this.heis.push({
-                        id: queryResultDesig[w].id,
-                        title: queryResultDesig[w].get("name"),
-                    });
-                    if (queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR') {
-                        this.educSupId = queryResultDesig[w].id;
-                    }
-                }
-                this.hei_type = queryResultDesig[0].id;
+                this.hei_types = heiTypes;
+                this.hei_type = this.hei_types[0].id;
 
             }
         },
-    },
 };
 </script>
 
