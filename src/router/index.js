@@ -27,6 +27,11 @@ import EvalFileView from "../views/CHED/Evaluation/EvalFileView.vue";
 import AddEvaluationInsView from "../views/CHED/Evaluation/AddEvaluationInsView.vue";
 import EditEvaluationsView from "../views/CHED/Evaluation/EditEvaluationsView.vue"
 
+import CMOView from "../views/CHED/CMO/CMOView.vue";
+import CMOFileView from "../views/CHED/CMO/CMOFileView.vue";
+import AddCMOView from "../views/CHED/CMO/AddCMOView.vue";
+import EditCMOView from "../views/CHED/CMO/EditCMOView.vue"
+
 import ReportingView from "../views/CHED/Reporting/ReportingView.vue";
 
 import HEI_Application from "../views/HEI/HEI_Application.vue";
@@ -271,15 +276,54 @@ const routes = [
         path: "/evaluationins/edit",
         name: "editevaluationins",
         component: EditEvaluationsView,
-        beforeEnter: () => {
-          if (Parse.User.current().get("access_type") !== "SUPER ADMIN" && Parse.User.current().get("access_type") !== "ADMIN" && Parse.User.current().get("access_type") !== "EDUCATION SUPERVISOR"){
-            return { name: '403' }
-          }
-        },
         meta:{
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
             { name: 'EDIT EVALUATION INs.'}
+          ]
+        }
+      },
+      {
+        path: "/cmo",
+        name: "CMOView",
+        component: CMOView,
+        meta: {
+          breadcrumb: [
+            { name: 'Ched Memorandum Order'}
+          ]
+        }
+      },
+      {
+        path: "/CMO/:id",
+        name: "CMOFileView",
+        component: CMOFileView,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Ched Memorandum Order', link: '/cmo' },
+            { name: 'VIEW' }
+          ]
+        }
+      },
+      {
+        path: "/cmo/add",
+        name: "addcmo",
+        component: AddCMOView,
+        meta: {
+          breadcrumb: [
+            { name: 'Ched Memorandum Order', link: '/cmo' },
+            { name: 'ADD CMO' }
+          ]
+        }
+      },
+      {
+        path: "/cmo/edit",
+        name: "editcmo",
+        component: EditCMOView,
+        meta:{
+          breadcrumb: [
+            { name: 'Ched Memorandum Order', link: '/cmo' },
+            { name: 'EDIT CMO' }
           ]
         }
       },

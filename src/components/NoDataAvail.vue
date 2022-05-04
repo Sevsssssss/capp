@@ -1,7 +1,14 @@
 <template>
 <div class="flex flex-col center h-full p-5">
     <div class="noDataAvail">No Data Available</div>
-    <div v-if="names === 'HeiView'">
+    <div v-if="names === 'HeiView'" class="flex flex-row">
+        <button @click="excelHei()" type="button" class="btn-table">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+            </svg>
+            <div class="pl-2">Upload Excel</div>
+        </button>
         <button @click="addHei()" type="button" class="btn-table">
             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                 <path fill="none" d="M0 0h24v24H0z" />
@@ -10,7 +17,14 @@
             <div class="pl-2">Add HEI</div>
         </button>
     </div>
-    <div v-else-if="names === 'RqatView'">
+    <div v-else-if="names === 'RqatView'" class="flex flex-row">
+        <button @click="excelRQAT()" type="button" class="btn-table">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+            </svg>
+            <div class="pl-2">Upload Excel</div>
+        </button>
         <button @click="addRQAT()" type="button" class="btn-table">
             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                 <path fill="none" d="M0 0h24v24H0z" />
@@ -19,7 +33,14 @@
             <div class="pl-2">Add RQAT</div>
         </button>
     </div>
-    <div v-else-if="names === 'EmployeeView'">
+    <div v-else-if="names === 'EmployeeView'" class="flex flex-row">
+        <button @click="excelEmployees()" type="button" class="btn-table">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+            </svg>
+            <div class="pl-2">Upload Excel</div>
+        </button>
         <button @click="addEmployee()" type="button" class="btn-table">
             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                 <path fill="none" d="M0 0h24v24H0z" />
@@ -28,16 +49,24 @@
             <div class="pl-2">Add Employee</div>
         </button>
     </div>
-    <div v-else-if="names === 'EvalInstView'">
-        <button @click="addEvalIns()" type="button"  class="btn-table">
-           <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                </svg>
-                <div class="pl-2">Add Evalutation Ins.</div>
+    <div v-else-if="names === 'CMOView'">
+        <button @click="addCMO()" type="button" class="btn-table">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+            </svg>
+            <div class="pl-2">Add CMO</div>
         </button>
     </div>
-
+    <div v-else-if="names === 'EvalInstView'">
+        <button @click="addEvalIns()" type="button" class="btn-table">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+            </svg>
+            <div class="pl-2">Add Evalutation Ins.</div>
+        </button>
+    </div>
     <div v-else-if="names === 'AccessTypesView'">
         <label type="button" for="createAccessType" class="btn-table">
             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -58,7 +87,6 @@
         </button>
     </div>
 
-
     <input type="checkbox" id="createAccessType" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -69,7 +97,7 @@
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Access Type:</label>
                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="atname" />
                     <div class="font-medium text-sm mt-4">
-                       <span class="text-sm"> Choose Home Type: </span>
+                        <span class="text-sm"> Choose Home Type: </span>
                         <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
                             <div class="label-text viewSubCatbool pr-3" style="align-self: center">
                                 <input type="radio" id="homeType" value="/home" class="radio mr-1" v-model="homeType" />
@@ -256,8 +284,20 @@ export default {
         addEvalIns() {
             this.$router.push("/evaluationins/add");
         },
+        addCMO(){
+            this.$router.push("/cmo/add");
+        },
         addAppType() {
             this.$router.push("/app-settings/add");
+        },
+        excelHei() {
+            this.$router.push("/hei/upload");
+        },
+        excelRQAT() {
+            this.$router.push("/rqat/upload");
+        },
+        excelEmployees() {
+            this.$router.push("/employees/upload");
         },
         addDiscipline() {
             const disciplines = Parse.Object.extend("Disciplines");
@@ -317,7 +357,7 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = accessTypesTable;
-             console.log(this.tables);
+            console.log(this.tables);
         },
     },
 };

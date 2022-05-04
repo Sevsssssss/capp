@@ -298,6 +298,18 @@ export default {
                     },
                 });
             }
+            if (userPriv.find((e) => e === "/cmo")) {
+                this.menu.push({
+                    href: "/cmo",
+                    title: "Ched Memorandum Order",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: ClipboardLine,
+                        },
+                    },
+                });
+            }
             if (userPriv.find((e) => e === "/evaluationins")) {
                 this.menu.push({
                     href: "/evaluationins",
