@@ -9,13 +9,14 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
-            <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm">ASSIGNED To: {{storedRqats}}</p>
+
+    </div>
+    <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mb-2">
+        ASSIGNED To:
+        <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
+            <p class="font-semibold uppercase badge badge-accent text-sm rounded-lg mx-2">{{rqat}}</p>
         </div>
-        <div v-else class="font-normal text-sm">
-            Evaluation Instrument:
-            <a href="#" target="_blank" class="text-blue-400"> Click here </a>
-        </div>
+
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
@@ -50,6 +51,9 @@
             </div>
         </div>
         <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
+            <div class="btn border-none text-white bg-blue-700 hover:bg-blue-800">
+                Evaluate
+            </div>
         </div>
         <div v-else>
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
@@ -61,23 +65,23 @@
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            
+
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
-                    <div class="relative mt-2">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search for RQAT name" />
-                    </div>
+            <div class="relative mt-2">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search for RQAT name" />
+            </div>
             <!-- Filter -->
-           <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-5">
+            <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-5">
                 <label v-for="rqat in searchRQAT" :key="rqat" :value="rqat.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
                     <input type="checkbox" class="checkbox mr-1" :value="rqat.id" v-model="selectedRqat" />
                     <div class="label-text viewSubCatbool" style="align-self: center">
-                         {{ rqat.name }}
+                        {{ rqat.name }}
                     </div>
                 </label>
             </div>
@@ -235,14 +239,14 @@ export default {
         var dbRqat = [];
 
         dbRqat.push({
-                id: Parse.User.current().id,
-                name: Parse.User.current().get("name")["lastname"] +
-                    ", " +
-                    Parse.User.current().get("name")["firstname"] +
-                    " " +
-                    Parse.User.current().get("name")["middleinitial"] +
-                    ".",
-            });
+            id: Parse.User.current().id,
+            name: Parse.User.current().get("name")["lastname"] +
+                ", " +
+                Parse.User.current().get("name")["firstname"] +
+                " " +
+                Parse.User.current().get("name")["middleinitial"] +
+                ".",
+        });
 
         for (var j = 0; j < rqatResult.length; j++) {
             const rqat = rqatResult[j];
@@ -265,13 +269,12 @@ export default {
             const selrqat = selRQATResult[k];
 
             selRQATS.push(selrqat.get("name")["lastname"] +
-                    ", " +
-                    selrqat.get("name")["firstname"] +
-                    " " +
-                    selrqat.get("name")["middleinitial"] +
-                    ".");
+                ", " +
+                selrqat.get("name")["firstname"] +
+                " " +
+                selrqat.get("name")["middleinitial"] +
+                ".");
         }
-
 
         this.storedRqats = selRQATS;
 

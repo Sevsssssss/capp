@@ -93,11 +93,11 @@
         <div class="font-semibold">CATEGORY</div>
         <div :class="{ hide: categories.length > 0 }" class="">
           <button
-          class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
-          @click="addCategory()"
-        >
-          Add Category
-        </button>
+            class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
+            @click="addCategory()"
+          >
+            Add Category
+          </button>
         </div>
       </div>
       <!-- Body -->
@@ -324,7 +324,10 @@
           </div>
         </div>
       </div>
-      <div :class="{ hide: categories.length == 0 }" class="mt-5 flex flex-row justify-end">
+      <div
+        :class="{ hide: categories.length == 0 }"
+        class="mt-5 flex flex-row justify-end"
+      >
         <button
           class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
           @click="addCategory()"
