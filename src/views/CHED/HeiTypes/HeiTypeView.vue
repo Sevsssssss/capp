@@ -19,6 +19,15 @@
                 </div>
             </div>
             <div class="flex flex-row">
+                <div class="h-fit pt-3 items-center">
+                    <button @click="excelHeiTypes()" type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload Excel</div>
+                    </button>
+                </div>
                 <!-- button -->
                 <div class="h-fit pr-5 pt-3 items-center">
                     <label type="button" for="createHei" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
@@ -361,6 +370,9 @@ export default {
             if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
                 this.currentpage += 1;
             }
+        },
+        excelHeiTypes() {
+            this.$router.push("/heiTypes/upload");
         },
     },
 

@@ -49,6 +49,11 @@ Parse.masterKey = "master"
 //             "/hei/edit",
 //             "/rqat/edit",
 //             "/employee/edit",
+//             "/heiTypes",
+//             "/cmo", 
+//             "/cmo/add", 
+//             "/cmo/edit", 
+//             "/cmo/view"
 //         ],
 //     }).then((accesstype) => {
 //         const Designations = Parse.Object.extend("Designations");
