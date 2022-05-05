@@ -270,6 +270,7 @@ export default {
                     score: 0.03343,
                 },
             ],
+            colors: ["approval","revision","payment","evaluation","forcompliance","verification","issuance","completed","noncompliant"],
             headers: [{
                     title: "INSTITUTIONAL CODE",
                 },
