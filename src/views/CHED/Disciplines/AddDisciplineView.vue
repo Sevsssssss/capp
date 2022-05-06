@@ -20,7 +20,7 @@
                             <label class="label">
                                 <span class="label-text">Major Discipline ID*</span>
                             </label>
-                            <input v-model="majDiscipline.MajDiscID" type="text" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
+                            <input v-model="majDiscipline.MajDiscCode" type="text" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
                         </div>
                         <div class="form-control w-full">
                             <label class="label">
@@ -56,13 +56,13 @@
                 <div v-if="majDiscipline.specificDiscipline.length > 0" class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2">
                     <div v-for="specificDiscipline in majDiscipline.specificDiscipline" :key="specificDiscipline" class="overflow-x-auto rounded-lg" id="add-subcat">
                         <div>
-                            <div v-if="viewSubCat()">
+                            <div v-if="viewSpecDisc()">
                                 <div class="">
                                     
                                     <div class="form-control w-full flex flex-row space-x-4" style="justify-content: space-between">
                                         <div class="form-control w-50">
                                           <label class="label"><span class="label-text">Specific Discipline ID</span></label>
-                                        <input v-model="specificDiscipline.SpecDiscID" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
+                                        <input v-model="specificDiscipline.SpecDiscCode" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
                                         </div>
                                         <div class="form-control w-full">
                                           <label class="label"><span class="label-text">Specific Discipline</span></label>
@@ -116,10 +116,10 @@
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="text-brand-darkblue font-bold label-xl">
-                Add Evaluation Instrument
+                Add Discipline
             </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this Evaluation Instrument?
+                Are you sure you want to add these Disciplines?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="
@@ -136,7 +136,7 @@
               hover:bg-blue-800
               rounded-md
               border-none
-            " @click="saveEvalForm()">Continue</label>
+            " @click="saveDiscipline()">Continue</label>
             </div>
         </div>
     </div>
@@ -170,7 +170,7 @@ export default {
             majorDisciplines: [],
             MajorDisciplineId: 0,
             SpecificDisciplineId: 0,
-            viewSubCatbool: true,
+            viewSpecDiscbool: true,
 
             programName: "",
             cmoNo: "",
@@ -222,59 +222,34 @@ export default {
 
         modal() {
             var has_error = 0;
-            var errCat = 0;
-            var subcat = 0;
-            var items = 0;
+            var errMD = 0;
+            var errSD = 0;
 
             for (var i = 0; i < this.majorDisciplines.length; i++) {
                 console.log(this.majorDisciplines[i].MajorDiscipline);
                 if (this.majorDisciplines[i].MajorDiscipline != "") {
-                    errCat = errCat - 0;
+                    errMD = errMD - 0;
                 } else {
-                    errCat = errCat + 1;
+                    errMD = errMD + 1;
                 }
                 if (this.majorDisciplines[i].specificDiscipline.length == 0) {
-                    subcat = 0;
+                    errSD = 0;
                 } else {
                     for (var x = 0; x < this.majorDisciplines[i].specificDiscipline.length; x++) {
                         if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline != null) {
-                            subcat = subcat - 0;
-                            if (this.majorDisciplines[i].specificDiscipline[x].items.length == 0) {
-                                items = 0;
-                            } else {
-                                for (
-                                    var y = 0; y < this.majorDisciplines[i].specificDiscipline[x].items.length; y++
-                                ) {
-                                    if (this.majorDisciplines[i].specificDiscipline[x].items[y].Item != null) {
-                                        items = items - 0;
-                                    } else {
-                                        items = items + 1;
-                                    }
-                                    if (
-                                        this.majorDisciplines[i].specificDiscipline[x].items[y].Item.length == 0
-                                    ) {
-                                        items = 1;
-                                    }
-                                }
-                            }
+                            errSD = errSD - 0;
                         } else {
-                            subcat = subcat + 1;
+                            errSD = errSD + 1;
                         }
                         if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline.length == 0) {
-                            subcat = 1;
+                            errSD = 1;
                         }
                     }
                 }
             }
-
             if (
-                this.programName == "" ||
-                this.cmoNo == "" ||
-                this.seriesYear == "" ||
-                this.evalDesc == "" ||
-                subcat == 1 ||
-                items == 1 ||
-                errCat >= 1
+                errMD == 1 ||
+                errSD >= 1
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -299,6 +274,23 @@ export default {
             }
         },
 
+        saveDiscipline(){
+            const Disciplines = Parse.Object.extend("Disciplines");
+            for(var m = 0; m < this.majorDisciplines.length; m++){
+                const newDiscipline = new Disciplines();
+                newDiscipline.set("MajDiscCode", this.majorDisciplines[m].MajDiscCode);
+                newDiscipline.set("MajorDiscipline", this.majorDisciplines[m].MajorDiscipline);
+                newDiscipline.set("specificDiscipline", this.majorDisciplines[m].specificDiscipline);
+
+                newDiscipline.save().then((discipline) => {
+                    console.log("Discipline Saved: " + discipline.id);
+                }, (error) => {
+                    console.log("Discipline Saved: " + error.message);
+                });
+
+            }
+        },
+
         //This add a majDiscipline
         addMajorDiscipline() {
             if (this.majorDisciplines.length === 0) {
@@ -308,7 +300,7 @@ export default {
             this.MajorDisciplineId = this.MajorDisciplineId + 1;
             this.majorDisciplines.push({
                 id: this.MajorDisciplineId,
-                MajDiscID: "",
+                MajDiscCode: "",
                 MajorDiscipline: "",
                 specificDiscipline: [],
             });
@@ -337,7 +329,7 @@ export default {
             this.SpecificDisciplineId = this.SpecificDisciplineId + 1;
             MajorDiscipline.push({
                 id: this.SpecificDisciplineId,
-                SpecDiscID: "",
+                SpecDiscCode: "",
                 SpecificDiscipline: "",
             });
         },
@@ -345,25 +337,25 @@ export default {
         removeSpecificDiscipline(id) {
             for (var i = 0; i < this.majorDisciplines.length; i++) {
                 for (
-                    var subCat = 0; subCat < this.majorDisciplines[i].specificDiscipline.length; subCat++
+                    var specDisc = 0; specDisc < this.majorDisciplines[i].specificDiscipline.length; specDisc++
                 ) {
-                    console.log(this.majorDisciplines[i].specificDiscipline[subCat].id);
-                    if (this.majorDisciplines[i].specificDiscipline[subCat].id === id) {
-                        this.majorDisciplines[i].specificDiscipline.splice(subCat, 1);
-                        subCat--;
+                    console.log(this.majorDisciplines[i].specificDiscipline[specDisc].id);
+                    if (this.majorDisciplines[i].specificDiscipline[specDisc].id === id) {
+                        this.majorDisciplines[i].specificDiscipline.splice(specDisc, 1);
+                        specDisc--;
                     }
                 }
             }
         },
 
-        showSubCat() {
-            this.viewSubCatbool = true;
+        showSpecDisc() {
+            this.viewSpecDiscbool = true;
         },
-        hideSubCat() {
-            this.viewSubCatbool = false;
+        hideSpecDisc() {
+            this.viewSpecDiscbool = false;
         },
-        viewSubCat() {
-            return this.viewSubCatbool;
+        viewSpecDisc() {
+            return this.viewSpecDiscbool;
         },
     },
     mounted: async function () {
