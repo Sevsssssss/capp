@@ -295,7 +295,7 @@ export default {
                 newHEI.set("address", this.address);
                 newHEI.set("number", this.number);
                 newHEI.set("inst_code", this.inst_code);
-                newHEI.set("heiTypes", this.hei_type);
+                newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
                 await newHEI.save()
                     .then(() => {
