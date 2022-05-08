@@ -255,7 +255,7 @@ const routes = [
         }
       },
       {
-        path: "/evaluationins/:id",
+        path: "/evaluationins/view=:id",
         name: "EvalFileView",
         component: EvalFileView,
         props: true,

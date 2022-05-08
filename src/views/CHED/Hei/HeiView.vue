@@ -572,6 +572,8 @@ export default {
                     return object.id == hei.get("hei_type");
                 });
 
+                console.log(index);
+
                 hTypeCounter[index] += 1;
                 
                 heis.push({
@@ -591,7 +593,7 @@ export default {
                 dataCol.push({
                     title: heiTypes[t].name,
                     num: hTypeCounter[t],
-                    color: "blue"
+                   color: this.colors[t],
                 })
                 
             }

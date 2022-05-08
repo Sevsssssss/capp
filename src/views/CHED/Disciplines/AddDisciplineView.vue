@@ -226,8 +226,7 @@ export default {
             var errSD = 0;
 
             for (var i = 0; i < this.majorDisciplines.length; i++) {
-                console.log(this.majorDisciplines[i].MajorDiscipline);
-                if (this.majorDisciplines[i].MajorDiscipline != "") {
+                if (this.majorDisciplines[i].MajorDiscipline != "" && this.majorDisciplines[i].MajDiscCode != "") {
                     errMD = errMD - 0;
                 } else {
                     errMD = errMD + 1;
@@ -236,7 +235,7 @@ export default {
                     errSD = 0;
                 } else {
                     for (var x = 0; x < this.majorDisciplines[i].specificDiscipline.length; x++) {
-                        if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline != null) {
+                        if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline != null &&  this.majorDisciplines[i].specificDiscipline[x].SpecDiscCode != "") {
                             errSD = errSD - 0;
                         } else {
                             errSD = errSD + 1;

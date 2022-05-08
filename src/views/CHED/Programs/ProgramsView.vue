@@ -2,7 +2,62 @@
 <div v-if="!tables.length" style="height: 100%">
     <div class="flex flex-col center h-full p-5">
         <div class="noDataAvail">No Data Available</div>
-        
+        <label type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+            </svg>
+            <div class="pl-2">Add Program</div>
+        </label>
+        <input type="checkbox" id="createPrograms" class="modal-toggle" />
+        <div class="modal">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="flex flex-row justify-between">
+                    <div>
+                        <div class="font-semibold text-md">ADD A PROGRAM</div>
+                        <p class="py-2 text-sm">
+                            Input the Program Name and the Designated Discipline.
+                        </p>
+                    </div>
+                    <div class="space-x-4" style="text-align-last: right">
+                        <button data-tip="Add Program" @click="addProgramName()" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
+                            <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <form v-on:submit.prevent="submit">
+                    <div class="mb-6" v-for="program in programs" :key="program">
+                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                        <div class="flex flex-row">
+                            <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.programs) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
+                            <div class="pl-4">
+                                <label data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" for="dele" @click="removeProgram(program.id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                    </svg>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
+                        <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
+                            <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                                {{ discipline.name }}
+                            </option>
+                        </select>
+                    </div>
+                </form>
+                <div class="modal-action">
+                    <label for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal2()">Submit</label>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div v-else class="p-3">
@@ -26,7 +81,7 @@
                 </div>
             </div>
             <div class="flex flex-row">
-                
+
                 <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
                     <label type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -57,13 +112,9 @@
                             {{x.name}}
                         </div>
                     </td>
-                    <td class="py-4 text-right">
-                        <label for="editDisciplines" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)">Edit Disciplines</label>
-                    </td>
-                    <td class="py-4 text-right">
+
+                    <td class="px-6 py-4 flex flex-row space-x-4 justify-end">
                         <label for="editPrograms" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
-                    </td>
-                    <td class="px-6 py-4">
                         <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />

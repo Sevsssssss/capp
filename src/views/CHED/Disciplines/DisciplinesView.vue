@@ -45,7 +45,7 @@
                         <div class="pl-2">Add Discipline</div>
                     </button>
                 </div>
-                
+
             </div>
         </div>
         <!-- Table body -->
@@ -67,18 +67,15 @@
                             {{x.SpecificDiscipline}}
                         </div>
                     </td>
-                    <td class="py-4 text-right">
-                        <label for="editDisciplines" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)">Edit Disciplines</label>
-                    </td>
-                    <td class="py-4 text-right">
-                        <label for="editPrograms" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
-                    </td>
-                    <td class="px-6 py-4">
-                        <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                            </svg>
-                        </label>
+                    <td class="px-6 py-4 justify-end ">
+                        <div class="flex flex-row  space-x-4">
+                            <label for="editPrograms" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.MajorDiscipline, i.id)">Edit Disciplines</label>
+                            <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
+                                <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                </svg>
+                            </label>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -151,26 +148,50 @@
             </div>
         </div>
     </div>
-    <!-- edit -->
-    <input type="checkbox" id="editDisciplines" class="modal-toggle" />
-    <label for="editDisciplines" class="modal cursor-pointer">
+    <input type="checkbox" id="editPrograms" class="modal-toggle" />
+    <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">EDIT DISCIPLINE NAME</div>
-            <p class="py-2 text-sm">Input the new name of the dicipline.</p>
+            <div class="flex flex-row justify-between">
+                <div>
+                    <div class="font-semibold text-md">EDIT PROGRAMS</div>
+                    <p class="py-2 text-sm">
+                        Input the Program Name and the Designated Discipline.
+                    </p>
+                </div>
+            </div>
+
             <form v-on:submit.prevent="submit">
-                <div class="mb-6">
+
+                <div class="mb-6" v-for="i in searchDiscipline" :key="i">
+                    <div v-if="editDisciplineName === i.MajorDiscipline">
+                        <div v-for="x in i.specificDiscipline" :key="x">
+                            
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                            <div class="flex flex-row">
+                                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
+                                <div class="pl-4">
+                                    <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                            <path fill="none" d="M0 0h24v24H0z" />
+                                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{
-                'input-error': validationStatus(v$.editDisciplineName),
-              }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editDisciplineName.$model" />
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="editDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal1()">Submit</label>
+                <label for="editPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="editProgram()">Submit</label>
             </div>
         </div>
-    </label>
+    </div>
 
     <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
@@ -186,7 +207,7 @@
             </div>
         </div>
     </div>
-    
+
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -243,7 +264,7 @@ export default {
                     title: "SPECIFIC DISCIPLINES",
                 },
             ],
-            tables: [ { "id": 1, "MajDiscID": "14", "MajorDiscipline": "EDUCATION SCIENCE AND TEACHER TRAINING", "specificDiscipline": [ { "id": 1, "SpecDiscID": "140101", "SpecificDiscipline": "Elementary Education" }, { "id": 2, "SpecDiscID": "140102", "SpecificDiscipline": "Secondary Education with no specialization" }, { "id": 3, "SpecDiscID": "140104", "SpecificDiscipline": "Elementary and Secondary Education w/ no specialization" }, { "id": 4, "SpecDiscID": "140106", "SpecificDiscipline": "Pedagogy" } ] }, { "id": 2, "MajDiscID": "18", "MajorDiscipline": "FINE AND APPLIED ARTS", "specificDiscipline": [ { "id": 1, "SpecDiscID": "180101", "SpecificDiscipline": "Fine Arts" }, { "id": 2, "SpecDiscID": "180104", "SpecificDiscipline": "Practical Arts" }, { "id": 3, "SpecDiscID": "180201", "SpecificDiscipline": "Art History" } ] }, { "id": 3, "MajDiscID": "42", "MajorDiscipline": "NATURAL SCIENCE", "specificDiscipline": [ { "id": 1, "SpecDiscID": "420202", "SpecificDiscipline": "Biology" }, { "id": 2, "SpecDiscID": "420206", "SpecificDiscipline": "Human Biology" }, { "id": 3, "SpecDiscID": "421203", "SpecificDiscipline": "Chemistry" } ] } ],
+            tables: [],
             search: "",
             disciplineName: "",
             editDisciplineName: "",
@@ -254,6 +275,7 @@ export default {
             selectedDiscipline: "",
             programs: [],
             progCounter: 0,
+            selectedMajDiscipline: "",
         };
     },
     validations() {
@@ -285,6 +307,9 @@ export default {
         },
     },
     methods: {
+        // sendData(item) {
+        //     this.selectedMajDiscipline = item;
+        // },
         addDisciplines() {
             this.$router.push("/disciplines/add");
         },
@@ -578,39 +603,24 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
-                const programs = Parse.Object.extend("Programs");
-                const queryProg = new Parse.Query(programs);
-                queryProg.equalTo("programDiscipline", discipline.id);
-                const progResult = await queryProg.find();
-                var programsMat = [];
-                var programsText = "";
-                for (var j = 0; j < progResult.length; j++) {
-                    const prog = progResult[j];
-
-                    if (programsText === "") {
-                        programsText = programsText + prog.get("programName");
-                    } else {
-                        programsText = programsText + ", " + prog.get("programName");
-                    }
-                    programsMat.push({
-                        id: prog.id,
-                        name: prog.get("programName"),
-                    });
-                }
+                console.log(discipline.get("MajorDiscipline"), );
+                const sDiscipline = discipline.get("specificDiscipline");
+                console.log(sDiscipline);
 
                 disciplineTable.push({
                     id: discipline.id,
-                    Name: discipline.get("disciplineName"),
-                    Programs: programsMat,
+                    MajorDiscipline: discipline.get("MajorDiscipline"),
+                    specificDiscipline: sDiscipline,
+
                 });
                 disciplinesNames.push({
                     id: discipline.id,
-                    name: discipline.get("disciplineName"),
+                    name: discipline.get("MajorDiscipline"),
                 });
             }
             this.disciplines = disciplinesNames;
             this.tables = disciplineTable;
-            // console.log(this.tables);
+            console.log(this.tables);
         }
     },
 };
