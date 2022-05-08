@@ -34,12 +34,13 @@
                         <div class="flex flex-row">
                             <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.programs) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
                             <div class="pl-4">
-                                <label data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" for="dele" @click="removeProgram(program.id)">
+                                
+                                <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" for="dele" @click="removeProgram(program.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
                                     </svg>
-                                </label>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -53,7 +54,7 @@
                     </div>
                 </form>
                 <div class="modal-action">
-                    <label for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label @click="reset()" for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                     <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal2()">Submit</label>
                 </div>
             </div>
@@ -83,7 +84,7 @@
             <div class="flex flex-row">
 
                 <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
-                    <label type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                    <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -245,19 +246,19 @@
                     </button>
                 </div>
             </div>
-
+            {{programs}}
             <form v-on:submit.prevent="submit">
                 <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
                     <div class="flex flex-row">
                         <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.programs) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
                         <div class="pl-4">
-                            <label data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" for="dele" @click="removeProgram(program.id)">
+                            <button data-tip="Remove Program" class="btn btn-outline center tooltip tooltip-left hover:bg-brand-red/60" for="dele" @click="removeProgram(program.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
                                 </svg>
-                            </label>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -271,7 +272,7 @@
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label @click="reset()" for="createPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal2()">Submit</label>
             </div>
         </div>
@@ -438,6 +439,9 @@ export default {
                 id: this.progCounter,
                 programName: "",
             });
+        },
+        reset(){
+            this.programs = [];
         },
         selectedDisciplineDelete(id) {
             this.deleteDis = id;
@@ -712,7 +716,7 @@ export default {
         if (flag === 0) {
             this.$router.push("/403");
         } else {
-            console.log("Hi!, You have permission to access this Page");
+            console.log("Hi!, You have permission to access this Page1");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var disciplineTable = [];
@@ -722,35 +726,41 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
-                const programs = Parse.Object.extend("Programs");
-                const queryProg = new Parse.Query(programs);
-                queryProg.equalTo("programDiscipline", discipline.id);
-                const progResult = await queryProg.find();
-                var programsMat = [];
-                var programsText = "";
-                for (var j = 0; j < progResult.length; j++) {
-                    const prog = progResult[j];
+                console.log(discipline.get("specificDiscipline").length);
+                for (var a = 0; a < discipline.get("specificDiscipline").length; a++) {
+                    console.log(discipline.get("specificDiscipline")[a].SpecificDiscipline);
+                    const programs = Parse.Object.extend("Programs");
+                    const queryProg = new Parse.Query(programs);
+                    queryProg.equalTo("programDiscipline", a.id);
+                    const progResult = await queryProg.find();
+                    var programsMat = [];
+                    var programsText = "";
+                    for (var j = 0; j < progResult.length; j++) {
+                        const prog = progResult[j];
 
-                    if (programsText === "") {
-                        programsText = programsText + prog.get("programName");
-                    } else {
-                        programsText = programsText + ", " + prog.get("programName");
+                        if (programsText === "") {
+                            programsText = programsText + prog.get("programName");
+                        } else {
+                            programsText = programsText + ", " + prog.get("programName");
+                        }
+                        programsMat.push({
+                            id: prog.id,
+                            name: prog.get("programName"),
+                        });
                     }
-                    programsMat.push({
-                        id: prog.id,
-                        name: prog.get("programName"),
+
+                    disciplineTable.push({
+                        id: discipline.id,
+                        Name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
+                        Programs: programsMat,
+                    });
+                    disciplinesNames.push({
+                        id: discipline.get("specificDiscipline")[a].id,
+                        code: discipline.get("specificDiscipline")[a].SpecDiscCode,
+                        name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
                     });
                 }
 
-                disciplineTable.push({
-                    id: discipline.id,
-                    Name: discipline.get("disciplineName"),
-                    Programs: programsMat,
-                });
-                disciplinesNames.push({
-                    id: discipline.id,
-                    name: discipline.get("disciplineName"),
-                });
             }
             this.disciplines = disciplinesNames;
             this.tables = disciplineTable;
