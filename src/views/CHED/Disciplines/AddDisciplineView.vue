@@ -58,15 +58,15 @@
                         <div>
                             <div v-if="viewSpecDisc()">
                                 <div class="">
-                                    
+
                                     <div class="form-control w-full flex flex-row space-x-4" style="justify-content: space-between">
                                         <div class="form-control w-50">
-                                          <label class="label"><span class="label-text">Specific Discipline ID</span></label>
-                                        <input v-model="specificDiscipline.SpecDiscCode" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
+                                            <label class="label"><span class="label-text">Specific Discipline ID</span></label>
+                                            <input v-model="specificDiscipline.SpecDiscCode" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
                                         </div>
                                         <div class="form-control w-full">
-                                          <label class="label"><span class="label-text">Specific Discipline</span></label>
-                                        <input v-model="specificDiscipline.SpecificDiscipline" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
+                                            <label class="label"><span class="label-text">Specific Discipline</span></label>
+                                            <input v-model="specificDiscipline.SpecificDiscipline" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
                                         </div>
                                         <div class="flex flex-row justify-center items-center">
                                             <!-- Delete Sub-MajorDiscipline -->
@@ -100,7 +100,7 @@
                 <button class="btn btn-margin btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="
+                <button for="my-modal-6" id="my-modal-6" type="submit" :class="{ hide: majorDisciplines.length == 0}" class="
               border-none
               btn btn-m
               submit
@@ -235,7 +235,7 @@ export default {
                     errSD = 0;
                 } else {
                     for (var x = 0; x < this.majorDisciplines[i].specificDiscipline.length; x++) {
-                        if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline != null &&  this.majorDisciplines[i].specificDiscipline[x].SpecDiscCode != "") {
+                        if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline != null && this.majorDisciplines[i].specificDiscipline[x].SpecDiscCode != "") {
                             errSD = errSD - 0;
                         } else {
                             errSD = errSD + 1;
@@ -273,9 +273,9 @@ export default {
             }
         },
 
-        saveDiscipline(){
+        saveDiscipline() {
             const Disciplines = Parse.Object.extend("Disciplines");
-            for(var m = 0; m < this.majorDisciplines.length; m++){
+            for (var m = 0; m < this.majorDisciplines.length; m++) {
                 const newDiscipline = new Disciplines();
                 newDiscipline.set("MajDiscCode", this.majorDisciplines[m].MajDiscCode);
                 newDiscipline.set("MajorDiscipline", this.majorDisciplines[m].MajorDiscipline);
@@ -288,6 +288,26 @@ export default {
                 });
 
             }
+            toast("Discipline Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 2000,
+                position: POSITION.TOP_RIGHT,
+            });
+            // this.sendEmail().then(() => {
+            setTimeout(
+                () =>
+                this.$router.push({
+                    path: "/disciplines",
+                }),
+                1000
+            );
+            this.$refs.Spinner.show();
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
 
         //This add a majDiscipline
