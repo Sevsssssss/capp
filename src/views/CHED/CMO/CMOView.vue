@@ -50,6 +50,9 @@
                             {{ table.CMO_No }}
                         </th>
                         <td class="px-6 py-4">
+                            {{ table.CMO_Series }}
+                        </td>
+                        <td class="px-6 py-4">
                             {{ table.CMO_Name }}
                         </td>
                         <td class="px-6 py-4 text-right">
@@ -125,6 +128,9 @@ export default {
                     title: "CMO No.",
                 },
                 {
+                    title: "Series",
+                },
+                {
                     title: "Description",
                 },
             ],
@@ -197,6 +203,7 @@ export default {
                 storedCMO.push({
                     id: cmo.id,
                     CMO_No: cmo.get("CMO_No"),
+                    CMO_Series: cmo.get("Series_Year"),
                     CMO_Name: cmo.get("CMOName"),
                 });
             }
