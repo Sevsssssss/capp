@@ -584,7 +584,7 @@ export default {
         }),
           // window.location.reload()
           setTimeout(() => {
-            this.$router.push("/evaluationins");
+            this.$router.push("/cmo");
           }, 2000);
         // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
         //     document.location.reload();
