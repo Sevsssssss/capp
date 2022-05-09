@@ -299,7 +299,7 @@ const routes = [
         }
       },
       {
-        path: "/CMO/:id",
+        path: "/CMO/view=:id",
         name: "CMOFileView",
         component: CMOFileView,
         props: true,

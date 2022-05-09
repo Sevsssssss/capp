@@ -1,5 +1,6 @@
 <template>
 <div class="m-3">
+    {{id}}
     <div class="flex flex-row p-2 justify-end">
         <!-- <button class="flex flex-row" >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
