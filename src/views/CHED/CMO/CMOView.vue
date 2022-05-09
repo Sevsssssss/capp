@@ -47,10 +47,10 @@
                 <tbody>
                     <tr class="bg-white border-b" v-for="table in searchEval" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            {{ table.programName }}
+                            {{ table.CMO_No }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ table.description }}
+                            {{ table.CMO_Name }}
                         </td>
                         <td class="px-6 py-4 text-right">
                             <!-- {{table.id}} -->
@@ -186,31 +186,22 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            var storedEvalInstruments = [];
-            const instruments = Parse.Object.extend("EvaluationForms");
-            const evalInsQuery = new Parse.Query(instruments);
-            const evalInsResult = await evalInsQuery.find();
+            var storedCMO = [];
+            const CMOs = Parse.Object.extend("CHED_MEMO");
+            const cmoQuery = new Parse.Query(CMOs);
+            const cmoResult = await cmoQuery.find();
 
-            for (var i = 0; i < evalInsResult.length; i++) {
-                const evalInst = evalInsResult[i];
+            for (var i = 0; i < cmoResult.length; i++) {
+                const cmo = cmoResult[i];
 
-                //Query the program of the application
-                const programs = Parse.Object.extend("Programs");
-                const programQuery = new Parse.Query(programs);
-                programQuery.equalTo("objectId", evalInst.get("evaluationFormProgram"));
-
-                const program = await programQuery.first();
-
-                // console.log("test" + program.id)
-
-                storedEvalInstruments.push({
-                    id: evalInst.id,
-                    programName: program.get("programName"),
-                    description: evalInst.get("evaluationFormName"),
+                storedCMO.push({
+                    id: cmo.id,
+                    CMO_No: cmo.get("CMO_No"),
+                    CMO_Name: cmo.get("CMOName"),
                 });
             }
-            this.totalEntries = evalInsResult.length;
-            this.tables = storedEvalInstruments;
+            this.totalEntries = cmoResult.length;
+            this.tables = storedCMO;
         }
     },
 };
