@@ -47,7 +47,7 @@
                     <div>
                         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                         <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                            <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                            <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
                                 {{ discipline.name }}
                             </option>
                         </select>
@@ -265,7 +265,7 @@
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
                             {{ discipline.name }}
                         </option>
                     </select>
@@ -323,7 +323,7 @@
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
                             {{ discipline.name }}
                         </option>
                     </select>
@@ -728,10 +728,10 @@ export default {
                 const discipline = querResult[i];
                 console.log(discipline.get("specificDiscipline").length);
                 for (var a = 0; a < discipline.get("specificDiscipline").length; a++) {
-                    console.log(discipline.get("specificDiscipline")[a].SpecificDiscipline);
+                    console.log(discipline.get("specificDiscipline")[a].SpecDiscCode);
                     const programs = Parse.Object.extend("Programs");
                     const queryProg = new Parse.Query(programs);
-                    queryProg.equalTo("programDiscipline", a.id);
+                    queryProg.equalTo("programDiscipline", discipline.get("specificDiscipline")[a].SpecDiscCode);
                     const progResult = await queryProg.find();
                     var programsMat = [];
                     var programsText = "";
@@ -752,11 +752,12 @@ export default {
                     disciplineTable.push({
                         id: discipline.id,
                         Name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
+                        SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
                         Programs: programsMat,
                     });
                     disciplinesNames.push({
                         id: discipline.get("specificDiscipline")[a].id,
-                        code: discipline.get("specificDiscipline")[a].SpecDiscCode,
+                        SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
                         name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
                     });
                 }
