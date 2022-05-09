@@ -22,13 +22,14 @@
                     <div class="font-semibold text-md">Programs</div>
                     <form v-on:submit.prevent="submit">
                         <div class="mb-6">
-                            <div class="font-medium text-sm mt-2">
-                                <div class="pb-2">Programs:</div>
-                                <div v-for="program in programs" :key="program" class="grid xxl:grid-cols-3 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left">
+                            <div v-for="program in programs" :key="program" class="font-medium text-sm mt-2">
+                                <div class="pb-2">{{program.Name}}</div>
+                                <div v-for="prog in program.Programs" :key="prog" class="grid xxl:grid-cols-3 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left">
+                                    
                                     <label class="flex flex-row cursor-pointer p-1" style="align-items: center">
-                                        <input type="checkbox" class="checkbox mr-1" v-model="checkedPrograms" />
+                                        <input type="checkbox" class="checkbox mr-1" v-model="prog.checkedPrograms" />
                                         <div class="label-text viewSubCatbool" style="align-self: center">
-                                            {{program.programName}}
+                                            {{prog.name}}
                                         </div>
                                     </label>
                                     
@@ -698,30 +699,53 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
             //Get Programs
-            var programsMat = [];
-            const Programs = Parse.Object.extend("Programs");
-            const programsQuery = new Parse.Query(Programs);
-            const progQueResult = await programsQuery.find();
+            var disciplineTable = [];
+            var disciplinesNames = [];
+            const disciplines = Parse.Object.extend("Disciplines");
+            const query = new Parse.Query(disciplines);
+            const querResult = await query.find();
+            for (var i = 0; i < querResult.length; i++) {
+                const discipline = querResult[i];
+                console.log(discipline.get("specificDiscipline").length);
+                for (var a = 0; a < discipline.get("specificDiscipline").length; a++) {
+                    console.log(discipline.get("specificDiscipline")[a].SpecDiscCode);
+                    const programs = Parse.Object.extend("Programs");
+                    const queryProg = new Parse.Query(programs);
+                    queryProg.equalTo("programDiscipline", discipline.get("specificDiscipline")[a].SpecDiscCode);
+                    const progResult = await queryProg.find();
+                    var programsMat = [];
+                    for (var j = 0; j < progResult.length; j++) {
+                        const prog = progResult[j];
+                        programsMat.push({
+                            id: prog.id,
+                            name: prog.get("programName"),
+                        });
+                    }
 
-            for (var j = 0; j < progQueResult.length; j++) {
-                const prog = progQueResult[j];
+                    disciplineTable.push({
+                        id: discipline.id,
+                        Name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
+                        SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
+                        Programs: programsMat,
+                    });
+                    disciplinesNames.push({
+                        id: discipline.get("specificDiscipline")[a].id,
+                        SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
+                        name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
+                    });
+                }
 
-                console.log(prog.get("programName"));
-                programsMat.push({
-                    id: prog.id,
-                    programName: prog.get("programName"),
-                    specificDisciplineID: prog.get("programDiscipline"),
-                });
+                this.programs = disciplineTable;
+
             }
-            this.programs = programsMat;
 
             var storedCMO = [];
             const CMOs = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMOs);
             const cmoResult = await cmoQuery.find();
 
-            for (var i = 0; i < cmoResult.length; i++) {
-                const cmo = cmoResult[i];
+            for (var x = 0; x < cmoResult.length; x++) {
+                const cmo = cmoResult[x];
 
                 storedCMO.push({
                     id: cmo.id,
