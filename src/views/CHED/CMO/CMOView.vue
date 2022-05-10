@@ -22,12 +22,12 @@
             </div>
             <!-- button -->
             <div class="h-fit pr-5 pt-3 items-center">
-                <button @click="addEvalIns()" type="button" class="btn-table">
+                <button @click="addCMO()" type="button" class="btn-table">
                     <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="none" d="M0 0h24v24H0z" />
                         <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
                     </svg>
-                    <div class="pl-2">Add Evaluation</div>
+                    <div class="pl-2">Add CMO</div>
                 </button>
             </div>
         </div>
@@ -47,15 +47,18 @@
                 <tbody>
                     <tr class="bg-white border-b" v-for="table in searchEval" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            {{ table.programName }}
+                            {{ table.CMO_No }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ table.description }}
+                            {{ table.CMO_Series }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ table.CMO_Name }}
                         </td>
                         <td class="px-6 py-4 text-right">
                             <!-- {{table.id}} -->
                             <router-link v-if="table && table.id" :to="{
-                                name: 'EvalFileView',
+                                name: 'CMOFileView',
                                 params: {
                                 id: table.id,
                                 },
@@ -122,10 +125,13 @@ export default {
             numPerPage: 10,
             search: "",
             headers: [{
-                    title: "PROGRAM NAME",
+                    title: "CMO No.",
                 },
                 {
-                    title: "EVALUATION FORM NAME",
+                    title: "Series",
+                },
+                {
+                    title: "Description",
                 },
             ],
 
@@ -151,8 +157,8 @@ export default {
 
     },
     methods: {
-        addEvalIns() {
-            this.$router.push("/evaluationins/add");
+        addCMO() {
+            this.$router.push("/cmo/add");
         },
         // viewEvalIns() {
         //     this.$router.push("/evaluationins/view");
@@ -186,31 +192,23 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            var storedEvalInstruments = [];
-            const instruments = Parse.Object.extend("EvaluationForms");
-            const evalInsQuery = new Parse.Query(instruments);
-            const evalInsResult = await evalInsQuery.find();
+            var storedCMO = [];
+            const CMOs = Parse.Object.extend("CHED_MEMO");
+            const cmoQuery = new Parse.Query(CMOs);
+            const cmoResult = await cmoQuery.find();
 
-            for (var i = 0; i < evalInsResult.length; i++) {
-                const evalInst = evalInsResult[i];
+            for (var i = 0; i < cmoResult.length; i++) {
+                const cmo = cmoResult[i];
 
-                //Query the program of the application
-                const programs = Parse.Object.extend("Programs");
-                const programQuery = new Parse.Query(programs);
-                programQuery.equalTo("objectId", evalInst.get("evaluationFormProgram"));
-
-                const program = await programQuery.first();
-
-                // console.log("test" + program.id)
-
-                storedEvalInstruments.push({
-                    id: evalInst.id,
-                    programName: program.get("programName"),
-                    description: evalInst.get("evaluationFormName"),
+                storedCMO.push({
+                    id: cmo.id,
+                    CMO_No: cmo.get("CMO_No"),
+                    CMO_Series: cmo.get("Series_Year"),
+                    CMO_Name: cmo.get("CMOName"),
                 });
             }
-            this.totalEntries = evalInsResult.length;
-            this.tables = storedEvalInstruments;
+            this.totalEntries = cmoResult.length;
+            this.tables = storedCMO;
         }
     },
 };

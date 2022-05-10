@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full">
     <div class="flex flex-row justify-evenly">
-      <!-- Header -->'
+      <!-- Header -->
       <!-- <div class="flex flex-row text-left space-x-4">
         <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
         <div class="space-y-2">

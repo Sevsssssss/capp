@@ -270,6 +270,7 @@ export default {
                     score: 0.03343,
                 },
             ],
+            colors: ["approval","revision","payment","evaluation","forcompliance","verification","issuance","completed","noncompliant"],
             headers: [{
                     title: "INSTITUTIONAL CODE",
                 },
@@ -546,52 +547,60 @@ export default {
             const querResult = await query.find({
                 useMasterKey: true,
             });
+
+            const HEITypes = Parse.Object.extend("HEI_Types");
+            const hTypeQuery = new Parse.Query(HEITypes);
+
+            const hTypeQuerResult = await hTypeQuery.find();
+
+            var heiTypes = [];
+            var hTypeCounter = [];
+
+            for(var h = 0; h < hTypeQuerResult.length; h++){
+                const heiType = hTypeQuerResult[h];
+                heiTypes.push({
+                    id: heiType.id,
+                    name: heiType.get("name"),
+                });
+                hTypeCounter.push(0);
+            }
+
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];
+
+                const index = heiTypes.findIndex(object => {
+                    return object.id == hei.get("hei_type");
+                });
+
+                console.log(index);
+
+                hTypeCounter[index] += 1;
+                
                 heis.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
                     address: hei.get("address"),
-                    type: hei.get("hei_type"),
+                    type: heiTypes[index].name,
                     email: hei.get("email"),
                 });
             }
             this.totalEntries = querResult.length;
             this.tables = heis;
-            console.log(heis);
-            const queryPrivate = new Parse.Query(Parse.User);
-            queryPrivate.equalTo("hei_type", "PRIVATE COLLEGES");
-            const queryState = new Parse.Query(Parse.User);
-            queryState.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
-            const queryLocal = new Parse.Query(Parse.User);
-            queryLocal.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
-            const queryOthers = new Parse.Query(Parse.User);
-            queryOthers.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
+
+            var dataCol = [];
+            for(var t = 0; t < heiTypes.length; t++){
+                dataCol.push({
+                    title: heiTypes[t].name,
+                    num: hTypeCounter[t],
+                   color: this.colors[t],
+                })
+                
+            }
 
             
 
-            this.datas = [{
-                    title: "STATE UNIVERSITIES AND COLLEGES",
-                    num: await queryState.count(),
-                    color: "orange",
-                },
-                {
-                    title: "LOCAL UNIVERSITIES AND COLLEGES",
-                    num: await queryLocal.count(),
-                    color: "blue",
-                },
-                {
-                    title: "PRIVATE COLLEGES",
-                    num: await queryPrivate.count(),
-                    color: "violet",
-                },
-                {
-                    title: "OTHER GOVERNMENT SCHOOLS",
-                    num: await queryOthers.count(),
-                    color: "green",
-                },
-            ];
+            this.datas = dataCol;
         }
     },
 };

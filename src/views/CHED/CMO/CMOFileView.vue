@@ -154,53 +154,47 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            const evalInstruments = Parse.Object.extend("EvaluationForms");
-            const evalQuery = new Parse.Query(evalInstruments);
-            evalQuery.equalTo("objectId", this.id);
-            const evalInstrument = await evalQuery.first({
+            const CMOs = Parse.Object.extend("CHED_MEMO");
+            const cmoQuery = new Parse.Query(CMOs);
+            cmoQuery.equalTo("objectId", this.id);
+            const CMO = await cmoQuery.first({
                 useMasterKey: true,
             });
 
             var categories = [];
 
-            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+            for (var i = 0; i < CMO.get("evaluationFormReqs").length; i++) {
 
                 var subcat = [];
 
-                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                for (var j = 0; j < CMO.get("evaluationFormReqs")[i].subcategory.length; j++) {
 
                     var items = [];
 
-                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                    for (var k = 0; k < CMO.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                         items.push({
-                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                            id: CMO.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                            Item: CMO.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
                         })
                     }
 
                     subcat.push({
-                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
-                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                        id: CMO.get("evaluationFormReqs")[i].subcategory[j].id,
+                        Subcategory: CMO.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
                         items: items,
                     })
 
                 }
-                this.Name = evalInstrument.get("evaluationFormName");
+                this.Name = CMO.get("evaluationFormName");
 
-                //Query the program of the application
-                const programs = Parse.Object.extend("Programs");
-                const programQuery = new Parse.Query(programs);
-                programQuery.equalTo("objectId", evalInstrument.get("evaluationFormProgram"));
+              
 
-                const program = await programQuery.first();
-
-                this.Program = program.get("programName");
-                this.cmoNo = evalInstrument.get("evaluationFormCMOno");
-                this.seriesYear = evalInstrument.get("evaluationFormSeries");
+                this.cmoNo = CMO.get("CMO_No");
+                this.seriesYear = CMO.get("Series_Year");
                 categories.push({
-                    id: evalInstrument.get("evaluationFormReqs")[i].id,
-                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
-                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
+                    id: CMO.get("evaluationFormReqs")[i].id,
+                    Category: CMO.get("evaluationFormReqs")[i].Category,
+                    Desc: CMO.get("evaluationFormReqs")[i].Desc,
                     subcategory: subcat,
                 })
 

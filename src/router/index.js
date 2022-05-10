@@ -51,9 +51,13 @@ import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 import EditApplicationView from '../views/CHED/AppSettings/EditApplicationTypeView.vue';
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
+import AddDisciplineView from '../views/CHED/Disciplines/AddDisciplineView.vue';
+
+import ProgramView from '../views/CHED/Programs/ProgramsView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
 import HeiTypesView from '../views/CHED/HeiTypes/HeiTypeView.vue';
 import UploadExcelHeiType from '../views/CHED/HeiTypes/UploadExcel.vue';
+
 
 import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
 import rqatEvaluate from '../views/RQAT/rqatEvaluate.vue';
@@ -251,7 +255,7 @@ const routes = [
         }
       },
       {
-        path: "/evaluationins/:id",
+        path: "/evaluationins/view=:id",
         name: "EvalFileView",
         component: EvalFileView,
         props: true,
@@ -295,7 +299,7 @@ const routes = [
         }
       },
       {
-        path: "/CMO/:id",
+        path: "/CMO/view=:id",
         name: "CMOFileView",
         component: CMOFileView,
         props: true,
@@ -442,6 +446,27 @@ const routes = [
         meta:{
           breadcrumb: [
             {name: 'DISCIPLINES'},
+          ]
+        }
+      },
+      {
+        path: "/disciplines/add",
+        name: "adddisciplines",
+        component: AddDisciplineView,
+        meta:{
+          breadcrumb: [
+            { name: 'DISCIPLINES', link: "/disciplines/add" },
+            {name: 'ADD DISCIPLINES'},
+          ]
+        }
+      },
+      {
+        path: "/programs",
+        name: "programs",
+        component: ProgramView,
+        meta:{
+          breadcrumb: [
+            {name: 'PROGRAMS'},
           ]
         }
       },

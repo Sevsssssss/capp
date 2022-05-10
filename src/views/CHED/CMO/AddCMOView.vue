@@ -41,7 +41,7 @@
       </div>
       <div class="form-control w-full pt-2">
         <label class="label">
-          <span class="label-text">CMO Name*</span>
+          <span class="label-text">CMO Discription*</span>
         </label>
         <!-- <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea> -->
         <textarea
@@ -519,9 +519,13 @@ export default {
           }
         }
       }
-
+      console.log(this.cmoNo)
+      console.log(this.seriesYear)
+      console.log(this.evalDesc)
+      console.log(subcat)
+      console.log(items)
+      console.log(errCat)
       if (
-        this.programName == "" ||
         this.cmoNo == "" ||
         this.seriesYear == "" ||
         this.evalDesc == "" ||
@@ -556,25 +560,23 @@ export default {
       try {
         console.log("save");
 
-        const EvaluationForm = Parse.Object.extend("EvaluationForms");
-        const newEvaluationForm = new EvaluationForm();
-
-        newEvaluationForm.set("evaluationFormProgram", this.programName);
-        newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
-        newEvaluationForm.set(
-          "evaluationFormSeries",
+        const CMOs = Parse.Object.extend("CHED_MEMO");
+        const newCMO = new CMOs();
+        newCMO.set("CMO_No", this.cmoNo.toUpperCase());
+        newCMO.set(
+          "Series_Year",
           this.seriesYear.toUpperCase()
         );
-        newEvaluationForm.set(
-          "evaluationFormName",
+        newCMO.set(
+          "CMOName",
           this.evalDesc.toUpperCase()
         );
-        newEvaluationForm.set("evaluationFormReqs", this.categories);
+        newCMO.set("evaluationFormReqs", this.categories);
 
         // await newEvaluationForm.save();
         // console.log(newEvaluationForm.save())
 
-        await newEvaluationForm.save();
+        await newCMO.save();
         toast("Evaluation Added", {
           type: TYPE.SUCCESS,
           timeout: 3000,
@@ -582,7 +584,7 @@ export default {
         }),
           // window.location.reload()
           setTimeout(() => {
-            this.$router.push("/evaluationins");
+            this.$router.push("/cmo");
           }, 2000);
         // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
         //     document.location.reload();

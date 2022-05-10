@@ -394,6 +394,18 @@ export default {
                     },
                 });
             }
+            if (userPriv.find((e) => e === "/programs")) {
+                this.menu.push({
+                    href: "/programs",
+                    title: "Programs",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: BookLine,
+                        },
+                    },
+                });
+            }
             this.updateList();
         }
     },
