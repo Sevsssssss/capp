@@ -1,16 +1,21 @@
 <template>
 <div class="p-3">
-    <div class="p-10 m-5">
-        <canvas id="myChart"></canvas>
+    <div class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="p-2 flex justify-end">
+            <button class="btn-table" id="exportToPdfCharts">Export PDF</button>
+        </div>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
     <!-- <DataCards :datas="numberOfHEI" /> -->
     <!-- <div> {{numberOfHEI}} </div>
     <div> {{listofPrograms}} </div> -->
     <div v-for="appType in listofPrograms" :key="appType" class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="p-2 flex justify-end">
-            <button class="btn-table" @click="exportToPdf()">Export PDF</button>
+            <button class="btn-table" @click="exportToPdfTables()">Export PDF</button>
         </div>
-        <table class="w-full text-sm text-left text-gray-500" ref="exportable_table">
+        <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3">HEI Name</th>
@@ -96,6 +101,8 @@ export default {
                     title: "Programs",
                 },
             ],
+            data: [12, 19, 3, 5, 2, 3],
+            numdata: {},
             items: [{
                     name: "one",
                     program: "two",
@@ -120,7 +127,7 @@ export default {
         };
     },
     methods: {
-        exportToPdf() {
+        exportToPdfTables() {
             const columns = [{
                     title: "HEI Name",
                     dataKey: "name",
@@ -167,6 +174,7 @@ export default {
             //     doc.internal.pageSize.height - 0.5
             // )
         },
+
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -222,7 +230,7 @@ export default {
                     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                     datasets: [{
                         label: 'Number of Application Types',
-                        data: [12, 19, 3, 5, 2, 3],
+                        data: this.data,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -251,11 +259,31 @@ export default {
                             y: {
                                 beginAtZero: true
                             }
-                        }
+                        },
                     }
                 });
-
+                // var image = myChart.toBase64Image();
+                // console.log(image);
                 myChart;
+
+                let element = document.getElementById("exportToPdfCharts");
+
+                // document.getElementById('exportToPdfCharts')
+
+                element.addEventListener("click", function () {
+                    // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
+                    var dataURL = ctx.toDataURL();
+                    // create new pdf and add our new canvas as an image
+                    var pdf = new jsPDF({
+                        orientation: "orientation",
+                        unit: "in",
+                        format: "letter",
+
+                    });
+                    pdf.addImage(dataURL, 'PNG', 0, 0);
+                    // download the pdf
+                    pdf.save('filename.pdf');
+                });
             }
 
             //For List of Programs
@@ -290,6 +318,7 @@ export default {
                 });
             }
         }
+
     },
 };
 </script>
