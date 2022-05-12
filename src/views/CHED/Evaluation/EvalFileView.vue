@@ -1,5 +1,6 @@
 <template>
 <div class="m-3">
+    {{cmos}}
     <div class="flex flex-row p-2 justify-end">
         <!-- <button class="flex flex-row" >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -161,15 +162,22 @@ export default {
                 useMasterKey: true,
             });
 
+            const ched_memo = Parse.Object.extend("CHED_MEMO");
+            const chedMemo = new Parse.Query(ched_memo);
+           
+
+            console.log(chedMemo);
+
             var cmos = [];
 
             for (var i = 0; i < evalInstrument.get("evalInstReqs").length; i++) {
 
                 var checkedReqs = [];
-
+                console.log(evalInstrument.get("evalInstReqs")[i].checkedRequirements);
                 for (var j = 0; j < evalInstrument.get("evalInstReqs")[i].checkedRequirements.length; j++) {
-
-                    checkedReqs.push(evalInstrument.get("evaluationFormReqs")[i].checkedRequirements[j])
+                    
+                    console.log(evalInstrument.get("evalInstReqs")[i].checkedRequirements[j]);
+                    checkedReqs.push(evalInstrument.get("evalInstReqs")[i].checkedRequirements[j]);
 
                 }
                 this.Name = evalInstrument.get("evaluationFormName");
@@ -183,7 +191,7 @@ export default {
 
                 this.Program = program.get("programName");
                 cmos.push({
-                    id: evalInstrument.get("evaluationFormReqs")[i].cmoID,
+                    id: evalInstrument.get("evalInstReqs")[i].cmoID,
                     checkedReqs: checkedReqs,
                 })
 
