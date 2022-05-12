@@ -218,6 +218,7 @@ export default {
             checkedPrograms: [],
             checkedCategories: [],
             eval: [],
+            programName: "",
         };
     },
     validations() {
@@ -278,137 +279,133 @@ export default {
         },
 
         modal() {
-            var has_error = 0;
-            var errCat = 0;
-            var subcat = 0;
-            var items = 0;
+            // var has_error = 0;
+            // var errCat = 0;
+            // var subcat = 0;
+            // var items = 0;
 
-            for (var i = 0; i < this.categories.length; i++) {
-                console.log(this.categories[i].Category);
-                if (this.categories[i].Category != "") {
-                    errCat = errCat - 0;
-                } else {
-                    errCat = errCat + 1;
-                }
-                console.log(errCat);
-                console.log(this.categories[i].id);
-                console.log("SUBCAT:" + this.categories[i].subcategory.length);
-                if (this.categories[i].subcategory.length == 0) {
-                    console.log("ANO NI?: " + this.categories[i].subcategory.length);
-                    subcat = 0;
-                } else {
-                    for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-                        console.log(
-                            "ITEMS:" + this.categories[i].subcategory[x].items.length
-                        );
-                        console.log(
-                            "name:" + this.categories[i].subcategory[x].Subcategory
-                        );
-                        if (this.categories[i].subcategory[x].Subcategory != null) {
-                            subcat = subcat - 0;
-                            console.log("EYY");
-                            console.log(this.categories[i].subcategory[x].Subcategory.length);
-                            if (this.categories[i].subcategory[x].items.length == 0) {
-                                items = 0;
-                            } else {
-                                for (
-                                    var y = 0; y < this.categories[i].subcategory[x].items.length; y++
-                                ) {
-                                    console.log(
-                                        "name1:" + this.categories[i].subcategory[x].items[y].Item
-                                    );
-                                    if (this.categories[i].subcategory[x].items[y].Item != null) {
-                                        console.log("EYYS");
-                                        items = items - 0;
-                                    } else {
-                                        console.log("EdsYY");
-                                        items = items + 1;
-                                    }
-                                    if (
-                                        this.categories[i].subcategory[x].items[y].Item.length == 0
-                                    ) {
-                                        console.log("EYdasdasY");
-                                        items = 1;
-                                    }
-                                }
-                                // items = 1;
-                                // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
-                            }
-                        } else {
-                            subcat = subcat + 1;
-                            console.log("HELL");
-                        }
-                        if (this.categories[i].subcategory[x].Subcategory.length == 0) {
-                            subcat = 1;
-                            console.log("dEYY");
-                        }
+            // for (var i = 0; i < this.categories.length; i++) {
+            //     console.log(this.categories[i].Category);
+            //     if (this.categories[i].Category != "") {
+            //         errCat = errCat - 0;
+            //     } else {
+            //         errCat = errCat + 1;
+            //     }
+            //     console.log(errCat);
+            //     console.log(this.categories[i].id);
+            //     console.log("SUBCAT:" + this.categories[i].subcategory.length);
+            //     if (this.categories[i].subcategory.length == 0) {
+            //         console.log("ANO NI?: " + this.categories[i].subcategory.length);
+            //         subcat = 0;
+            //     } else {
+            //         for (var x = 0; x < this.categories[i].subcategory.length; x++) {
+            //             console.log(
+            //                 "ITEMS:" + this.categories[i].subcategory[x].items.length
+            //             );
+            //             console.log(
+            //                 "name:" + this.categories[i].subcategory[x].Subcategory
+            //             );
+            //             if (this.categories[i].subcategory[x].Subcategory != null) {
+            //                 subcat = subcat - 0;
+            //                 console.log("EYY");
+            //                 console.log(this.categories[i].subcategory[x].Subcategory.length);
+            //                 if (this.categories[i].subcategory[x].items.length == 0) {
+            //                     items = 0;
+            //                 } else {
+            //                     for (
+            //                         var y = 0; y < this.categories[i].subcategory[x].items.length; y++
+            //                     ) {
+            //                         console.log(
+            //                             "name1:" + this.categories[i].subcategory[x].items[y].Item
+            //                         );
+            //                         if (this.categories[i].subcategory[x].items[y].Item != null) {
+            //                             console.log("EYYS");
+            //                             items = items - 0;
+            //                         } else {
+            //                             console.log("EdsYY");
+            //                             items = items + 1;
+            //                         }
+            //                         if (
+            //                             this.categories[i].subcategory[x].items[y].Item.length == 0
+            //                         ) {
+            //                             console.log("EYdasdasY");
+            //                             items = 1;
+            //                         }
+            //                     }
+            //                     // items = 1;
+            //                     // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
+            //                 }
+            //             } else {
+            //                 subcat = subcat + 1;
+            //                 console.log("HELL");
+            //             }
+            //             if (this.categories[i].subcategory[x].Subcategory.length == 0) {
+            //                 subcat = 1;
+            //                 console.log("dEYY");
+            //             }
 
-                        // if (this.categories[i].subcategory[x].items.length == 0) {
-                        //     items = 0;
-                        // } else {
-                        // for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
-                        //     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
-                        //     if (this.categories[i].subcategory[x].Subcategory != null) {
-                        //         items = 0;
-                        //     } else {
-                        //         items = 1;
-                        //     }
-                        // }
-                        // }
-                    }
-                }
-            }
+            //             // if (this.categories[i].subcategory[x].items.length == 0) {
+            //             //     items = 0;
+            //             // } else {
+            //             // for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
+            //             //     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
+            //             //     if (this.categories[i].subcategory[x].Subcategory != null) {
+            //             //         items = 0;
+            //             //     } else {
+            //             //         items = 1;
+            //             //     }
+            //             // }
+            //             // }
+            //         }
+            //     }
+            // }
 
-            if (
-                this.cmoID == "" ||
-                this.cmoNo == "" ||
-                this.seriesYear == "" ||
-                this.evalDesc == "" ||
-                subcat == 1 ||
-                items == 1 ||
-                errCat >= 1
-            ) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                has_error = 1;
-            }
+            // if (
+            //     this.cmoID == "" ||
+            //     this.cmoNo == "" ||
+            //     this.seriesYear == "" ||
+            //     this.evalDesc == "" ||
+            //     subcat == 1 ||
+            //     items == 1 ||
+            //     errCat >= 1
+            // ) {
+            //     toast("Please fill out the required information", {
+            //         type: TYPE.ERROR,
+            //         timeout: 3000,
+            //         hideProgressBar: true,
+            //         position: POSITION.TOP_RIGHT,
+            //     });
+            //     has_error = 1;
+            // }
 
-            if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
+            // if (has_error < 1) {
+            //     // var password = "";
+            //     // var characters =
+            //     //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            //     // var charactersLength = characters.length;
+            //     // for (var i = 0; i < 8; i++) {
+            //     //   password += characters.charAt(
+            //     //     Math.floor(Math.random() * charactersLength)
+            //     //   );
+            //     // }
                 this.showModal1 = !this.showModal1;
-            }
+            // }
+            
         },
         async saveEvalForm() {
             this.$refs.Spinner.show();
             try {
                 console.log("save");
 
-                const EvaluationForm = Parse.Object.extend("EvaluationForms");
+                const EvaluationForm = Parse.Object.extend("EvaluationInstruments");
                 const newEvaluationForm = new EvaluationForm();
 
-                newEvaluationForm.set("evaluationFormProgram", this.cmoID);
-                newEvaluationForm.set("evaluationFormCMOno", this.cmoNo.toUpperCase());
+                newEvaluationForm.set("evaluationFormProgram", this.programName);
+                newEvaluationForm.set("evaluationFormName", this.evalDesc);
                 newEvaluationForm.set(
-                    "evaluationFormSeries",
-                    this.seriesYear.toUpperCase()
+                    "evalInstReqs",
+                    this.eval
                 );
-                newEvaluationForm.set(
-                    "evaluationFormName",
-                    this.evalDesc.toUpperCase()
-                );
-                newEvaluationForm.set("evaluationFormReqs", this.categories);
 
                 // await newEvaluationForm.save();
                 // console.log(newEvaluationForm.save())
