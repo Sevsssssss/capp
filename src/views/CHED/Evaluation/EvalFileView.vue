@@ -1,5 +1,6 @@
 <template>
 <div class="m-3">
+    {{cmos}}
     <div class="flex flex-row p-2 justify-end">
         <!-- <button class="flex flex-row" >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -53,7 +54,8 @@
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
             <div>{{ Name }}</div>
-            <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
+            per CMO No. 25 s. 2015, CMO No. 26 s. 2022
+            <!-- <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div> -->
             <div>{{Program}}</div>
         </div>
         <div class="">
@@ -61,7 +63,7 @@
                 <table class="table eval-table w-full">
                     <tbody>
                         <!-- row 1 -->
-                        <div v-for="cat in categories" :key="cat">
+                        <div v-for="cat in cmos" :key="cat">
                             <th>{{ cat.id }}</th>
                             <td class="font-bold">{{ cat.Category }}</td>
                             <div v-for="subcat in cat.subcategory" :key="subcat">
@@ -106,7 +108,7 @@ export default {
     components: {},
     data() {
         return {
-            categories: [],
+            cmos: [ { "id": 1, "Category": "ADMINISTRATION/PROGRAM ADMINISTRATOR", "Desc": "", "subcategory": [ { "id": 1, "Subcategory": "Doctorate Degree in Computer Science", "items": [] }, { "id": 2, "Subcategory": "Masters’ degree in Computer Science plus", "items": [ { "id": 1, "Item": "At least 3 years of CS work, CS consultancy, CS research experience or tertiary level CS teaching experience within the last 5 years" } ] }, { "id": 3, "Subcategory": "At least masters’ degree in a CS allied program plus", "items": [ { "id": 1, "Item": "Completion of bachelor’s degree in Computer Science, or Completion of all coursework requirements for a master’s degree in CS\n" }, { "id": 2, "Item": "●\tAt least three (3) years of CS work, CS consultancy, CS research experience, or tertiary level CS teaching experience within the last five (5) years" } ] }, { "id": 4, "Subcategory": "A doctorate degree in CS allied program plus", "items": [ { "id": 1, "Item": "At least ten (10) years of CS work, CS consultancy, CS research experience within the last twelve (12) years" } ] } ] }, { "id": 2, "Category": "FACULTY COMPOSITION", "Desc": "", "subcategory": [ { "id": 1, "Subcategory": "There should be 3 full-time ITE faculty members per program, one of whom can be the Dean/Program Head/Program Coordinator.", "items": [] }, { "id": 2, "Subcategory": "At least 40% of the CS, IS and IT core and professional courses are taught by full-time CS, IS, and IT faculty members. There shall be a career development and tenure track for full-time faculty members.", "items": [] }, { "id": 3, "Subcategory": "For the Computer Science program, at least 60% of the professional courses should be taught by CS degree holders. At least 30% of all full-time CS faculty members should have a graduate degree course in Computer Science.", "items": [] }, { "id": 4, "Subcategory": "For the Information Systems and Information Technology, at least 60% of IS and IT professional courses should be taught by degree holders in either IS or IT program. ", "items": [] }, { "id": 5, "Subcategory": "At least thirty percent (30%) of all full-time IS and IT faculty members should have a graduate degree in either CS, IS or IT.", "items": [] }, { "id": 6, "Subcategory": "There shall be faculty members with industry experience within the last 2 years. These may be full-time or part-time faculty members.", "items": [] }, { "id": 7, "Subcategory": "HEIs offering CS, IS or IT are strongly encouraged to have faculty members with doctorate degrees in CS, IS, IT or allied fields.", "items": [] }, { "id": 8, "Subcategory": "HEIs offering CS, IS, or IT programs are strongly encouraged to have faculty members who actively do research and development work in CS, IT or IS and who publish regularly in refereed journals and proceedings. Likewise, the faculty members are also encouraged to join and actively participates in computing related professional organizations.", "items": [] } ] } ],
             Name: "",
             cmoNo: "",
             seriesYear: "",
@@ -154,35 +156,29 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
             evalQuery.equalTo("objectId", this.id);
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
 
-            var categories = [];
+            const ched_memo = Parse.Object.extend("CHED_MEMO");
+            const chedMemo = new Parse.Query(ched_memo);
+           
 
-            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+            console.log(chedMemo);
 
-                var subcat = [];
+            var cmos = [];
 
-                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+            for (var i = 0; i < evalInstrument.get("evalInstReqs").length; i++) {
 
-                    var items = [];
-
-                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                        items.push({
-                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
-                        })
-                    }
-
-                    subcat.push({
-                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
-                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
-                        items: items,
-                    })
+                var checkedReqs = [];
+                console.log(evalInstrument.get("evalInstReqs")[i].checkedRequirements);
+                for (var j = 0; j < evalInstrument.get("evalInstReqs")[i].checkedRequirements.length; j++) {
+                    
+                    console.log(evalInstrument.get("evalInstReqs")[i].checkedRequirements[j]);
+                    checkedReqs.push(evalInstrument.get("evalInstReqs")[i].checkedRequirements[j]);
 
                 }
                 this.Name = evalInstrument.get("evaluationFormName");
@@ -195,17 +191,13 @@ export default {
                 const program = await programQuery.first();
 
                 this.Program = program.get("programName");
-                this.cmoNo = evalInstrument.get("evaluationFormCMOno");
-                this.seriesYear = evalInstrument.get("evaluationFormSeries");
-                categories.push({
-                    id: evalInstrument.get("evaluationFormReqs")[i].id,
-                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
-                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
-                    subcategory: subcat,
+                cmos.push({
+                    id: evalInstrument.get("evalInstReqs")[i].cmoID,
+                    checkedReqs: checkedReqs,
                 })
 
             }
-            this.categories = categories;
+            // this.cmos = cmos;
         }
     },
 };
