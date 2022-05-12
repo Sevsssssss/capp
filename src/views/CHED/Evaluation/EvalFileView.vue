@@ -64,17 +64,18 @@
                     <tbody>
                         <!-- row 1 -->
                         <div v-for="cat in cmos" :key="cat">
-                            <th>{{ cat.id }}</th>
-                            <td class="font-bold">{{ cat.Category }}</td>
-                            <div v-for="subcat in cat.subcategory" :key="subcat">
-                                <td></td>
-                                <th>{{ cat.id }}.{{ subcat.id }}</th>
-                                <td class="font-medium">{{ subcat.Subcategory }}</td>
-                                <div v-for="item in subcat.items" :key="item">
+                            <div v-for="category in cat.categories" :key="category">
+                                <td class="font-bold">{{ category.id }} {{ category.Category }}</td>
+                                <div v-for="subcat in category.subcategory" :key="subcat">
                                     <td></td>
-                                    <td></td>
-                                    <th>{{ cat.id }}.{{ subcat.id }}.{{ item.id }}</th>
-                                    <td class="font-thin">{{ item.Item }}</td>
+                                    <th>{{ category.id }}.{{ subcat.id }}</th>
+                                    <td class="font-medium">{{ subcat.Subcategory }}</td>
+                                    <div v-for="item in subcat.items" :key="item">
+                                        <td></td>
+                                        <td></td>
+                                        <th>{{ category.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                                        <td class="font-thin">{{ item.Item }}</td>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +145,7 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            console.log(accType[y])
+           
             if (accType[y] === "/evaluationins") {
                 flag = 1;
             }
@@ -163,24 +164,76 @@ export default {
                 useMasterKey: true,
             });
 
-            const ched_memo = Parse.Object.extend("CHED_MEMO");
-            const chedMemo = new Parse.Query(ched_memo);
-           
-
-            console.log(chedMemo);
-
             var cmos = [];
 
-            for (var i = 0; i < evalInstrument.get("evalInstReqs").length; i++) {
+            for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
 
-                var checkedReqs = [];
-                console.log(evalInstrument.get("evalInstReqs")[i].checkedRequirements);
-                for (var j = 0; j < evalInstrument.get("evalInstReqs")[i].checkedRequirements.length; j++) {
-                    
-                    console.log(evalInstrument.get("evalInstReqs")[i].checkedRequirements[j]);
-                    checkedReqs.push(evalInstrument.get("evalInstReqs")[i].checkedRequirements[j]);
+                const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
+                const chedMemoQ = new Parse.Query(CHEDMEMOS);
+                chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
+                const chedMemo = await chedMemoQ.first({
+                    useMasterKey: true,
+                });
+
+                var catIndexes = [];
+                var subcatIndexes = [];
+
+                for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++){
+                    console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr])
+                    var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
+
+                    if(catIndexes.includes(parseInt(contents[0]))){
+                        var index = catIndexes.indexOf(contents[0]);
+                        subcatIndexes[index].push(parseInt(contents[1]))
+                    }
+                    else {
+                        catIndexes.push(parseInt(contents[0]));
+                        subcatIndexes.push([parseInt(contents[1])]);
+                    }
 
                 }
+
+                var categories = [];
+                for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
+                    var subcat = [];
+                    if(catIndexes.includes(i+1)){
+                        for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                            if(subcatIndexes[i].includes(j+1)){
+                                var items = [];
+
+                                for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                    items.push({
+                                        id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                                        Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                                    })
+                                }
+
+                                subcat.push({
+                                    id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].id,
+                                    Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                                    items: items,
+                                })
+
+                            }
+                            
+                        }
+                        this.Name = chedMemo.get("evaluationFormName");
+
+                    
+
+                        this.cmoNo = chedMemo.get("CMO_No");
+                        this.seriesYear = chedMemo.get("Series_Year");
+                        categories.push({
+                            id: chedMemo.get("evaluationFormReqs")[i].id,
+                            Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                            Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                            subcategory: subcat,
+                        })
+
+                    }
+                    
+                }
+                this.categories = categories;
                 this.Name = evalInstrument.get("evaluationFormName");
 
                 //Query the program of the application
@@ -192,12 +245,12 @@ export default {
 
                 this.Program = program.get("programName");
                 cmos.push({
-                    id: evalInstrument.get("evalInstReqs")[i].cmoID,
-                    checkedReqs: checkedReqs,
+                    id: evalInstrument.get("evalInstReqs")[c].cmoID,
+                    categories: categories,
                 })
 
             }
-            // this.cmos = cmos;
+            this.cmos = cmos;
         }
     },
 };
