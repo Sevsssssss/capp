@@ -387,10 +387,10 @@ export default {
             for (var z = 0; z < queryResultDiscipline.length; z++) {
                 this.disciplines.push({
                     id: queryResultDiscipline[z].id,
-                    title: queryResultDiscipline[z].get("disciplineName"),
+                    title: queryResultDiscipline[z].get("MajorDiscipline"),
                 });
             }
-            this.discipline = queryResultDiscipline[0].get("disciplineName");
+            this.discipline = queryResultDiscipline[0].get("MajorDiscipline");
         }
     },
 };
