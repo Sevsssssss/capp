@@ -74,7 +74,7 @@
                             {{ table.status }}
                         </div>
                         <div v-else-if="table.status === 'For Payment'" class="relative pt-3">
-                            <span v-if="table.paymentStatus != ''" class="absolute top-0 right-14 badge badge-accent text-sm">{{table.paymentStatus}}</span>
+                            <span v-if="table.paymentStatus != ''" class="absolute top-0 left-0 badge badge-accent text-sm">{{table.paymentStatus}}</span>
                             <div  class="btn-sm1 rounded-md font-normal payment">
                                 {{ table.status}}
                             </div>
