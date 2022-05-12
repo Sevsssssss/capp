@@ -61,7 +61,7 @@
                 <table class="table eval-table w-full">
                     <tbody>
                         <!-- row 1 -->
-                        <div v-for="cat in categories" :key="cat">
+                        <div v-for="cat in cmos" :key="cat">
                             <th>{{ cat.id }}</th>
                             <td class="font-bold">{{ cat.Category }}</td>
                             <div v-for="subcat in cat.subcategory" :key="subcat">
@@ -106,7 +106,7 @@ export default {
     components: {},
     data() {
         return {
-            categories: [],
+            cmos: [],
             Name: "",
             cmoNo: "",
             seriesYear: "",
@@ -154,35 +154,22 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
             evalQuery.equalTo("objectId", this.id);
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
 
-            var categories = [];
+            var cmos = [];
 
-            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+            for (var i = 0; i < evalInstrument.get("evalInstReqs").length; i++) {
 
-                var subcat = [];
+                var checkedReqs = [];
 
-                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                for (var j = 0; j < evalInstrument.get("evalInstReqs")[i].checkedRequirements.length; j++) {
 
-                    var items = [];
-
-                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                        items.push({
-                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
-                        })
-                    }
-
-                    subcat.push({
-                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
-                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
-                        items: items,
-                    })
+                    checkedReqs.push(evalInstrument.get("evaluationFormReqs")[i].checkedRequirements[j])
 
                 }
                 this.Name = evalInstrument.get("evaluationFormName");
@@ -195,17 +182,13 @@ export default {
                 const program = await programQuery.first();
 
                 this.Program = program.get("programName");
-                this.cmoNo = evalInstrument.get("evaluationFormCMOno");
-                this.seriesYear = evalInstrument.get("evaluationFormSeries");
-                categories.push({
-                    id: evalInstrument.get("evaluationFormReqs")[i].id,
-                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
-                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
-                    subcategory: subcat,
+                cmos.push({
+                    id: evalInstrument.get("evaluationFormReqs")[i].cmoID,
+                    checkedReqs: checkedReqs,
                 })
 
             }
-            this.categories = categories;
+            this.cmos = cmos;
         }
     },
 };

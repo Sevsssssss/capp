@@ -187,7 +187,7 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedEvalInstruments = [];
-            const instruments = Parse.Object.extend("EvaluationForms");
+            const instruments = Parse.Object.extend("EvaluationInstruments");
             const evalInsQuery = new Parse.Query(instruments);
             const evalInsResult = await evalInsQuery.find();
 
