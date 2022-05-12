@@ -54,7 +54,8 @@
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
             <div>{{ Name }}</div>
-            <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
+            per CMO No. 25 s. 2015, CMO No. 26 s. 2022
+            <!-- <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div> -->
             <div>{{Program}}</div>
         </div>
         <div class="">
@@ -107,7 +108,7 @@ export default {
     components: {},
     data() {
         return {
-            cmos: [],
+            cmos: [ { "id": 1, "Category": "ADMINISTRATION/PROGRAM ADMINISTRATOR", "Desc": "", "subcategory": [ { "id": 1, "Subcategory": "Doctorate Degree in Computer Science", "items": [] }, { "id": 2, "Subcategory": "Masters’ degree in Computer Science plus", "items": [ { "id": 1, "Item": "At least 3 years of CS work, CS consultancy, CS research experience or tertiary level CS teaching experience within the last 5 years" } ] }, { "id": 3, "Subcategory": "At least masters’ degree in a CS allied program plus", "items": [ { "id": 1, "Item": "Completion of bachelor’s degree in Computer Science, or Completion of all coursework requirements for a master’s degree in CS\n" }, { "id": 2, "Item": "●\tAt least three (3) years of CS work, CS consultancy, CS research experience, or tertiary level CS teaching experience within the last five (5) years" } ] }, { "id": 4, "Subcategory": "A doctorate degree in CS allied program plus", "items": [ { "id": 1, "Item": "At least ten (10) years of CS work, CS consultancy, CS research experience within the last twelve (12) years" } ] } ] }, { "id": 2, "Category": "FACULTY COMPOSITION", "Desc": "", "subcategory": [ { "id": 1, "Subcategory": "There should be 3 full-time ITE faculty members per program, one of whom can be the Dean/Program Head/Program Coordinator.", "items": [] }, { "id": 2, "Subcategory": "At least 40% of the CS, IS and IT core and professional courses are taught by full-time CS, IS, and IT faculty members. There shall be a career development and tenure track for full-time faculty members.", "items": [] }, { "id": 3, "Subcategory": "For the Computer Science program, at least 60% of the professional courses should be taught by CS degree holders. At least 30% of all full-time CS faculty members should have a graduate degree course in Computer Science.", "items": [] }, { "id": 4, "Subcategory": "For the Information Systems and Information Technology, at least 60% of IS and IT professional courses should be taught by degree holders in either IS or IT program. ", "items": [] }, { "id": 5, "Subcategory": "At least thirty percent (30%) of all full-time IS and IT faculty members should have a graduate degree in either CS, IS or IT.", "items": [] }, { "id": 6, "Subcategory": "There shall be faculty members with industry experience within the last 2 years. These may be full-time or part-time faculty members.", "items": [] }, { "id": 7, "Subcategory": "HEIs offering CS, IS or IT are strongly encouraged to have faculty members with doctorate degrees in CS, IS, IT or allied fields.", "items": [] }, { "id": 8, "Subcategory": "HEIs offering CS, IS, or IT programs are strongly encouraged to have faculty members who actively do research and development work in CS, IT or IS and who publish regularly in refereed journals and proceedings. Likewise, the faculty members are also encouraged to join and actively participates in computing related professional organizations.", "items": [] } ] } ],
             Name: "",
             cmoNo: "",
             seriesYear: "",
@@ -196,7 +197,7 @@ export default {
                 })
 
             }
-            this.cmos = cmos;
+            // this.cmos = cmos;
         }
     },
 };
