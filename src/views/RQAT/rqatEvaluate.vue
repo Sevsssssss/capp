@@ -293,13 +293,17 @@ export default {
                 }
 
             }
+            
 
             if (this.statusShow.includes("NotComplied")) {
+                var today = new Date();
+                var complianceDueDate = today.setDate(today.getDate() + 45);
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
+                application.set("complianceDueDate", complianceDueDate);
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
@@ -311,7 +315,7 @@ export default {
             application
                 .save()
                 .then((application) => {
-                    // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+                    // toast(this.type.toLowerCase() + " has been moved for compliance", {
                     //         type: TYPE.INFO,
                     //         timeout: 2000,
                     //         position: POSITION.TOP_RIGHT,
