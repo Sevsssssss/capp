@@ -181,15 +181,11 @@ export default {
                 var subcatIndexes = [];
 
                 for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
-
-                    console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]);
                     if (evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].indexOf(".") > -1) {
                         var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
                         if (catIndexes.includes(parseInt(contents[0]))) {
-                            console.log(parseInt(contents[1]));
                             var index = catIndexes.indexOf(parseInt(contents[0]));
-                            console.log(index);
                             subcatIndexes[index].push(parseInt(contents[1]))
                         } else {
                             catIndexes.push(parseInt(contents[0]));
@@ -204,45 +200,84 @@ export default {
 
                 }
 
+                var hasSubCat = [];
+
+                for(var cs = 0; cs < catIndexes.length; cs++) {
+                    if(subcatIndexes[cs].every(x => x < 0)) {
+                        hasSubCat.push(false);
+                    }
+                    else{
+                        hasSubCat.push(true);
+                    }
+                    for(var ss = 0; ss < subcatIndexes[cs].length; ss++){
+                        if(subcatIndexes[cs][ss] == -1){
+                            subcatIndexes[cs].splice(ss, 1)
+                        }
+                    }
+                }
+
                 var categories = [];
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
-                        for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                            if (subcatIndexes[j].includes(j + 1)) {
-                                var items = [];
+                        var catIndex = catIndexes.indexOf(i + 1)
+                        if(hasSubCat[catIndex] == true){
+                            console.log(chedMemo.get("evaluationFormReqs")[i].subcategory.length);
+                            for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length + 2; j++) {
+                                //for(var sub = 0; sub < subcatIndexes.length)
+                                if (subcatIndexes[catIndex].includes(j + 1)) {
+                                    var items = [];
 
-                                for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                                    items.push({
-                                        id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                                        Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                                    for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                        items.push({
+                                            id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                                            Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                                        })
+                                    }
+
+                                    subcat.push({
+                                        id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].id,
+                                        Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                                        items: items,
                                     })
+
                                 }
 
-                                subcat.push({
-                                    id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].id,
-                                    Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
-                                    items: items,
-                                })
+                            }
+                            this.Name = chedMemo.get("evaluationFormName");
 
+                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                                this.cmoNoYr.push({
+                                    cmoNo: chedMemo.get("CMO_No"),
+                                    seriesYear: chedMemo.get("Series_Year"),
+                                })
                             }
 
-                        }
-                        this.Name = chedMemo.get("evaluationFormName");
-
-                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
-                            this.cmoNoYr.push({
-                                cmoNo: chedMemo.get("CMO_No"),
-                                seriesYear: chedMemo.get("Series_Year"),
+                            categories.push({
+                                id: chedMemo.get("evaluationFormReqs")[i].id,
+                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                                subcategory: subcat,
                             })
                         }
+                        else{
+                            this.Name = chedMemo.get("evaluationFormName");
 
-                        categories.push({
-                            id: chedMemo.get("evaluationFormReqs")[i].id,
-                            Category: chedMemo.get("evaluationFormReqs")[i].Category,
-                            Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
-                            subcategory: subcat,
-                        })
+                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                                this.cmoNoYr.push({
+                                    cmoNo: chedMemo.get("CMO_No"),
+                                    seriesYear: chedMemo.get("Series_Year"),
+                                })
+                            }
+
+                            categories.push({
+                                id: chedMemo.get("evaluationFormReqs")[i].id,
+                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                                subcategory: [],
+                            })
+                        }
+                        
 
                     }
 
