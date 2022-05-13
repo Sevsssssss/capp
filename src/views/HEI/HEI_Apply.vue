@@ -287,7 +287,7 @@ export default {
                     const newApplication = new application();
                     //requirement = new Parse.File(file.name, file, file.type);
                     var currentDate = new Date();
-                    var yesterday = currentDate.setDate(date.getDate() - 1);
+                    var yesterday = currentDate.setDate(currentDate.getDate() - 1);
                     newApplication
                         .save({
                             pointPerson: this.pointPerson,
@@ -298,7 +298,7 @@ export default {
                             applicationStatus: "For Approval",
                             createdBy: Parse.User.current().id,
                             program: this.programSelect,
-                            selectedRQAT: '',
+                            selectedRQAT: [],
                             selectedSupervisor: '',
                             summary: '',
                             //certificate: '',

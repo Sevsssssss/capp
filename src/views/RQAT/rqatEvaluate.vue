@@ -456,7 +456,7 @@ export default {
                     this.comment2.push("");
                     if (catIndexes.includes(i + 1)) {
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                            if (subcatIndexes[i].includes(j + 1)) {
+                            if (subcatIndexes[j].includes(j + 1)) {
                                 var items = [];
                                 this.comment1.push("");
                                 this.comment2.push("");

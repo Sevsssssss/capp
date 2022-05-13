@@ -48,10 +48,7 @@
                     <div class="month-sort flex flex-row">
                         <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
                             <option disabled selected>Sort by type</option>
-                            <option>Private</option>
-                            <option>State Univeristies</option>
-                            <option>Local Universities</option>
-                            <option>Others</option>
+                            <option v-for="hType in hei_Types" :key="hType" :value="hType">{{hType.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -138,7 +135,7 @@
             </div>
             <div v-if="sort_type_var == true" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
-                Sorry, there is no data with the type of "{{ sort_type }}" in the
+                Sorry, there is no data with the type of "{{ sort_type.name }}" in the
                 database.
             </div>
             <!-- Table Footer -->
@@ -309,6 +306,7 @@ export default {
             search: "",
             sort_type: "Sort by type",
             sort_type_var: false,
+            hei_Types: [],
         };
     },
     components: {
@@ -381,137 +379,43 @@ export default {
             }
         },
         async filterHEI() {
-            var i = 0;
-            if (this.sort_type == "Private") {
-                var heisPriv = [];
+            var heisPriv = [];
 
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
 
-                const accQuerResult = await queryACC.first();
+            const accQuerResult = await queryACC.first();
 
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", accQuerResult.id);
-                query.equalTo("hei_type", "PRIVATE COLLEGES");
-                const querResult = await query.find({
-                    useMasterKey: true,
+            const query = new Parse.Query(Parse.User);
+            query.equalTo("access_type", accQuerResult.id);
+            query.equalTo("hei_type", this.sort_type.id);
+            const querResult = await query.find({
+                useMasterKey: true,
+            });
+            for (var i = 0; i < querResult.length; i++) {
+                const hei = querResult[i];
+
+                const index = this.hei_Types.findIndex(object => {
+                    return object.id == hei.get("hei_type");
                 });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisPriv.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisPriv.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisPriv;
-                } else {
-                    this.sort_type_var = true;
-                }
+
+                heisPriv.push({
+                    id: hei.id,
+                    InstNo: hei.get("inst_code"),
+                    HeiName: hei.get("hei_name"),
+                    address: hei.get("address"),
+                    type: this.hei_Types[index].name,
+                    email: hei.get("email"),
+                });
             }
-            if (this.sort_type == "State Univeristies") {
-                var heisState = [];
-
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
-
-                const accQuerResult = await queryACC.first();
-
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", accQuerResult.id);
-                query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisState.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisState.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisState;
-                } else {
-                    this.sort_type_var = true;
-                }
-            } else if (this.sort_type == "Local Universities") {
-                var heisLocal = [];
-
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
-
-                const accQuerResult = await queryACC.first();
-
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", accQuerResult.id);
-                query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisLocal.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisLocal.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisLocal;
-                } else {
-                    this.sort_type_var = true;
-                }
+            if (heisPriv.length > 0) {
+                this.sort_type_var = false;
+                this.tables = heisPriv;
+            } else {
+                this.sort_type_var = true;
             }
-            if (this.sort_type == "Others") {
-                var heisOthers = [];
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
 
-                const accQuerResult = await queryACC.first();
-
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", accQuerResult.id);
-                query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisOthers.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisOthers.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisOthers;
-                } else {
-                    this.sort_type_var = true;
-                }
-            }
         },
     },
     mounted: async function () {
@@ -564,6 +468,8 @@ export default {
                 });
                 hTypeCounter.push(0);
             }
+
+            this.hei_Types = heiTypes;
 
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];

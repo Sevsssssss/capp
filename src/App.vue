@@ -53,7 +53,8 @@ Parse.masterKey = "master"
 //             "/cmo", 
 //             "/cmo/add", 
 //             "/cmo/edit", 
-//             "/cmo/view"
+//             "/cmo/view",
+//             "/programs"
 //         ],
 //     }).then((accesstype) => {
 //         const Designations = Parse.Object.extend("Designations");
