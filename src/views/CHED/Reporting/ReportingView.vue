@@ -192,22 +192,23 @@ export default {
                 const applicationType = appTypeResults[i];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
                 const querResult = await newQuery.find();
-                var counter = 0;
+                // var counter = 0;
+                console.log(appTypeResults[i]);
                 console.log(querResult.length);
                 for (var j = 0; j < querResult.length; j++) {
                     const application = querResult[j];
                     if (!listOfHEI.includes(application.get("createdBy"))) {
                         listOfHEI.push(application.get("createdBy"));
-                        counter++;
+                        // counter++;
                     }
                     totalApplication++;
                 }
 
                 applicationTypes.push(applicationType.get("applicationTypeName"));
-                appTypeCount.push(counter);
+                appTypeCount.push(querResult.length);
                 this.numberOfHEI.push({
                     title: applicationType.get("applicationTypeName"),
-                    num: counter,
+                    num: querResult.length,
                     type: "approval"
                 });
                 

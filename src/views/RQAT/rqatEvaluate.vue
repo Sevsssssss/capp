@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{eval}}
+    {{statusShow}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -108,7 +108,6 @@
                                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                                         </svg> -->
                                     </div>
-                                    
 
                                     <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                                 </th>
@@ -126,9 +125,28 @@
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
                 </button>
-                <button @click="submitEvaluation()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                <button for="my-modal-6" id="my-modal-6" @click="modal()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Submit
                 </button>
+            </div>
+            <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+            <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+                <div class="modal-box relative rounded-md text-left">
+                    <div class="text-brand-darkblue font-bold label-xl">
+                        Add Evaluation Instrument
+                    </div>
+                    <p class="text-sm xxs:leading-tight text-grey-200">
+                        Are you sure you want to add this Evaluation Instrument?
+                    </p>
+                    <div class="modal-action">
+                        <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">
+                            Cancel
+                        </label>
+                        <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="submitEvaluation()">
+                            Continue
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -137,16 +155,28 @@
 
 <script>
 import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+import {
     required
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import Parse from "parse";
+
+const toast = useToast();
+
 export default {
     props: ["id"],
     name: "rqatEvaluate",
-    components: {},
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
+            showModal1: false,
             v$: useVuelidate(),
             header: [{
                     title: "ID",
@@ -222,6 +252,61 @@ export default {
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        validate() {
+            return this.showModal1;
+        },
+        modal(){
+            var has_error = 0;
+            var missing_comment = 0;
+            var missing_comment1 = 0;
+            var missing_checkbox = 0;
+            console.log(this.comment1.length)
+
+            for (var i = 0; i < this.comment1.length; i++) {
+                if(this.comment1[i] == null ||  this.comment1[i] == ''){
+                    missing_comment++;
+                    console.log(this.comment1[i])
+                }
+            }
+            for (var x = 0; x < this.comment2.length; x++) {
+                if(this.comment2[x] == null ||  this.comment2[x] == ''){
+                    missing_comment1++;
+                    console.log(this.comment1[i])
+                }
+            }
+
+            for (var j = 0; j < this.statusShow.length; j++ ){
+                if(this.statusShow[j] == ""){
+                    missing_checkbox++;
+                }
+            }
+            console.log(missing_comment)
+            if (
+                this.summary == "" || this.recommendation == "" || missing_comment > 0 || missing_comment1 > 0 || this.statusShow.length == 0 || missing_checkbox > 0
+            ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+                console.log("array is empty")
+            }
+
+            if (has_error < 1) {
+                // var password = "";
+                // var characters =
+                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                // var charactersLength = characters.length;
+                // for (var i = 0; i < 8; i++) {
+                //   password += characters.charAt(
+                //     Math.floor(Math.random() * charactersLength)
+                //   );
+                // }
+                this.showModal1 = !this.showModal1;
+            }
         },
         async submitEvaluation() {
             const Applications = Parse.Object.extend("Applications");
@@ -316,6 +401,7 @@ export default {
             application
                 .save()
                 .then((application) => {
+<<<<<<< HEAD
                     // toast(this.type.toLowerCase() + " has been moved for compliance", {
                     //         type: TYPE.INFO,
                     //         timeout: 2000,
@@ -324,8 +410,31 @@ export default {
                     //         closeButton: false,
 
                     //     }),
+=======
+>>>>>>> 904ed093f4a9311ae26aa1867302e3c976472f0a
                     console.log("Object Updated: " + application.id);
                 })
+
+            toast("Successfully Evaluated!", {
+                type: TYPE.SUCCESS,
+                timeout: 2000,
+                position: POSITION.TOP_RIGHT,
+            });
+            // this.sendEmail().then(() => {
+            setTimeout(
+                () =>
+                this.$router.push({
+                    path: "/rqat/assignments",
+                }),
+                1000
+            );
+            this.$refs.Spinner.show();
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         getSummary() {
             this.summary = "";
@@ -345,6 +454,7 @@ export default {
             }
         },
     },
+
     mounted: async function () {
         //THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
@@ -419,14 +529,13 @@ export default {
             console.log(evalInstrument);
 
             //Query the program of the application
-                const programs = Parse.Object.extend("Programs");
-                const programQuery = new Parse.Query(programs);
-                programQuery.equalTo("objectId", application.get("program"));
+            const programs = Parse.Object.extend("Programs");
+            const programQuery = new Parse.Query(programs);
+            programQuery.equalTo("objectId", application.get("program"));
 
-                const program = await programQuery.first();
+            const program = await programQuery.first();
 
-                this.program = program.get("programName");
-
+            this.program = program.get("programName");
 
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
 
@@ -457,15 +566,18 @@ export default {
 
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
+                    this.statusShow.push("");
                     this.comment1.push("");
                     this.comment2.push("");
                     if (catIndexes.includes(i + 1)) {
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
                             if (subcatIndexes[j].includes(j + 1)) {
                                 var items = [];
+                                this.statusShow.push("");
                                 this.comment1.push("");
                                 this.comment2.push("");
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                    this.statusShow.push("");
                                     this.comment1.push("");
                                     this.comment2.push("");
                                     items.push({
@@ -485,11 +597,11 @@ export default {
                         }
 
                         this.Name = chedMemo.get("evaluationFormName");
-                        
-                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))){
+
+                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
                             this.cmoNoYr.push({
-                            cmoNo: chedMemo.get("CMO_No"),
-                            seriesYear: chedMemo.get("Series_Year"),
+                                cmoNo: chedMemo.get("CMO_No"),
+                                seriesYear: chedMemo.get("Series_Year"),
                             })
                         }
 
@@ -537,7 +649,7 @@ export default {
                     }
                 }
             }
-            
+
         }
     },
 };

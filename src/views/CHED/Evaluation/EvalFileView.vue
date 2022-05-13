@@ -223,7 +223,7 @@ export default {
                         var catIndex = catIndexes.indexOf(i + 1)
                         if(hasSubCat[catIndex] == true){
                             console.log(chedMemo.get("evaluationFormReqs")[i].subcategory.length);
-                            for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length + 2; j++) {
+                            for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
                                 //for(var sub = 0; sub < subcatIndexes.length)
                                 if (subcatIndexes[catIndex].includes(j + 1)) {
                                     var items = [];
