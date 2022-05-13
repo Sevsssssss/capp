@@ -217,7 +217,6 @@ export default {
 
                 for (var i = 1; i < this.desc.length * 2; i += 2) {
                     const file = values.target[i].files[0];
-                    console.log(file.name)
 
                     files = new Parse.File(
                         file.name.replace(/[^a-zA-Z]/g, ""),
@@ -389,13 +388,15 @@ export default {
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
 
-            this.compInitDate = application.get("complianceDueDate");
+            this.compInitDate = new Date(application.get("complianceDueDate"));
+
+          
 
             var compDateCalc = this.compInitDate;
 
             if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
                 compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
-                console.log(compDateCalc)
+             
             }
 
             var compMonth = compDateCalc.getMonth();

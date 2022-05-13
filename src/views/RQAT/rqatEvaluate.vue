@@ -298,6 +298,7 @@ export default {
             if (this.statusShow.includes("NotComplied")) {
                 var today = new Date();
                 var complianceDueDate = today.setDate(today.getDate() + 45);
+                console.log(complianceDueDate)
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
