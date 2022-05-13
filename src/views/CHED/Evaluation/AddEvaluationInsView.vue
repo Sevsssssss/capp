@@ -83,8 +83,16 @@
                   :key="data"
                   :value="cmo.id"
                 >
+                 <div class="flex flex-row">
+                <input
+                        type="checkbox"
+                        class="checkbox mt-4"
+                        :value="data.id.toString()"
+                        v-model="evalinst.checkedRequirements"
+                      />
+                      <th>{{ data.id }}</th>
                   <td class="font-bold">{{ data.Category }}</td>
-
+                  </div>
                   <div v-for="subcat in data.subcategory" :key="subcat">
                     <div class="flex flex-row">
                       <input

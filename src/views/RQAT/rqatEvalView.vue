@@ -17,33 +17,34 @@
             </thead>
             <tbody>
                 <tr v-for="tables in table" :key="tables" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                        {{tables.program}}
-                    </th>
-                    <td class="px-6 py-4">
-                        {{tables.HeiName}}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{tables.address}}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{tables.rep}}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{tables.email}}
-                    </td>
+                    
+                        <th v-if="tables.status == 'For Evaluation'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{tables.program}}
+                        </th>
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                            {{tables.HeiName}}
+                        </td>
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                            {{tables.address}}
+                        </td>
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                            {{tables.rep}}
+                        </td>
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                            {{tables.email}}
+                        </td>
 
-                    <td class="px-6 py-4 text-right flex justify-end">
-                        <router-link :to="{
-                        name: 'Evaluate',
-                        params: {
-                            id: tables.appID,
-                        },
-                        }">
-                            <button class="btn-table rounded-md"> Evaluate </button>
-                        </router-link>
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4 text-right flex justify-end">
+                            <router-link :to="{
+                            name: 'Evaluate',
+                            params: {
+                                id: tables.appID,
+                            },
+                            }">
+                                <button class="btn-table rounded-md"> Evaluate </button>
+                            </router-link>
 
-                    </td>
+                        </td>
                 </tr>
             </tbody>
         </table>
@@ -175,7 +176,6 @@ export default {
                     HeiName: hei.get("hei_name"),
                     address: hei.get("address"),
                     appID: application.id,
-
                 });
             }
             this.totalEntries = querResult.length;
