@@ -1,5 +1,8 @@
 <template>
-<div class="p-3">
+<div v-if="nodata" style="height: 100%">
+    <NoDataAvail/>
+</div>
+<div v-else class="p-3">
     <DataCards :datas="numberOfHEI" />
     <div class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="p-2 flex justify-between items-center">
@@ -74,6 +77,7 @@
 </template>
 
 <script>
+import NoDataAvail from "@/components//NoDataAvail.vue";
 import DataCards from "@/components//DataCards.vue";
 import Chart from 'chart.js/auto';
 import Parse from "parse";
@@ -83,12 +87,14 @@ import "jspdf-autotable";
 export default {
     name: "ReportingView",
     components: {
+        NoDataAvail,
         DataCards,
     },
     data() {
         return {
             numberOfHEI: [],
             listofPrograms: [],
+            nodata: false,
 
             moreText: [
                 "This is another few sentences of text to look at it.",
@@ -166,7 +172,7 @@ export default {
         if (flag === 0) {
             this.$router.push("/403");
         } else {
-
+            console.log(console.log.length);
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
@@ -178,10 +184,10 @@ export default {
             const appTypeResults = await appTypeQuery.find();
 
             //For Number of HEIs
+            var totalApplication = 0;
             var applicationTypes = [];
             var appTypeCount = [];
             for (var i = 0; i < appTypeResults.length; i++) {
-
                 var listOfHEI = [];
                 const applicationType = appTypeResults[i];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
@@ -194,8 +200,9 @@ export default {
                         listOfHEI.push(application.get("createdBy"));
                         counter++;
                     }
-
+                    totalApplication++;
                 }
+
                 applicationTypes.push(applicationType.get("applicationTypeName"));
                 appTypeCount.push(counter);
                 this.numberOfHEI.push({
@@ -203,7 +210,10 @@ export default {
                     num: counter,
                     type: "approval"
                 });
-
+                
+            }
+            if(totalApplication == 0){
+                this.nodata = true;
             }
 
             //For List of Programs
@@ -293,6 +303,7 @@ export default {
         let element = document.getElementById("exportToPdfCharts");
 
         // document.getElementById('exportToPdfCharts')
+
 
         element.addEventListener("click", function () {
             // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
