@@ -286,6 +286,8 @@ export default {
                     const application = Parse.Object.extend("Applications");
                     const newApplication = new application();
                     //requirement = new Parse.File(file.name, file, file.type);
+                    var currentDate = new Date();
+                    var yesterday = currentDate.setDate(date.getDate() - 1);
                     newApplication
                         .save({
                             pointPerson: this.pointPerson,
@@ -305,6 +307,7 @@ export default {
                             remarks: [],
                             recommendation: '',
                             paymentStatus: '',
+                            complianceDueDate: yesterday,
                         })
                         .then(
                             (newApplication) => {

@@ -1,6 +1,5 @@
 <template>
 <div class="m-3">
-    {{cmos}}
     <div class="flex flex-row p-2 justify-end">
         <!-- <button class="flex flex-row" >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -54,7 +53,11 @@
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
             <div>{{ Name }}</div>
-            per CMO No. 25 s. 2015, CMO No. 26 s. 2022
+
+            <div v-for="cmono in cmoNoYr" :key="cmono">
+                per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}}
+            </div>
+
             <!-- <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div> -->
             <div>{{Program}}</div>
         </div>
@@ -109,21 +112,20 @@ export default {
     components: {},
     data() {
         return {
-            cmos: [ { "id": 1, "Category": "ADMINISTRATION/PROGRAM ADMINISTRATOR", "Desc": "", "subcategory": [ { "id": 1, "Subcategory": "Doctorate Degree in Computer Science", "items": [] }, { "id": 2, "Subcategory": "Masters’ degree in Computer Science plus", "items": [ { "id": 1, "Item": "At least 3 years of CS work, CS consultancy, CS research experience or tertiary level CS teaching experience within the last 5 years" } ] }, { "id": 3, "Subcategory": "At least masters’ degree in a CS allied program plus", "items": [ { "id": 1, "Item": "Completion of bachelor’s degree in Computer Science, or Completion of all coursework requirements for a master’s degree in CS\n" }, { "id": 2, "Item": "●\tAt least three (3) years of CS work, CS consultancy, CS research experience, or tertiary level CS teaching experience within the last five (5) years" } ] }, { "id": 4, "Subcategory": "A doctorate degree in CS allied program plus", "items": [ { "id": 1, "Item": "At least ten (10) years of CS work, CS consultancy, CS research experience within the last twelve (12) years" } ] } ] }, { "id": 2, "Category": "FACULTY COMPOSITION", "Desc": "", "subcategory": [ { "id": 1, "Subcategory": "There should be 3 full-time ITE faculty members per program, one of whom can be the Dean/Program Head/Program Coordinator.", "items": [] }, { "id": 2, "Subcategory": "At least 40% of the CS, IS and IT core and professional courses are taught by full-time CS, IS, and IT faculty members. There shall be a career development and tenure track for full-time faculty members.", "items": [] }, { "id": 3, "Subcategory": "For the Computer Science program, at least 60% of the professional courses should be taught by CS degree holders. At least 30% of all full-time CS faculty members should have a graduate degree course in Computer Science.", "items": [] }, { "id": 4, "Subcategory": "For the Information Systems and Information Technology, at least 60% of IS and IT professional courses should be taught by degree holders in either IS or IT program. ", "items": [] }, { "id": 5, "Subcategory": "At least thirty percent (30%) of all full-time IS and IT faculty members should have a graduate degree in either CS, IS or IT.", "items": [] }, { "id": 6, "Subcategory": "There shall be faculty members with industry experience within the last 2 years. These may be full-time or part-time faculty members.", "items": [] }, { "id": 7, "Subcategory": "HEIs offering CS, IS or IT are strongly encouraged to have faculty members with doctorate degrees in CS, IS, IT or allied fields.", "items": [] }, { "id": 8, "Subcategory": "HEIs offering CS, IS, or IT programs are strongly encouraged to have faculty members who actively do research and development work in CS, IT or IS and who publish regularly in refereed journals and proceedings. Likewise, the faculty members are also encouraged to join and actively participates in computing related professional organizations.", "items": [] } ] } ],
+            cmos: [],
             Name: "",
-            cmoNo: "",
-            seriesYear: "",
+            cmoNoYr: [],
             Program: "",
         };
     },
     methods: {
-        async deleteEvalInst(){
+        async deleteEvalInst() {
             const EvalInstruments = Parse.Object.extend("EvaluationForms");
             const evalQuery = new Parse.Query(EvalInstruments);
             evalQuery.equalTo("objectId", this.id);
 
             const evalInstrument = await evalQuery.first();
-            if(confirm("Are You sure you want to delete this evaluation instrument?")){
+            if (confirm("Are You sure you want to delete this evaluation instrument?")) {
                 evalInstrument.destroy().then(
                     (evalinst) => {
                         console.log("Deleted object: " + evalinst.id);
@@ -145,7 +147,7 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-           
+
             if (accType[y] === "/evaluationins") {
                 flag = 1;
             }
@@ -178,15 +180,14 @@ export default {
                 var catIndexes = [];
                 var subcatIndexes = [];
 
-                for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++){
+                for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
                     console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr])
                     var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
-                    if(catIndexes.includes(parseInt(contents[0]))){
-                        var index = catIndexes.indexOf(contents[0]);
+                    if (catIndexes.includes(parseInt(contents[0]))) {
+                        var index = catIndexes.indexOf(parseInt(contents[0]));
                         subcatIndexes[index].push(parseInt(contents[1]))
-                    }
-                    else {
+                    } else {
                         catIndexes.push(parseInt(contents[0]));
                         subcatIndexes.push([parseInt(contents[1])]);
                     }
@@ -196,9 +197,9 @@ export default {
                 var categories = [];
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
-                    if(catIndexes.includes(i+1)){
+                    if (catIndexes.includes(i + 1)) {
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                            if(subcatIndexes[i].includes(j+1)){
+                            if (subcatIndexes[i].includes(j + 1)) {
                                 var items = [];
 
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
@@ -215,14 +216,18 @@ export default {
                                 })
 
                             }
-                            
+
                         }
                         this.Name = chedMemo.get("evaluationFormName");
+                        
+                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))){
+                            this.cmoNoYr.push({
+                            cmoNo: chedMemo.get("CMO_No"),
+                            seriesYear: chedMemo.get("Series_Year"),
+                            })
+                        }
+                        
 
-                    
-
-                        this.cmoNo = chedMemo.get("CMO_No");
-                        this.seriesYear = chedMemo.get("Series_Year");
                         categories.push({
                             id: chedMemo.get("evaluationFormReqs")[i].id,
                             Category: chedMemo.get("evaluationFormReqs")[i].Category,
@@ -231,7 +236,7 @@ export default {
                         })
 
                     }
-                    
+
                 }
                 this.categories = categories;
                 this.Name = evalInstrument.get("evaluationFormName");

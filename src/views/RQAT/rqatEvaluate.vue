@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{statusShow}}
+    {{eval}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -190,6 +190,7 @@ export default {
             comment2: [],
             summary: "",
             recommendation: "",
+            cmoNoYr: [],
         };
     },
     validations() {
@@ -403,95 +404,135 @@ export default {
             console.log("Hello" + user.get("hei_name"));
 
             //Query Evaluation Instrument
-            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
             evalQuery.equalTo("evaluationFormProgram", application.get("program"));
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
 
-            this.Name = evalInstrument.get("evaluationFormName");
-            this.cmoNo = evalInstrument.get("evaluationFormCMOno");
-            this.seriesYear = evalInstrument.get("evaluationFormSeries");
+            console.log(evalInstrument);
 
             //Query the program of the application
-            const programs = Parse.Object.extend("Programs");
-            const programQuery = new Parse.Query(programs);
-            programQuery.equalTo("objectId", application.get("program"));
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", application.get("program"));
 
-            const program = await programQuery.first();
+                const program = await programQuery.first();
 
-            this.program = program.get("programName");
+                this.program = program.get("programName");
 
-            var categories = [];
 
-            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
-                var subcat = [];
-                this.comment1.push("");
-                this.comment2.push("");
-                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                    var items = [];
+            for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
+
+                const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
+                const chedMemoQ = new Parse.Query(CHEDMEMOS);
+                chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
+                const chedMemo = await chedMemoQ.first({
+                    useMasterKey: true,
+                });
+
+                var catIndexes = [];
+                var subcatIndexes = [];
+
+                for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
+                    console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr])
+                    var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
+
+                    if (catIndexes.includes(parseInt(contents[0]))) {
+                        var index = catIndexes.indexOf(parseInt(contents[0]));
+                        subcatIndexes[index].push(parseInt(contents[1]))
+                    } else {
+                        catIndexes.push(parseInt(contents[0]));
+                        subcatIndexes.push([parseInt(contents[1])]);
+                    }
+                }
+
+                var categories = [];
+
+                for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
+                    var subcat = [];
                     this.comment1.push("");
                     this.comment2.push("");
-                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                        this.comment1.push("");
-                        this.comment2.push("");
-                        items.push({
-                            id: k + 1,
-                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
-                                .items[k].Item,
+                    if (catIndexes.includes(i + 1)) {
+                        for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                            if (subcatIndexes[i].includes(j + 1)) {
+                                var items = [];
+                                this.comment1.push("");
+                                this.comment2.push("");
+                                for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                    this.comment1.push("");
+                                    this.comment2.push("");
+                                    items.push({
+                                        id: k + 1,
+                                        Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                            .items[k].Item,
+                                    });
+                                }
+
+                                subcat.push({
+                                    id: j + 1,
+                                    Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                        .Subcategory,
+                                    items: items,
+                                });
+                            }
+                        }
+
+                        this.Name = chedMemo.get("evaluationFormName");
+                        
+                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))){
+                            this.cmoNoYr.push({
+                            cmoNo: chedMemo.get("CMO_No"),
+                            seriesYear: chedMemo.get("Series_Year"),
+                            })
+                        }
+
+                        categories.push({
+                            id: i + 1,
+                            Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                            Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                            subcategory: subcat,
                         });
                     }
-
-                    subcat.push({
-                        id: j + 1,
-                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
-                            .Subcategory,
-                        items: items,
-                    });
                 }
-                categories.push({
-                    id: i + 1,
-                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
-                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
-                    subcategory: subcat,
-                });
-            }
-            this.categories = categories;
+                this.categories = categories;
 
-            for (var z = 0; z < this.categories.length; z++) {
-                //console.log(i)
-                // console.log(this.categories[i].Category);
-                this.eval.push({
-                    id: this.categories[z].id,
-                    Requirement: this.categories[z].Category,
-                    type: "Category",
-                });
-                //this.catCounter++;
-                //this.subcatCounter = this.categories[i].subcategory.length;
-                for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                    // console.log(this.categories[i].subcategory[x].Subcategory);
+                for (var z = 0; z < this.categories.length; z++) {
+                    //console.log(i)
+                    // console.log(this.categories[i].Category);
                     this.eval.push({
-                        id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
-                        Requirement: this.categories[z].subcategory[x].Subcategory,
-                        type: "SubCategory",
+                        id: this.categories[z].id,
+                        Requirement: this.categories[z].Category,
+                        type: "Category",
                     });
-                    //var itemLen = this.categories[i].subcategory[x].items.length;
-                    //this.subcatCounter++;
-                    //this.itemCounter =this.categories[i].subcategory[x].items.length;
-                    for (
-                        var a = 0; a < this.categories[z].subcategory[x].items.length; a++
-                    ) {
-                        //console.log(this.categories[i].subcategory[x].items[y].Item);
+                    //this.catCounter++;
+                    //this.subcatCounter = this.categories[i].subcategory.length;
+                    for (var x = 0; x < this.categories[z].subcategory.length; x++) {
+                        // console.log(this.categories[i].subcategory[x].Subcategory);
                         this.eval.push({
-                            id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
-                            Requirement: this.categories[z].subcategory[x].items[a].Item,
-                            type: "Item",
+                            id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
+                            Requirement: this.categories[z].subcategory[x].Subcategory,
+                            type: "SubCategory",
                         });
-                        //this.itemCounter++;
+                        //var itemLen = this.categories[i].subcategory[x].items.length;
+                        //this.subcatCounter++;
+                        //this.itemCounter =this.categories[i].subcategory[x].items.length;
+                        for (
+                            var a = 0; a < this.categories[z].subcategory[x].items.length; a++
+                        ) {
+                            //console.log(this.categories[i].subcategory[x].items[y].Item);
+                            this.eval.push({
+                                id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
+                                Requirement: this.categories[z].subcategory[x].items[a].Item,
+                                type: "Item",
+                            });
+                            //this.itemCounter++;
+                        }
                     }
                 }
             }
+            
         }
     },
 };
