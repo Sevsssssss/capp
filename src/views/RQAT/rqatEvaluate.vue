@@ -401,17 +401,6 @@ export default {
             application
                 .save()
                 .then((application) => {
-<<<<<<< HEAD
-                    // toast(this.type.toLowerCase() + " has been moved for compliance", {
-                    //         type: TYPE.INFO,
-                    //         timeout: 2000,
-                    //         position: POSITION.TOP_RIGHT,
-                    //         hideProgressBar: false,
-                    //         closeButton: false,
-
-                    //     }),
-=======
->>>>>>> 904ed093f4a9311ae26aa1867302e3c976472f0a
                     console.log("Object Updated: " + application.id);
                 })
 
