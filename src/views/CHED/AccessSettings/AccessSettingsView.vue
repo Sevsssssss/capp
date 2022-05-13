@@ -50,7 +50,7 @@
                             {{ i.Name }}
                         </td>
                         <td scope="row" class="px-6 py-4 font-medium spacer text-gray-900">
-                            {{ i.Privileges }}
+                            <span class="bg-blue-100 text-xs mr-2 p-2 rounded"> {{ i.Privileges }}</span>
                         </td>
                         <td class="px-6 py-4 text-right">
                             <label for="editAccessType" @click="changeSelectedAT(i.id, i.Name)" class="font-medium text-blue-600 hover:underline">Edit</label>

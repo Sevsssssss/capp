@@ -1,8 +1,8 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
-        {{hei_types}}
-        <form v-on:submit.prevent="submit" class="card-body">
+    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md ">
+        <!-- {{hei_types}} -->
+        <form v-on:submit.prevent="submit" class="card-body ">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -11,25 +11,27 @@
                 <span class="text-2xl font-semibold text-grey-100">ADD HEI ACCOUNT</span>
             </div>
             <div class="line"></div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">HEI Name</span>
-                </label>
-                <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
-                <!-- <label class="label">
+            <div class="flex">
+                <div class="form-control w-full pr-4">
+                    <label class="label">
+                        <span class="label-text">HEI Name</span>
+                    </label>
+                    <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
+                    <!-- <label class="label">
                     <span v-if="validationStatus(v$.hei_name)" :class="{ 'text-error': validationStatus(v$.hei_name) }" class="label-text-alt">
                         HEI Name is Required</span>
                 </label> -->
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Username</span>
-                </label>
-                <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
-                <!-- <label class="label">
+                </div>
+                <div class="form-control w-fit">
+                    <label class="label">
+                        <span class="label-text">Username</span>
+                    </label>
+                    <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
+                    <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
                         Username is Required</span>
                 </label> -->
+                </div>
             </div>
 
             <div class="form-control w-full">
@@ -63,28 +65,25 @@
                         Contact Number is Required</span>
                 </label> -->
             </div>
-            <div class="flex flex-row justify-between">
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Institutional Code</span>
-                    </label>
-                    <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" style="width: 170px" v-model="v$.inst_code.$model" />
-                    <!-- <label class="label">
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Institutional Code</span>
+                </label>
+                <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" v-model="v$.inst_code.$model" />
+                <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
                             Institutional Code is Required</span>
                     </label> -->
-                </div>
-
-                <div class="form-control w-full pl-4">
-                    <label class="label">
-                        <span class="label-text">HEI Type:</span>
-                    </label>
-                    <select class="select select-bordered w-full font-normal" v-model="v$.hei_type.$model">
-                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
-                            <div class="hei-name">{{ heiType.title }}</div>
-                        </option>
-                    </select>
-                </div>
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">HEI Type:</span>
+                </label>
+                <select class="select select-bordered w-full font-normal" v-model="hei_type">
+                    <option v-for="heiType in hei_types" :key="heiType">
+                        <div class="">{{ heiType.title }}</div>
+                    </option>
+                </select>
             </div>
             <div class="flex justify-end pt-4 space-x-4">
                 <button class="btn btn-md btn-outline" @click="$router.go(-1)">
@@ -97,25 +96,6 @@
             </div>
         </form>
     </div>
-    <input type="checkbox" id="createHEI" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD HEI TYPE</div>
-            <p class="py-2 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
-            </p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI TYPE</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter HEI Type" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createHEI" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
-            </div>
-        </div>
-    </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -125,9 +105,9 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">
+                <label for="my-modal-6" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">
                     Continue
-                </button>
+                </label>
             </div>
         </div>
     </div>
@@ -176,14 +156,16 @@ export default {
             addAgain: false,
             text: "Account added!",
             v$: useVuelidate(),
-            hei_types: [],
+            hei_types: [{
+                title: "None",
+            }, ],
             hei_name: "",
             username: "",
             email: "",
             address: "",
             number: "",
             inst_code: "",
-            hei_type: "",
+            hei_type: "None",
             hei_nameError: "",
             usernameError: "",
             emailError: "",
@@ -357,43 +339,43 @@ export default {
         },
     },
     mounted: async function () {
-            // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-            const AccessTypes = Parse.Object.extend("AccessTypes");
-            const query = new Parse.Query(AccessTypes);
-            query.equalTo("objectId", Parse.User.current().get("access_type"));
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
-            const querResult = await query.find();
-            var accType = querResult[0].get("privileges");
-            var flag = 0;
-            for (var i = 0; i < accType.length; i++) {
-                if (accType[i] === this.$route.path) {
-                    flag = 1;
-                }
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var i = 0; i < accType.length; i++) {
+            if (accType[i] === this.$route.path) {
+                flag = 1;
             }
-            if (flag === 0) {
-                this.$router.push("/403");
-            } else {
-                console.log("Hi!, You have permission to access this Page");
-                //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-                //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-                const HeiTypes = Parse.Object.extend("HEI_Types");
-                const queryHT = new Parse.Query(HeiTypes);
-                const querResultHT = await queryHT.find();
+            const HeiTypes = Parse.Object.extend("HEI_Types");
+            const queryHT = new Parse.Query(HeiTypes);
+            const querResultHT = await queryHT.find();
 
-                var heiTypes = [];
-                for (var w = 0; w < querResultHT.length; w++) {
-                    const heitype = querResultHT[w];
-                    heiTypes.push({
-                        id: heitype.id,
-                        title: heitype.get("name"),
-                    });
-                }
-                this.hei_types = heiTypes;
-                this.hei_type = this.hei_types[0].id;
-
+            var heiTypes = [];
+            for (var w = 0; w < querResultHT.length; w++) {
+                const heitype = querResultHT[w];
+                heiTypes.push({
+                    id: heitype.id,
+                    title: heitype.get("name"),
+                });
             }
-        },
+            this.hei_types = heiTypes;
+            this.hei_type = this.hei_types[0].id;
+
+        }
+    },
 };
 </script>
 
