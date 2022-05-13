@@ -199,7 +199,7 @@ export default {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                            if (subcatIndexes[i].includes(j + 1)) {
+                            if (subcatIndexes[j].includes(j + 1)) {
                                 var items = [];
 
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
