@@ -487,7 +487,7 @@ export default {
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
                     address: hei.get("address"),
-                    // type: heiTypes[index].name,
+                     type: hei.get("hei_type"),
                     email: hei.get("email"),
                 });
             }

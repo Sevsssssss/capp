@@ -1,18 +1,22 @@
 <template>
 <div class="p-3">
+    <DataCards :datas="numberOfHEI" />
     <div class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="p-2 flex justify-end">
+        <div class="p-2 flex justify-between items-center">
+            <div class="text-lg font-semibold"> Number of Application Types </div>
             <button class="btn-table" id="exportToPdfCharts">Export PDF</button>
         </div>
         <div>
             <canvas id="myChart"></canvas>
         </div>
     </div>
-    <!-- <DataCards :datas="numberOfHEI" /> -->
+    <br>
+
     <!-- <div> {{numberOfHEI}} </div>
     <div> {{listofPrograms}} </div> -->
-    <div v-for="appType in listofPrograms" :key="appType" class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="p-2 flex justify-end">
+    <div v-for="appType in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="p-2 flex justify-between items-center">
+            <div class="text-lg font-semibold"> numberOfHEI.title </div>
             <button class="btn-table" @click="exportToPdfTables()">Export PDF</button>
         </div>
         <table class="w-full text-sm text-left text-gray-500">
@@ -23,9 +27,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b" v-for="prog in items" :key="prog">
+                <tr class="bg-white border-b" v-for="prog in appType.programList" :key="prog">
                     <td class="px-6 py-4">
-                        {{ prog.name }}
+                        {{ prog.hei }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ prog.program }}
@@ -65,11 +69,12 @@
             </div>
         </div>
     </div>
+    <br>
 </div>
 </template>
 
 <script>
-// import DataCards from "@/components//DataCards.vue";
+import DataCards from "@/components//DataCards.vue";
 import Chart from 'chart.js/auto';
 import Parse from "parse";
 import jsPDF from "jspdf";
@@ -78,13 +83,13 @@ import "jspdf-autotable";
 export default {
     name: "ReportingView",
     components: {
-        // DataCards,
+        DataCards,
     },
     data() {
         return {
             numberOfHEI: [],
             listofPrograms: [],
-            heading: "Sample PDF Generator",
+
             moreText: [
                 "This is another few sentences of text to look at it.",
                 "Just testing the paragraphs to see how they format.",
@@ -94,36 +99,21 @@ export default {
                 "What does it look like?",
                 "Not bad at all.",
             ],
+            numdata: '',
+            heading: "Application",
             headers: [{
                     title: "HEI Name",
                 },
                 {
-                    title: "Programs",
+                    title: "PROGRAMS",
                 },
             ],
-            data: [12, 19, 3, 5, 2, 3],
-            numdata: {},
             items: [{
-                    name: "one",
-                    program: "two",
-                },
-                {
-                    name: "one",
-                    program: "two",
-                },
-                {
-                    name: "one",
-                    program: "two",
-                },
-                {
-                    name: "one",
-                    program: "two",
-                },
-                {
-                    name: "one",
-                    program: "two",
-                },
-            ],
+                name: "one",
+                program: "two",
+            }, ],
+            objectName: [],
+            objectNum: [],
         };
     },
     methods: {
@@ -133,7 +123,7 @@ export default {
                     dataKey: "name",
                 },
                 {
-                    title: "Programs",
+                    title: "PROGRAMS",
                     dataKey: "program",
                 },
             ];
@@ -155,24 +145,7 @@ export default {
                     top: 1.25,
                 },
             });
-            doc.save(`${this.headers.title}.pdf`);
-            // Using array of sentences
-            // doc.setFont("helvetica").setFontSize(12).text(this.moreText, 0.5, 3.5, {
-            //     align: "left",
-            //     maxWidth: "7.5",
-            // });
-
-            // Creating footer and saving file
-
-            // .setFont("times")
-            // .setFontSize(11)
-            // .setFontStyle("italic")
-            // .setTextColor(0, 0, 255)
-            // .text(
-            //     "This is a simple footer located .5 inches from page bottom",
-            //     0.5,
-            //     doc.internal.pageSize.height - 0.5
-            // )
+            doc.save(`application.pdf`);
         },
 
     },
@@ -181,7 +154,7 @@ export default {
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
         query.equalTo("objectId", Parse.User.current().get("access_type"));
-
+        const ctx = document.getElementById('myChart');
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
@@ -193,6 +166,7 @@ export default {
         if (flag === 0) {
             this.$router.push("/403");
         } else {
+
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
@@ -203,10 +177,11 @@ export default {
             const appTypeQuery = new Parse.Query(ApplType);
             const appTypeResults = await appTypeQuery.find();
 
-            const ctx = document.getElementById('myChart');
-
             //For Number of HEIs
+            var applicationTypes = [];
+            var appTypeCount = [];
             for (var i = 0; i < appTypeResults.length; i++) {
+
                 var listOfHEI = [];
                 const applicationType = appTypeResults[i];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
@@ -219,71 +194,16 @@ export default {
                         listOfHEI.push(application.get("createdBy"));
                         counter++;
                     }
+
                 }
+                applicationTypes.push(applicationType.get("applicationTypeName"));
+                appTypeCount.push(counter);
                 this.numberOfHEI.push({
                     title: applicationType.get("applicationTypeName"),
                     num: counter,
-                    type: "approval",
+                    type: "approval"
                 });
 
-                const numdata = {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                    datasets: [{
-                        label: 'Number of Application Types',
-                        data: this.data,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                };
-
-                const myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: numdata,
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        },
-                    }
-                });
-                // var image = myChart.toBase64Image();
-                // console.log(image);
-                myChart;
-
-                let element = document.getElementById("exportToPdfCharts");
-
-                // document.getElementById('exportToPdfCharts')
-
-                element.addEventListener("click", function () {
-                    // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
-                    var dataURL = ctx.toDataURL();
-                    // create new pdf and add our new canvas as an image
-                    var pdf = new jsPDF({
-                        orientation: "orientation",
-                        unit: "in",
-                        format: "letter",
-
-                    });
-                    pdf.addImage(dataURL, 'PNG', 0, 0);
-                    // download the pdf
-                    pdf.save('filename.pdf');
-                });
             }
 
             //For List of Programs
@@ -319,6 +239,83 @@ export default {
             }
         }
 
+        this.numdata = {
+            labels: applicationTypes,
+            // ['Initial Permit', 'Renewal', 'Certificate of Compliance', 'Government Recognition'],
+            datasets: [{
+                label: 'Application Types',
+                data: appTypeCount,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    // 'rgba(153, 102, 255, 0.2)',
+                    // 'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    // 'rgba(153, 102, 255, 1)',
+                    // 'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 2
+            }]
+        };
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: this.numdata,
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                },
+
+                layout: {
+                    padding: 20
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+            }
+        });
+
+        myChart;
+
+        // var image = myChart.toBase64Image();
+        // console.log(image);
+
+        let element = document.getElementById("exportToPdfCharts");
+
+        // document.getElementById('exportToPdfCharts')
+
+        element.addEventListener("click", function () {
+            // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
+            var dataURL = ctx.toDataURL();
+            // create new pdf and add our new canvas as an image
+            var pdf = new jsPDF('l', 'pt', 'a4');
+
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+
+            const widthRatio = pageWidth / ctx.width;
+            const heightRatio = pageHeight / ctx.height;
+            const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+
+            const canvasWidth = ctx.width * ratio;
+            const canvasHeight = ctx.height * ratio;
+
+            const marginX = (pageWidth - canvasWidth) / 2;
+            const marginY = (pageHeight - canvasHeight) / 2;
+            // download the pdf
+            pdf.addImage(dataURL, 'PNG', marginX, marginY, canvasWidth, canvasHeight);
+            pdf.save('filename.pdf');
+        });
     },
 };
 </script>
