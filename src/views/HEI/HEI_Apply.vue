@@ -298,7 +298,7 @@ export default {
                             applicationStatus: "For Approval",
                             createdBy: Parse.User.current().id,
                             program: this.programSelect,
-                            selectedRQAT: '',
+                            selectedRQAT: [],
                             selectedSupervisor: '',
                             summary: '',
                             //certificate: '',
