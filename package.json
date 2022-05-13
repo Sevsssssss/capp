@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@ocrv/vue-tailwind-pagination": "^0.0.4",
+    "@syncfusion/ej2-vue-charts": "^20.1.55",
     "@vue/cli": "^5.0.4",
     "@vuelidate/core": "^2.0.0-alpha.39",
     "@vuelidate/validators": "^2.0.0-alpha.28",
