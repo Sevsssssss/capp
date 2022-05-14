@@ -418,7 +418,8 @@ export default {
         this.showModal1 = !this.showModal1;
       }
     },
-    mounted: async function () {
+  },
+  mounted: async function () {
       // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
       const AccessTypes = Parse.Object.extend("AccessTypes");
       const query = new Parse.Query(AccessTypes);
@@ -438,9 +439,24 @@ export default {
         console.log("Hi!, You have permission to access this Page");
         //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
         //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        const queryEmp = new Parse.Query(Parse.User);
+        queryEmp.equalTo("objectId", this.empID);
+        const emp = await queryEmp.first({
+            useMasterKey: true,
+        });
+        this.lastname = emp.get("name").lastname;
+        this.firstname = emp.get("name").firstname;
+        this.midinit = emp.get("name").middleinitial;
+        this.username = emp.get("username");
+        this.contactnum = emp.get("contact_num");
+        this.email = emp.get("email");
+        this.access_type = emp.get("access_type");
+        this.emp_designation = emp.get("designation");
+        this.discipline = emp.get("discipline");
+        
+
       }
     },
-  },
 };
 </script>
 
