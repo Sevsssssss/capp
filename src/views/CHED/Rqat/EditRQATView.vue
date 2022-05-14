@@ -121,7 +121,16 @@
             >
           </label>
         </div>
-
+        <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
+                <!-- <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label> -->
+            </div>
         <div class="form-control w-full">
           <label class="label">
             <span class="label-text">Contact Number</span>

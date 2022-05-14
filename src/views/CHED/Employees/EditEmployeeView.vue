@@ -192,6 +192,19 @@
             </select>
           </div>
         </div>
+        <div v-if="v$.emp_designation.$model == this.educSupId">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Assigned Discipline:</span>
+                    </label>
+
+                    <select class="select select-bordered w-full" v-model="v$.discipline.$model">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                            <div class="discipline">{{ discipline.title }}</div>
+                        </option>
+                    </select>
+                </div>
+            </div>
         <div class="flex justify-end pt-8 space-x-4">
           <button class="btn btn-m btn-outline" @click="$router.go(-1)">
             Cancel
