@@ -1,6 +1,8 @@
 <template>
 <form v-on:submit.prevent="submit">
     {{statusShow}}
+    {{comment1.length}}
+    {{eval.length}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -108,7 +110,6 @@
                                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                                         </svg> -->
                                     </div>
-                                    
 
                                     <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                                 </th>
@@ -126,9 +127,28 @@
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
                 </button>
-                <button @click="submitEvaluation()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                <button for="my-modal-6" id="my-modal-6" @click="modal()" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Submit
                 </button>
+            </div>
+            <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+            <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+                <div class="modal-box relative rounded-md text-left">
+                    <div class="text-brand-darkblue font-bold label-xl">
+                        Add Evaluation Instrument
+                    </div>
+                    <p class="text-sm xxs:leading-tight text-grey-200">
+                        Are you sure you want to add this Evaluation Instrument?
+                    </p>
+                    <div class="modal-action">
+                        <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">
+                            Cancel
+                        </label>
+                        <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="submitEvaluation()">
+                            Continue
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -137,16 +157,28 @@
 
 <script>
 import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+import {
     required
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import Parse from "parse";
+
+const toast = useToast();
+
 export default {
     props: ["id"],
     name: "rqatEvaluate",
-    components: {},
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
+            showModal1: false,
             v$: useVuelidate(),
             header: [{
                     title: "ID",
@@ -190,6 +222,7 @@ export default {
             comment2: [],
             summary: "",
             recommendation: "",
+            cmoNoYr: [],
         };
     },
     validations() {
@@ -221,6 +254,61 @@ export default {
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
+        },
+        validate() {
+            return this.showModal1;
+        },
+        modal(){
+            var has_error = 0;
+            var missing_comment = 0;
+            var missing_comment1 = 0;
+            var missing_checkbox = 0;
+            console.log(this.comment1.length)
+
+            for (var i = 0; i < this.comment1.length; i++) {
+                if(this.comment1[i] == null ||  this.comment1[i] == ''){
+                    missing_comment++;
+                    console.log(this.comment1[i])
+                }
+            }
+            for (var x = 0; x < this.comment2.length; x++) {
+                if(this.comment2[x] == null ||  this.comment2[x] == ''){
+                    missing_comment1++;
+                    console.log(this.comment1[i])
+                }
+            }
+
+            for (var j = 0; j < this.statusShow.length; j++ ){
+                if(this.statusShow[j] == ""){
+                    missing_checkbox++;
+                }
+            }
+            console.log(missing_comment)
+            if (
+                this.summary == "" || this.recommendation == "" || missing_comment > 0 || missing_comment1 > 0 || this.statusShow.length == 0 || missing_checkbox > 0
+            ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+                console.log("array is empty")
+            }
+
+            if (has_error < 1) {
+                // var password = "";
+                // var characters =
+                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                // var charactersLength = characters.length;
+                // for (var i = 0; i < 8; i++) {
+                //   password += characters.charAt(
+                //     Math.floor(Math.random() * charactersLength)
+                //   );
+                // }
+                this.showModal1 = !this.showModal1;
+            }
         },
         async submitEvaluation() {
             const Applications = Parse.Object.extend("Applications");
@@ -292,13 +380,18 @@ export default {
                 }
 
             }
+            
 
             if (this.statusShow.includes("NotComplied")) {
+                var today = new Date();
+                var complianceDueDate = today.setDate(today.getDate() + 45);
+                console.log(complianceDueDate)
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
+                application.set("complianceDueDate", complianceDueDate);
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
@@ -310,16 +403,29 @@ export default {
             application
                 .save()
                 .then((application) => {
-                    // toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-                    //         type: TYPE.INFO,
-                    //         timeout: 2000,
-                    //         position: POSITION.TOP_RIGHT,
-                    //         hideProgressBar: false,
-                    //         closeButton: false,
-
-                    //     }),
                     console.log("Object Updated: " + application.id);
                 })
+
+            toast("Successfully Evaluated!", {
+                type: TYPE.SUCCESS,
+                timeout: 2000,
+                position: POSITION.TOP_RIGHT,
+            });
+            // this.sendEmail().then(() => {
+            setTimeout(
+                () =>
+                this.$router.push({
+                    path: "/rqat/assignments",
+                }),
+                1000
+            );
+            this.$refs.Spinner.show();
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         getSummary() {
             this.summary = "";
@@ -339,6 +445,7 @@ export default {
             }
         },
     },
+
     mounted: async function () {
         //THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
@@ -403,16 +510,14 @@ export default {
             console.log("Hello" + user.get("hei_name"));
 
             //Query Evaluation Instrument
-            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
             evalQuery.equalTo("evaluationFormProgram", application.get("program"));
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
 
-            this.Name = evalInstrument.get("evaluationFormName");
-            this.cmoNo = evalInstrument.get("evaluationFormCMOno");
-            this.seriesYear = evalInstrument.get("evaluationFormSeries");
+            console.log(evalInstrument);
 
             //Query the program of the application
             const programs = Parse.Object.extend("Programs");
@@ -423,75 +528,128 @@ export default {
 
             this.program = program.get("programName");
 
-            var categories = [];
+            for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
 
-            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
-                var subcat = [];
-                this.comment1.push("");
-                this.comment2.push("");
-                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                    var items = [];
-                    this.comment1.push("");
-                    this.comment2.push("");
-                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
+                const chedMemoQ = new Parse.Query(CHEDMEMOS);
+                chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
+                const chedMemo = await chedMemoQ.first({
+                    useMasterKey: true,
+                });
+
+                var catIndexes = [];
+                var subcatIndexes = [];
+
+                for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
+                    console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr])
+                    var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
+
+                    if (catIndexes.includes(parseInt(contents[0]))) {
+                        var index = catIndexes.indexOf(parseInt(contents[0]));
+                        subcatIndexes[index].push(parseInt(contents[1]))
+                    } else {
+                        catIndexes.push(parseInt(contents[0]));
+                        subcatIndexes.push([parseInt(contents[1])]);
+                    }
+                }
+
+                var categories = [];
+
+                for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
+                    var subcat = [];
+                    if (catIndexes.includes(i + 1)) {
+                        // this.statusShow.push("");
+                        // this.comment1.push("");
+                        // this.comment2.push("");
+                        for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                            if (subcatIndexes[i].includes(j + 1)) {
+                                var items = [];
+                                // this.statusShow.push("");
+                                // this.comment1.push("");
+                                // this.comment2.push("");
+                                for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                    // this.statusShow.push("");
+                                    // this.comment1.push("");
+                                    // this.comment2.push("");
+                                    items.push({
+                                        id: k + 1,
+                                        Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                            .items[k].Item,
+                                    });
+                                }
+
+                                subcat.push({
+                                    id: j + 1,
+                                    Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                        .Subcategory,
+                                    items: items,
+                                });
+                            }
+                        }
+
+                        this.Name = chedMemo.get("evaluationFormName");
+
+                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                            this.cmoNoYr.push({
+                                cmoNo: chedMemo.get("CMO_No"),
+                                seriesYear: chedMemo.get("Series_Year"),
+                            })
+                        }
+
+                        categories.push({
+                            id: i + 1,
+                            Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                            Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                            subcategory: subcat,
+                        });
+                    }
+                }
+                this.categories = categories;
+
+                for (var z = 0; z < this.categories.length; z++) {
+                    //console.log(i)
+                    // console.log(this.categories[i].Category);
+                    this.statusShow.push("");
                         this.comment1.push("");
                         this.comment2.push("");
-                        items.push({
-                            id: k + 1,
-                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
-                                .items[k].Item,
-                        });
-                    }
-
-                    subcat.push({
-                        id: j + 1,
-                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j]
-                            .Subcategory,
-                        items: items,
-                    });
-                }
-                categories.push({
-                    id: i + 1,
-                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
-                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
-                    subcategory: subcat,
-                });
-            }
-            this.categories = categories;
-
-            for (var z = 0; z < this.categories.length; z++) {
-                //console.log(i)
-                // console.log(this.categories[i].Category);
-                this.eval.push({
-                    id: this.categories[z].id,
-                    Requirement: this.categories[z].Category,
-                    type: "Category",
-                });
-                //this.catCounter++;
-                //this.subcatCounter = this.categories[i].subcategory.length;
-                for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                    // console.log(this.categories[i].subcategory[x].Subcategory);
                     this.eval.push({
-                        id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
-                        Requirement: this.categories[z].subcategory[x].Subcategory,
-                        type: "SubCategory",
+                        id: this.categories[z].id,
+                        Requirement: this.categories[z].Category,
+                        type: "Category",
                     });
-                    //var itemLen = this.categories[i].subcategory[x].items.length;
-                    //this.subcatCounter++;
-                    //this.itemCounter =this.categories[i].subcategory[x].items.length;
-                    for (
-                        var a = 0; a < this.categories[z].subcategory[x].items.length; a++
-                    ) {
-                        //console.log(this.categories[i].subcategory[x].items[y].Item);
+                    //this.catCounter++;
+                    //this.subcatCounter = this.categories[i].subcategory.length;
+                    for (var x = 0; x < this.categories[z].subcategory.length; x++) {
+                        // console.log(this.categories[i].subcategory[x].Subcategory);
+                        this.statusShow.push("");
+                        this.comment1.push("");
+                        this.comment2.push("");
                         this.eval.push({
-                            id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
-                            Requirement: this.categories[z].subcategory[x].items[a].Item,
-                            type: "Item",
+                            id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
+                            Requirement: this.categories[z].subcategory[x].Subcategory,
+                            type: "SubCategory",
                         });
-                        //this.itemCounter++;
+                        //var itemLen = this.categories[i].subcategory[x].items.length;
+                        //this.subcatCounter++;
+                        //this.itemCounter =this.categories[i].subcategory[x].items.length;
+                        for (
+                            var a = 0; a < this.categories[z].subcategory[x].items.length; a++
+                        ) {
+                            //console.log(this.categories[i].subcategory[x].items[y].Item);
+                            this.statusShow.push("");
+                        this.comment1.push("");
+                        this.comment2.push("");
+                            this.eval.push({
+                                id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
+                                Requirement: this.categories[z].subcategory[x].items[a].Item,
+                                type: "Item",
+                            });
+                            //this.itemCounter++;
+                        }
                     }
                 }
             }
+
         }
     },
 };

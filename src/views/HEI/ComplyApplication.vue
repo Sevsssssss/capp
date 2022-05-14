@@ -25,19 +25,20 @@
         </div>
         <hr />
     </div>
-    <div class="alert alert-warning shadow-lg m-5">
+    <div class="mx-6 mt-6">
+        <div class="alert alert-warning shadow-lg">
             <div>
-                
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 2h2v2H6v-2zm0 4h2v2H6v-2zm4-4h8v2h-8v-2zm0 4h5v2h-5v-2z" /></svg>
                 <span>
                     <div v-if="compInitDate != undefined" class="font-semibold text-md">
-                        Deadline: <span class="font-normal">{{  complianceDueDate }}</span>
+                        Deadline: <span class="font-normal">{{ complianceDueDate }}</span>
                     </div>
                 </span>
             </div>
         </div>
+    </div>
     <div class="m-3">
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
@@ -69,7 +70,6 @@
             </table>
         </div>
 
-        
         <form @submit.prevent="submitFiles" class="p-4">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
@@ -217,7 +217,6 @@ export default {
 
                 for (var i = 1; i < this.desc.length * 2; i += 2) {
                     const file = values.target[i].files[0];
-                    console.log(file.name)
 
                     files = new Parse.File(
                         file.name.replace(/[^a-zA-Z]/g, ""),
@@ -388,15 +387,17 @@ export default {
             var month = application.createdAt.getMonth();
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
-            
-            this.compInitDate = application.get("complianceDueDate");
+
+            this.compInitDate = new Date(application.get("complianceDueDate"));
+
+          
 
             var compDateCalc = this.compInitDate;
 
-            if(Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15){
+            if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
                 compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
-                console.log(compDateCalc)
-            } 
+             
+            }
 
             var compMonth = compDateCalc.getMonth();
             var compDay = compDateCalc.getDate();
@@ -405,11 +406,10 @@ export default {
             var compHour;
             var timePeriod;
 
-            if(compDateCalc.getHours() > 11){
+            if (compDateCalc.getHours() > 11) {
                 compHour = compDateCalc.getHours() - 12;
                 timePeriod = "PM";
-            }
-            else{
+            } else {
                 compHour = compDateCalc.getHours();
                 timePeriod = "AM";
             }

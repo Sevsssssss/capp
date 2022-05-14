@@ -11,6 +11,7 @@
         </div>
 
     </div>
+    
     <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mb-2">
         ASSIGNED To:
         <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
@@ -65,7 +66,7 @@
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-
+            
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative mt-2">
@@ -143,6 +144,7 @@ export default {
         },
         async assignRQAT() {
             try {
+                console.log("Hellos");
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
@@ -232,9 +234,29 @@ export default {
         const user = new Parse.Query(Parse.User);
         user.equalTo("access_type", accQuerResultRQAT.id);
         const rqatResult = await user.find();
+        console.log(accQuerResultRQAT.id);
+        console.log(rqatResult);
 
-        const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
-        const selRQATResult = await selectRqatQuery.find();
+        
+        if (application.get("selectedRQAT").length > 0) {
+            const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
+            const selRQATResult = await selectRqatQuery.find();
+
+            var selRQATS = [];
+
+            for (var k = 0; k < selRQATResult.length; k++) {
+                const selrqat = selRQATResult[k];
+
+                selRQATS.push(selrqat.get("name")["lastname"] +
+                    ", " +
+                    selrqat.get("name")["firstname"] +
+                    " " +
+                    selrqat.get("name")["middleinitial"] +
+                    ".");
+            }
+
+            this.storedRqats = selRQATS;
+        }
 
         var dbRqat = [];
 
@@ -250,7 +272,7 @@ export default {
 
         for (var j = 0; j < rqatResult.length; j++) {
             const rqat = rqatResult[j];
-
+            console.log("HEllo");
             dbRqat.push({
                 id: rqat.id,
                 name: rqat.get("name")["lastname"] +
@@ -262,21 +284,6 @@ export default {
             });
         }
         this.Rqat = dbRqat;
-
-        var selRQATS = [];
-
-        for (var k = 0; k < selRQATResult.length; k++) {
-            const selrqat = selRQATResult[k];
-
-            selRQATS.push(selrqat.get("name")["lastname"] +
-                ", " +
-                selrqat.get("name")["firstname"] +
-                " " +
-                selrqat.get("name")["middleinitial"] +
-                ".");
-        }
-
-        this.storedRqats = selRQATS;
 
     },
 };

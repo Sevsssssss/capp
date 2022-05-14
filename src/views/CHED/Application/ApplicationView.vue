@@ -30,9 +30,13 @@
                             <option>All</option>
                             <option>For Approval</option>
                             <option>For Revision</option>
-                            <option>For Issuance</option>
+                            <option>For Payment</option>
                             <option>For Evaluation</option>
+                            <option>For Compliance</option>
+                            <option>For Verification</option>
+                            <option>For Issuance</option>
                             <option>Completed</option>
+                            <option>Non Compliant</option>
                         </select>
                     </div>
                 </div>
@@ -113,7 +117,7 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                         </td>
                     </tr>
@@ -656,9 +660,9 @@ export default {
             const queryFR = new Parse.Query(applicationsFR);
             queryFR.equalTo("applicationStatus", "For Revision");
 
-            const applicationsFI = Parse.Object.extend("Applications");
-            const queryFI = new Parse.Query(applicationsFI);
-            queryFI.equalTo("applicationStatus", "For Issuance");
+            const applicationsFP = Parse.Object.extend("Applications");
+            const queryFP = new Parse.Query(applicationsFP);
+            queryFP.equalTo("applicationStatus", "For Payment");
 
             const applicationsFE = Parse.Object.extend("Applications");
             const queryFE = new Parse.Query(applicationsFE);
@@ -667,6 +671,14 @@ export default {
             const applicationsFC = Parse.Object.extend("Applications");
             const queryFC = new Parse.Query(applicationsFC);
             queryFC.equalTo("applicationStatus", "For Compliance");
+
+            const applicationsFV = Parse.Object.extend("Applications");
+            const queryFV = new Parse.Query(applicationsFV);
+            queryFV.equalTo("applicationStatus", "For Verification");
+
+            const applicationsFI = Parse.Object.extend("Applications");
+            const queryFI = new Parse.Query(applicationsFI);
+            queryFI.equalTo("applicationStatus", "For Issuance");
 
             const applicationsC = Parse.Object.extend("Applications");
             const queryC = new Parse.Query(applicationsC);
@@ -688,7 +700,7 @@ export default {
                 },
                 {
                     title: "FOR PAYMENT",
-                    num: await queryFR.count(),
+                    num: await queryFP.count(),
                     type: "payment",
                 },
                 {
@@ -703,7 +715,7 @@ export default {
                 },
                 {
                     title: "FOR VERIFICATION",
-                    num: await queryFR.count(),
+                    num: await queryFV.count(),
                     type: "verification",
                 },
                 {

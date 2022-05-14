@@ -177,6 +177,7 @@ export default {
             firstname: "",
             midinit: "",
             username: "",
+            email: "",
             contactnum: "",
             hei_affil: "None",
             rqat_acc_id: "",
@@ -279,6 +280,7 @@ export default {
                 };
                 newRQAT.set("name", rqatName);
                 newRQAT.set("username", this.username);
+                newRQAT.set("email", this.email);
                 newRQAT.set("password", "password");
                 newRQAT.set("contact_num", this.contactnum);
                 newRQAT.set("hei_affil", this.hei_affil);
