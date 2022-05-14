@@ -1,6 +1,8 @@
 <template>
 <form v-on:submit.prevent="submit">
     {{statusShow}}
+    {{comment1.length}}
+    {{eval.length}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -555,20 +557,20 @@ export default {
 
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
-                    this.statusShow.push("");
-                    this.comment1.push("");
-                    this.comment2.push("");
                     if (catIndexes.includes(i + 1)) {
+                        // this.statusShow.push("");
+                        // this.comment1.push("");
+                        // this.comment2.push("");
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                            if (subcatIndexes[j].includes(j + 1)) {
+                            if (subcatIndexes[i].includes(j + 1)) {
                                 var items = [];
-                                this.statusShow.push("");
-                                this.comment1.push("");
-                                this.comment2.push("");
+                                // this.statusShow.push("");
+                                // this.comment1.push("");
+                                // this.comment2.push("");
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                                    this.statusShow.push("");
-                                    this.comment1.push("");
-                                    this.comment2.push("");
+                                    // this.statusShow.push("");
+                                    // this.comment1.push("");
+                                    // this.comment2.push("");
                                     items.push({
                                         id: k + 1,
                                         Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
@@ -607,6 +609,9 @@ export default {
                 for (var z = 0; z < this.categories.length; z++) {
                     //console.log(i)
                     // console.log(this.categories[i].Category);
+                    this.statusShow.push("");
+                        this.comment1.push("");
+                        this.comment2.push("");
                     this.eval.push({
                         id: this.categories[z].id,
                         Requirement: this.categories[z].Category,
@@ -616,6 +621,9 @@ export default {
                     //this.subcatCounter = this.categories[i].subcategory.length;
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
                         // console.log(this.categories[i].subcategory[x].Subcategory);
+                        this.statusShow.push("");
+                        this.comment1.push("");
+                        this.comment2.push("");
                         this.eval.push({
                             id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             Requirement: this.categories[z].subcategory[x].Subcategory,
@@ -628,6 +636,9 @@ export default {
                             var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                         ) {
                             //console.log(this.categories[i].subcategory[x].items[y].Item);
+                            this.statusShow.push("");
+                        this.comment1.push("");
+                        this.comment2.push("");
                             this.eval.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,

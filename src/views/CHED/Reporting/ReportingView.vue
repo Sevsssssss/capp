@@ -120,6 +120,7 @@ export default {
             }, ],
             objectName: [],
             objectNum: [],
+            color: ["approval", "revision", "payment", "evaluation", "forcompliance", "verification", "issuance", "completed", "noncompliant"]
         };
     },
     methods: {
@@ -209,7 +210,7 @@ export default {
                 this.numberOfHEI.push({
                     title: applicationType.get("applicationTypeName"),
                     num: querResult.length,
-                    type: "approval"
+                    type: this.color[i],
                 });
                 
             }
@@ -252,7 +253,7 @@ export default {
 
         this.numdata = {
             labels: applicationTypes,
-            // ['Initial Permit', 'Renewal', 'Certificate of Compliance', 'Government Recognition'],
+            // ['Initial Permit', 'Renewal', 'Certificate of Program Compliance', 'Government Recognition'],
             datasets: [{
                 label: 'Application Types',
                 data: appTypeCount,

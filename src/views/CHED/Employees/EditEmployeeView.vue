@@ -429,7 +429,7 @@ export default {
       var accType = querResult[0].get("privileges");
       var flag = 0;
       for (var y = 0; y < accType.length; y++) {
-        if (accType[y] === "/employee") {
+        if (accType[y] === "/employees") {
           flag = 1;
         }
       }
