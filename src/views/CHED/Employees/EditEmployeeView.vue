@@ -261,7 +261,7 @@
               rounded-md
               border-none
             "
-            @click="addEmployee()"
+            @click="updateEmployee()"
             >Continue</label
           >
         </div>
@@ -294,9 +294,8 @@ export default {
       savingSuccessful: false,
       v$: useVuelidate(),
       accessTypes: [],
-
       designations: [],
-
+      disciplines: [],
       lastname: "",
       firstname: "",
       midinit: "",
@@ -304,7 +303,9 @@ export default {
       username: "",
       contactnum: "",
       emp_designation: "",
+      educSupId: "",
       access_type: "",
+      discipline: "",
     };
   },
   validations() {
@@ -331,6 +332,9 @@ export default {
       emp_designation: {
         required,
       },
+      discipline: {
+        required,
+      },
       access_type: {
         required,
       },
@@ -352,8 +356,12 @@ export default {
     validate() {
       return this.showModal1;
     },
-    async addEmployee() {
-      const newEmployee = new Parse.User();
+    async updateEmployee() {
+      const empl = new Parse.Query(Parse.User);
+            empl.equalTo("objectId", this.empID);
+            const selectedEMP = await empl.first({
+                useMasterKey: true,
+            });
 
       var employeeName = {
         lastname: this.lastname,
@@ -361,31 +369,23 @@ export default {
         middleinitial: this.midinit,
       };
 
-      newEmployee.set("name", employeeName);
-      newEmployee.set("username", this.username);
-      newEmployee.set("password", "password");
-      newEmployee.set("email", this.email);
-      newEmployee.set("contact_num", this.contactnum);
-      newEmployee.set("access_type", this.access_type);
-      newEmployee.set("designation", this.emp_designation);
-      newEmployee.set("user_type", "employee");
-      newEmployee.set("hasTransactions", false);
+      selectedEMP.set("name", employeeName);
+      selectedEMP.set("username", this.username);
+      selectedEMP.set("password", "password");
+      selectedEMP.set("email", this.email);
+      selectedEMP.set("contact_num", this.contactnum);
+      selectedEMP.set("access_type", this.access_type);
+      selectedEMP.set("designation", this.emp_designation);
+      selectedEMP.set("discipline", this.discipline);
 
       try {
-        await newEmployee.save().then(() => {
-          toast("Employee Account Added!", {
+        await selectedEMP.save(null, {
+                        useMasterKey: true,
+                    }).then(() => {
+          toast("Employee Account Updated!", {
             type: TYPE.SUCCESS,
             timeout: 2000,
             position: POSITION.TOP_RIGHT,
-          });
-          this.sendEmail().then(() => {
-            setTimeout(
-              () =>
-                this.$router.push({
-                  path: "/employee",
-                }),
-              1000
-            );
           });
         });
         this.$refs.Spinner.show();
@@ -487,22 +487,22 @@ export default {
         }
         this.emp_designation = queryResultDesig[0].id;
 
-        // const Discipline = Parse.Object.extend("Disciplines");
-        // const queryDiscipline = new Parse.Query(Discipline);
-        // const queryResultDiscipline = await queryDiscipline.find();
+        const Discipline = Parse.Object.extend("Disciplines");
+        const queryDiscipline = new Parse.Query(Discipline);
+        const queryResultDiscipline = await queryDiscipline.find();
 
-        // for (var z = 0; z < queryResultDiscipline.length; z++) {
-        //     this.disciplines.push({
-        //         id: queryResultDiscipline[z].id,
-        //         title: queryResultDiscipline[z].get("MajorDiscipline"),
-        //     });
-        // }
+        for (var z = 0; z < queryResultDiscipline.length; z++) {
+            this.disciplines.push({
+                id: queryResultDiscipline[z].id,
+                title: queryResultDiscipline[z].get("MajorDiscipline"),
+            });
+        }
 
         console.log(queryResult[0].get("name"))
 
         this.access_type = emp.get("access_type");
         this.emp_designation = emp.get("designation");
-        // this.discipline = emp.get("discipline");
+        this.discipline = emp.get("discipline");
         
 
       }
