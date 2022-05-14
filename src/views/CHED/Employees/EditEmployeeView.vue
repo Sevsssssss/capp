@@ -171,7 +171,7 @@
               class="select select-bordered w-full"
               v-model="v$.emp_designation.$model"
             >
-              <option v-for="designation in designations" :key="designation">
+              <option v-for="designation in designations" :key="designation" :value="designation.id">
                 <div class="designation">{{ designation.title }}</div>
               </option>
             </select>
@@ -186,7 +186,7 @@
               class="select select-bordered w-full"
               v-model="v$.access_type.$model"
             >
-              <option v-for="accessType in accessTypes" :key="accessType">
+              <option v-for="accessType in accessTypes" :key="accessType" :value="accessType.id">
                 <div class="accessType">{{ accessType.title }}</div>
               </option>
             </select>
@@ -450,9 +450,46 @@ export default {
         this.username = emp.get("username");
         this.contactnum = emp.get("contact_num");
         this.email = emp.get("email");
+
+        const queryAT = new Parse.Query(AccessTypes);
+        const queryResult = await queryAT.find();
+
+        for (var e = 0; e < queryResult.length; e++) {
+                this.accessTypes.push({
+                    id: queryResult[e].id,
+                    title: queryResult[e].get("name"),
+                });
+        }
+        const Designations = Parse.Object.extend("Designations");
+        const queryD = new Parse.Query(Designations);
+        const queryResultDesig = await queryD.find();
+        for (var w = 0; w < queryResultDesig.length; w++) {
+            this.designations.push({
+                id: queryResultDesig[w].id,
+                title: queryResultDesig[w].get("name"),
+            });
+            if(queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR'){
+                this.educSupId = queryResultDesig[w].id;
+            }
+        }
+        this.emp_designation = queryResultDesig[0].id;
+
+        // const Discipline = Parse.Object.extend("Disciplines");
+        // const queryDiscipline = new Parse.Query(Discipline);
+        // const queryResultDiscipline = await queryDiscipline.find();
+
+        // for (var z = 0; z < queryResultDiscipline.length; z++) {
+        //     this.disciplines.push({
+        //         id: queryResultDiscipline[z].id,
+        //         title: queryResultDiscipline[z].get("MajorDiscipline"),
+        //     });
+        // }
+
+        console.log(queryResult[0].get("name"))
+
         this.access_type = emp.get("access_type");
         this.emp_designation = emp.get("designation");
-        this.discipline = emp.get("discipline");
+        // this.discipline = emp.get("discipline");
         
 
       }
