@@ -3,6 +3,7 @@
     <NoDataAvail names="EmployeeView" />
 </div>
 <div v-else class="p-3">
+    {{lastname}}
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
@@ -517,7 +518,6 @@ export default {
                 });
             for (var j = 0; j < designationResult.length; j++) {
                 const designation = designationResult[j];
-                console.log(designation.get("name"))
                 storedDesignations.push({
                     id: j + 1,
                     name: designation.get("name"),
