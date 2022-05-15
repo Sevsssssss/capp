@@ -54,6 +54,7 @@ Parse.masterKey = "master"
 //             "/cmo/add", 
 //             "/cmo/edit", 
 //             "/cmo/view",
+//             "/ched/account"
 //             "/programs"
 //         ],
 //     }).then((accesstype) => {
