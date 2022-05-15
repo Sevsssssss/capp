@@ -271,6 +271,26 @@ export default {
 
             this.rqat_acc_id = accQuerResultRQAT.id;
 
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var today = new Date();
+            var month = today.getMonth();
+            var day = today.getDate();
+            var year = today.getFullYear();
+            var currentDay = months[month] + " " + day + ", " + year;
+
             try {
                 const newRQAT = new Parse.User();
                 var rqatName = {
@@ -280,7 +300,7 @@ export default {
                 };
                 var heiAffil = {
                     hei: this.hei_affil,
-                    affilrecordDate: new Date().toString(),
+                    affilrecordDate: currentDay,
                     affilendDate: "current",
                 }
                 newRQAT.set("name", rqatName);
