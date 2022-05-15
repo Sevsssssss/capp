@@ -88,7 +88,7 @@
                         </div> -->
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_affil">
-                        <option v-for="hei in heis" :key="hei">
+                        <option v-for="hei in heis" :key="hei" :value="hei.id">
                             <div class="hei-name">{{ hei.title }}</div>
                         </option>
                     </select>
@@ -278,12 +278,18 @@ export default {
                     firstname: this.firstname,
                     middleinitial: this.midinit,
                 };
+                var heiAffil = {
+                    hei: this.hei_affil,
+                    affilrecordDate: new Date().toString(),
+                    affilendDate: "current",
+                }
                 newRQAT.set("name", rqatName);
                 newRQAT.set("username", this.username);
                 newRQAT.set("email", this.email);
                 newRQAT.set("password", "password");
                 newRQAT.set("contact_num", this.contactnum);
-                newRQAT.set("hei_affil", this.hei_affil);
+                newRQAT.set("hei_affil", heiAffil);
+                newRQAT.set("past_affil", []);
                 newRQAT.set("access_type", this.rqat_acc_id);
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
@@ -381,11 +387,13 @@ export default {
             query.equalTo("access_type", accQuerResult.id);
             const querResult = await query.find();
             heis.push({
+                id: "None",
                 title: "None",
             });
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];
                 heis.push({
+                    id: hei.id,
                     title: hei.get("hei_name"),
                 });
             }
