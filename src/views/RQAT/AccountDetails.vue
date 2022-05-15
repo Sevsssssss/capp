@@ -114,7 +114,7 @@
               bg-brand-darkblue
               hover:bg-brand-blue
             " @click="modal()">
-                    Update RQAT
+                    Update Account
                 </button>
             </div>
         </form>
@@ -373,7 +373,7 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            if (accType[y] === "/rqat") {
+            if (accType[y] === "/rqat/assignments") {
                 flag = 1;
             }
         }

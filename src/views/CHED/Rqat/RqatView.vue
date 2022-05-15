@@ -314,6 +314,17 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const rqat = querResult[i];
+
+                var heiAffil = "";
+                if(rqat.get("hei_affil").hei != "None"){
+                    const heis = new Parse.Query(Parse.User);
+                    heis.equalTo("objectId", rqat.get("hei_affil").hei);
+                    const hei = await heis.first();
+                    heiAffil = hei.get("hei_name");
+                }else{
+                    heiAffil = rqat.get("hei_affil").hei;
+                }
+
                 rqats.push({
                     id: rqat.id,
                     rqatName: rqat.get("name")["lastname"] +
@@ -322,7 +333,7 @@ export default {
                         " " +
                         rqat.get("name")["middleinitial"] +
                         ".",
-                    hei: rqat.get("hei_affil"),
+                    hei: heiAffil,
                     contactNum: rqat.get("contact_num"),
                     username: rqat.get("username"),
                 });
