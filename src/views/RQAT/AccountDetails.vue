@@ -1,13 +1,14 @@
 <template>
-<div class="main-page flex justify-center items-center p-5 m-3">
+<div class="main-page flex justify-center items-center p-5 mx-3">
     <div class="card over p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
+            {{ hei_affil }}
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
                 </svg>
-                <span class="text-2xl font-semibold text-grey-100">ADD RQAT ACCOUNT</span>
+                <span class="text-2xl font-semibold text-grey-100">EDIT RQAT ACCOUNT</span>
             </div>
             <div class="line"></div>
 
@@ -17,10 +18,10 @@
                         <span class="label-text">Last Name</span>
                     </label>
                     <input type="text" placeholder="Last Name" :class="{ 'input-error': validationStatus(v$.lastname) }" class="input input-bordered w-full" v-model="v$.lastname.$model" />
-                    <!-- <label class="label">
+                    <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.lastname) }" v-if="validationStatus(v$.lastname)">
                             Lastname is Required</span>
-                    </label> -->
+                    </label>
                 </div>
 
                 <div class="form-control w-full pr-4">
@@ -28,20 +29,20 @@
                         <span class="label-text">First Name</span>
                     </label>
                     <input type="text" placeholder="First Name" :class="{ 'input-error': validationStatus(v$.firstname) }" class="input input-bordered w-full" v-model="v$.firstname.$model" />
-                    <!-- <label class="label">
+                    <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.firstname) }" v-if="validationStatus(v$.firstname)">
                             Firstname is Required</span>
-                    </label> -->
+                    </label>
                 </div>
                 <div class="form-control" style="width: 200px">
                     <label class="label">
                         <span class="label-text">M.I.</span>
                     </label>
                     <input type="text" placeholder="M.I." :class="{ 'input-error': validationStatus(v$.midinit) }" class="input input-bordered w-full" v-model="v$.midinit.$model" />
-                    <!-- <label class="label">
+                    <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.midinit) }" v-if="validationStatus(v$.midinit)">
                             Middle Initial is Required</span>
-                    </label> -->
+                    </label>
                 </div>
             </div>
 
@@ -50,12 +51,11 @@
                     <span class="label-text">Username</span>
                 </label>
                 <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
-                <!-- <label class="label">
+                <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
                         Username is Required</span>
-                </label> -->
+                </label>
             </div>
-
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Email</span>
@@ -66,18 +66,18 @@
                         Email is Required</span>
                 </label> -->
             </div>
-
-            <div class="form-control w-full mb-5">
+            <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.contactnum) }" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
-                <!-- <label class="label">
+                <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.contactnum) }" v-if="validationStatus(v$.contactnum)">
                         Contact Number is Required</span>
-                </label> -->
+                </label>
             </div>
-            <hr>
+
+           <hr>
             <div class="label">Change Password</div>
             <div class="">
                 <label for="password" class="label label-text">Password</label>
@@ -87,47 +87,27 @@
                 <label for="confirm_password" class="label label-text">Confirm password</label>
                 <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
             </div>
-
             <div class="flex justify-end pt-8 space-x-4">
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal(), scrollToTop()">
-                    Add RQAT
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                    Update Account
                 </button>
             </div>
         </form>
     </div>
-    <!-- <input type="checkbox" id="createAffilication" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD HEI AFFILIATION</div>
-            <p class="py-2 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
-            </p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">HEI AFFILIATION</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter affliation" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createAffilication" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
-            </div>
-        </div>
-    </div> -->
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal">
-        <div class="modal-box relative rounded-md text-left">
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box text-left">
             <div class="font-semibold">ADD RQAT ACCOUNT</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this account?
+                Are you sure you want to update this account?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addRQAT(), scrollToTop()">
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="updateRQAT(), scrollToTop()">
                     Continue
                 </button>
             </div>
@@ -147,16 +127,17 @@ import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
-    email,
-    required
+    required,
+    email
 } from "@vuelidate/validators";
-import emailjs from "emailjs-com";
 const toast = useToast();
 export default {
-    name: "AddRQATView",
+    props: ["rqatID"],
+    name: "EditRQATView",
     components: {
         VueInstantLoadingSpinner,
     },
+
     data() {
         return {
             showModal: false,
@@ -169,11 +150,16 @@ export default {
             lastname: "",
             firstname: "",
             midinit: "",
-            username: "",
             email: "",
+            username: "",
             contactnum: "",
             hei_affil: "None",
-            rqat_acc_id: "",
+            current_affil: {
+                hei: "",
+                affilrecordDate: "",
+                affilendDate: "",
+            },
+            past_affil: [],
         };
     },
     validations() {
@@ -187,11 +173,11 @@ export default {
             midinit: {
                 required,
             },
-            username: {
-                required,
-            },
             email: {
+                required,
                 email,
+            },
+            username: {
                 required,
             },
             contactnum: {
@@ -203,39 +189,8 @@ export default {
         };
     },
     methods: {
-        sendEmail() {
-            var emailParams = {
-                message: "Your account has been created. \n Your account username is " +
-                    this.username +
-                    "\n Your temporary password is " +
-                    this.password,
-                email: this.email,
-            };
-            try {
-                //alert(this.email)
-                emailjs
-                    .send(
-                        "service_rax86wc",
-                        "template_nyqa4k6",
-                        emailParams,
-                        "wXbhKrnQCwo8bc25m"
-                    )
-                    .then(() => {
-                        toast("Email sent!", {
-                            type: TYPE.INFO,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    });
-            } catch (error) {
-                toast("Error:" + error.code + "" + error.message, {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
+        scrollToTop() {
+            window.scrollTo(0, 0);
         },
         ToggleshowModal() {
             this.showModal = !this.showModal;
@@ -243,56 +198,88 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
+
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
+
         validate() {
             return this.showModal1;
         },
-        scrollToTop() {
-            window.scrollTo(0, 0);
-        },
-        async addRQAT() {
+
+        async updateRQAT() {
             this.$refs.Spinner.show();
-
-            const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
-            const queryACCR = new Parse.Query(AccessTypeRQAT);
-            queryACCR.equalTo("name", "RQAT");
-
-            const accQuerResultRQAT = await queryACCR.first();
-
-            this.rqat_acc_id = accQuerResultRQAT.id;
-
             try {
-                const newRQAT = new Parse.User();
+                const rqat = new Parse.Query(Parse.User);
+                rqat.equalTo("objectId", this.rqatID);
+                const selectedRQAT = await rqat.first({
+                    useMasterKey: true,
+                });
+
                 var rqatName = {
                     lastname: this.lastname,
                     firstname: this.firstname,
                     middleinitial: this.midinit,
                 };
-                newRQAT.set("name", rqatName);
-                newRQAT.set("username", this.username);
-                newRQAT.set("email", this.email);
-                newRQAT.set("password", "password");
-                newRQAT.set("contact_num", this.contactnum);
-                newRQAT.set("hei_affil", this.hei_affil);
-                newRQAT.set("access_type", this.rqat_acc_id);
-                await newRQAT.save().then(() => {
-                    toast("RQAT Account Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        }),
-                        // this.sendEmail()
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/rqat",
-                            }),
-                            2000
-                        );
+
+                var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                var today = new Date();
+                var month = today.getMonth();
+                var day = today.getDate();
+                var year = today.getFullYear();
+                var currentDay = months[month] + " " + day + ", " + year;
+
+                var heiAffil = {
+                    hei: this.hei_affil,
+                    affilrecordDate: currentDay,
+                    affilendDate: "current",
+                };
+                this.past_affil.push({
+                    hei: this.current_affil.hei,
+                    affilrecordDate: this.current_affil.affilrecordDate,
+                    affilendDate: currentDay,
                 });
+
+                selectedRQAT.set("name", rqatName);
+                selectedRQAT.set("username", this.username);
+                selectedRQAT.set("password", "password");
+                selectedRQAT.set("contact_num", this.contactnum);
+                selectedRQAT.set("hei_affil", heiAffil);
+                selectedRQAT.set("past_affil", this.past_affil);
+
+                await selectedRQAT
+                    .save(null, {
+                        useMasterKey: true,
+                    })
+                    .then(() => {
+                        toast("RQAT Account Added!", {
+                                type: TYPE.SUCCESS,
+                                timeout: 3000,
+                                position: POSITION.TOP_RIGHT,
+                            }),
+                            // this.sendEmail()
+                            setTimeout(
+                                () =>
+                                this.$router.push({
+                                    path: "/rqat",
+                                }),
+                                2000
+                            );
+                    });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -300,7 +287,6 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message);
             }
             setTimeout(
                 function () {
@@ -311,10 +297,12 @@ export default {
         },
         modal() {
             var has_error = 0;
+            console.log(this.hei_affil);
             if (
                 this.lastname == "" ||
                 this.firstname == "" ||
                 this.midinit == "" ||
+                this.email == "" ||
                 this.username == "" ||
                 this.contactnum == ""
             ) {
@@ -326,6 +314,7 @@ export default {
                 });
                 has_error = 1;
             }
+
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
@@ -336,6 +325,7 @@ export default {
                 //     Math.floor(Math.random() * charactersLength)
                 //   );
                 // }
+
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -351,7 +341,7 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            if (accType[y] === this.$route.path) {
+            if (accType[y] === "/rqat/assignments") {
                 flag = 1;
             }
         }
@@ -369,19 +359,41 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var heis = [];
+
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
+
             const querResult = await query.find();
             heis.push({
+                id: "None",
                 title: "None",
             });
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];
                 heis.push({
+                    id: hei.id,
                     title: hei.get("hei_name"),
                 });
             }
             this.heis = heis;
+
+            const queryRQAT = new Parse.Query(Parse.User);
+            queryRQAT.equalTo("objectId", this.rqatID);
+            const rqat = await queryRQAT.first({
+                useMasterKey: true,
+            });
+            this.lastname = rqat.get("name").lastname;
+            this.firstname = rqat.get("name").firstname;
+            this.midinit = rqat.get("name").middleinitial;
+            this.username = rqat.get("username");
+            this.contactnum = rqat.get("contact_num");
+            this.email = rqat.get("email");
+            this.hei_affil = rqat.get("hei_affil").hei;
+            this.current_affil = {
+                hei: rqat.get("hei_affil").hei,
+                affilrecordDate: rqat.get("hei_affil").affilrecordDate,
+            };
+            this.past_affil = rqat.get("past_affil");
         }
     },
 };

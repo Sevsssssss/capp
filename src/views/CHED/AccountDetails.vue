@@ -1,15 +1,13 @@
 <template>
-<div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
+<div class="main-page flex justify-center items-center p-5 mx-3">
+    <div class="card over p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
                 </svg>
-                <span class="text-2xl font-semibold text-grey-100">
-                    ADD EMPLOYEE ACCOUNT
-                </span>
+                <span class="text-2xl font-semibold text-grey-100">UPDATE ACCOUNT</span>
             </div>
             <div class="line"></div>
             <div class="flex flex-row">
@@ -18,6 +16,10 @@
                         <span class="label-text">Last Name</span>
                     </label>
                     <input type="text" placeholder="Last Name" :class="{ 'input-error': validationStatus(v$.lastname) }" class="input input-bordered w-full" v-model="v$.lastname.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.lastname) }" v-if="validationStatus(v$.lastname)">
+                            Lastname is Required</span>
+                    </label>
                 </div>
 
                 <div class="form-control w-full pr-4">
@@ -25,6 +27,10 @@
                         <span class="label-text">First Name</span>
                     </label>
                     <input type="text" placeholder="First Name" :class="{ 'input-error': validationStatus(v$.firstname) }" class="input input-bordered w-full" v-model="v$.firstname.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.firstname) }" v-if="validationStatus(v$.firstname)">
+                            Firstname is Required</span>
+                    </label>
                 </div>
 
                 <div class="form-control" style="width: 200px">
@@ -32,6 +38,10 @@
                         <span class="label-text">M.I.</span>
                     </label>
                     <input type="text" placeholder="M.I." :class="{ 'input-error': validationStatus(v$.midinit) }" class="input input-bordered w-full" v-model="v$.midinit.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.midinit) }" v-if="validationStatus(v$.midinit)">
+                            Required</span>
+                    </label>
                 </div>
             </div>
             <div class="form-control w-full">
@@ -39,42 +49,61 @@
                     <span class="label-text">Username</span>
                 </label>
                 <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
+                        Username is Required</span>
+                </label>
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
                 <input type="email" placeholder="Enter email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label>
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.contactnum) }" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
+                <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.contactnum) }" v-if="validationStatus(v$.contactnum)">
+                        Contact Number is Required</span>
+                </label>
+            </div>
+            <hr>
+            <div class="label">Change Password</div>
+            <div class="">
+                <label for="password" class="label label-text">Password</label>
+                <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+            </div>
+            <div class="">
+                <label for="confirm_password" class="label label-text">Confirm password</label>
+                <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
             </div>
             <div class="flex justify-end pt-8 space-x-4">
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal(), scrollToTop()">
-                    Add Employee
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                    Update Account
                 </button>
             </div>
         </form>
     </div>
-
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold">
-                Add Employee Account
-            </div>
+    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div class="text-brand-darkblue font-bold label-xl">Update Account</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this account?
+                Are you sure you want to save this changes?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addEmployee(), scrollToTop()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="updateEmployee()">Continue</label>
             </div>
         </div>
     </div>
@@ -96,9 +125,12 @@ import {
     required
 } from "@vuelidate/validators";
 // import emailjs from 'emailjs-com';
+
 const toast = useToast();
+
 export default {
-    name: "AddEmployeeView",
+    props: ["empID"],
+    name: "EditEmployeeView",
     components: {
         VueInstantLoadingSpinner,
     },
@@ -155,6 +187,7 @@ export default {
             },
         };
     },
+
     methods: {
         ToggleshowModal() {
             this.showModal = !this.showModal;
@@ -162,6 +195,7 @@ export default {
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
+
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
@@ -169,41 +203,40 @@ export default {
         validate() {
             return this.showModal1;
         },
-        scrollToTop() {
-            window.scrollTo(0, 0);
-        },
-        async addEmployee() {
-            const newEmployee = new Parse.User();
+        async updateEmployee() {
+            const empl = new Parse.Query(Parse.User);
+            empl.equalTo("objectId", this.empID);
+            const selectedEMP = await empl.first({
+                useMasterKey: true,
+            });
+
             var employeeName = {
                 lastname: this.lastname,
                 firstname: this.firstname,
                 middleinitial: this.midinit,
             };
-            newEmployee.set("name", employeeName);
-            newEmployee.set("username", this.username);
-            newEmployee.set("password", "password");
-            newEmployee.set("email", this.email);
-            newEmployee.set("contact_num", this.contactnum);
-            newEmployee.set("access_type", this.access_type);
-            newEmployee.set("designation", this.emp_designation);
-            newEmployee.set("discipline", this.discipline);
+
+            selectedEMP.set("name", employeeName);
+            selectedEMP.set("username", this.username);
+            selectedEMP.set("password", "password");
+            selectedEMP.set("email", this.email);
+            selectedEMP.set("contact_num", this.contactnum);
+            selectedEMP.set("access_type", this.access_type);
+            selectedEMP.set("designation", this.emp_designation);
+            selectedEMP.set("discipline", this.discipline);
+
             try {
-                await newEmployee.save().then(() => {
-                    toast("Employee Account Added!", {
-                        type: TYPE.SUCCESS,
-                        timeout: 2000,
-                        position: POSITION.TOP_RIGHT,
+                await selectedEMP
+                    .save(null, {
+                        useMasterKey: true,
+                    })
+                    .then(() => {
+                        toast("Employee Account Updated!", {
+                            type: TYPE.SUCCESS,
+                            timeout: 2000,
+                            position: POSITION.TOP_RIGHT,
+                        });
                     });
-                    // this.sendEmail().then(() => {
-                    setTimeout(
-                        () =>
-                        this.$router.push({
-                            path: "/employees",
-                        }),
-                        1000
-                    );
-                    // });
-                });
                 this.$refs.Spinner.show();
                 setTimeout(
                     function () {
@@ -231,14 +264,9 @@ export default {
                 this.contactnum == "" ||
                 this.email == null
             ) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
                 has_error = 1;
             }
+
             if (has_error < 1) {
                 // var password = "";
                 // var characters =
@@ -257,15 +285,13 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        const queryResult = await query.find();
-        console.log(Parse.User.current().get("access_type"));
         query.equalTo("objectId", Parse.User.current().get("access_type"));
+
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            // this.accessTypes.push({title: accType[y].get('name')})
-            if (accType[y] === this.$route.path) {
+            if (accType[y] === "/employees") {
                 flag = 1;
             }
         }
@@ -275,13 +301,27 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            const queryEmp = new Parse.Query(Parse.User);
+            queryEmp.equalTo("objectId", this.empID);
+            const emp = await queryEmp.first({
+                useMasterKey: true,
+            });
+            this.lastname = emp.get("name").lastname;
+            this.firstname = emp.get("name").firstname;
+            this.midinit = emp.get("name").middleinitial;
+            this.username = emp.get("username");
+            this.contactnum = emp.get("contact_num");
+            this.email = emp.get("email");
+
+            const queryAT = new Parse.Query(AccessTypes);
+            const queryResult = await queryAT.find();
+
             for (var e = 0; e < queryResult.length; e++) {
                 this.accessTypes.push({
                     id: queryResult[e].id,
                     title: queryResult[e].get("name"),
                 });
             }
-            this.access_type = queryResult[0].get("name");
             const Designations = Parse.Object.extend("Designations");
             const queryD = new Parse.Query(Designations);
             const queryResultDesig = await queryD.find();
@@ -290,7 +330,7 @@ export default {
                     id: queryResultDesig[w].id,
                     title: queryResultDesig[w].get("name"),
                 });
-                if(queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR'){
+                if (queryResultDesig[w].get("name") == "EDUCATION SUPERVISOR") {
                     this.educSupId = queryResultDesig[w].id;
                 }
             }
@@ -299,14 +339,19 @@ export default {
             const Discipline = Parse.Object.extend("Disciplines");
             const queryDiscipline = new Parse.Query(Discipline);
             const queryResultDiscipline = await queryDiscipline.find();
-            console.log(queryResultDiscipline);
+
             for (var z = 0; z < queryResultDiscipline.length; z++) {
                 this.disciplines.push({
                     id: queryResultDiscipline[z].id,
                     title: queryResultDiscipline[z].get("MajorDiscipline"),
                 });
             }
-            this.discipline = queryResultDiscipline[0].get("MajorDiscipline");
+
+            console.log(queryResult[0].get("name"));
+
+            this.access_type = emp.get("access_type");
+            this.emp_designation = emp.get("designation");
+            this.discipline = emp.get("discipline");
         }
     },
 };

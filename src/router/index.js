@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LandingView from "../views/LandingView.vue";
-
 import CHEDViewLayout from "../layout/CHEDViewLayout.vue";
 import HEIViewLayout from "../layout/HEIViewLayout.vue";
 import RQATViewLayout from "../layout/RQATViewLayout.vue";
 
+import chedAccountDetails from '../views/CHED/AccountDetails.vue';
 import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
-import AccountDetailsCHED from "../views/CHED/AccountDetailsCHED.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
 
 import HeiView from "../views/CHED/Hei/HeiView.vue";
@@ -64,7 +63,7 @@ import UploadExcelHeiType from '../views/CHED/HeiTypes/UploadExcel.vue';
 import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
 import rqatEvaluate from '../views/RQAT/rqatEvaluate.vue';
 import rqatHistory from '../views/RQAT/rqatHistory.vue';
-import AccountDetailsRqat from '../views/RQAT/AccountDetailsRqat.vue';
+import rqatAccountDetails from '../views/RQAT/AccountDetails.vue';
 
 import Parse from 'parse';
 
@@ -95,13 +94,12 @@ const routes = [
       },
       {
         path: "/ched/account",
-        name: "AccountDetailsCHED",
-        component: AccountDetailsCHED,
+        name: "chedAccountDetails",
+        component: chedAccountDetails,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Dashboard', link: '/home' },
-            { name: 'View' }
+            { name: 'Account Details' }
           ]
         }
       },
@@ -576,7 +574,7 @@ const routes = [
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Application', link: "/hei/application" },
+            { name: 'Account Details', link: "/hei/application" },
             { name: 'View' }
           ]
         }
@@ -621,28 +619,16 @@ const routes = [
       },
       {
         path: "/rqat/account",
-        name: "AccountDetailsRqat",
-        component: AccountDetailsRqat,
+        name: "rqatAccountDetails",
+        component: rqatAccountDetails,
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Assignments', link: "/rqat/assignments" },
+            { name: 'Account Details', link: "/rqat/applications" },
             { name: 'View' }
           ]
         }
       },
-      // {
-      //   path: "/rqat/account=:id",
-      //   name: "rqatAccountDetails",
-      //   component: rqatAccountDetails,
-      //   props: true,
-      //   meta: {
-      //     breadcrumb: [
-      //       { name: 'Account Details', link: "/rqat/applications" },
-      //       { name: 'View' }
-      //     ]
-      //   }
-      // },
     ]
   },
   {
@@ -668,5 +654,3 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
-
-

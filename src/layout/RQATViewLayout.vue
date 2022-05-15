@@ -18,7 +18,6 @@
                             <span class="text-sm hover:font-semibold">Logout</span>
                         </button>
                     </div>
-
                     <p class="flex justify-center text-sm text-grey-300 tracking-wide">
                         Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
                     </p>

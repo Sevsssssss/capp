@@ -15,12 +15,11 @@
     </div>
     <br>
     <div v-for="appType in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
-        {{appType.programList}}
-        <div class="p-2 flex justify-between items-center">
+        <div class="p-2  flex justify-between items-center">
             <div class="text-lg font-semibold"> {{appType.applicationType}} </div>
             <button class="btn-table" @click="exportToPdfTables()">Export PDF</button>
         </div>
-        <table class="w-full text-sm text-left text-gray-500">
+        <table class=" w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3">PROGRAMS</th>
@@ -33,7 +32,7 @@
                         {{ prog.program }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ prog.hei }}
+                        {{ prog.count }}
                     </td>
                 </tr>
             </tbody>
@@ -219,7 +218,6 @@ export default {
                 const applicationType = appTypeResults[k];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
                 const querResult = await newQuery.find();
-                console.log(querResult.length);
                 for (var l = 0; l < querResult.length; l++) {
                     const application = querResult[l];
 
@@ -228,11 +226,11 @@ export default {
                     progQuery.equalTo("objectId", application.get("program"));
                     const progResults = await progQuery.first();
 
-                    const users = new Parse.Query(Parse.User);
-                    users.equalTo("objectId", application.get("createdBy"));
-                    const hei = await users.first({
-                        useMasterKey: true,
-                    });
+                    // const users = new Parse.Query(Parse.User);
+                    // users.equalTo("objectId", application.get("createdBy"));
+                    // const hei = await users.first({
+                    //     useMasterKey: true,
+                    // });
                     console.log(progResults.get("programName"));
                     console.log("sad " + programList.includes(progResults.get("programName")));
                     if (programList.includes(progResults.get("programName"))) {
@@ -240,10 +238,9 @@ export default {
                         var index = programList.indexOf(progResults.get("programName"))
                         programInstance[index] += 1;
                     } else {
-                        programList.push({
-                            program: progResults.get("programName"),
-                            hei: hei.get("hei_name"), // Change to Name of HEI
-                        });
+                        programList.push(
+                            progResults.get("programName")
+                        );
                         programInstance.push(1);
                     }
 
@@ -255,7 +252,7 @@ export default {
 
                 for (var q = 0; q < programList.length; q++) {
                     progNum.push({
-                        program: programList[q].program,
+                        program: programList[q],
                         count: programInstance[q]
 
                     });
