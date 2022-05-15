@@ -32,7 +32,7 @@ export default {
     var accType = querResult[0].get("privileges");
     var flag = 0;
     for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === '/employees') {
+      if (accType[i] === '/disciplines') {
         flag = 1;
       }
     }

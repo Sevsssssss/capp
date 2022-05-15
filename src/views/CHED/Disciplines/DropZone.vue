@@ -20,7 +20,7 @@ import {
     ref
 } from "vue";
 import Parse from "parse";
-import Worker from "@/js/employeesParse.worker.js";
+import Worker from "@/js/disciplinesParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -96,7 +96,7 @@ export default {
                 console.log("onMessage");
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeEmployees(event.data.rows);
+                    self.storeDisciplines(event.data.rows);
                 } else {
                     alert(event.data.reason);
                     self.closeSpinner();
@@ -136,51 +136,84 @@ export default {
             }
         },
 
-        async storeEmployees(employeesData) {
+        async storeDisciplines(disciplinesData) {
             console.log("store");
-            for (let i = 0; i < employeesData.length; i++) {
+            var specificDisc = [];
+console.log(disciplinesData.length)
+            for (let i = 0; i < disciplinesData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
-                    const newEmployee = new Parse.User();
-                    var employeeName = {
-                        lastname: employeesData[i].A,
-                        firstname: employeesData[i].B,
-                        middleinitial: employeesData[i].C,
-                    };
-                    newEmployee.set("name", employeeName);
-                    newEmployee.set("username", employeesData[i].D);
-                    newEmployee.set("password", "password");
-                    newEmployee.set("email", employeesData[i].E);
-                    newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
+                    if ((disciplinesData[i].C !== disciplinesData[i + 1].C) || (i === disciplinesData.length - 2)) {
+                        specificDisc.push({
+                            id: disciplinesData[i].A,
+                            SpecDiscCode: disciplinesData[i].A,
+                            SpecificDiscipline: disciplinesData[i].B
+                        })
+                        if(i === disciplinesData.length-2){
+                            specificDisc.push({
+                            id: disciplinesData[i+1].A,
+                            SpecDiscCode: disciplinesData[i+1].A,
+                            SpecificDiscipline: disciplinesData[i+1].B
+                        })
+                        }
+                        const Disciplines = Parse.Object.extend("Disciplines");
+                        const queryDisc = new Parse.Query(Disciplines);
+                        queryDisc.equalTo("MajDiscCode", disciplinesData[i].D);
 
-                    const accesstype = Parse.Object.extend("AccessTypes");
-                    const accesstypeQuery = new Parse.Query(accesstype);
-                    accesstypeQuery.equalTo("name", employeesData[i].G);
-                    const accesstypeResult = await accesstypeQuery.find();
+                        const queryRes = await queryDisc.first();
 
-                    const designations = Parse.Object.extend("Designations");
-                    const designationQuery = new Parse.Query(designations);
-                    designationQuery.equalTo("name", employeesData[i].H);
-                    const designationResult = await designationQuery.find();
+                        if (queryRes === undefined) {
+                            const newDiscipline = new Disciplines();
+                            try {
+                                newDiscipline.save({
+                                    MajDiscCode: disciplinesData[i].D,
+                                    MajorDiscipline: disciplinesData[i].C.toUpperCase(),
+                                    specificDiscipline: specificDisc
+                                })
+                                specificDisc = [];
+                            } catch (error) {
+                                console.log(error.message);
+                            }
+                        } else {
+                            this.counter = this.counter - 1;
+                            var existingSpecificDisc = queryRes.get("specificDiscipline");
+                            for (let y = 0; y < specificDisc.length; y++) {
+                                var flag = 0;
+                                for (let z = 0; z < existingSpecificDisc.length; z++) {
+                                    if (specificDisc[y].id === existingSpecificDisc[z].id) {
+                                        flag = 1;
+                                    }
+                                }
+                                if (flag === 0) {
+                                    existingSpecificDisc.push(specificDisc[y])
+                                }
 
-                    newEmployee.set("access_type", accesstypeResult[0].id);
-                    newEmployee.set("designation", designationResult[0].id);
+                            }
+                            queryRes.set("specificDiscipline", existingSpecificDisc);
+                            queryRes.save();
+                            specificDisc = [];
+                        }
+                    } else {
+                        specificDisc.push({
+                            id: disciplinesData[i].A,
+                            SpecDiscCode: disciplinesData[i].A,
+                            SpecificDiscipline: disciplinesData[i].B
+                        })
+                        this.counter = this.counter - 1;
+                    }
 
-                    newEmployee.set("discipline", employeesData[i].I);
-
-                    await newEmployee.save();
                 } catch (error) {
                     console.log(error.message);
                     this.counter = this.counter - 1;
                 }
             }
-            toast(this.counter + " EMPLOYEE Accounts Added!", {
+            toast(this.counter + " DISCIPLINES Added!", {
                 type: TYPE.SUCCESS,
                 timeout: 3000,
                 position: POSITION.TOP_RIGHT,
             });
             this.$refs.Spinner.hide();
-            this.$router.push("/employees");
+            this.$router.push("/disciplines");
             this.pending = false;
         },
     },

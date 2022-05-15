@@ -52,6 +52,7 @@ import EditApplicationView from '../views/CHED/AppSettings/EditApplicationTypeVi
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import AddDisciplineView from '../views/CHED/Disciplines/AddDisciplineView.vue';
+import UploadExcelDisciplines from '../views/CHED/Disciplines/UploadExcel.vue';
 
 import ProgramView from '../views/CHED/Programs/ProgramsView.vue';
 import DesignationsView from '../views/CHED/Designations/DesignationsView.vue';
@@ -457,6 +458,17 @@ const routes = [
           breadcrumb: [
             { name: 'DISCIPLINES', link: "/disciplines/add" },
             {name: 'ADD DISCIPLINES'},
+          ]
+        }
+      },
+      {
+        path: "/disciplines/upload",
+        name: "uploadExcelDisciplines",
+        component: UploadExcelDisciplines,
+        meta: {
+          breadcrumb: [
+            { name: 'DISCIPLNES', link: '/disciplines' },
+            { name: 'UPLOAD EXCEL' }
           ]
         }
       },
