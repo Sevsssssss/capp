@@ -24,10 +24,13 @@ onmessage = function (event) {
                 }
 
             }
+        }else {
+            checker = false;
+            reason = "Invalid Title"
         }
-    } else {
+    }else {
         checker = false;
-        reason = "Invalid Title"
+        reason = "Undefined Title"
     }
 
     postMessage({

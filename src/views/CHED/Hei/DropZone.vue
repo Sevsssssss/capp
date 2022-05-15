@@ -76,6 +76,9 @@ export default {
                 return false;
             }
         },
+        closeSpinner() {
+            this.$refs.Spinner.hide();
+        },
         createWorker(data, self) {
             console.log("worker")
             // var worker1 = new Worker();
@@ -97,8 +100,8 @@ export default {
                         event.data.rows,
                     )
                 } else {
-                    self.pending = false;
                     alert(event.data.reason);
+                    self.closeSpinner();
                 }
             };
             // }

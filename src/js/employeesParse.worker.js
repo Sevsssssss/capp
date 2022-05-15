@@ -26,10 +26,13 @@ onmessage = function (event) {
                 }
 
             }
+        }else {
+            checker = false;
+            reason = "Invalid Title"
         }
     }else {
         checker = false;
-        reason = "Invalid Title"
+        reason = "Undefined Title"
     }
 
 
