@@ -19,8 +19,8 @@
 import {
     ref
 } from "vue";
-import Parse from 'parse';
-import Worker from "@/js/heiParse.worker.js";
+import Parse from "parse";
+import Worker from "@/js/employeesParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -35,7 +35,7 @@ export default {
         }
     },
     components: {
-        VueInstantLoadingSpinner
+        VueInstantLoadingSpinner,
     },
     setup() {
         const active = ref(false);
@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         validate(filename) {
-            console.log("validate")
+            console.log("validate");
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
             if (filename === "") {
                 this.className = "alert-error";
@@ -67,7 +67,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("Please upload a .pdf or .jpg file!", {
+                toast("Please upload a .xlsx file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -80,30 +80,29 @@ export default {
             this.$refs.Spinner.hide();
         },
         createWorker(data, self) {
-            console.log("worker")
+            console.log("worker");
             // var worker1 = new Worker();
             // if (typeof Worker !== "undefined") {
-            console.log("in worker")
+            console.log("in worker");
             if (typeof self.worker == "undefined") {
-                console.log('setWorker')
+                console.log("setWorker");
                 self.worker = new Worker();
             }
             self.worker.postMessage({
-                d: data
+                d: data,
             });
 
             self.worker.onmessage = function (event) {
-                console.log('onMessage')
+                console.log("onMessage");
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeHEIs(
-                        event.data.rows,
-                    )
+                    self.storeEmployees(event.data.rows);
                 } else {
                     alert(event.data.reason);
                     self.closeSpinner();
                 }
             };
+
             // }
         },
         upload() {
@@ -115,7 +114,7 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
             } else {
-                console.log("upload")
+                console.log("upload");
                 var validation = this.validate(this.dropzoneFile);
                 if (validation) {
                     this.pending = true;
@@ -137,63 +136,51 @@ export default {
             }
         },
 
-        async storeHEIs(heiData) {
-            console.log("store")
-            for (let i = 0; i < heiData.length; i++) {
+        async storeEmployees(employeesData) {
+            console.log("store");
+            for (let i = 0; i < employeesData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
-                    const AccessType = Parse.Object.extend("AccessTypes");
-                    const queryACC = new Parse.Query(AccessType);
-                    queryACC.equalTo("name", "HEI");
+                    const newEmployee = new Parse.User();
+                    var employeeName = {
+                        lastname: employeesData[i].A,
+                        firstname: employeesData[i].B,
+                        middleinitial: employeesData[i].C,
+                    };
+                    newEmployee.set("name", employeeName);
+                    newEmployee.set("username", employeesData[i].D);
+                    newEmployee.set("password", "password");
+                    newEmployee.set("email", employeesData[i].E);
+                    newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
 
-                    const accQuerResult = await queryACC.first();
+                    const accesstype = Parse.Object.extend("AccessTypes");
+                    const accesstypeQuery = new Parse.Query(accesstype);
+                    accesstypeQuery.equalTo("name", employeesData[i].G);
+                    const accesstypeResult = await accesstypeQuery.find();
 
-                    this.hei_acc_id = accQuerResult.id;
+                    const designations = Parse.Object.extend("Designations");
+                    const designationQuery = new Parse.Query(designations);
+                    designationQuery.equalTo("name", employeesData[i].H);
+                    const designationResult = await designationQuery.find();
 
-                    const newHEI = new Parse.User();
-                    newHEI.set("hei_name", heiData[i].A);
-                    newHEI.set("username", heiData[i].B);
-                    newHEI.set("password", "password");
-                    newHEI.set("email", heiData[i].C);
-                    newHEI.set("address", heiData[i].D);
-                    newHEI.set("number", heiData[i].E.toString());
-                    newHEI.set("inst_code", heiData[i].F.toString());
-                    newHEI.set("hei_type", heiData[i].G.toUpperCase());
+                    newEmployee.set("access_type", accesstypeResult[0].id);
+                    newEmployee.set("designation", designationResult[0].id);
 
-                    const heiType = Parse.Object.extend("HEI_Types");
-                    const queryHEIType = new Parse.Query(heiType);
-                    queryHEIType.equalTo("name", heiData[i].G.toUpperCase());
+                    newEmployee.set("discipline", employeesData[i].I);
 
-                    const queryRes = await queryHEIType.first();
-                    console.log(queryRes)
-                    if (queryRes === undefined) {
-                        const heiType = Parse.Object.extend("HEI_Types");
-                        const newHeiType = new heiType();
-                        try {
-                            newHeiType.save({
-                                name: heiData[i].G.toUpperCase(),
-                            })
-                        } catch (error){
-                            console.log(error.message);
-                        }
-                    }
-
-                    newHEI.set("access_type", this.hei_acc_id);
-                    newHEI.set("hasTransactions", false);
-                    await newHEI.save();
-
+                    await newEmployee.save();
                 } catch (error) {
                     console.log(error.message);
                     this.counter = this.counter - 1;
                 }
             }
-            toast(this.counter + " HEI Accounts Added!", {
+            toast(this.counter + " EMPLOYEE Accounts Added!", {
                 type: TYPE.SUCCESS,
                 timeout: 3000,
                 position: POSITION.TOP_RIGHT,
             });
             this.$refs.Spinner.hide();
-            this.$router.push("/hei");
+            this.$router.push("/employees");
             this.pending = false;
         },
     },
