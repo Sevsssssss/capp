@@ -32,11 +32,9 @@
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ prog.program }}
                     </td>
-
                     <td class="px-6 py-4">
                         {{ prog.hei }}
                     </td>
-
                 </tr>
             </tbody>
         </table>
@@ -95,7 +93,6 @@ export default {
             numberOfHEI: [],
             listofPrograms: [],
             nodata: false,
-
             moreText: [
                 "This is another few sentences of text to look at it.",
                 "Just testing the paragraphs to see how they format.",
@@ -106,7 +103,6 @@ export default {
                 "Not bad at all.",
             ],
             numdata: '',
-            heading: "Application",
             headers: [{
                     title: "PROGRAMS",
                 },
@@ -140,7 +136,7 @@ export default {
                 format: "letter",
             });
             // text is placed using x, y coordinates
-            doc.setFontSize(16).text(this.heading, 0.5, 1.0);
+            doc.setFontSize(16).text("Application", 0.5, 1.0);
             // create a line under heading
             doc.setLineWidth(0.01).line(0.5, 1.1, 8.0, 1.1);
             // Using autoTable plugin
@@ -154,7 +150,6 @@ export default {
             });
             doc.save(`application.pdf`);
         },
-
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -239,7 +234,7 @@ export default {
                         useMasterKey: true,
                     });
                     console.log(progResults.get("programName"));
-                    console.log("sad "+programList.includes(progResults.get("programName")));
+                    console.log("sad " + programList.includes(progResults.get("programName")));
                     if (programList.includes(progResults.get("programName"))) {
                         console.log("nanis");
                         var index = programList.indexOf(progResults.get("programName"))
@@ -271,7 +266,6 @@ export default {
                 });
             }
         }
-
         this.numdata = {
             labels: applicationTypes,
             // ['Initial Permit', 'Renewal', 'Certificate of Program Compliance', 'Government Recognition'],
@@ -306,7 +300,6 @@ export default {
                         display: false
                     },
                 },
-
                 layout: {
                     padding: 20
                 },
@@ -317,9 +310,7 @@ export default {
                 },
             }
         });
-
         myChart;
-
         // var image = myChart.toBase64Image();
         // console.log(image);
 
@@ -328,25 +319,46 @@ export default {
         // document.getElementById('exportToPdfCharts')
 
         element.addEventListener("click", function () {
-            // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
             var dataURL = ctx.toDataURL();
+
+            var margin = 2;
+            var imgWidth = 210 - 2 * margin;
+            var pageHeight = 295;
+            var imgHeight = ctx.height * imgWidth / ctx.width;
+            var heightLeft = imgHeight;
+
             // create new pdf and add our new canvas as an image
-            var pdf = new jsPDF('l', 'pt', 'a4');
+            var pdf = new jsPDF('p', 'mm');
+            // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
+            // const pageWidth = pdf.internal.pageSize.getWidth();
+            // const pageHeight = pdf.internal.pageSize.getHeight();
 
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
+            // const widthRatio = pageWidth / ctx.width;
+            // const heightRatio = pageHeight / ctx.height;
+            // const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
 
-            const widthRatio = pageWidth / ctx.width;
-            const heightRatio = pageHeight / ctx.height;
-            const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+            // const canvasWidth = ctx.width * ratio;
+            // const canvasHeight = ctx.height * ratio;
 
-            const canvasWidth = ctx.width * ratio;
-            const canvasHeight = ctx.height * ratio;
+            // const marginX = (pageWidth - canvasWidth) / 2;
+            // const marginY = (pageHeight - canvasHeight) / 2;
+            // create a line under heading
 
-            const marginX = (pageWidth - canvasWidth) / 2;
-            const marginY = (pageHeight - canvasHeight) / 2;
             // download the pdf
-            pdf.addImage(dataURL, 'PNG', marginX, marginY, canvasWidth, canvasHeight);
+            // pdf.addImage(dataURL, 'PNG', 4, marginY, canvasWidth, canvasHeight);
+
+            var position = 0;
+
+            pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
+
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
             pdf.save('filename.pdf');
         });
     },

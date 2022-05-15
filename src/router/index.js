@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LandingView from "../views/LandingView.vue";
+
 import CHEDViewLayout from "../layout/CHEDViewLayout.vue";
 import HEIViewLayout from "../layout/HEIViewLayout.vue";
 import RQATViewLayout from "../layout/RQATViewLayout.vue";
 
 import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
+import AccountDetailsCHED from "../views/CHED/AccountDetailsCHED.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
 
 import HeiView from "../views/CHED/Hei/HeiView.vue";
@@ -62,6 +64,7 @@ import UploadExcelHeiType from '../views/CHED/HeiTypes/UploadExcel.vue';
 import rqatEvaluationView from '../views/RQAT/rqatEvalView.vue';
 import rqatEvaluate from '../views/RQAT/rqatEvaluate.vue';
 import rqatHistory from '../views/RQAT/rqatHistory.vue';
+import AccountDetailsRqat from '../views/RQAT/AccountDetailsRqat.vue';
 
 import Parse from 'parse';
 
@@ -87,6 +90,18 @@ const routes = [
         meta: {
           breadcrumb: [
             { name: 'Dashboard' },
+          ]
+        }
+      },
+      {
+        path: "/ched/account",
+        name: "AccountDetailsCHED",
+        component: AccountDetailsCHED,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Dashboard', link: '/home' },
+            { name: 'View' }
           ]
         }
       },
@@ -561,7 +576,7 @@ const routes = [
         props: true,
         meta: {
           breadcrumb: [
-            { name: 'Account Details', link: "/hei/application" },
+            { name: 'Application', link: "/hei/application" },
             { name: 'View' }
           ]
         }
@@ -601,6 +616,18 @@ const routes = [
         meta: {
           breadcrumb: [
             { name: 'History' },
+          ]
+        }
+      },
+      {
+        path: "/rqat/account",
+        name: "AccountDetailsRqat",
+        component: AccountDetailsRqat,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Assignments', link: "/rqat/assignments" },
+            { name: 'View' }
           ]
         }
       },
