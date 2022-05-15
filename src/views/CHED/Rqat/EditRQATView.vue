@@ -256,15 +256,36 @@ export default {
                   firstname: this.firstname,
                   middleinitial: this.midinit,
                 };
+
+                var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                var today = new Date();
+                var month = today.getMonth();
+                var day = today.getDate();
+                var year = today.getFullYear();
+                var currentDay = months[month] + " " + day + ", " + year;
+
                 var heiAffil = {
                   hei: this.hei_affil,
-                  affilrecordDate: new Date().toString(),
+                  affilrecordDate: currentDay,
                   affilendDate: "current",
                 }
                 this.past_affil.push({
                   hei: this.current_affil.hei,
                   affilrecordDate: this.current_affil.affilrecordDate,
-                  affilendDate: new Date().toString(),
+                  affilendDate: currentDay,
                 })
 
                 selectedRQAT.set("name", rqatName);
