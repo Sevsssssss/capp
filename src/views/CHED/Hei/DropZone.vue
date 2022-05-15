@@ -20,7 +20,7 @@ import {
     ref
 } from "vue";
 import Parse from 'parse';
-import Worker from "@/js/parse.worker.js";
+import Worker from "@/js/heiParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -29,6 +29,11 @@ import {
 } from "vue-toastification";
 const toast = useToast();
 export default {
+    data() {
+        return {
+            counter: 0
+        }
+    },
     components: {
         VueInstantLoadingSpinner
     },
@@ -90,13 +95,7 @@ export default {
                     console.log("Successfully parsed xlsx file!");
                     self.storeHEIs(
                         event.data.rows,
-                    ).then(() => {
-                        toast("HEI Accounts Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    })
+                    )
                 } else {
                     self.pending = false;
                     alert(event.data.reason);
@@ -138,14 +137,16 @@ export default {
         async storeHEIs(heiData) {
             console.log("store")
             for (let i = 0; i < heiData.length; i++) {
-                const AccessType = Parse.Object.extend("AccessTypes");
-                const queryACC = new Parse.Query(AccessType);
-                queryACC.equalTo("name", "HEI");
-
-                const accQuerResult = await queryACC.first();
-
-                this.hei_acc_id = accQuerResult.id;
+                this.counter = this.counter + 1;
                 try {
+                    const AccessType = Parse.Object.extend("AccessTypes");
+                    const queryACC = new Parse.Query(AccessType);
+                    queryACC.equalTo("name", "HEI");
+
+                    const accQuerResult = await queryACC.first();
+
+                    this.hei_acc_id = accQuerResult.id;
+
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
                     newHEI.set("username", heiData[i].B);
@@ -161,8 +162,14 @@ export default {
 
                 } catch (error) {
                     console.log(error.message);
+                    this.counter = this.counter - 1;
                 }
             }
+            toast(this.counter + " HEI Accounts Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+            });
             this.$refs.Spinner.hide();
             this.$router.push("/hei");
             this.pending = false;
