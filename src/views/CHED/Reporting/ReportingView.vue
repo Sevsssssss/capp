@@ -1,6 +1,6 @@
 <template>
 <div v-if="nodata" style="height: 100%">
-    <NoDataAvail/>
+    <NoDataAvail />
 </div>
 <div v-else class="p-3">
     <DataCards :datas="numberOfHEI" />
@@ -14,29 +14,29 @@
         </div>
     </div>
     <br>
-
-    <!-- <div> {{numberOfHEI}} </div>
-    <div> {{listofPrograms}} </div> -->
     <div v-for="appType in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+        {{appType.programList}}
         <div class="p-2 flex justify-between items-center">
-            <div class="text-lg font-semibold"> numberOfHEI.title </div>
+            <div class="text-lg font-semibold"> {{appType.applicationType}} </div>
             <button class="btn-table" @click="exportToPdfTables()">Export PDF</button>
         </div>
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3">HEI Name</th>
-                    <th scope="col" class="px-6 py-3">PROGRAM</th>
+                    <th scope="col" class="px-6 py-3">PROGRAMS</th>
+                    <th scope="col" class="px-6 py-3">NUMBER OF HEIs APPLIED</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="bg-white border-b" v-for="prog in appType.programList" :key="prog">
-                    <td class="px-6 py-4">
-                        {{ prog.hei }}
-                    </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ prog.program }}
                     </td>
+
+                    <td class="px-6 py-4">
+                        {{ prog.hei }}
+                    </td>
+
                 </tr>
             </tbody>
         </table>
@@ -108,10 +108,10 @@ export default {
             numdata: '',
             heading: "Application",
             headers: [{
-                    title: "HEI Name",
+                    title: "PROGRAMS",
                 },
                 {
-                    title: "PROGRAMS",
+                    title: "Number of HEIs Applied",
                 },
             ],
             items: [{
@@ -194,8 +194,6 @@ export default {
                 const newQuery = query.equalTo("applicationType", applicationType.id);
                 const querResult = await newQuery.find();
                 // var counter = 0;
-                console.log(appTypeResults[i]);
-                console.log(querResult.length);
                 for (var j = 0; j < querResult.length; j++) {
                     const application = querResult[j];
                     if (!listOfHEI.includes(application.get("createdBy"))) {
@@ -212,15 +210,17 @@ export default {
                     num: querResult.length,
                     type: this.color[i],
                 });
-                
+
             }
-            if(totalApplication == 0){
+            if (totalApplication == 0) {
                 this.nodata = true;
             }
 
             //For List of Programs
             for (var k = 0; k < appTypeResults.length; k++) {
                 var programList = [];
+                var programInstance = [];
+                // var progCounter = 0;
                 const applicationType = appTypeResults[k];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
                 const querResult = await newQuery.find();
@@ -238,15 +238,36 @@ export default {
                     const hei = await users.first({
                         useMasterKey: true,
                     });
+                    console.log(progResults.get("programName"));
+                    console.log("sad "+programList.includes(progResults.get("programName")));
+                    if (programList.includes(progResults.get("programName"))) {
+                        console.log("nanis");
+                        var index = programList.indexOf(progResults.get("programName"))
+                        programInstance[index] += 1;
+                    } else {
+                        programList.push({
+                            program: progResults.get("programName"),
+                            hei: hei.get("hei_name"), // Change to Name of HEI
+                        });
+                        programInstance.push(1);
+                    }
 
-                    programList.push({
-                        program: progResults.get("programName"),
-                        hei: hei.get("hei_name"), // Change to Name of HEI
+                    console.log(programList);
+
+                }
+
+                var progNum = [];
+
+                for (var q = 0; q < programList.length; q++) {
+                    progNum.push({
+                        program: programList[q].program,
+                        count: programInstance[q]
+
                     });
                 }
                 this.listofPrograms.push({
                     applicationType: applicationType.get("applicationTypeName"),
-                    programList: programList,
+                    programList: progNum,
                 });
             }
         }
@@ -305,7 +326,6 @@ export default {
         let element = document.getElementById("exportToPdfCharts");
 
         // document.getElementById('exportToPdfCharts')
-
 
         element.addEventListener("click", function () {
             // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);

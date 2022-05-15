@@ -249,7 +249,7 @@ import { useToast, TYPE, POSITION } from "vue-toastification";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { email, required } from "@vuelidate/validators";
 import emailjs from "emailjs-com";
 const toast = useToast();
 export default {
@@ -276,6 +276,7 @@ export default {
       username: "",
       contactnum: "",
       hei_affil: "None",
+      email: "",
     };
   },
   validations() {
@@ -298,6 +299,9 @@ export default {
       hei_affil: {
         required,
       },
+      email: {
+        required, email
+      }
     };
   },
   methods: {
