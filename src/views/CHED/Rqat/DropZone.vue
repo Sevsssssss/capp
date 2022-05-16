@@ -20,7 +20,7 @@ import {
     ref
 } from "vue";
 import Parse from 'parse';
-import Worker from "@/js/parse.worker.js";
+import Worker from "@/js/rqatParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -34,7 +34,8 @@ export default {
     },
     data() {
         return {
-            pending: false
+            pending: false,
+            counter: 0
         }
     },
     setup() {
@@ -76,6 +77,9 @@ export default {
                 return false;
             }
         },
+        closeSpinner() {
+            this.$refs.Spinner.hide();
+        },
         createWorker(data, self) {
             console.log("worker")
             // var worker1 = new Worker();
@@ -95,18 +99,11 @@ export default {
                     console.log("Successfully parsed xlsx file!");
                     self.storeRqat(
                         event.data.rows,
-                    ).then(() => {
-                        toast("RQAT Accounts Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    })
+                    )
 
                 } else {
-                    self.pending = false;
-                    this.$refs.Spinner.hide();
                     alert(event.data.reason);
+                    self.closeSpinner();
                 }
             };
             // }
@@ -146,22 +143,23 @@ export default {
         async storeRqat(rqatData) {
             console.log("store")
             for (let i = 0; i < rqatData.length; i++) {
-
-                const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
-                const queryACCR = new Parse.Query(AccessTypeRQAT);
-                queryACCR.equalTo("name", "RQAT");
-
-                const accQuerResultRQAT = await queryACCR.first();
-
-                this.rqat_acc_id = accQuerResultRQAT.id;
-
+                this.counter = this.counter + 1;
                 try {
+                    const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+                    const queryACCR = new Parse.Query(AccessTypeRQAT);
+                    queryACCR.equalTo("name", "RQAT");
+
+                    const accQuerResultRQAT = await queryACCR.first();
+
+                    this.rqat_acc_id = accQuerResultRQAT.id;
+
                     const newRQAT = new Parse.User();
                     var rqatName = {
                         lastname: rqatData[i].A,
                         firstname: rqatData[i].B,
                         middleinitial: rqatData[i].C,
                     };
+                    var password = Math.random().toString(36).slice(-12);
                     newRQAT.set("name", rqatName);
                     newRQAT.set("username", rqatData[i].D);
                     newRQAT.set("password", "password");
@@ -170,11 +168,26 @@ export default {
                     newRQAT.set("email", rqatData[i].G);
                     newRQAT.set("access_type", this.rqat_acc_id);
                     newRQAT.set("hasTransactions", false);
-                    await newRQAT.save();
+                    await newRQAT.save().then(() => {
+                        const params = {
+                            name: this.rqatName,
+                            username: rqatData[i].D,
+                            email: rqatData[i].G,
+                            password: password,
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+                    })
                 } catch (error) {
                     console.log(error.message);
+                    this.counter = this.counter - 1;
                 }
             }
+            toast(this.counter + " RQAT Accounts Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+            });
             this.$refs.Spinner.hide();
             this.$router.push("/rqat");
             this.pending = false;

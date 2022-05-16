@@ -303,28 +303,36 @@ export default {
                     affilrecordDate: currentDay,
                     affilendDate: "current",
                 }
+                var password = Math.random().toString(36).slice(-12);
                 newRQAT.set("name", rqatName);
                 newRQAT.set("username", this.username);
                 newRQAT.set("email", this.email);
-                newRQAT.set("password", "password");
+                newRQAT.set("password", password);
                 newRQAT.set("contact_num", this.contactnum);
                 newRQAT.set("hei_affil", heiAffil);
                 newRQAT.set("past_affil", []);
                 newRQAT.set("access_type", this.rqat_acc_id);
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    })
+                    const params = {
+                        name: rqatName,
+                        username: this.username,
+                        email: this.email,
+                        password: password,
+                        approved: true,
+                    };
+                    Parse.Cloud.run("sendEmailNotification", params);
+                    setTimeout(
+                        () =>
+                        this.$router.push({
+                            path: "/rqat",
                         }),
-                        // this.sendEmail()
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/rqat",
-                            }),
-                            2000
-                        );
+                        2000
+                    );
                 });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
@@ -400,7 +408,6 @@ export default {
             queryACC.equalTo("name", "HEI");
 
             const accQuerResult = await queryACC.first();
-
 
             var heis = [];
             const query = new Parse.Query(Parse.User);

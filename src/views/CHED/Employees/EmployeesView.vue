@@ -481,6 +481,7 @@ export default {
                 queryACC.equalTo("objectId", emp.get("access_type"));
 
                 const accQuerResult = await queryACC.first();
+                console.log(accQuerResult)
 
                 const Designation = Parse.Object.extend("Designations");
                 const queryDes = new Parse.Query(Designation);

@@ -278,7 +278,7 @@ export default {
             for (var m = 0; m < this.majorDisciplines.length; m++) {
                 const newDiscipline = new Disciplines();
                 newDiscipline.set("MajDiscCode", this.majorDisciplines[m].MajDiscCode);
-                newDiscipline.set("MajorDiscipline", this.majorDisciplines[m].MajorDiscipline);
+                newDiscipline.set("MajorDiscipline", this.majorDisciplines[m].MajorDiscipline.toUpperCase());
                 newDiscipline.set("specificDiscipline", this.majorDisciplines[m].specificDiscipline);
 
                 newDiscipline.save().then((discipline) => {

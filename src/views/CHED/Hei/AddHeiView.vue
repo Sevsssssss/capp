@@ -141,7 +141,6 @@ import {
     required,
     email
 } from "@vuelidate/validators";
-import emailjs from "emailjs-com";
 const toast = useToast();
 export default {
     name: "AddHeiView",
@@ -173,7 +172,6 @@ export default {
             numberError: "",
             inst_codeError: "",
             hei_typeError: "",
-            password: "",
             hei_acc_id: "",
 
         };
@@ -205,40 +203,7 @@ export default {
         };
     },
     methods: {
-        sendEmail() {
-            var emailParams = {
-                message: "Your account has been created. \n Your account username is " +
-                    this.username +
-                    "\n Your temporary password is " +
-                    this.password,
-                email: this.email,
-            };
-            try {
-                //alert(this.email)
-                emailjs
-                    .send(
-                        "service_rax86wc",
-                        "template_nyqa4k6",
-                        emailParams,
-                        "wXbhKrnQCwo8bc25m"
-                    )
-                    .then(() => {
-                        toast("Email sent!", {
-                            type: TYPE.INFO,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    });
-            } catch (error) {
-                toast("Error:" + error.code + "" + error.message, {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
-        },
+   
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -268,11 +233,11 @@ export default {
 
             this.hei_acc_id = accQuerResult.id;
             try {
-                this.password = "password";
+                var password = Math.random().toString(36).slice(-12);
                 const newHEI = new Parse.User();
                 newHEI.set("hei_name", this.hei_name);
                 newHEI.set("username", this.username);
-                newHEI.set("password", "password");
+                newHEI.set("password", password);
                 newHEI.set("email", this.email);
                 newHEI.set("address", this.address);
                 newHEI.set("number", this.number);
@@ -282,14 +247,21 @@ export default {
                 await newHEI.save()
                     .then(() => {
                         toast("HEI Account Added!", {
-                                type: TYPE.SUCCESS,
-                                timeout: 3000,
-                                position: POSITION.TOP_RIGHT,
-                            }),
-                            // this.sendEmail()
-                            setTimeout(() => this.$router.push({
-                                path: "/hei"
-                            }), 2000);
+                            type: TYPE.SUCCESS,
+                            timeout: 3000,
+                            position: POSITION.TOP_RIGHT,
+                        })
+                        const params = {
+                            name: this.hei_name,
+                            username: this.username,
+                            email: this.email,
+                            password: password,
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+                        setTimeout(() => this.$router.push({
+                            path: "/hei"
+                        }), 2000);
                     });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {

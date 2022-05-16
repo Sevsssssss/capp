@@ -12,3 +12,41 @@ Parse.Cloud.define('asyncFunction', async req => {
 Parse.Cloud.beforeSave('Test', () => {
   throw new Parse.Error(9001, 'Saving test objects is not available.');
 });
+
+const nodemailer = require("nodemailer");
+
+async function sendEmail(params = {}) {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'chedcapp@gmail.com',
+      pass: 'Ched123#',
+    },
+  });
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"CAPP Credentials ✔" <chedcapp@gmail.com>', // sender address
+    to: params.email, // list of receivers
+    subject: "Hello CAPP User!", // Subject line
+    text: "Username: " + params.username
+          + "\nPassword: " + params.password, // plain text body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+}
+
+Parse.Cloud.define("sendEmailNotification", async (request) => {
+  if (request.params.approved) {
+    sendEmail(request.params).then(function () {
+      return 'ok'
+    }, (error) => {
+      console.log(error)
+      throw new Error(error)
+    })
+  }
+});
+
