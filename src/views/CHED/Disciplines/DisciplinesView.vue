@@ -12,7 +12,7 @@
             </button>
         </div>
         <!-- button -->
-        <div class="h-fit pr-2 pt-3 items-center">
+        <div class="items-center">
             <button @click="addDisciplines()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                 <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                     <path fill="none" d="M0 0h24v24H0z" />

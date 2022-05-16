@@ -54,7 +54,7 @@ Parse.masterKey = "master"
 //             "/cmo/add", 
 //             "/cmo/edit", 
 //             "/cmo/view",
-//             "/ched/account"
+//             "/ched/account",
 //             "/programs"
 //         ],
 //     }).then((accesstype) => {
@@ -74,7 +74,7 @@ Parse.masterKey = "master"
 //             user.set("contact_num", "09123456789");
 //             user.set("username", "CHEDROV");
 //             user.set("password", "password");
-//             user.set("email", "chedrov@gmail.com");
+//             user.set("email", "androekolokoy@gmail.com");
 //             user.set("access_type", accesstype.id);
 //             user.set("designation", designation.id);
 //             try {
