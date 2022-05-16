@@ -481,7 +481,7 @@
                 </form>
                 <div class="modal-action">
                     <label for="editAccessType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+                    <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal1()">Submit</label>
                 </div>
             </div>
         </label>
@@ -495,6 +495,19 @@
                 <div class="modal-action">
                     <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
                     <label class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addAccessType()">Continue</label>
+                </div>
+            </div>
+        </div>
+
+        <div :class="{ 'modal-open ': validate1() }" class="modal">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">Edit Access</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+                    Are you sure you want to edit access?
+                </p>
+                <div class="modal-action">
+                    <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal1()">Cancel</label>
+                    <label class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="editAccessType()">Continue</label>
                 </div>
             </div>
         </div>
@@ -541,6 +554,7 @@ export default {
         return {
             deleteAccess: '',
             showModal1: false,
+            showModal2: false,
             v$: useVuelidate(),
             currentpage: 0,
             numPerPage: 10,
@@ -559,15 +573,11 @@ export default {
             checkedAccessTypes: [],
             homeType: "",
             selectedAT: "",
-            selectedATName: "",
         };
     },
     validations() {
         return {
             atname: {
-                required,
-            },
-            selectedATName: {
                 required,
             },
         };
@@ -595,7 +605,7 @@ export default {
 
             try {
                 accessType.save({
-                    name: this.selectedATName.toUpperCase(),
+                    name: this.atname.toUpperCase(),
                     hometype: '/home',
                     privileges: this.checkedAccessTypes,
                 });
@@ -699,6 +709,9 @@ export default {
         validate() {
             return this.showModal1;
         },
+        validate1() {
+            return this.showModal2;
+        },
         async changeSelectedAT(atID, atName) {
             this.selectedAT = atID;
             this.atname = atName;
@@ -718,6 +731,21 @@ export default {
         },
         rqatPriv() {
 
+        },
+        modal1() {
+            var has_error = 0;
+            if (this.atname == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showModal2 = !this.showModal2;
+            }
         },
         modal() {
             var has_error = 0;
