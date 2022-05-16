@@ -168,7 +168,7 @@
             </p>
             <div class="modal-action">
                 <label for="editHei" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modalUpdate()">Cancel</label>
-                <label for="my-modal-4" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none">Continue</label>
+                <label for="my-modal-4" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="updateHEIType">Continue</label>
             </div>
         </div>
     </div>
@@ -266,45 +266,45 @@ export default {
         selectHeiType(id) {
             this.heiTypeSelected = id;
         },
-        async modalUpdate() {
-            console.log(this.heiTypeName)
-            // var has_error = 0;
-            // console.log(this.heiTypeName);
-            // if (this.heiTypeName == "") {
-            //     toast("Please fill out the required information", {
-            //         type: TYPE.ERROR,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     has_error = 1;
-            // }
-            // if (has_error < 1) {
-            //     this.showModal2 = !this.showModal2;
-            //     console.log(this.heiTypeSelected)
-            //     const heiTypes = Parse.Object.extend("HEI_Types");
-            //     const htQuery = new Parse.Query(heiTypes);
-            //     htQuery.equalTo("objectId", this.heiTypeSelected);
+        modalUpdate() {
+            var has_error = 0;
+            console.log(this.heiTypeName);
+            if (this.heiTypeName == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showModal2 = !this.showModal2;   
+            }
+        },
+        async updateHEIType() {
+            const heiTypes = Parse.Object.extend("HEI_Types");
+            const htQuery = new Parse.Query(heiTypes);
+            htQuery.equalTo("objectId", this.heiTypeSelected);
 
-            //     const heiType = await htQuery.first();
+            const heiType = await htQuery.first();
 
-            //     heiType.set("name", this.heiTypeName)
+            heiType.set("name", this.heiTypeName)
 
-            //     heiType.save({
-            //             name: this.heiTypeName.toUpperCase(),
-            //         }).then(() =>
-            //             toast("Hei Type Updated", {
-            //                 type: TYPE.SUCCESS,
-            //                 timeout: 3000,
-            //                 position: POSITION.TOP_RIGHT,
-            //             }),
-            //         ),
+            heiType.save({
+                    name: this.heiTypeName.toUpperCase(),
+                }).then(() =>
+                    toast("Hei Type Updated", {
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    }),
+                ),
 
-            //         // window.location.reload()
-            //         setTimeout(() => {
-            //             window.location.reload()
-            //         }, 2000);
-            // }
+                // window.location.reload()
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
         },
         async modal() {
             var has_error = 0;
