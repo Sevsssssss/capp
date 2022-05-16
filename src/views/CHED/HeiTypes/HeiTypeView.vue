@@ -151,12 +151,28 @@
                 <label for="editHei" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">
                     Cancel
                 </label>
-                <label for="editHei" id="editHei" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">
+                <label for="editHei" id="editHei" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modalUpdate()">
                     Update
                 </label>
             </div>
         </div>
     </label>
+
+    <div :class="{ 'modal-open ': validate2() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold">
+                Update Hei Type
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to update this heiType?
+            </p>
+            <div class="modal-action">
+                <label for="editHei" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modalUpdate()">Cancel</label>
+                <label for="my-modal-4" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none">Continue</label>
+            </div>
+        </div>
+    </div>
+
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -198,6 +214,7 @@ export default {
         return {
             deleteDis: '',
             showModal1: false,
+            showModal2: false,
             v$: useVuelidate(),
             currentpage: 0,
             numPerPage: 10,
@@ -243,8 +260,51 @@ export default {
         validate() {
             return this.showModal1;
         },
+        validate2() {
+            return this.showModal2;
+        },
         selectHeiType(id) {
             this.heiTypeSelected = id;
+        },
+        async modalUpdate() {
+            console.log(this.heiTypeName)
+            // var has_error = 0;
+            // console.log(this.heiTypeName);
+            // if (this.heiTypeName == "") {
+            //     toast("Please fill out the required information", {
+            //         type: TYPE.ERROR,
+            //         timeout: 3000,
+            //         hideProgressBar: true,
+            //         position: POSITION.TOP_RIGHT,
+            //     });
+            //     has_error = 1;
+            // }
+            // if (has_error < 1) {
+            //     this.showModal2 = !this.showModal2;
+            //     console.log(this.heiTypeSelected)
+            //     const heiTypes = Parse.Object.extend("HEI_Types");
+            //     const htQuery = new Parse.Query(heiTypes);
+            //     htQuery.equalTo("objectId", this.heiTypeSelected);
+
+            //     const heiType = await htQuery.first();
+
+            //     heiType.set("name", this.heiTypeName)
+
+            //     heiType.save({
+            //             name: this.heiTypeName.toUpperCase(),
+            //         }).then(() =>
+            //             toast("Hei Type Updated", {
+            //                 type: TYPE.SUCCESS,
+            //                 timeout: 3000,
+            //                 position: POSITION.TOP_RIGHT,
+            //             }),
+            //         ),
+
+            //         // window.location.reload()
+            //         setTimeout(() => {
+            //             window.location.reload()
+            //         }, 2000);
+            // }
         },
         async modal() {
             var has_error = 0;
