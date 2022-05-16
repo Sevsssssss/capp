@@ -409,7 +409,7 @@ export default {
                     privileges: this.checkedAccessTypes,
                 });
 
-                toast("Access Type Added", {
+                toast("Access Type Updated", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,

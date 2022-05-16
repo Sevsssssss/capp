@@ -121,11 +121,11 @@ export default {
     methods: {
         exportToPdfTables() {
             const columns = [{
-                    title: "HEI Name",
+                    title: "PROGRAMS",
                     dataKey: "name",
                 },
                 {
-                    title: "PROGRAMS",
+                    title: "Number of HEIs Applied",
                     dataKey: "program",
                 },
             ];
