@@ -72,15 +72,15 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex  space-x-2 items-end justify-end">
-                                 <router-link :to="{
+                                <router-link :to="{
                                 name: 'EditRQATView',
                                 params: {
                                 rqatID: table.id,
                                 },
                             }">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </router-link>
-                                
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                </router-link>
+
                                 <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
@@ -134,6 +134,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -152,12 +153,18 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 // var dataNumber = 10;
 // var page = 0;
 
 import NoDataAvail from "@/components//NoDataAvail.vue";
-
+const toast = useToast();
 export default {
     name: "RqatView",
     data() {
@@ -207,6 +214,7 @@ export default {
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchRqat() {
@@ -231,6 +239,8 @@ export default {
             this.currentDelAcc = id;
         },
         async deleteRQAT() {
+            this.$refs.Spinner.show();
+
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("objectId", this.currentDelAcc);
             const querResult = await acc.first({
@@ -242,21 +252,33 @@ export default {
             queryApp.equalTo("selectedRQAT", querResult.id)
             const application = await queryApp.find();
 
-            
-            if(application.length > 0){
-                if(confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")){
+            if (application.length > 0) {
+                if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                     querResult.set("isArchived", true);
                     querResult.save({
                         useMasterKey: true,
                     });
                 }
-            }else {
-                if(confirm("Are you sure you would like to delete this account?")){
-                    querResult.destroy({
-                        useMasterKey: true,
-                    });
-                }
+            } else {
+                querResult.destroy({
+                    useMasterKey: true,
+                });
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
         viewAssignments() {
             this.$router.push("/rqat-assignment");
@@ -316,12 +338,12 @@ export default {
                 const rqat = querResult[i];
 
                 var heiAffil = "";
-                if(rqat.get("hei_affil").hei != "None"){
+                if (rqat.get("hei_affil").hei != "None") {
                     const heis = new Parse.Query(Parse.User);
                     heis.equalTo("objectId", rqat.get("hei_affil").hei);
                     const hei = await heis.first();
                     heiAffil = hei.get("hei_name");
-                }else{
+                } else {
                     heiAffil = rqat.get("hei_affil").hei;
                 }
 

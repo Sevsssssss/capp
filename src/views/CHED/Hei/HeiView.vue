@@ -108,14 +108,14 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-4 items-end justify-end">
-                               <router-link :to="{
+                                <router-link :to="{
                                 name: 'EditHeiView',
                                 params: {
                                 heiID: table.id,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </router-link>
+                                    <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
                                 <!-- <a href="#" @click="$router.replace({ path: '/hei/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> -->
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
@@ -174,6 +174,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -192,8 +193,15 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
+const toast = useToast();
 export default {
     name: "HeiView",
     data() {
@@ -267,7 +275,7 @@ export default {
                     score: 0.03343,
                 },
             ],
-            colors: ["approval","revision","payment","evaluation","forcompliance","verification","issuance","completed","noncompliant"],
+            colors: ["approval", "revision", "payment", "evaluation", "forcompliance", "verification", "issuance", "completed", "noncompliant"],
             headers: [{
                     title: "INSTITUTIONAL CODE",
                 },
@@ -311,6 +319,7 @@ export default {
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchHEI() {
@@ -332,6 +341,8 @@ export default {
             this.currentDelAcc = instNum;
         },
         async deleteAccount() {
+            this.$refs.Spinner.show();
+
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
             const querResult = await acc.first({
@@ -343,21 +354,34 @@ export default {
             queryApp.equalTo("createdBy", querResult.id)
             const application = await queryApp.find();
 
-            
-            if(application.length > 0){
-                if(confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")){
+            if (application.length > 0) {
+                if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                     querResult.set("isArchived", true);
                     querResult.save({
                         useMasterKey: true,
                     });
                 }
-            }else {
-                if(confirm("Are you sure you would like to delete this account?")){
-                    querResult.destroy({
-                        useMasterKey: true,
-                    });
-                }
+            } else {
+                querResult.destroy({
+                    useMasterKey: true,
+                });
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    document.location.reload()
+                }, 3000);
+
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
         excelHei() {
             this.$router.push("/hei/upload");
@@ -460,7 +484,7 @@ export default {
             var heiTypes = [];
             var hTypeCounter = [];
 
-            for(var h = 0; h < hTypeQuerResult.length; h++){
+            for (var h = 0; h < hTypeQuerResult.length; h++) {
                 const heiType = hTypeQuerResult[h];
                 heiTypes.push({
                     id: heiType.id,
@@ -483,7 +507,7 @@ export default {
                 console.log(index);
 
                 hTypeCounter[index] += 1;
-                
+
                 heis.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
@@ -497,16 +521,14 @@ export default {
             this.tables = heis;
 
             var dataCol = [];
-            for(var t = 0; t < heiTypes.length; t++){
+            for (var t = 0; t < heiTypes.length; t++) {
                 dataCol.push({
                     title: heiTypes[t].name,
                     num: hTypeCounter[t],
-                   color: this.colors[t],
+                    color: this.colors[t],
                 })
-                
-            }
 
-            
+            }
 
             this.datas = dataCol;
         }
