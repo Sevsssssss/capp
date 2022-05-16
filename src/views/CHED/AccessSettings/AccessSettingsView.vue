@@ -4,6 +4,7 @@
 </div> -->
 <div>
     <div class="p-3">
+        {{checkedAccessTypes}}
         <!-- Table -->
         <div class="overflow-x-auto shadow-lg rounded-lg m-2">
             <!-- Table header -->
@@ -489,7 +490,7 @@
             <div class="modal-box relative rounded-md text-left">
                 <div class="font-semibold text-md">Grant Access</div>
                 <p class="text-sm xxs:leading-tight text-grey-200">
-                    Are you sure you want to grant access?S
+                    Are you sure you want to grant access?
                 </p>
                 <div class="modal-action">
                     <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
@@ -698,9 +699,17 @@ export default {
         validate() {
             return this.showModal1;
         },
-        changeSelectedAT(atID, atName) {
+        async changeSelectedAT(atID, atName) {
             this.selectedAT = atID;
-            this.selectedATName = atName;
+            this.atname = atName;
+
+            const ACCESSTYPES = Parse.Object.extend("AccessTypes");
+            const accQuery = new Parse.Query(ACCESSTYPES);
+            accQuery.equalTo("objectId", this.selectedAT);
+
+            const accesstype = await accQuery.first();
+
+            this.checkedAccessTypes = accesstype.get("privileges");
         },
         heiPriv() {
             // this.checkedAccessTypes.push({
