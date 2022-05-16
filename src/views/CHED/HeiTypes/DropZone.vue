@@ -21,7 +21,7 @@ import {
     ref
 } from "vue";
 import Parse from 'parse';
-import Worker from "@/js/parse.worker.js";
+import Worker from "@/js/heiTypesParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -30,6 +30,11 @@ import {
 } from "vue-toastification";
 const toast = useToast();
 export default {
+    data() {
+        return {
+            counter: 0
+        }
+    },
     components: {
         VueInstantLoadingSpinner
     },
@@ -72,6 +77,9 @@ export default {
                 return false;
             }
         },
+        closeSpinner() {
+            this.$refs.Spinner.hide();
+        },
         createWorker(data, self) {
             console.log("worker")
             // var worker1 = new Worker();
@@ -91,16 +99,10 @@ export default {
                     console.log("Successfully parsed xlsx file!");
                     self.storeHeiTypes(
                         event.data.rows,
-                    ).then(() => {
-                        toast("HEI Types Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    })
+                    )
                 } else {
-                    self.pending = false;
                     alert(event.data.reason);
+                    self.closeSpinner();
                 }
             };
             // }
@@ -139,19 +141,26 @@ export default {
         async storeHeiTypes(heiTypesData) {
             console.log("store")
             for (let i = 0; i < heiTypesData.length; i++) {
-
-                const heiType = Parse.Object.extend("HEI_Types");
-                const newHeiType = new heiType();
+                this.counter = this.counter + 1;
                 try {
+                    const heiType = Parse.Object.extend("HEI_Types");
+                    const newHeiType = new heiType();
+
                     newHeiType.save({
                         name: heiTypesData[i].A.toUpperCase(),
                     })
 
                 } catch (error) {
                     console.log(error.message);
+                    this.counter = this.counter - 1;
                 }
 
             }
+            toast(this.counter + " HEI Types Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+            });
             this.$refs.Spinner.hide();
             this.$router.push("/heiTypes");
             this.pending = false;
