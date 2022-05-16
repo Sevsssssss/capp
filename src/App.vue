@@ -75,7 +75,7 @@ Parse.masterKey = "master"
 //             user.set("contact_num", "09123456789");
 //             user.set("username", "CHEDROV");
 //             user.set("password", "password");
-//             user.set("email", "androekolokoy@gmail.com");
+//             user.set("email", "dxbondad36@gmail.com");
 //             user.set("access_type", accesstype.id);
 //             user.set("designation", designation.id);
 //             try {
