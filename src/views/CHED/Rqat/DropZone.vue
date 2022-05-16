@@ -159,6 +159,7 @@ export default {
                         firstname: rqatData[i].B,
                         middleinitial: rqatData[i].C,
                     };
+                    var password = Math.random().toString(36).slice(-12);
                     newRQAT.set("name", rqatName);
                     newRQAT.set("username", rqatData[i].D);
                     newRQAT.set("password", "password");
@@ -167,7 +168,16 @@ export default {
                     newRQAT.set("email", rqatData[i].G);
                     newRQAT.set("access_type", this.rqat_acc_id);
                     newRQAT.set("hasTransactions", false);
-                    await newRQAT.save();
+                    await newRQAT.save().then(() => {
+                        const params = {
+                            name: this.rqatName,
+                            username: rqatData[i].D,
+                            email: rqatData[i].G,
+                            password: password,
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+                    })
                 } catch (error) {
                     console.log(error.message);
                     this.counter = this.counter - 1;

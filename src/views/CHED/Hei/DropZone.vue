@@ -149,11 +149,11 @@ export default {
                     const accQuerResult = await queryACC.first();
 
                     this.hei_acc_id = accQuerResult.id;
-
+                    var password = Math.random().toString(36).slice(-12);
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
                     newHEI.set("username", heiData[i].B);
-                    newHEI.set("password", "password");
+                    newHEI.set("password", password);
                     newHEI.set("email", heiData[i].C);
                     newHEI.set("address", heiData[i].D);
                     newHEI.set("number", heiData[i].E.toString());
@@ -173,14 +173,23 @@ export default {
                             newHeiType.save({
                                 name: heiData[i].G.toUpperCase(),
                             })
-                        } catch (error){
+                        } catch (error) {
                             console.log(error.message);
                         }
                     }
 
                     newHEI.set("access_type", this.hei_acc_id);
                     newHEI.set("hasTransactions", false);
-                    await newHEI.save();
+                    await newHEI.save().then(() => {
+                        const params = {
+                            name: heiData[i].A,
+                            username: heiData[i].B,
+                            email: heiData[i].C,
+                            password: password,
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+                    })
 
                 } catch (error) {
                     console.log(error.message);

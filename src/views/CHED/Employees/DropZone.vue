@@ -141,6 +141,7 @@ export default {
             for (let i = 0; i < employeesData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
+                    var password = Math.random().toString(36).slice(-12);
                     const newEmployee = new Parse.User();
                     var employeeName = {
                         lastname: employeesData[i].A,
@@ -149,7 +150,7 @@ export default {
                     };
                     newEmployee.set("name", employeeName);
                     newEmployee.set("username", employeesData[i].D);
-                    newEmployee.set("password", "password");
+                    newEmployee.set("password", password);
                     newEmployee.set("email", employeesData[i].E);
                     newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
 
@@ -168,7 +169,16 @@ export default {
 
                     newEmployee.set("discipline", employeesData[i].I);
 
-                    await newEmployee.save();
+                    await newEmployee.save().then(() => {
+                        const params = {
+                            name: this.employeeName,
+                            username: employeesData[i].D,
+                            email: employeesData[i].E,
+                            password: password,
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+                    });
                 } catch (error) {
                     console.log(error.message);
                     this.counter = this.counter - 1;

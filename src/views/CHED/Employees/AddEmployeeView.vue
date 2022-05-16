@@ -258,6 +258,7 @@ export default {
         },
         async addEmployee() {
             const newEmployee = new Parse.User();
+            var password = Math.random().toString(36).slice(-12);
             var employeeName = {
                 lastname: this.lastname,
                 firstname: this.firstname,
@@ -265,7 +266,7 @@ export default {
             };
             newEmployee.set("name", employeeName);
             newEmployee.set("username", this.username);
-            newEmployee.set("password", "password");
+            newEmployee.set("password", password);
             newEmployee.set("email", this.email);
             newEmployee.set("contact_num", this.contactnum);
             newEmployee.set("access_type", this.access_type);
@@ -282,7 +283,7 @@ export default {
                         name: this.employeeName,
                         username: this.username,
                         email: this.email,
-                        password: "password",
+                        password: password,
                         approved: true,
                     };
                     Parse.Cloud.run("sendEmailNotification", params);
