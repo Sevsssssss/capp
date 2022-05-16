@@ -14,10 +14,10 @@
         </div>
     </div>
     <br>
-    <div v-for="appType in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div v-for="(appType, index) in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="p-2  flex justify-between items-center">
             <div class="text-lg font-semibold"> {{appType.applicationType}} </div>
-            <button class="btn-table" @click="exportToPdfTables()">Export PDF</button>
+            <button class="btn-table" @click="exportToPdfTables(index)">Export PDF</button>
         </div>
         <table class=" w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -109,24 +109,20 @@ export default {
                     title: "Number of HEIs Applied",
                 },
             ],
-            items: [{
-                name: "one",
-                program: "two",
-            }, ],
             objectName: [],
             objectNum: [],
             color: ["approval", "revision", "payment", "evaluation", "forcompliance", "verification", "issuance", "completed", "noncompliant"]
         };
     },
     methods: {
-        exportToPdfTables() {
+        exportToPdfTables(index) {
             const columns = [{
                     title: "PROGRAMS",
-                    dataKey: "name",
+                    dataKey: "program",
                 },
                 {
                     title: "Number of HEIs Applied",
-                    dataKey: "program",
+                    dataKey: "count",
                 },
             ];
             const doc = new jsPDF({
@@ -141,7 +137,7 @@ export default {
             // Using autoTable plugin
             doc.autoTable({
                 columns,
-                body: this.items,
+                body: this.listofPrograms[index].programList,
                 margin: {
                     left: 0.5,
                     top: 1.25,
