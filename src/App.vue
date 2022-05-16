@@ -50,9 +50,9 @@ Parse.masterKey = "master"
 //             "/rqat/edit",
 //             "/employee/edit",
 //             "/heiTypes",
-//             "/cmo", 
-//             "/cmo/add", 
-//             "/cmo/edit", 
+//             "/cmo",
+//             "/cmo/add",
+//             "/cmo/edit",
 //             "/cmo/view",
 //             "/ched/account",
 //             "/programs",
@@ -61,29 +61,38 @@ Parse.masterKey = "master"
 //     }).then((accesstype) => {
 //         const Designations = Parse.Object.extend("Designations");
 //         const newDesignation = new Designations();
-
+//       //  var password = Math.random().toString(36).slice(-12);
 //         newDesignation.save({
 //             name: "SUPER ADMIN",
 //         }).then((designation) => {
 //             const user = new Parse.User();
 //             var employeeName = {
-//             lastname: "Ched",
-//             firstname: "Region V",
-//             middleinitial: "N/A",
+//                 lastname: "Ched",
+//                 firstname: "Region V",
+//                 middleinitial: "N/A",
 //             };
 //             user.set("name", employeeName);
 //             user.set("contact_num", "09123456789");
 //             user.set("username", "CHEDROV");
 //             user.set("password", "password");
-//             user.set("email", "androekolokoy@gmail.com");
+//             user.set("email", "chedcapp@gmail.com");
 //             user.set("access_type", accesstype.id);
 //             user.set("designation", designation.id);
 //             try {
-//             user.save();
-//             // Hooray! Let them use the app now.
+//                 user.save().then(() => {
+//                     const params = {
+//                         name: employeeName,
+//                         username: "CHEDROV",
+//                         email: "chedcapp@gmail.com",
+//                         password: "password",
+//                         approved: true,
+//                     };
+//                     Parse.Cloud.run("sendEmailNotification", params);
+//                 })
+//                 // Hooray! Let them use the app now.
 //             } catch (error) {
-//             // Show the error message somewhere and let the user try again.
-//             alert("Error: " + error.code + " " + error.message);
+//                 // Show the error message somewhere and let the user try again.
+//                 alert("Error: " + error.code + " " + error.message);
 //             }
 //         }, (error) => {
 //             console.log('error: ' + error.message)
@@ -118,7 +127,6 @@ Parse.masterKey = "master"
 // } catch (error) {
 //     alert("Error: " + error.code + " " + error.message);
 // }
-
 
 export default {};
 </script>

@@ -262,36 +262,35 @@ export default {
         },
         async addRQAT() {
             this.$refs.Spinner.show();
-
-            const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
-            const queryACCR = new Parse.Query(AccessTypeRQAT);
-            queryACCR.equalTo("name", "RQAT");
-
-            const accQuerResultRQAT = await queryACCR.first();
-
-            this.rqat_acc_id = accQuerResultRQAT.id;
-
-            var months = [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December",
-            ];
-            var today = new Date();
-            var month = today.getMonth();
-            var day = today.getDate();
-            var year = today.getFullYear();
-            var currentDay = months[month] + " " + day + ", " + year;
-
             try {
+                const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+                const queryACCR = new Parse.Query(AccessTypeRQAT);
+                queryACCR.equalTo("name", "RQAT");
+
+                const accQuerResultRQAT = await queryACCR.first();
+
+                this.rqat_acc_id = accQuerResultRQAT.id;
+
+                var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                var today = new Date();
+                var month = today.getMonth();
+                var day = today.getDate();
+                var year = today.getFullYear();
+                var currentDay = months[month] + " " + day + ", " + year;
+
                 const newRQAT = new Parse.User();
                 var rqatName = {
                     lastname: this.lastname,
