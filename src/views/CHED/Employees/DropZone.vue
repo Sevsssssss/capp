@@ -12,7 +12,6 @@
         Submit
     </button>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-
 </div>
 </template>
 
@@ -20,8 +19,8 @@
 import {
     ref
 } from "vue";
-import Parse from 'parse';
-import Worker from "@/js/parse.worker.js";
+import Parse from "parse";
+import Worker from "@/js/employeesParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -30,8 +29,13 @@ import {
 } from "vue-toastification";
 const toast = useToast();
 export default {
+    data() {
+        return {
+            counter: 0
+        }
+    },
     components: {
-        VueInstantLoadingSpinner
+        VueInstantLoadingSpinner,
     },
     setup() {
         const active = ref(false);
@@ -55,7 +59,7 @@ export default {
     },
     methods: {
         validate(filename) {
-            console.log("validate")
+            console.log("validate");
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
             if (filename === "") {
                 this.className = "alert-error";
@@ -72,37 +76,33 @@ export default {
                 return false;
             }
         },
+        closeSpinner() {
+            this.$refs.Spinner.hide();
+        },
         createWorker(data, self) {
-            console.log("worker")
+            console.log("worker");
             // var worker1 = new Worker();
             // if (typeof Worker !== "undefined") {
-            console.log("in worker")
+            console.log("in worker");
             if (typeof self.worker == "undefined") {
-                console.log('setWorker')
+                console.log("setWorker");
                 self.worker = new Worker();
             }
             self.worker.postMessage({
-                d: data
+                d: data,
             });
 
             self.worker.onmessage = function (event) {
-                console.log('onMessage')
+                console.log("onMessage");
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeEmployees(
-                        event.data.rows,
-                    ).then(() => {
-                        toast("EMPLOYEE Accounts Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    })
+                    self.storeEmployees(event.data.rows);
                 } else {
-                    self.pending = false;
                     alert(event.data.reason);
+                    self.closeSpinner();
                 }
             };
+
             // }
         },
         upload() {
@@ -114,7 +114,7 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
             } else {
-                console.log("upload")
+                console.log("upload");
                 var validation = this.validate(this.dropzoneFile);
                 if (validation) {
                     this.pending = true;
@@ -137,40 +137,48 @@ export default {
         },
 
         async storeEmployees(employeesData) {
-            console.log("store")
+            console.log("store");
             for (let i = 0; i < employeesData.length; i++) {
-                const newEmployee = new Parse.User();
-                var employeeName = {
-                    lastname: employeesData[i].A,
-                    firstname: employeesData[i].B,
-                    middleinitial: employeesData[i].C,
-                };
-                newEmployee.set("name", employeeName);
-                newEmployee.set("username", employeesData[i].D);
-                newEmployee.set("password", "password");
-                newEmployee.set("email", employeesData[i].E);
-                newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
-
-                const accesstype = Parse.Object.extend("AccessTypes");
-                const accesstypeQuery = new Parse.Query(accesstype);
-                accesstypeQuery.equalTo('name', employeesData[i].G);
-                const accesstypeResult = await accesstypeQuery.find();
-
-                const designations = Parse.Object.extend("Designations");
-                const designationQuery = new Parse.Query(designations);
-                designationQuery.equalTo('name', employeesData[i].H);
-                const designationResult = await designationQuery.find();
-
-                newEmployee.set("access_type", accesstypeResult[0].id);
-                newEmployee.set("designation", designationResult[0].id);
-
-                newEmployee.set("discipline", employeesData[i].I);
+                this.counter = this.counter + 1;
                 try {
+                    const newEmployee = new Parse.User();
+                    var employeeName = {
+                        lastname: employeesData[i].A,
+                        firstname: employeesData[i].B,
+                        middleinitial: employeesData[i].C,
+                    };
+                    newEmployee.set("name", employeeName);
+                    newEmployee.set("username", employeesData[i].D);
+                    newEmployee.set("password", "password");
+                    newEmployee.set("email", employeesData[i].E);
+                    newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
+
+                    const accesstype = Parse.Object.extend("AccessTypes");
+                    const accesstypeQuery = new Parse.Query(accesstype);
+                    accesstypeQuery.equalTo("name", employeesData[i].G);
+                    const accesstypeResult = await accesstypeQuery.find();
+
+                    const designations = Parse.Object.extend("Designations");
+                    const designationQuery = new Parse.Query(designations);
+                    designationQuery.equalTo("name", employeesData[i].H);
+                    const designationResult = await designationQuery.find();
+
+                    newEmployee.set("access_type", accesstypeResult[0].id);
+                    newEmployee.set("designation", designationResult[0].id);
+
+                    newEmployee.set("discipline", employeesData[i].I);
+
                     await newEmployee.save();
                 } catch (error) {
                     console.log(error.message);
+                    this.counter = this.counter - 1;
                 }
             }
+            toast(this.counter + " EMPLOYEE Accounts Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+            });
             this.$refs.Spinner.hide();
             this.$router.push("/employees");
             this.pending = false;

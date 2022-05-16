@@ -278,7 +278,14 @@ export default {
                         timeout: 2000,
                         position: POSITION.TOP_RIGHT,
                     });
-                    // this.sendEmail().then(() => {
+                    const params = {
+                        name: this.employeeName,
+                        username: this.username,
+                        email: this.email,
+                        password: "password",
+                        approved: true,
+                    };
+                    Parse.Cloud.run("sendEmailNotification", params);
                     setTimeout(
                         () =>
                         this.$router.push({
@@ -286,7 +293,6 @@ export default {
                         }),
                         1000
                     );
-                    // });
                 });
                 this.$refs.Spinner.show();
                 setTimeout(
@@ -374,7 +380,7 @@ export default {
                     id: queryResultDesig[w].id,
                     title: queryResultDesig[w].get("name"),
                 });
-                if(queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR'){
+                if (queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR') {
                     this.educSupId = queryResultDesig[w].id;
                 }
             }

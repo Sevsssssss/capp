@@ -21,7 +21,34 @@ const config = {
   liveQuery: {
     classNames: ['Posts', 'Comments'], // List of classes to support for query subscriptions
   },
-  javascriptKey : ';9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o'
+  javascriptKey : ';9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o',
+
+  accountLockout: {
+    duration: 5,
+    threshold: 3,
+    unlockOnPasswordReset: true,
+  },
+  passwordPolicy: {
+    doNotAllowUsername: true,
+    masPasswordHistory: 5,
+  },
+  preventLoginWithUnverifiedEmail: true,
+  enableAnonymousUsers: false,
+  verifyUserEmails: true,
+  emailVerifyTokenValidityDuration: 12 * 60 * 60,
+  appName: 'capp',
+  publicServerURL: 'http://localhost:1337/api',
+  emailAdapter: {
+    module: 'parse-smtp-template',
+    options: {
+      secure: true,
+      port: 465,
+      host: 'smtp.gmail.com',
+      user: 'chedcapp@gmail.com',
+      password: 'Ched123#',
+      fromAddress: 'CAPP <chedcapp@gmail.com>',
+    }
+  }
 };
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
