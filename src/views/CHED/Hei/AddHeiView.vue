@@ -225,6 +225,7 @@ export default {
         },
         async addHEI() {
             this.$refs.Spinner.show();
+            try {
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "HEI");
@@ -232,7 +233,7 @@ export default {
             const accQuerResult = await queryACC.first();
 
             this.hei_acc_id = accQuerResult.id;
-            try {
+            
                 var password = Math.random().toString(36).slice(-12);
                 const newHEI = new Parse.User();
                 newHEI.set("hei_name", this.hei_name);
