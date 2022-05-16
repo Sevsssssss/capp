@@ -478,6 +478,8 @@ export default {
                     return object.id == hei.get("hei_type");
                 });
 
+                const htypeName = heiTypes[index].name;
+
                 console.log(index);
 
                 hTypeCounter[index] += 1;
@@ -487,7 +489,7 @@ export default {
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
                     address: hei.get("address"),
-                     type: hei.get("hei_type"),
+                    type: htypeName,
                     email: hei.get("email"),
                 });
             }

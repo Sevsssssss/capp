@@ -80,7 +80,7 @@
                     <span class="label-text">HEI Type:</span>
                 </label>
                 <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                    <option v-for="heiType in hei_types" :key="heiType">
+                    <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
                         <div class="">{{ heiType.title }}</div>
                     </option>
                 </select>
