@@ -4,17 +4,17 @@
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
-                    <div class="font-normal text-md">
+                    <div class="font-normal text-sm">
                         Type: <span class="font-semibold">{{ type }}</span>
                     </div>
-                    <div class="font-normal text-md">
+                    <div class="font-normal text-sm">
                         Date Applied: <span class="font-semibold">{{ dateApplied }}</span>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
-                    <div class="font-normal text-md">
+                    <div class="font-normal text-sm">
                         Status: <span class="font-semibold">{{ status }}</span>
                     </div>
                 </div>
@@ -24,32 +24,33 @@
         <hr />
 
         <form @submit.prevent="submitPayment" class="m-5">
-            <div class="alert alert-info shadow-lg my-5">
+            <div class="flex p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert">
+                <svg class="inline flex-shrink-0 mr-3 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>Please Proceed with payment to CHED Region V and upload the receipts here.</span>
+                    <span class="">Please Proceed with payment to CHED Region V and upload the receipts here.</span>
                 </div>
             </div>
+
             <div class="overflow-x-auto shadow-lg rounded-lg p-5">
                 <div class="">
                     <label class="label">
                         <span class="label-text">Upload Proof of Payment for Application:</span>
-                        <span class="label-text-alt">required</span>
+
                     </label>
                     <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
                 </div>
                 <div class="">
                     <label class="label">
                         <span class="label-text">Upload Proof of Payment for Evaluation:</span>
-                        <span class="label-text-alt">required</span>
+
                     </label>
                     <input ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
                 </div>
             </div>
 
-        <!-- BUTTONS -->
+            <!-- BUTTONS -->
             <div class="space-x-6 p-10">
                 <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
