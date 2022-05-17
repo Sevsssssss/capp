@@ -1,5 +1,29 @@
 <template>
-<div class="p-3">
+<div v-if="!tables.length" style="height: 100%">
+    <div class="flex flex-col center h-full p-5">
+        <div class="noDataAvail">No Data Available</div>
+        <div class="h-fit pt-3 items-center">
+            <button @click="excelDesignation()" type="button" class="btn-table">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                </svg>
+                <div class="pl-2">Upload Excel</div>
+            </button>
+        </div>
+        <!-- button -->
+        <div class="items-center">
+            <label type="button" for="createDesignation" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                </svg>
+                <div class="pl-2">Add Designation</div>
+            </label>
+        </div>
+    </div>
+</div>
+<div v-else class="p-3">
     <!-- Table -->
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
@@ -19,6 +43,15 @@
                 </div>
             </div>
             <div class="flex flex-row">
+                <div class="h-fit pt-3 items-center">
+                    <button @click="excelDesignation()" type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload Excel</div>
+                    </button>
+                </div>
                 <!-- button -->
                 <div class="h-fit pr-5 pt-3 items-center">
                     <label type="button" for="createDesignation" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
@@ -55,12 +88,12 @@
               >
             </td> -->
                     <td class="px-6 py-4 flex flex-row justify-end">
-                        <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3">Edit</label>
-                        <div class="hover:text-brand-red/60 self-center">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                        <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3" @click="selectDesignation(i.id)">Edit</label>
+                        <label for="deleteFunc" class="hover:text-brand-red/60 self-center">
+                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedDesignationDelete(i.id)">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
-                        </div>
+                        </label>
                     </td>
                 </tr>
             </tbody>
@@ -156,6 +189,20 @@
             </div>
         </div>
     </label>
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Discipline</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                discipline?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteDesignation()">Delete</label>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -181,6 +228,7 @@ export default {
     },
     data() {
         return {
+            deleteDis: '',
             showModal1: false,
             v$: useVuelidate(),
             currentpage: 0,
@@ -194,6 +242,7 @@ export default {
             sort_type: "Sort by Designation",
             designationName: "",
             checkedAccessTypes: [],
+            designationSelected: "",
         };
     },
     validations() {
@@ -226,8 +275,12 @@ export default {
         validate() {
             return this.showModal1;
         },
-        modal() {
+        selectDesignation(id) {
+            this.designationSelected = id;
+        },
+        async modal() {
             var has_error = 0;
+            console.log(this.designationName);
             if (this.designationName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -239,7 +292,68 @@ export default {
             }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
+                console.log(this.designationSelected)
+                const designations = Parse.Object.extend("Designations");
+                const desigQuery = new Parse.Query(designations);
+                desigQuery.equalTo("objectId", this.designationSelected);
+
+                const designation = await desigQuery.first();
+
+                designation.set("name", this.designationName)
+
+                designation.save({
+                        name: this.designationName.toUpperCase(),
+                    }).then(() =>
+                        toast("Designation Updated", {
+                            type: TYPE.SUCCESS,
+                            timeout: 3000,
+                            position: POSITION.TOP_RIGHT,
+                        }),
+                    ),
+
+                    // window.location.reload()
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 2000);
             }
+        },
+        selectedDesignationDelete(id) {
+            this.deleteDis = id;
+        },
+        async deleteDesignation() {
+            this.$refs.Spinner.show();
+            const designations = Parse.Object.extend("Designations");
+            const desigQuery = new Parse.Query(designations);
+            desigQuery.equalTo("objectId", this.deleteDis);
+
+            const designation = await desigQuery.first();
+
+            designation.destroy().then((disc) => {
+                console.log("Deleted object: " + disc.id);
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000);
+            }, (error) => {
+                toast("Error:" + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log("Error: " + error)
+            })
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
         addDesignation() {
             this.$refs.Spinner.show();
@@ -289,13 +403,16 @@ export default {
                 this.currentpage += 1;
             }
         },
+        excelDesignation() {
+            this.$router.push("/designations/upload");
+        },
     },
 
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -321,6 +438,7 @@ export default {
                 const desig = querResult[i];
 
                 designationsTable.push({
+                    id: desig.id,
                     Name: desig.get("name"),
                 });
             }

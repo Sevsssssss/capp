@@ -9,16 +9,18 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div>
-            <div class="font-normal text-sm">
-                Evalutaion Instrument: <a href="#" target="_blank" class="text-blue-400">
-                    Click here </a>
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mx-1 my-1">
+            <span class="text-sm">Assigned To:</span>
+            <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
+                <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
             </div>
+
         </div>
     </div>
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 ">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
                         {{ header.title }}
@@ -26,9 +28,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="table in searchHEI" :key="table" class="bg-white border-b ">
-                    <th scope="row" class=" px-6 py-4  font-medium text-gray-900 text-wrap break-words">
-                        {{table.credential}}
+                <tr v-for="table in tables" :key="table" class="bg-white border-b">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 text-wrap break-words">
+                        {{ table.credential }}
                     </th>
                     <td class="px-6 py-4 text-blue-400">
                         <a :href="table.file" target="_blank" class="text-blue-400">view</a>
@@ -43,36 +45,49 @@
                 <div>Dismiss</div>
             </button>
         </div>
-        <div>
-            <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                Assign</label>
+        <div v-if="supervisorChecker()" class="pr-5">
+            <div class="btn border text-white bg-brand-red hover:bg-brand-red/60">
+                Request Re-Assign
+            </div>
         </div>
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
+            <div class="btn border-none text-white bg-blue-700 hover:bg-blue-800">
+                Evaluate
+            </div>
+        </div>
+        <div v-else>
+            <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                Assign RQAT
+            </label>
+        </div>
+
     </div>
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">RE-ASSIGN SUPERVISOR</div>
-            <p class="py-2 text-sm">
-                You've been selected for a chance to get one year of subscription to
-                use Wikipedia for free!
-            </p>
-            <!-- Filter -->
-            <div class="flex flex-row py-6 justify-start items-start">
-                <!-- sort -->
-                <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort">
-                        <option disabled selected>Select Supervisor</option>
-                        <option>Joshua Sarmiento</option>
-                        <option>Sev Sarate</option>
-                        <option>Duane</option>
-                        <option>Jeff</option>
-                        <option>Saq</option>
-                    </select>
+
+            <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
+            <label for="table-search" class="sr-only">Search</label>
+            <div class="relative mt-2">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                    </svg>
                 </div>
+                <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Search for RQAT name" />
+            </div>
+            <!-- Filter -->
+            <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-5">
+                <label v-for="rqat in searchRQAT" :key="rqat" :value="rqat.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
+                    <input type="checkbox" class="checkbox mr-1" :value="rqat.id" v-model="selectedRqat" />
+                    <div class="label-text viewSubCatbool" style="align-self: center">
+                        {{ rqat.name }}
+                    </div>
+                </label>
             </div>
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="submitChanges()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                <label @click="this.selectedRqat.length > 0 ? assignRQAT() : showToastSupervisor()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
             </div>
         </div>
     </div>
@@ -80,7 +95,15 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import Parse from "parse";
+
+const toast = useToast();
+
 export default {
     props: ["appID"],
     name: "ForEvaluation",
@@ -98,17 +121,70 @@ export default {
                 },
             ],
             tables: [],
-            search: '',
-        }
+            search: "",
+            Rqat: [],
+            selectedRqat: [],
+            storedRqats: [],
+            supervisor: false,
+        };
     },
     computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
+        searchRQAT() {
+            return this.Rqat.filter((p) => {
                 return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                    p.name.toLowerCase().indexOf(this.search.toLowerCase()) != -1
                 );
             });
         },
+    },
+    methods: {
+        supervisorChecker() {
+            return this.supervisor;
+        },
+        async assignRQAT() {
+            try {
+                console.log("Hellos");
+                const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.equalTo("objectId", this.appID);
+
+                const application = await query.first();
+
+                application.set("selectedRQAT", this.selectedRqat);
+
+                application.save().then((application) => {
+                    toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
+                            type: TYPE.INFO,
+                            timeout: 2000,
+                            position: POSITION.TOP_RIGHT,
+                            hideProgressBar: false,
+                            closeButton: false,
+
+                        }),
+                        console.log("Object Updated: " + application.id);
+                });
+                setTimeout(() => {
+                    this.$router.push({
+                        path: "/application/ " + this.appID.slice(0, 2).join(""),
+                    })
+                }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            } catch (error) {
+                alert(error.message)
+            }
+
+        },
+        showToastSupervisor() {
+            toast("Please select the required supervisor", {
+                type: TYPE.ERROR,
+                timeout: 3000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+            });
+        }
     },
 
     mounted: async function () {
@@ -125,10 +201,14 @@ export default {
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
 
-        appTypeQuery.equalTo(
-            "objectId",
-            application.get("applicationType")
-        );
+        //Get to view applications to specific user (Education Supervisor)
+        if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
+            query.equalTo("selectedSupervisor", Parse.User.current().id);
+            query.equalTo("applicationStatus", "For Evaluation");
+            this.supervisor = true;
+        }
+
+        appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
         const applicationType = await appTypeQuery.first();
         for (var i = 0; i < application.get("requirements").length; i++) {
@@ -142,11 +222,69 @@ export default {
         }
 
         this.tables = storedApplications;
-    },
 
-}
+        //Query RQAT
+        const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+        const queryACCR = new Parse.Query(AccessTypeRQAT);
+        queryACCR.equalTo("name", "RQAT");
+
+        const accQuerResultRQAT = await queryACCR.first();
+
+        const user = new Parse.Query(Parse.User);
+        user.equalTo("access_type", accQuerResultRQAT.id);
+        const rqatResult = await user.find();
+        console.log(accQuerResultRQAT.id);
+        console.log(rqatResult);
+
+        if (application.get("selectedRQAT").length > 0) {
+            const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
+            const selRQATResult = await selectRqatQuery.find();
+
+            var selRQATS = [];
+
+            for (var k = 0; k < selRQATResult.length; k++) {
+                const selrqat = selRQATResult[k];
+
+                selRQATS.push(selrqat.get("name")["lastname"] +
+                    ", " +
+                    selrqat.get("name")["firstname"] +
+                    " " +
+                    selrqat.get("name")["middleinitial"] +
+                    ".");
+            }
+
+            this.storedRqats = selRQATS;
+        }
+
+        var dbRqat = [];
+
+        dbRqat.push({
+            id: Parse.User.current().id,
+            name: Parse.User.current().get("name")["lastname"] +
+                ", " +
+                Parse.User.current().get("name")["firstname"] +
+                " " +
+                Parse.User.current().get("name")["middleinitial"] +
+                ".",
+        });
+
+        for (var j = 0; j < rqatResult.length; j++) {
+            const rqat = rqatResult[j];
+            console.log("HEllo");
+            dbRqat.push({
+                id: rqat.id,
+                name: rqat.get("name")["lastname"] +
+                    ", " +
+                    rqat.get("name")["firstname"] +
+                    " " +
+                    rqat.get("name")["middleinitial"] +
+                    ".",
+            });
+        }
+        this.Rqat = dbRqat;
+
+    },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

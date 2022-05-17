@@ -18,10 +18,12 @@
             </div>
             <div class="dropdown flex">
                 <select class="select select-ghost select-sm w-full max-w-xs border-none" style="outline: none" v-model="sort_type" @change="filterApplications()">
-                    <option selected>All</option>
-                    <option>For Approval</option>
-                    <option>For Revision</option>
-                    <option>Completed</option>
+                    <option selected>ALL</option>
+                    <option>FOR APPROVAL</option>
+                    <option>FOR REVISION</option>
+                    <option>FOR EVALUATION</option>
+                    <option>FOR ISSUANCE</option>
+                    <option>COMPLETED</option>
                 </select>
             </div>
         </div>
@@ -36,7 +38,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-if="sort_type_var == false">
                 <tr v-for="table in searchApplication" :key="table" class="bg-white border-b hover:bg-gray-50">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ table.dateApplied }}
@@ -62,57 +64,74 @@
                         <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 p-2 font-normal evaluation rounded-md">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 p-2 font-normal issuance rounded-md">
+                        <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'Completed'" class="btn-sm1 p-2 font-normal completed rounded-md">
+                        <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
                             {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
+                            {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'For Payment'" class="relative pt-3">
+                            <span v-if="table.paymentStatus != ''" class="absolute top-0 left-0 badge badge-accent text-sm">{{table.paymentStatus}}</span>
+                            <div  class="btn-sm1 rounded-md font-normal payment">
+                                {{ table.status}}
+                            </div>
+                        </div>
+                        <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                            {{ table.status }}
+                        </div>
+                        <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
+                            {{ table.status }} 
                         </div>
                     </td>
-                    <td class="px-6 py-4 text-right">
+                    <td class="px-6 py-4">
                         <router-link :to="{
                          name: 'EditHEIapplication',
                          params: {
                          id: table.appID,
+                         statusA: table.status
                         },
                         }">
-                            <a v-if="
-                    statusChecker(table.status) &&
-                    table.status === 'For Revision'
-                  " href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                        </router-link>
+                         <router-link :to="{
+                         name: 'PaymentApplication',
+                         params: {
+                         id: table.appID,
+                         statusA: table.status
+                        },
+                        }">
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Payment' && (table.paymentStatus != 'For Verification')" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                         <router-link :to="{
-                        name: 'ForApprovalView',
-                        params: {
-                        id: table.appID,
+                         name: 'ComplyApplication',
+                         params: {
+                         id: table.appID,
+                         statusA: table.status
                         },
                         }">
-                            <a v-if="
-                    statusChecker(table.status) &&
-                    table.status === 'For Approval'
-                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            <a v-if="statusChecker(table.status) &&table.status === 'For Compliance'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
-                        <a v-if="
-                    table.status === 'For Evaluation'
-                  " href="#"></a>
-                        <a v-if="
-                    table.status === 'For Issuance'
-                  " href="#"></a>
-                        <router-link :to="{
-                        name: 'ForApprovalView',
-                        params: {
-                        id: table.appID,
-                        },
-                        }">
-                            <a v-if="
-                    statusChecker(table.status) &&
-                    table.status === 'For Completed'
-                  " href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                        </router-link>
+                        <a v-if="statusChecker(table.status) &&table.status === 'Completed'" @click="download()" href="#" class="text-blue-400 hover:text-blue-700">
+                            <svg style="width:20px;height:20px" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
+                            </svg>
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div v-if="searchApplication.length == 0" class="p-5 font-medium">
+            <!-- NO DATA FOUND {{search}} -->
+            Sorry, the keyword "{{ search }}" cannot be found in the database.
+        </div>
+        <div v-if="sort_type_var == true" class="p-5 font-medium">
+            <!-- NO DATA FOUND {{search}} -->
+            Sorry, there is no data with the type of "{{ sort_type }}" in the
+            database.
+        </div>
         <!-- Table Footer -->
         <div class="table-footer flex flex-row justify-between">
             <div class="flex flex-row pl-4 justify-center items-center">
@@ -165,6 +184,7 @@ export default {
             numPerPage: 10,
             sort_type: "All",
             search: "",
+            sort_type_var: false,
             headers: [{
                     title: "DATE APPLIED",
                 },
@@ -218,6 +238,9 @@ export default {
                 this.currentpage += 1;
             }
         },
+        download() {
+            alert('Certificate Download');
+        },
         async filterApplications() {
             var i = 0;
             var months = [
@@ -265,7 +288,13 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsAll;
+                if (storedApplicationsAll.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsAll;
+                } else {
+                    this.sort_type_var = true;
+                }
+
             } else if (this.sort_type == "For Approval") {
                 var storedApplicationsFA = [];
                 const applications = Parse.Object.extend("Applications");
@@ -294,7 +323,12 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFA;
+                if (storedApplicationsFA.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFA;
+                } else {
+                    this.sort_type_var = true;
+                }
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
                 const applications = Parse.Object.extend("Applications");
@@ -323,7 +357,12 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsFR;
+                if (storedApplicationsFR.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFR;
+                } else {
+                    this.sort_type_var = true;
+                }
             } else if (this.sort_type == "Completed") {
                 var storedApplicationsC = [];
                 const applications = Parse.Object.extend("Applications");
@@ -352,7 +391,12 @@ export default {
                     });
                 }
                 this.totalEntries = querResult.length;
-                this.tables = storedApplicationsC;
+                if (storedApplicationsC.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsC;
+                } else {
+                    this.sort_type_var = true;
+                }
             }
         },
     },
@@ -360,7 +404,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -409,6 +453,7 @@ export default {
 
                 const applicationType = await appTypeQuery.first();
 
+
                 storedApplications.push({
                     appID: application.id,
                     id: i + 1,
@@ -419,6 +464,7 @@ export default {
                     requirements: application.get("requirements"),
                     dateApplied: months[month] + " " + day + ", " + year,
                     status: application.get("applicationStatus"),
+                    paymentStatus: application.get("paymentStatus"),
                 });
             }
             this.totalEntries = querResult.length;

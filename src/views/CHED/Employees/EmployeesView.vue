@@ -3,7 +3,7 @@
     <NoDataAvail names="EmployeeView" />
 </div>
 <div v-else class="p-3">
-    {{sort_type}}
+    {{lastname}}
     <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
         <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
             <div class="flex flex-col justify-between text-left">
@@ -78,12 +78,12 @@
             <div class="flex flex-row">
                 <!-- button -->
                 <div class="h-fit pt-3 items-center">
-                    <button @click="csvEmployee()" type="button" class="btn-table">
+                    <button @click="excelEmployees()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
                         </svg>
-                        <div class="pl-2">Upload CSV</div>
+                        <div class="pl-2">Upload Excel</div>
                     </button>
                 </div>
                 <!-- button -->
@@ -108,7 +108,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="sort_type_var == false">
                     <tr class="bg-white border-b" v-for="table in searchEmployee" :key="table">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
                             {{ table.Name }}
@@ -130,10 +130,17 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-2 items-end justify-end">
-                                <a href="#" @click="$router.replace({ path: '/employees/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <router-link :to="{
+                                name: 'EditEmployeeView',
+                                params: {
+                                empID: table.id,
+                                },
+                            }">
+                                    <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
-                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectAcc(table.id)">
                                             <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                         </svg>
                                     </label>
@@ -146,6 +153,11 @@
             <div v-if="searchEmployee.length == 0" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
                 Sorry, the keyword "{{ search }}" cannot be found in the database.
+            </div>
+            <div v-if="sort_type_var == true" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, there is no data with the type of "{{ sort_type }}" in the
+                database.
             </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
@@ -202,6 +214,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -219,7 +232,7 @@
               border border-blue-700
               hover:bg-white
             ">Cancel</label>
-                <label class="
+                <label @click="deleteEmployee" class="
               btn btn-sm
               bg-red-500
               hover:bg-red-600
@@ -233,10 +246,17 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 // var dataNumber = 10;
 // var page = 0;
 import NoDataAvail from "@/components//NoDataAvail.vue";
+const toast = useToast();
 export default {
     name: "EmployeesView",
     data() {
@@ -267,10 +287,12 @@ export default {
             designations: [],
             search: "",
             sort_type: "All",
+            sort_type_var: false,
         };
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchEmployee() {
@@ -287,6 +309,78 @@ export default {
     methods: {
         addEmployee() {
             this.$router.push("/employees/add");
+        },
+        selectAcc(id) {
+            this.currentDelAcc = id;
+        },
+        async deleteEmployee() {
+            this.$refs.Spinner.show();
+
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("objectId", this.currentDelAcc);
+            const querResult = await acc.first({
+                useMasterKey: true,
+            });
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("objectId", querResult.get("access_type"));
+            const educSup = queryACC.first();
+
+            const applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(applications);
+            if (educSup != undefined) {
+                queryApp.equalTo("selectedSupervisor", querResult.id)
+                const application = await queryApp.find();
+                if (application.length > 0) {
+                    if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
+                        querResult.set("isArchived", true);
+                        querResult.save({
+                            useMasterKey: true,
+                        });
+                    }
+                } else {
+
+                    //if(confirm("Are you sure you would like to delete this account?")){
+                    querResult.destroy({
+                        useMasterKey: true,
+                    });
+                    //}
+                    toast("Deleting...", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        document.location.reload()
+                    }, 3000);
+
+                }
+            } else {
+
+                //if (confirm("Are you sure you would like to delete this account?")) {
+                querResult.destroy({
+                    useMasterKey: true,
+                });
+                //}
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    document.location.reload()
+                }, 3000);
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+
         },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
@@ -330,7 +424,13 @@ export default {
                         AccessType: emp.get("access_type"),
                     });
                 }
-                this.tables = employees;
+                if (employees.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = employees;
+                } else {
+                    this.sort_type_var = true;
+                }
+
             } else {
                 var employeesFiltered = [];
                 const query = new Parse.Query(Parse.User);
@@ -358,17 +458,25 @@ export default {
                         AccessType: emp.get("access_type"),
                     });
                 }
-                this.tables = employeesFiltered;
+                if (employeesFiltered.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = employeesFiltered;
+                } else {
+                    this.sort_type_var = true;
+                }
+
             }
 
-            
+        },
+        excelEmployees() {
+            this.$router.push("/employees/upload");
         },
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -384,15 +492,36 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
+
+            const accQuerResult = await queryACC.first();
+
             var employees = [];
             const query = new Parse.Query(Parse.User);
-            query.notEqualTo("access_type", "HEI");
+            query.notEqualTo("access_type", accQuerResult.id);
             query.notEqualTo("designation", null);
             const querResult = await query.find({
                 useMasterKey: true,
             });
             for (var i = 0; i < querResult.length; i++) {
                 const emp = querResult[i];
+
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("objectId", emp.get("access_type"));
+
+                const accQuerResult = await queryACC.first();
+                console.log(accQuerResult)
+
+                const Designation = Parse.Object.extend("Designations");
+                const queryDes = new Parse.Query(Designation);
+                queryDes.equalTo("objectId", emp.get("designation"));
+
+                const desigResult = await queryDes.first();
+
                 employees.push({
                     id: emp.id,
                     Name: emp.get("name")["lastname"] +
@@ -404,8 +533,8 @@ export default {
                     Email: emp.get("email"),
                     ContactNo: emp.get("contact_num"),
                     Username: emp.get("username"),
-                    Designation: emp.get("designation"),
-                    AccessType: emp.get("access_type"),
+                    Designation: desigResult.get("name"),
+                    AccessType: accQuerResult.get("name"),
                 });
             }
             this.totalEntries = querResult.length;
@@ -418,12 +547,11 @@ export default {
             const designationQuery = new Parse.Query(designations);
             const designationResult = await designationQuery.find();
             storedDesignations.push({
-                    id: 0,
-                    name: "All",
-                });
+                id: 0,
+                name: "All",
+            });
             for (var j = 0; j < designationResult.length; j++) {
                 const designation = designationResult[j];
-                console.log(designation.get("name"))
                 storedDesignations.push({
                     id: j + 1,
                     name: designation.get("name"),

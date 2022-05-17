@@ -58,6 +58,17 @@
 
             <div class="form-control w-full">
                 <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
+                <!-- <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
+                        Email is Required</span>
+                </label> -->
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.contactnum) }" class="input input-bordered w-full" v-model="v$.contactnum.$model" />
@@ -71,13 +82,13 @@
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Select Affiliation:</span>
-                        <div class="text-sm font-medium text-gray-500">
+                        <!-- <div class="text-sm font-medium text-gray-500">
                             Add HEI Affiliation?
                             <label for="createAffilication" href="#" class="text-blue-700 hover:underline">Create</label>
-                        </div>
+                        </div> -->
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_affil">
-                        <option v-for="hei in heis" :key="hei">
+                        <option v-for="hei in heis" :key="hei" :value="hei.id">
                             <div class="hei-name">{{ hei.title }}</div>
                         </option>
                     </select>
@@ -95,7 +106,7 @@
             </div>
         </form>
     </div>
-    <input type="checkbox" id="createAffilication" class="modal-toggle" />
+    <!-- <input type="checkbox" id="createAffilication" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ADD HEI AFFILIATION</div>
@@ -113,7 +124,7 @@
                 <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
             </div>
         </div>
-    </div>
+    </div> -->
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -123,7 +134,7 @@
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <button for="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="addRQAT(), scrollToTop()">
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addRQAT(), scrollToTop()">
                     Continue
                 </button>
             </div>
@@ -143,6 +154,7 @@ import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
 import {
+    email,
     required
 } from "@vuelidate/validators";
 import emailjs from "emailjs-com";
@@ -165,8 +177,10 @@ export default {
             firstname: "",
             midinit: "",
             username: "",
+            email: "",
             contactnum: "",
             hei_affil: "None",
+            rqat_acc_id: "",
         };
     },
     validations() {
@@ -181,6 +195,10 @@ export default {
                 required,
             },
             username: {
+                required,
+            },
+            email: {
+                email,
                 required,
             },
             contactnum: {
@@ -245,33 +263,80 @@ export default {
         async addRQAT() {
             this.$refs.Spinner.show();
             try {
+                const AccessTypeRQAT = Parse.Object.extend("AccessTypes");
+                const queryACCR = new Parse.Query(AccessTypeRQAT);
+                queryACCR.equalTo("name", "RQAT");
+
+                const accQuerResultRQAT = await queryACCR.first();
+
+                this.rqat_acc_id = accQuerResultRQAT.id;
+
+                var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                var today = new Date();
+                var month = today.getMonth();
+                var day = today.getDate();
+                var year = today.getFullYear();
+                var currentDay = months[month] + " " + day + ", " + year;
+
                 const newRQAT = new Parse.User();
                 var rqatName = {
                     lastname: this.lastname,
                     firstname: this.firstname,
                     middleinitial: this.midinit,
                 };
+                var heiAffil = {
+                    hei: this.hei_affil,
+                    affilrecordDate: currentDay,
+                    affilendDate: "current",
+                }
+                var password = Math.random().toString(36).slice(-12);
+                
+                ////////////////////////////////////
+                console.log(password); /////////////
+                ////////////////////////////////////
+                
                 newRQAT.set("name", rqatName);
                 newRQAT.set("username", this.username);
-                newRQAT.set("password", "password");
+                newRQAT.set("email", this.email);
+                newRQAT.set("password", password);
                 newRQAT.set("contact_num", this.contactnum);
-                newRQAT.set("hei_affil", this.hei_affil);
-                newRQAT.set("access_type", "RQAT");
-                newRQAT.set("hasTransactions", false);
+                newRQAT.set("hei_affil", heiAffil);
+                newRQAT.set("past_affil", []);
+                newRQAT.set("access_type", this.rqat_acc_id);
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    })
+                    const params = {
+                        name: rqatName,
+                        username: this.username,
+                        email: this.email,
+                        password: password,
+                        approved: true,
+                    };
+                    Parse.Cloud.run("sendEmailNotification", params);
+                    setTimeout(
+                        () =>
+                        this.$router.push({
+                            path: "/rqat",
                         }),
-                        // this.sendEmail()
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/rqat",
-                            }),
-                            2000
-                        );
+                        2000
+                    );
                 });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
@@ -325,7 +390,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -341,16 +406,25 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
+
+            const accQuerResult = await queryACC.first();
+
             var heis = [];
             const query = new Parse.Query(Parse.User);
-            query.equalTo("access_type", "HEI");
+            query.equalTo("access_type", accQuerResult.id);
             const querResult = await query.find();
             heis.push({
+                id: "None",
                 title: "None",
             });
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];
                 heis.push({
+                    id: hei.id,
                     title: hei.get("hei_name"),
                 });
             }

@@ -171,7 +171,7 @@
               class="select select-bordered w-full"
               v-model="v$.emp_designation.$model"
             >
-              <option v-for="designation in designations" :key="designation">
+              <option v-for="designation in designations" :key="designation" :value="designation.id">
                 <div class="designation">{{ designation.title }}</div>
               </option>
             </select>
@@ -186,12 +186,25 @@
               class="select select-bordered w-full"
               v-model="v$.access_type.$model"
             >
-              <option v-for="accessType in accessTypes" :key="accessType">
+              <option v-for="accessType in accessTypes" :key="accessType" :value="accessType.id">
                 <div class="accessType">{{ accessType.title }}</div>
               </option>
             </select>
           </div>
         </div>
+        <div v-if="v$.emp_designation.$model == this.educSupId">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Assigned Discipline:</span>
+                    </label>
+
+                    <select class="select select-bordered w-full" v-model="v$.discipline.$model">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
+                            <div class="discipline">{{ discipline.title }}</div>
+                        </option>
+                    </select>
+                </div>
+            </div>
         <div class="flex justify-end pt-8 space-x-4">
           <button class="btn btn-m btn-outline" @click="$router.go(-1)">
             Cancel
@@ -248,7 +261,7 @@
               rounded-md
               border-none
             "
-            @click="addEmployee()"
+            @click="updateEmployee()"
             >Continue</label
           >
         </div>
@@ -269,7 +282,8 @@ import { email, required } from "@vuelidate/validators";
 const toast = useToast();
 
 export default {
-  name: "AddEmployeeView",
+  props: ["empID"],
+  name: "EditEmployeeView",
   components: {
     VueInstantLoadingSpinner,
   },
@@ -280,9 +294,8 @@ export default {
       savingSuccessful: false,
       v$: useVuelidate(),
       accessTypes: [],
-
       designations: [],
-
+      disciplines: [],
       lastname: "",
       firstname: "",
       midinit: "",
@@ -290,7 +303,9 @@ export default {
       username: "",
       contactnum: "",
       emp_designation: "",
+      educSupId: "",
       access_type: "",
+      discipline: "",
     };
   },
   validations() {
@@ -317,6 +332,9 @@ export default {
       emp_designation: {
         required,
       },
+      discipline: {
+        required,
+      },
       access_type: {
         required,
       },
@@ -338,8 +356,12 @@ export default {
     validate() {
       return this.showModal1;
     },
-    async addEmployee() {
-      const newEmployee = new Parse.User();
+    async updateEmployee() {
+      const empl = new Parse.Query(Parse.User);
+            empl.equalTo("objectId", this.empID);
+            const selectedEMP = await empl.first({
+                useMasterKey: true,
+            });
 
       var employeeName = {
         lastname: this.lastname,
@@ -347,31 +369,23 @@ export default {
         middleinitial: this.midinit,
       };
 
-      newEmployee.set("name", employeeName);
-      newEmployee.set("username", this.username);
-      newEmployee.set("password", "password");
-      newEmployee.set("email", this.email);
-      newEmployee.set("contact_num", this.contactnum);
-      newEmployee.set("access_type", this.access_type);
-      newEmployee.set("designation", this.emp_designation);
-      newEmployee.set("user_type", "employee");
-      newEmployee.set("hasTransactions", false);
+      selectedEMP.set("name", employeeName);
+      selectedEMP.set("username", this.username);
+      selectedEMP.set("password", "password");
+      selectedEMP.set("email", this.email);
+      selectedEMP.set("contact_num", this.contactnum);
+      selectedEMP.set("access_type", this.access_type);
+      selectedEMP.set("designation", this.emp_designation);
+      selectedEMP.set("discipline", this.discipline);
 
       try {
-        await newEmployee.save().then(() => {
-          toast("Employee Account Added!", {
+        await selectedEMP.save(null, {
+                        useMasterKey: true,
+                    }).then(() => {
+          toast("Employee Account Updated!", {
             type: TYPE.SUCCESS,
             timeout: 2000,
             position: POSITION.TOP_RIGHT,
-          });
-          this.sendEmail().then(() => {
-            setTimeout(
-              () =>
-                this.$router.push({
-                  path: "/hei",
-                }),
-              1000
-            );
           });
         });
         this.$refs.Spinner.show();
@@ -417,17 +431,18 @@ export default {
         this.showModal1 = !this.showModal1;
       }
     },
-    mounted: async function () {
+  },
+  mounted: async function () {
       // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
       const AccessTypes = Parse.Object.extend("AccessTypes");
       const query = new Parse.Query(AccessTypes);
-      query.equalTo("name", Parse.User.current().get("access_type"));
+      query.equalTo("objectId", Parse.User.current().get("access_type"));
 
       const querResult = await query.find();
       var accType = querResult[0].get("privileges");
       var flag = 0;
       for (var y = 0; y < accType.length; y++) {
-        if (accType[y] === this.$route.path) {
+        if (accType[y] === "/employees") {
           flag = 1;
         }
       }
@@ -437,9 +452,61 @@ export default {
         console.log("Hi!, You have permission to access this Page");
         //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
         //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        const queryEmp = new Parse.Query(Parse.User);
+        queryEmp.equalTo("objectId", this.empID);
+        const emp = await queryEmp.first({
+            useMasterKey: true,
+        });
+        this.lastname = emp.get("name").lastname;
+        this.firstname = emp.get("name").firstname;
+        this.midinit = emp.get("name").middleinitial;
+        this.username = emp.get("username");
+        this.contactnum = emp.get("contact_num");
+        this.email = emp.get("email");
+
+        const queryAT = new Parse.Query(AccessTypes);
+        const queryResult = await queryAT.find();
+
+        for (var e = 0; e < queryResult.length; e++) {
+                this.accessTypes.push({
+                    id: queryResult[e].id,
+                    title: queryResult[e].get("name"),
+                });
+        }
+        const Designations = Parse.Object.extend("Designations");
+        const queryD = new Parse.Query(Designations);
+        const queryResultDesig = await queryD.find();
+        for (var w = 0; w < queryResultDesig.length; w++) {
+            this.designations.push({
+                id: queryResultDesig[w].id,
+                title: queryResultDesig[w].get("name"),
+            });
+            if(queryResultDesig[w].get("name") == 'EDUCATION SUPERVISOR'){
+                this.educSupId = queryResultDesig[w].id;
+            }
+        }
+        this.emp_designation = queryResultDesig[0].id;
+
+        const Discipline = Parse.Object.extend("Disciplines");
+        const queryDiscipline = new Parse.Query(Discipline);
+        const queryResultDiscipline = await queryDiscipline.find();
+
+        for (var z = 0; z < queryResultDiscipline.length; z++) {
+            this.disciplines.push({
+                id: queryResultDiscipline[z].id,
+                title: queryResultDiscipline[z].get("MajorDiscipline"),
+            });
+        }
+
+        console.log(queryResult[0].get("name"))
+
+        this.access_type = emp.get("access_type");
+        this.emp_designation = emp.get("designation");
+        this.discipline = emp.get("discipline");
+        
+
       }
     },
-  },
 };
 </script>
 

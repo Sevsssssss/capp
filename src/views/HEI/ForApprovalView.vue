@@ -48,12 +48,13 @@
             </div>
             <!-- BUTTONS -->
             <div class="space-x-6 p-10">
-                <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
+                <button @click="$router.go(-1)" type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
                 </button>
-                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                <button v-if="statusA === 'For Approval'" type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Submit
                 </button>
+                 <button v-else></button>
             </div>
         </form>
     </div>
@@ -69,7 +70,7 @@ import {
 import Parse from "parse";
 const toast = useToast();
 export default {
-    props: ["id"],
+    props: ["id", "statusA"], 
     name: "EditHEIapplication",
     data() {
         return {
@@ -203,7 +204,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var homeType = querResult[0].get("hometype");

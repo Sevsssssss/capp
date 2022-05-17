@@ -9,17 +9,23 @@
   },
   "dependencies": {
     "@ocrv/vue-tailwind-pagination": "^0.0.4",
+    "@syncfusion/ej2-vue-charts": "^20.1.55",
     "@vue/cli": "^5.0.4",
     "@vuelidate/core": "^2.0.0-alpha.39",
     "@vuelidate/validators": "^2.0.0-alpha.28",
     "autoprefixer": "^10",
     "axios": "^0.26.1",
+    "chart.js": "^3.7.1",
     "core-js": "^3.8.3",
     "daisyui": "^2.11.1",
     "emailjs-com": "^3.2.0",
     "flowbite": "^1.4.1",
     "json-server": "^0.17.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.23",
+    "nodemailer": "^6.7.5",
     "parse": "^3.4.1",
+    "parse-smtp-template": "^2.2.0",
     "postcss": "^8",
     "routes": "^2.1.0",
     "tailwind": "^4.0.0",
@@ -31,7 +37,8 @@
     "vue-router": "^4.0.3",
     "vue-sidebar-menu": "^5.2.0",
     "vue-toastification": "^2.0.0-rc.5",
-    "vuelidate": "^0.7.7"
+    "vuelidate": "^0.7.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -42,7 +49,8 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "vue-cli-plugin-tailwind": "~3.0.0"
+    "vue-cli-plugin-tailwind": "~3.0.0",
+    "worker-loader": "^3.0.8"
   },
   "eslintConfig": {
     "root": true,

@@ -30,10 +30,10 @@
                     <tbody>
                         <tr v-for="i in appicationReqs" :key="i" class="bg-white border-b hover:bg-gray-50">
                             <td class="px-6 py-4">
-                            <th class="text-center">{{ i.id}}</th>
+                            <th class="text-left">{{ i.id}}</th>
                             </td>
                             <td class="px-6 py-4">
-                            <th class="text-center">{{ i.name}}</th>
+                            <th class="text-left">{{ i.name}}</th>
                             </td>
 
                         </tr>
@@ -62,7 +62,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");

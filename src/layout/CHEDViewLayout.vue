@@ -1,175 +1,150 @@
 <template>
-  <div class="">
+<div class="">
     <div class="flex">
-      <TopNavigation class="z-40" />
-      <sidebar-menu
-        :menu="menu"
-        class="z-10"
-        @update:collapsed="toggle"
-        v-model="collapsed"
-      >
-        <template v-slot:toggle-icon> <MenuOpen class="h-6" /></template>
-        <template v-slot:footer>
-          <div
-            class="p-5 grid grid-cols-1 content-center space-y-4"
-            :class="collapsed ? '' : 'hidden'"
-          >
-            <button
-              for="my-modal-7"
-              id="my-modal-7"
-              type="submit"
-              class="flex space-x-1 justify-center items-center text-blue-500"
-              @click="modal()"
-            >
-              <Logout class="h-6" />
-              <span class="text-sm hover:font-semibold">Logout</span>
-            </button>
-            <p class="flex justify-center text-sm text-grey-300 tracking-wide">
-              Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
-            </p>
-          </div>
-        </template>
-      </sidebar-menu>
-      <div
-        class="w-full content"
-        :class="
+        <TopNavigation class="z-40" />
+        <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
+            <template v-slot:toggle-icon>
+                <MenuOpen class="h-6" /></template>
+            <template v-slot:footer>
+                <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
+                    <div class="flex flex-row justify-center">
+                        <button @click="accountDetails()" class="flex space-x-1 mr-3 justify-center items-center text-blue-500 ">
+                            <svg style="fill: #0085FF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M12 14v2a6 6 0 0 0-6 6H4a8 8 0 0 1 8-8zm0-1c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm2.595 7.812a3.51 3.51 0 0 1 0-1.623l-.992-.573 1-1.732.992.573A3.496 3.496 0 0 1 17 14.645V13.5h2v1.145c.532.158 1.012.44 1.405.812l.992-.573 1 1.732-.992.573a3.51 3.51 0 0 1 0 1.622l.992.573-1 1.732-.992-.573a3.496 3.496 0 0 1-1.405.812V22.5h-2v-1.145a3.496 3.496 0 0 1-1.405-.812l-.992.573-1-1.732.992-.572zM18 19.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" /></svg>
+                        </button>
+                        <button for="my-modal-7" id="my-modal-7" type="submit" class="flex space-x-1 justify-center items-center text-blue-500" @click="modal()">
+                            <Logout class="h-6" />
+                            <span class="text-sm hover:font-semibold">Logout</span>
+                        </button>
+                    </div>
+                    <p class="flex justify-center text-sm text-grey-300 tracking-wide">
+                        Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
+                    </p>
+                </div>
+            </template>
+        </sidebar-menu>
+        <div class="w-full content" :class="
           collapsed
             ? 'pl-[290px] transition-width duration-300'
             : 'pl-[65px] transition-width duration-300'
-        "
-      >
-        <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
-        <nav
-          class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm"
-          style="background-color: white"
-        >
-          <ul class="flex text-sm">
-            <li
-              class="list space-x-3 cursor-pointer"
-              v-for="(breadcrumb, idx) in breadcrumbs"
-              :key="idx"
-              @click="routeTo(idx)"
-            >
-              <span class="name">{{ breadcrumb.name }}</span>
-            </li>
-          </ul>
-        </nav>
-        <div
-          class="main-content h-screen bg-grey-700"
-          style="padding-top: 100px"
-        >
-          <router-view />
+        ">
+            <!-- <BreadCrumbs :crumbs="menu" @selected="selected" /> -->
+            <nav class="breadcrumbs w-full mt-14 p-3 fixed shadow-sm" style="background-color: white">
+                <ul class="flex text-sm">
+                    <li class="list space-x-3 cursor-pointer" v-for="(breadcrumb, idx) in breadcrumbs" :key="idx" @click="routeTo(idx)">
+                        <span class="name">{{ breadcrumb.name }}</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-content h-screen bg-grey-700" style="padding-top: 100px">
+                <router-view />
+            </div>
         </div>
-      </div>
     </div>
     <div :class="{ 'modal-open ': validate1() }" class="modal">
-      <div class="modal-box relative rounded-md text-left">
-        <div class="font-semibold text-md">Logout Account</div>
-        <p class="py-2 text-sm">Are you sure you want to logout?</p>
-        <div class="modal-action">
-          <label
-            for="my-modal-7"
-            class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            "
-            >Cancel</label
-          >
-          <label
-            for="my-modal-7"
-            class="
-              btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            "
-            @click="Logout(), scrollToTop()"
-            >Logout</label
-          >
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Logout Account</div>
+            <p class="py-2 text-sm">Are you sure you want to logout?</p>
+            <div class="modal-action">
+                <label for="my-modal-7" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-7" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="Logout(), scrollToTop()">Logout</label>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 </template>
-
 
 <style>
 .v-sidebar-menu {
-  z-index: 10;
-  box-shadow: -15px 0 20px 0;
-  padding-top: 150px;
-  background-color: theme("colors.brand.white");
+    z-index: 10;
+    box-shadow: -15px 0 20px 0;
+    padding-top: 150px;
+    background-color: theme("colors.brand.white");
 }
+
 .v-sidebar-menu .vsm--scroll {
-  width: calc(100% + 29px);
+    width: calc(100% + 29px);
 }
+
 .v-sidebar-menu .vsm--toggle-btn {
-  width: auto;
-  height: auto;
-  padding: 5px 10px 5px 10px;
-  margin-top: 50px;
-  right: 0;
-  position: absolute;
-  top: 55px;
-  background-color: theme("colors.brand.darkblue");
-  border-radius: 5px 0 0 5px;
+    width: auto;
+    height: auto;
+    padding: 5px 10px 5px 10px;
+    margin-top: 50px;
+    right: 0;
+    position: absolute;
+    top: 55px;
+    background-color: theme("colors.brand.darkblue");
+    border-radius: 5px 0 0 5px;
 }
+
 .v-sidebar-menu.vsm_collapsed .vsm--toggle-btn {
-  left: 0;
-  border-radius: 0 0 0 0;
-  transform: rotate(180deg);
+    left: 0;
+    border-radius: 0 0 0 0;
+    transform: rotate(180deg);
 }
+
 .v-sidebar-menu .vsm--mobile-bg {
-  background-color: theme("colors.grey.500");
+    background-color: theme("colors.grey.500");
 }
+
 .v-sidebar-menu.vsm_collapsed .vsm--link_active {
-  background-color: theme("colors.grey.500");
-  color: theme("colors.blue.500");
+    background-color: theme("colors.grey.500");
+    color: theme("colors.blue.500");
 }
+
 .v-sidebar-menu .vsm--link {
-  /* font-family: theme("fontFamily.body"); */
-  padding: 5px 10px 5px 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  color: theme("colors.grey.300");
+    /* font-family: theme("fontFamily.body"); */
+    padding: 5px 10px 5px 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: theme("colors.grey.300");
 }
+
 .v-sidebar-menu .vsm--link:hover {
-  background-color: theme("colors.grey.600");
+    background-color: theme("colors.grey.600");
 }
+
 .v-sidebar-menu .vsm--link_active {
-  background-color: theme("colors.grey.600");
-  color: theme("colors.blue.500");
-  box-shadow: none !important;
+    background-color: theme("colors.grey.600");
+    color: theme("colors.blue.500");
+    box-shadow: none !important;
 }
+
 .v-sidebar-menu .vsm--link_level-1 .vsm--icon {
-  background-color: transparent;
-  width: 30px;
-  height: 30px;
-  padding-left: 4px;
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    padding-left: 4px;
 }
+
 .v-sidebar-menu.vsm_collapsed .vsm--link_level-1.vsm--link .vsm--icon {
-  background-color: transparent;
-  padding-left: 8px;
+    background-color: transparent;
+    padding-left: 8px;
 }
+
 .hide {
-  left: -100%;
-  transition: all 0.5s ease-in-out;
+    left: -100%;
+    transition: all 0.5s ease-in-out;
 }
+
 .footer {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 </style>
 
 <script>
-import { useToast, TYPE, POSITION } from "vue-toastification";
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import Parse from "parse";
 import TopNavigation from "@/components/TopNavigation.vue";
-import { SidebarMenu } from "vue-sidebar-menu";
+import {
+    SidebarMenu
+} from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 
 import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
@@ -190,220 +165,259 @@ import ContactLine from "@/assets/sidebar_icons/contacts-line.svg";
 const toast = useToast();
 
 export default {
-  name: "ViewLayout",
-  components: {
-    TopNavigation,
-    SidebarMenu,
-    MenuOpen,
-    Logout,
-  },
-  data() {
-    return {
-      showModal1: false,
-      collapsed: true,
-      breadcrumbs: [],
-      menu: [],
-    };
-  },
-  watch: {
-    $route() {
-      this.updateList();
+    name: "ViewLayout",
+    components: {
+        TopNavigation,
+        SidebarMenu,
+        MenuOpen,
+        Logout,
     },
-  },
-  methods: {
-    scrollToTop() {
-      window.scrollTo(0, 0);
+    data() {
+        return {
+            showModal1: false,
+            collapsed: true,
+            breadcrumbs: [],
+            menu: [],
+        };
     },
-    validate1() {
-      return this.showModal1;
-    },
-    modal() {
-      this.showModal1 = !this.showModal1;
-    },
-    Logout() {
-      toast("Logging out..", {
-        type: TYPE.WARNING,
-        closeButton: false,
-        timeout: 2000,
-        position: POSITION.BOTTOM_RIGHT,
-      });
-      setTimeout(() => {
-        Parse.User.logOut();
-        this.$router.push("/");
-      }, 2000);
-    },
-    updateList() {
-      this.breadcrumbs = this.$route.meta.breadcrumb;
-    },
-    toggle() {
-      this.collapsed = !this.collapsed;
-    },
-    routeTo(pRouteTo) {
-      if (this.breadcrumbs[pRouteTo].link) {
-        this.$router.push(this.breadcrumbs[pRouteTo].link);
-      }
-    },
-  },
-
-  mounted: async function () {
-    console.log("hi");
-    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes);
-    query.equalTo("name", Parse.User.current().get("access_type"));
-
-    const querResult = await query.find();
-    var homeType = querResult[0].get("hometype");
-    var flag = 0;
-    if (homeType === "/home") {
-      flag = 1;
-      this.menu.push({
-        href: "/home",
-        title: "Home",
-        icon: {
-          element: "img",
-          attributes: {
-            src: HomeOutline,
-          },
+    watch: {
+        $route() {
+            this.updateList();
         },
-      });
-    }
-    if (flag === 0) {
-      this.$router.push("/403");
-    } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+    },
+    methods: {
+        accountDetails() {
+            this.$router.push("/ched/account");
+        },
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
+        validate1() {
+            return this.showModal1;
+        },
+        modal() {
+            this.showModal1 = !this.showModal1;
+        },
+        Logout() {
+            toast("Logging out..", {
+                type: TYPE.WARNING,
+                closeButton: false,
+                timeout: 2000,
+                position: POSITION.BOTTOM_RIGHT,
+            });
+            setTimeout(() => {
+                Parse.User.logOut();
+                this.$router.push("/");
+            }, 2000);
+        },
+        updateList() {
+            this.breadcrumbs = this.$route.meta.breadcrumb;
+        },
+        toggle() {
+            this.collapsed = !this.collapsed;
+        },
+        routeTo(pRouteTo) {
+            if (this.breadcrumbs[pRouteTo].link) {
+                this.$router.push(this.breadcrumbs[pRouteTo].link);
+            }
+        },
+    },
 
-      // THESE LINES OF CODE CREATES MENU FOR THE USER
-      const AccessTypes = Parse.Object.extend("AccessTypes");
-      const query = new Parse.Query(AccessTypes);
-      query.equalTo("name", Parse.User.current().get("access_type"));
+    mounted: async function () {
+        console.log("hi");
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
-      const querResult = await query.find();
-      var userPriv = querResult[0].get("privileges");
-      if (userPriv.find((e) => e === "/application")) {
-        this.menu.push({
-          href: "/application",
-          title: "Application",
-          icon: {
-            element: "img",
-            attributes: {
-              src: FileOutline,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/hei")) {
-        this.menu.push({
-          href: "/hei",
-          title: "HEIs Account",
-          icon: {
-            element: "img",
-            attributes: {
-              src: BankLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/rqat")) {
-        this.menu.push({
-          href: "/rqat",
-          title: "RQAT Account",
-          icon: {
-            element: "img",
-            attributes: {
-              src: TeamLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/employees")) {
-        this.menu.push({
-          href: "/employees",
-          title: "Employees",
-          icon: {
-            element: "img",
-            attributes: {
-              src: GroupLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/evaluationins")) {
-        this.menu.push({
-          href: "/evaluationins",
-          title: "Evaluation Ins.",
-          icon: {
-            element: "img",
-            attributes: {
-              src: ClipboardLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/reporting")) {
-        this.menu.push({
-          href: "/reporting",
-          title: "Reporting",
-          icon: {
-            element: "img",
-            attributes: {
-              src: FileChartOutline,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/app-settings")) {
-        this.menu.push({
-          href: "/app-settings",
-          title: "Application Types",
-          icon: {
-            element: "img",
-            attributes: {
-              src: FileSettingsLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/access-settings")) {
-        this.menu.push({
-          href: "/access-settings",
-          title: "Access Types",
-          icon: {
-            element: "img",
-            attributes: {
-              src: AccessTypeLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/designations")) {
-        this.menu.push({
-          href: "/designations",
-          title: "Designations",
-          icon: {
-            element: "img",
-            attributes: {
-              src: ContactLine,
-            },
-          },
-        });
-      }
-      if (userPriv.find((e) => e === "/disciplines")) {
-        this.menu.push({
-          href: "/disciplines",
-          title: "Disciplines",
-          icon: {
-            element: "img",
-            attributes: {
-              src: BookLine,
-            },
-          },
-        });
-      }
-      this.updateList();
-    }
-  },
+        const querResult = await query.find();
+        var homeType = querResult[0].get("hometype");
+        var flag = 0;
+        if (homeType === "/home") {
+            flag = 1;
+            this.menu.push({
+                href: "/home",
+                title: "Home",
+                icon: {
+                    element: "img",
+                    attributes: {
+                        src: HomeOutline,
+                    },
+                },
+            });
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            // THESE LINES OF CODE CREATES MENU FOR THE USER
+            const AccessTypes = Parse.Object.extend("AccessTypes");
+            const query = new Parse.Query(AccessTypes);
+            query.equalTo("objectId", Parse.User.current().get("access_type"));
+
+            const querResult = await query.find();
+            var userPriv = querResult[0].get("privileges");
+            if (userPriv.find((e) => e === "/application")) {
+                this.menu.push({
+                    href: "/application",
+                    title: "Application",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: FileOutline,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/hei")) {
+                this.menu.push({
+                    href: "/hei",
+                    title: "HEIs Account",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: BankLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/rqat")) {
+                this.menu.push({
+                    href: "/rqat",
+                    title: "RQAT Account",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: TeamLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/employees")) {
+                this.menu.push({
+                    href: "/employees",
+                    title: "Employees",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: GroupLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/cmo")) {
+                this.menu.push({
+                    href: "/cmo",
+                    title: "Ched Memorandum Order",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: ClipboardLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/evaluationins")) {
+                this.menu.push({
+                    href: "/evaluationins",
+                    title: "Evaluation Ins.",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: ClipboardLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/reporting")) {
+                this.menu.push({
+                    href: "/reporting",
+                    title: "Reporting",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: FileChartOutline,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/app-settings")) {
+                this.menu.push({
+                    href: "/app-settings",
+                    title: "Application Types",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: FileSettingsLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/access-settings")) {
+                this.menu.push({
+                    href: "/access-settings",
+                    title: "Access Types",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: AccessTypeLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/heiTypes")) {
+                this.menu.push({
+                    href: "/heiTypes",
+                    title: "Hei Types",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: HomeOutline,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/designations")) {
+                this.menu.push({
+                    href: "/designations",
+                    title: "Designations",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: ContactLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/disciplines")) {
+                this.menu.push({
+                    href: "/disciplines",
+                    title: "Disciplines",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: BookLine,
+                        },
+                    },
+                });
+            }
+            if (userPriv.find((e) => e === "/programs")) {
+                this.menu.push({
+                    href: "/programs",
+                    title: "Programs",
+                    icon: {
+                        element: "img",
+                        attributes: {
+                            src: BookLine,
+                        },
+                    },
+                });
+            }
+            this.updateList();
+        }
+    },
 };
 </script>

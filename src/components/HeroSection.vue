@@ -105,6 +105,20 @@
                 </div>
             </div>
         </div>
+        <div :class="{ 'modal-open ': validate1() }" class="modal">
+            <div class="modal-box relative rounded-md text-left bg-black-100">
+                <div class="font-semibold text-md">
+                    VERIFY YOUR EMAIL
+                </div>
+                <p class="py-2 text-sm">
+                    Please verify your email first before logging in. Should you
+                    need assistance. Please contact CHED at <span class="text-blue-500">chedrov@chedrov.gov.ph</span>
+                </p>
+                <div class="modal-action">
+                    <label for="my-modal-6" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Continue</label>
+                </div>
+            </div>
+        </div>
     </section>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -129,6 +143,7 @@ export default {
             v$: useVuelidate(),
             showModal: false,
             showErr: false,
+            showErr1: false,
             title: "CHED APPLICATION MANAGEMENT SYSTEM",
             Info: "Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur!",
             username: "",
@@ -153,34 +168,34 @@ export default {
         },
         async Login() {
             Parse.User.logIn(this.username, this.password)
-                .then((user) => {
-                    if (
-                        user.get("access_type") === "SUPER ADMIN" ||
-                        user.get("access_type") === "ADMIN" ||
-                        user.get("access_type") === "EDUCATION SUPERVISOR" ||
-                        user.get("access_type") === "REPORTS"
-                    ) {
+                .then(async (user) => {
+                    const AccessTypes = Parse.Object.extend("AccessTypes");
+                    const query = new Parse.Query(AccessTypes);
+                    query.equalTo("objectId", user.get("access_type"));
+                    const querResult = await query.first();
+
+                    if (querResult.get("name") === "HEI") {
+                        this.$router
+                            .push({
+                                path: "/hei/home",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    } else if (querResult.get("name") === "RQAT") {
+                        this.$router
+
+                            .push({
+                                path: "/rqat/assignments",
+                            })
+                            .catch((err) => {
+                                throw new Error(`Problem handling something: ${err}.`);
+                            });
+                    } else {
                         this.$router
 
                             .push({
                                 path: "/home",
-                            })
-                            .catch((err) => {
-                                throw new Error(`Problem handling something: ${err}.`);
-                            });
-                    } else if (user.get("access_type") === "HEI") {
-                        this.$router
-                            .push({
-                                path: "/HEIhome",
-                            })
-                            .catch((err) => {
-                                throw new Error(`Problem handling something: ${err}.`);
-                            });
-                    } else if (user.get("access_type") === "RQAT") {
-                        this.$router
-
-                            .push({
-                                path: "/assignments",
                             })
                             .catch((err) => {
                                 throw new Error(`Problem handling something: ${err}.`);
@@ -194,6 +209,9 @@ export default {
                     if (err.code == "101") {
                         //alert("Invalid Account");
                         this.showErr = !this.showErr;
+                    } else if (err.code == "205") {
+                        //alert("Invalid Account");
+                        this.showErr1 = !this.showErr1;
                     }
                     this.v$.$touch();
 
@@ -203,35 +221,37 @@ export default {
                 });
 
         },
-        toggleModal() {
+        async toggleModal() {
             if (Parse.User.current() !== null) {
                 const user = Parse.User.current();
-                if (
-                    user.get("access_type") === "SUPER ADMIN" ||
-                    user.get("access_type") === "ADMIN" ||
-                    user.get("access_type") === "EDUCATION SUPERVISOR" ||
-                    user.get("access_type") === "REPORTS"
-                ) {
+
+                const AccessTypes = Parse.Object.extend("AccessTypes");
+                const query = new Parse.Query(AccessTypes);
+                query.equalTo("objectId", user.get("access_type"));
+                const querResult = await query.first();
+
+                if (querResult.get("name") === "HEI") {
                     this.$router
                         .push({
-                            path: "/home",
+                            path: "/hei/home",
                         })
                         .catch((err) => {
                             throw new Error(`Problem handling something: ${err}.`);
                         });
-                } else if (user.get("access_type") === "HEI") {
-                    this.$router
-                        .push({
-                            path: "/HEIhome",
-                        })
-                        .catch((err) => {
-                            throw new Error(`Problem handling something: ${err}.`);
-                        });
-                } else if (user.get("access_type") === "RQAT") {
+                } else if (querResult.get("name") === "RQAT") {
                     this.$router
 
                         .push({
-                            path: "/assignments",
+                            path: "/rqat/assignments",
+                        })
+                        .catch((err) => {
+                            throw new Error(`Problem handling something: ${err}.`);
+                        });
+                } else {
+                    this.$router
+
+                        .push({
+                            path: "/home",
                         })
                         .catch((err) => {
                             throw new Error(`Problem handling something: ${err}.`);
@@ -248,7 +268,9 @@ export default {
         validate() {
             return this.showErr;
         },
-
+        validate1() {
+            return this.showErr1;
+        },
         validate2() {
             return this.showModal;
         },

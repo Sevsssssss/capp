@@ -116,6 +116,7 @@
                   </div>
                   <div class="font-normal">{{ table.address }}</div>
                 </div>
+<<<<<<< HEAD
               </td>
               <td
                 scope="row"
@@ -136,6 +137,26 @@
                   class="btn-sm1 rounded-md p-2 font-normal approval"
                 >
                   {{ table.status }}
+=======
+                <!-- Filter -->
+                <div v-if="!supervisorChecker()" class="flex flex-row">
+                    <!-- sort -->
+                    <div class="month-sort flex flex-row">
+                        <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="application_sort" v-model="sort_type" @change="filterApplications()">
+                            <option disabled selected>Sort by type</option>
+                            <option>All</option>
+                            <option>For Approval</option>
+                            <option>For Revision</option>
+                            <option>For Payment</option>
+                            <option>For Evaluation</option>
+                            <option>For Compliance</option>
+                            <option>For Verification</option>
+                            <option>For Issuance</option>
+                            <option>Completed</option>
+                            <option>Non Compliant</option>
+                        </select>
+                    </div>
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
                 </div>
             </div>
         </div>
@@ -152,8 +173,8 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="bg-white border-b" v-for="table in searchApplication" :key="table">
+                <tbody v-if="sort_type_var == false">
+                    <tr class="bg-white border-b " v-for="table in searchApplication" :key="table">
                         <td class="px-6 py-4">
                             <div class="">
                                 <div class="font-semibold text-grey-300">
@@ -171,7 +192,7 @@
                         <td class="px-6 py-4">
                             {{ table.dateApplied }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 ">
                             <!-- :class="'homeIcon.' + data.color" -->
                             <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval">
                                 {{ table.status }}
@@ -179,7 +200,15 @@
                             <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 rounded-md p-2 font-normal evaluation">
+                            <div v-else-if="table.status === 'For Evaluation'" class="relative pt-3">
+                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
+                                <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
+
+                                    {{ table.status }}
+
+                                </div>
+                            </div>
+                            <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
                                 {{ table.status }}
                             </div>
                             <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
@@ -188,16 +217,25 @@
                             <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
                                 {{ table.status }}
                             </div>
+                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                                {{ table.status }}
+                            </div>
+                            <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
+                                {{ table.status }}
+                            </div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <a v-if="table.status === 'COMPLETED'" @click="!!goedit()"></a>
                             <router-link :to="{
                                 name: 'StatusApplication',
                                 params: {
                                 appID: table.appID,
+                                status: table.status,
                                 },
                             }">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                         </td>
                     </tr>
@@ -213,6 +251,7 @@
                         </td>
                     </tr>
                 </tbody> -->
+<<<<<<< HEAD
         </table>
         <!-- Table Footer -->
         <div v-if="searchApplication.length == 0" class="p-5 font-medium">
@@ -224,6 +263,24 @@
             <span class="text-sm text-gray-700">
               Showing
               <span class="font-semibold text-gray-900">{{
+=======
+            </table>
+            <!-- Table Footer -->
+            <div v-if="searchApplication.length == 0" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, the keyword "{{ search }}" cannot be found in the database.
+            </div>
+            <div v-if="sort_type_var == true" class="p-5 font-medium">
+                <!-- NO DATA FOUND {{search}} -->
+                Sorry, there is no data with the type of "{{ sort_type }}" in the
+                database.
+            </div>
+            <div class="table-footer flex flex-row justify-between">
+                <div class="flex flex-row pl-4 justify-center items-center">
+                    <span class="text-sm text-gray-700">
+                        Showing
+                        <span class="font-semibold text-gray-900">{{
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
                 totalEntries > 0 ? 1 + numPerPage * currentpage : 0
               }}</span>
               to
@@ -291,6 +348,7 @@ import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
 export default {
+<<<<<<< HEAD
   name: "ApplicationView",
   components: {
     DataCards,
@@ -306,6 +364,53 @@ export default {
       headers: [
         {
           title: "HEI",
+=======
+    name: "ApplicationView",
+    components: {
+        DataCards,
+        NoDataAvail,
+    },
+    data() {
+        return {
+            currentpage: 0,
+            numPerPage: 10,
+            sort_type: "All",
+            search: "",
+            headers: [{
+                    title: "HEI",
+                },
+                {
+                    title: "TYPE",
+                },
+                {
+                    title: "PROGRAM",
+                },
+                {
+                    title: "DATE APPLIED",
+                },
+                {
+                    title: "STATUS",
+                },
+            ],
+            supervisor: false,
+            sort_type_var: false,
+
+            datas: [],
+            tables: [],
+        };
+    },
+    computed: {
+        searchApplication() {
+            this.newEntCount();
+            return this.tables
+                .filter((p) => {
+                    return p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                })
+                .slice(
+                    this.numPerPage * this.currentpage,
+                    (this.currentpage + 1) * this.numPerPage
+                );
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
         },
         {
           title: "TYPE",
@@ -321,11 +426,22 @@ export default {
         },
       ],
 
+<<<<<<< HEAD
       datas: [
         {
           title: "FOR APPROVAL",
           num: 300,
           color: "orange",
+=======
+    methods: {
+        supervisorChecker() {
+            return this.supervisor;
+        },
+        statusChecker(status) {
+            if (status != "COMPLETED") {
+                return true;
+            }
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
         },
         {
           title: "FOR REVISION",
@@ -342,10 +458,307 @@ export default {
           num: 123,
           color: "green",
         },
+<<<<<<< HEAD
         {
           title: "COMPLETED",
           num: 12,
           color: "pink",
+=======
+        async filterApplications() {
+            var i = 0;
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var month;
+            var day;
+            var year;
+            var hei_name = "";
+            //If All is Selected
+            if (this.sort_type == "All") {
+                var storedApplicationsAll = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsAll.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                if (storedApplicationsAll.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsAll;
+                } else {
+                    this.sort_type_var = true;
+                }
+
+            }
+
+            //If Selected For Approval
+            else if (this.sort_type == "For Approval") {
+                var storedApplicationsFA = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Approval");
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsFA.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                if (storedApplicationsFA.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFA;
+                } else {
+                    this.sort_type_var = true;
+                }
+
+            }
+
+            //If selected For Issuance
+            else if (this.sort_type == "For Issuance") {
+                var storedApplicationsFI = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Issuance");
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsFI.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                if (storedApplicationsFI.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFI;
+                } else {
+                    this.sort_type_var = true;
+                }
+
+            }
+
+            //If Selected For Evaluation
+            else if (this.sort_type == "For Evaluation") {
+                var storedApplicationsFE = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Evaluation");
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsFE.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                if (storedApplicationsFE.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFE;
+                } else {
+                    this.sort_type_var = true;
+                }
+
+            } else if (this.sort_type == "For Revision") {
+                var storedApplicationsFR = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "For Revision");
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsFR.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                if (storedApplicationsFR.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsFR;
+                } else {
+                    this.sort_type_var = true;
+                }
+
+            } else if (this.sort_type == "Completed") {
+                var storedApplicationsC = [];
+                const applications = Parse.Object.extend("Applications");
+
+                const query = new Parse.Query(applications);
+                query.equalTo("applicationStatus", "Completed");
+
+                const querResult = await query.find();
+
+                for (i = 0; i < querResult.length; i++) {
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+
+                    const hei = await user.first();
+
+                    hei_name = hei.get("hei_name");
+
+                    month = application.createdAt.getMonth();
+                    day = application.createdAt.getDate();
+                    year = application.createdAt.getFullYear();
+                    storedApplicationsC.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: application.get("applicationType"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year,
+                        status: application.get("applicationStatus"),
+                        program: "BSIT",
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                if (storedApplicationsC.length > 0) {
+                    this.sort_type_var = false;
+                    this.tables = storedApplicationsC;
+                } else {
+                    this.sort_type_var = true;
+                }
+
+            }
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
         },
       ],
       tables: [],
@@ -365,6 +778,7 @@ export default {
           (this.currentpage + 1) * this.numPerPage
         );
     },
+<<<<<<< HEAD
   },
 
   methods: {
@@ -415,6 +829,13 @@ export default {
         const applications = Parse.Object.extend("Applications");
 
         const query = new Parse.Query(applications);
+=======
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
 
         const querResult = await query.find();
 
@@ -444,6 +865,7 @@ export default {
             appID: application.id,
           });
         }
+<<<<<<< HEAD
         this.totalEntries = querResult.length;
         this.tables = storedApplicationsAll;
       }
@@ -483,6 +905,175 @@ export default {
             HeiName: hei_name,
             appID: application.id,
           });
+=======
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query the applications
+            var storedApplications = [];
+            const applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(applications);
+
+            //Get to view applications to specific user (Education Supervisor)
+            const Designations = Parse.Object.extend("Designations");
+            const queryDes = new Parse.Query(Designations);
+            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+
+            const desigQueryResult = await queryDes.first();
+
+            if (Parse.User.current().get("designation") == desigQueryResult.id) {
+                query.equalTo("selectedSupervisor", Parse.User.current().id);
+                query.equalTo("applicationStatus", "For Evaluation");
+                this.supervisor = true;
+            }
+            const querResult = await query.find();
+
+            //Get details of the applications
+            for (var i = 0; i < querResult.length; i++) {
+                var hei_name = "";
+                const application = querResult[i];
+                const user = new Parse.Query(Parse.User);
+                user.equalTo("objectId", application.get("createdBy"));
+                // console.log(application.get("createdBy"));
+                const hei = await user.first();
+                hei_name = hei.get("hei_name");
+                var months = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+                var month = application.createdAt.getMonth();
+                var day = application.createdAt.getDate();
+                var year = application.createdAt.getFullYear();
+
+                //Query the applicationType of the application
+                const appTypes = Parse.Object.extend("ApplicationTypes");
+                const appTypeQuery = new Parse.Query(appTypes);
+                appTypeQuery.equalTo("objectId", application.get("applicationType"));
+
+                const appType = await appTypeQuery.first();
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", application.get("program"));
+
+                const program = await programQuery.first();
+
+                storedApplications.push({
+                    id: i + 1,
+                    rep: application.get("pointPerson"),
+                    email: application.get("email"),
+                    phoneNumber: application.get("phoneNumber"),
+                    type: appType.get("applicationTypeName"),
+                    requirements: application.get("requirements"),
+                    dateApplied: months[month] + " " + day + ", " + year,
+                    status: application.get("applicationStatus"),
+                    program: program.get("programName"),
+                    HeiName: hei_name,
+                    appID: application.id,
+                    selectedRqat: application.get("selectedRQAT")
+                });
+            }
+            this.totalEntries = querResult.length;
+            this.tables = storedApplications;
+
+            const applicationsFA = Parse.Object.extend("Applications");
+            const queryFA = new Parse.Query(applicationsFA);
+            queryFA.equalTo("applicationStatus", "For Approval");
+
+            const applicationsFR = Parse.Object.extend("Applications");
+            const queryFR = new Parse.Query(applicationsFR);
+            queryFR.equalTo("applicationStatus", "For Revision");
+
+            const applicationsFP = Parse.Object.extend("Applications");
+            const queryFP = new Parse.Query(applicationsFP);
+            queryFP.equalTo("applicationStatus", "For Payment");
+
+            const applicationsFE = Parse.Object.extend("Applications");
+            const queryFE = new Parse.Query(applicationsFE);
+            queryFE.equalTo("applicationStatus", "For Evaluation");
+
+            const applicationsFC = Parse.Object.extend("Applications");
+            const queryFC = new Parse.Query(applicationsFC);
+            queryFC.equalTo("applicationStatus", "For Compliance");
+
+            const applicationsFV = Parse.Object.extend("Applications");
+            const queryFV = new Parse.Query(applicationsFV);
+            queryFV.equalTo("applicationStatus", "For Verification");
+
+            const applicationsFI = Parse.Object.extend("Applications");
+            const queryFI = new Parse.Query(applicationsFI);
+            queryFI.equalTo("applicationStatus", "For Issuance");
+
+            const applicationsC = Parse.Object.extend("Applications");
+            const queryC = new Parse.Query(applicationsC);
+            queryC.equalTo("applicationStatus", "Completed");
+
+            const applicationsNC = Parse.Object.extend("Applications");
+            const queryNC = new Parse.Query(applicationsNC);
+            queryNC.equalTo("applicationStatus", "Non Compliant");
+
+            this.datas = [{
+                    title: "FOR APPROVAL",
+                    num: await queryFA.count(),
+                    type: "approval",
+                },
+                {
+                    title: "FOR REVISION",
+                    num: await queryFR.count(),
+                    type: "revision",
+                },
+                {
+                    title: "FOR PAYMENT",
+                    num: await queryFP.count(),
+                    type: "payment",
+                },
+                {
+                    title: "FOR EVALUATION",
+                    num: await queryFE.count(),
+                    type: "evaluation",
+                },
+                {
+                    title: "FOR COMPLIANCE",
+                    num: await queryFC.count(),
+                    type: "forcompliance",
+                },
+                {
+                    title: "FOR VERIFICATION",
+                    num: await queryFV.count(),
+                    type: "verification",
+                },
+                {
+                    title: "FOR ISSUANCE",
+                    num: await queryFI.count(),
+                    type: "issuance",
+                },
+                {
+                    title: "COMPLETED",
+                    num: await queryC.count(),
+                    type: "completed",
+                },
+                {
+                    title: "NON COMPLIANT",
+                    num: await queryNC.count(),
+                    type: "noncompliant",
+                },
+            ];
+>>>>>>> d3d9d7f0b8eabc1b5e225b431752e56ca9f49dc9
         }
         this.totalEntries = querResult.length;
         this.tables = storedApplicationsFA;

@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col justify-center items-center bg-white">
-    <span class="text-2xl m-5">Upload CSV File</span>
+    <span class="text-2xl m-5">Upload Excel File</span>
     <DropZoneVue></DropZoneVue>
     <span class="mt-12 font-semibold">{{ dropzoneFile.name }}</span>
   </div>
@@ -26,13 +26,13 @@ export default {
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);
-    query.equalTo("name", Parse.User.current().get("access_type"));
+    query.equalTo("objectId", Parse.User.current().get("access_type"));
 
     const querResult = await query.find();
     var accType = querResult[0].get("privileges");
     var flag = 0;
     for (var i = 0; i < accType.length; i++) {
-      if (accType[i] === '/hei') {
+      if (accType[i] === '/designations') {
         flag = 1;
       }
     }

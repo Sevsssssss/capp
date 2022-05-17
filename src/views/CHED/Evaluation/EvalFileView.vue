@@ -10,15 +10,7 @@
         </button> -->
         <div class="flex space-x-2 pr-2">
             <!-- add -->
-            <button @click="$router.replace({ path: '/evaluationins/edit' })" class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
-                <div class="flex flex-row">
-                    <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-                    </svg>
-                    <div class="btn-text">EDIT</div>
-                </div>
-            </button>
-            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
+            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteEvalInst()">
                 <div class="flex flex-row">
                     <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -52,26 +44,33 @@
             <div class="font-semibold">
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div>
-            <div>{{ evalDesc }}</div>
-            <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
+            <div>{{ Name }}</div>
+
+            <div v-for="cmono in cmoNoYr" :key="cmono">
+                per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}}
+            </div>
+
+            <!-- <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div> -->
+            <div>{{Program}}</div>
         </div>
         <div class="">
             <div class="overflow-x-auto">
                 <table class="table eval-table w-full">
                     <tbody>
                         <!-- row 1 -->
-                        <div v-for="cat in categories" :key="cat">
-                            <th>{{ cat.id }}</th>
-                            <td class="font-bold">{{ cat.Category }}</td>
-                            <div v-for="subcat in cat.subcategory" :key="subcat">
-                                <td></td>
-                                <th>{{ cat.id }}.{{ subcat.id }}</th>
-                                <td class="font-medium">{{ subcat.Subcategory }}</td>
-                                <div v-for="item in subcat.items" :key="item">
+                        <div v-for="cat in cmos" :key="cat">
+                            <div v-for="category in cat.categories" :key="category">
+                                <td class="font-bold">{{ category.id }} {{ category.Category }}</td>
+                                <div v-for="subcat in category.subcategory" :key="subcat">
                                     <td></td>
-                                    <td></td>
-                                    <th>{{ cat.id }}.{{ subcat.id }}.{{ item.id }}</th>
-                                    <td class="font-thin">{{ item.Item }}</td>
+                                    <th>{{ category.id }}.{{ subcat.id }}</th>
+                                    <td class="font-medium">{{ subcat.Subcategory }}</td>
+                                    <div v-for="item in subcat.items" :key="item">
+                                        <td></td>
+                                        <td></td>
+                                        <th>{{ category.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                                        <td class="font-thin">{{ item.Item }}</td>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -105,113 +104,42 @@ export default {
     components: {},
     data() {
         return {
-            categories: [{
-                    id: 1,
-                    subcategory: [{
-                            id: 1,
-                            items: [],
-                            Subcategory: "A doctoral degree holder in Education or a related field",
-                        },
-                        {
-                            id: 2,
-                            items: [],
-                            Subcategory: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                        },
-                        {
-                            id: 3,
-                            items: [],
-                            Subcategory: "Employed full - time. ",
-                        },
-                        {
-                            id: 4,
-                            items: [],
-                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in tertiary level.",
-                        },
-                        {
-                            id: 5,
-                            items: [],
-                            Subcategory: "With at least three (3) years of very satisfactory teaching experience in either the elementary or secondary level",
-                        },
-                        {
-                            id: 6,
-                            items: [],
-                            Subcategory: "With at least 2 years of very managerial/administrative experience",
-                        },
-                        {
-                            id: 7,
-                            items: [],
-                            Subcategory: "With updated notarized contract of employment",
-                        },
-                    ],
-                    Category: "DEAN OR DEPARTMENT CHAIR",
-                    Desc: "(CMO 76, s. 2017), and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                },
-                {
-                    id: 2,
-                    subcategory: [{
-                            id: 1,
-                            items: [{
-                                    id: 1,
-                                    Item: "As a rule, a Master’s Degree in education or an allied disciplined is required for teaching in the tertiary level, and RA 7836 & RA 9293 (Philippine Teachers Professionalization Act of 1994) and RA 8981 (PRC Modernization Act of 2000)",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "Faculty teaching general education and major subjects should have an appropriate master’s degree in the field they are assigned to teach.",
-                                },
-                                {
-                                    id: 3,
-                                    Item: "Physical Education Teacher",
-                                },
-                                {
-                                    id: 4,
-                                    Item: "Teacher has a BS P.E. degree or BEEd/ BSEd major/minor in P.E. or any other bachelor's degree with certificate in P.E.",
-                                },
-                                {
-                                    id: 5,
-                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                                },
-                                {
-                                    id: 6,
-                                    Item: "With updated notarized contract of employment",
-                                },
-                            ],
-                            Subcategory: "General Requirements",
-                        },
-                        {
-                            id: 2,
-                            items: [{
-                                    id: 1,
-                                    Item: "Holder of a valid certificate of registration and updated professional license (PRC ID) as provided in Section 11 of RA 8981.",
-                                },
-                                {
-                                    id: 2,
-                                    Item: "Holder of Master’s degree in education or any of the allied fields",
-                                },
-                            ],
-                            Subcategory: "Qualifications of the Professional Education Faculty",
-                        },
-                    ],
-                    Category: "FACULTY",
-                },
-            ],
-            programName: "Bachelor of Early Childhood Education (BECEd",
-            cmoNo: "76",
-            seriesYear: "2017",
-            evalDesc: "EVALUATION FORM FOR BACHELOR OF EARLY CHILDHOOD EDUCATION (BECED)",
+            cmos: [],
+            Name: "",
+            cmoNoYr: [],
+            Program: "",
         };
     },
-    methods: {},
+    methods: {
+        async deleteEvalInst() {
+            const EvalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalQuery = new Parse.Query(EvalInstruments);
+            evalQuery.equalTo("objectId", this.id);
+
+            const evalInstrument = await evalQuery.first();
+            if (confirm("Are You sure you want to delete this evaluation instrument?")) {
+                evalInstrument.destroy().then(
+                    (evalinst) => {
+                        console.log("Deleted object: " + evalinst.id);
+                    },
+                    (error) => {
+                        console.log("Error: " + error);
+                    }
+                );
+            }
+        }
+    },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            console.log(accType[y])
+
             if (accType[y] === "/evaluationins") {
                 flag = 1;
             }
@@ -223,47 +151,147 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            const evalInstruments = Parse.Object.extend("EvaluationForms");
+            const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
-            evalQuery.equalTo("objectId", "HMTbQBTqoK");
+            evalQuery.equalTo("objectId", this.id);
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
 
-            var categories = [];
+            var cmos = [];
 
-            for (var i = 0; i < evalInstrument.get("evaluationFormReqs").length; i++) {
+            for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
 
-                var subcat = [];
+                const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
+                const chedMemoQ = new Parse.Query(CHEDMEMOS);
+                chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
+                const chedMemo = await chedMemoQ.first({
+                    useMasterKey: true,
+                });
 
-                for (var j = 0; j < evalInstrument.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                var catIndexes = [];
+                var subcatIndexes = [];
 
-                    var items = [];
+                for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
+                    if (evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].indexOf(".") > -1) {
+                        var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
-                    for (var k = 0; k < evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                        items.push({
-                            id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                            Item: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
-                        })
+                        if (catIndexes.includes(parseInt(contents[0]))) {
+                            var index = catIndexes.indexOf(parseInt(contents[0]));
+                            subcatIndexes[index].push(parseInt(contents[1]))
+                        } else {
+                            catIndexes.push(parseInt(contents[0]));
+                            subcatIndexes.push([parseInt(contents[1])]);
+                        }
+                    }else {
+                        if (!catIndexes.includes(parseInt(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]))) {
+                            catIndexes.push(parseInt(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]));
+                            subcatIndexes.push([-1]);
+                        }
                     }
-
-                    subcat.push({
-                        id: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].id,
-                        Subcategory: evalInstrument.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
-                        items: items,
-                    })
 
                 }
 
-                categories.push({
-                    id: evalInstrument.get("evaluationFormReqs")[i].id,
-                    Category: evalInstrument.get("evaluationFormReqs")[i].Category,
-                    Desc: evalInstrument.get("evaluationFormReqs")[i].Desc,
-                    subcategory: subcat,
+                var hasSubCat = [];
+
+                for(var cs = 0; cs < catIndexes.length; cs++) {
+                    if(subcatIndexes[cs].every(x => x < 0)) {
+                        hasSubCat.push(false);
+                    }
+                    else{
+                        hasSubCat.push(true);
+                    }
+                    for(var ss = 0; ss < subcatIndexes[cs].length; ss++){
+                        if(subcatIndexes[cs][ss] == -1){
+                            subcatIndexes[cs].splice(ss, 1)
+                        }
+                    }
+                }
+
+                var categories = [];
+                for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
+                    var subcat = [];
+                    if (catIndexes.includes(i + 1)) {
+                        var catIndex = catIndexes.indexOf(i + 1)
+                        if(hasSubCat[catIndex] == true){
+                            console.log(chedMemo.get("evaluationFormReqs")[i].subcategory.length);
+                            for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                                //for(var sub = 0; sub < subcatIndexes.length)
+                                if (subcatIndexes[catIndex].includes(j + 1)) {
+                                    var items = [];
+
+                                    for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                        items.push({
+                                            id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
+                                            Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
+                                        })
+                                    }
+
+                                    subcat.push({
+                                        id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].id,
+                                        Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
+                                        items: items,
+                                    })
+
+                                }
+
+                            }
+                            this.Name = chedMemo.get("evaluationFormName");
+
+                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                                this.cmoNoYr.push({
+                                    cmoNo: chedMemo.get("CMO_No"),
+                                    seriesYear: chedMemo.get("Series_Year"),
+                                })
+                            }
+
+                            categories.push({
+                                id: chedMemo.get("evaluationFormReqs")[i].id,
+                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                                subcategory: subcat,
+                            })
+                        }
+                        else{
+                            this.Name = chedMemo.get("evaluationFormName");
+
+                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                                this.cmoNoYr.push({
+                                    cmoNo: chedMemo.get("CMO_No"),
+                                    seriesYear: chedMemo.get("Series_Year"),
+                                })
+                            }
+
+                            categories.push({
+                                id: chedMemo.get("evaluationFormReqs")[i].id,
+                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                                subcategory: [],
+                            })
+                        }
+                        
+
+                    }
+
+                }
+                this.categories = categories;
+                this.Name = evalInstrument.get("evaluationFormName");
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", evalInstrument.get("evaluationFormProgram"));
+
+                const program = await programQuery.first();
+
+                this.Program = program.get("programName");
+                cmos.push({
+                    id: evalInstrument.get("evalInstReqs")[c].cmoID,
+                    categories: categories,
                 })
 
             }
-            this.categories = categories;
+            this.cmos = cmos;
         }
     },
 };

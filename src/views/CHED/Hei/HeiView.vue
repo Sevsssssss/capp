@@ -48,10 +48,7 @@
                     <div class="month-sort flex flex-row">
                         <select class="font-normal rounded-md select select-ghost select-sm w-full max-w-xs" style="outline: none" id="hei_sort" v-model="sort_type" @change="filterHEI()">
                             <option disabled selected>Sort by type</option>
-                            <option>Private</option>
-                            <option>State Univeristies</option>
-                            <option>Local Universities</option>
-                            <option>Others</option>
+                            <option v-for="hType in hei_Types" :key="hType" :value="hType">{{hType.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -59,12 +56,12 @@
             <div class="flex flex-row">
                 <!-- button -->
                 <div class="h-fit pt-3 items-center">
-                    <button @click="csvHei()" type="button" class="btn-table">
+                    <button @click="excelHei()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
                         </svg>
-                        <div class="pl-2">Upload CSV</div>
+                        <div class="pl-2">Upload Excel</div>
                     </button>
                 </div>
                 <!-- button -->
@@ -111,7 +108,15 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-4 items-end justify-end">
-                                <a href="#" @click="$router.replace({ path: '/hei/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <router-link :to="{
+                                name: 'EditHeiView',
+                                params: {
+                                heiID: table.id,
+                                },
+                            }">
+                                    <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
+                                <!-- <a href="#" @click="$router.replace({ path: '/hei/edit' })" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> -->
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
@@ -130,7 +135,7 @@
             </div>
             <div v-if="sort_type_var == true" class="p-5 font-medium">
                 <!-- NO DATA FOUND {{search}} -->
-                Sorry, there is no data with the type of "{{ sort_type }}" in the
+                Sorry, there is no data with the type of "{{ sort_type.name }}" in the
                 database.
             </div>
             <!-- Table Footer -->
@@ -169,6 +174,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -187,8 +193,15 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
+const toast = useToast();
 export default {
     name: "HeiView",
     data() {
@@ -262,6 +275,7 @@ export default {
                     score: 0.03343,
                 },
             ],
+            colors: ["approval", "revision", "payment", "evaluation", "forcompliance", "verification", "issuance", "completed", "noncompliant"],
             headers: [{
                     title: "INSTITUTIONAL CODE",
                 },
@@ -300,10 +314,12 @@ export default {
             search: "",
             sort_type: "Sort by type",
             sort_type_var: false,
+            hei_Types: [],
         };
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchHEI() {
@@ -325,15 +341,49 @@ export default {
             this.currentDelAcc = instNum;
         },
         async deleteAccount() {
+            this.$refs.Spinner.show();
+
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
-            const querResult = await acc.find({
+            const querResult = await acc.first({
                 useMasterKey: true,
             });
-            const accDel = querResult[0];
-            alert(accDel.get("hei_name"));
+
+            const applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(applications);
+            queryApp.equalTo("createdBy", querResult.id)
+            const application = await queryApp.find();
+
+            if (application.length > 0) {
+                if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
+                    querResult.set("isArchived", true);
+                    querResult.save({
+                        useMasterKey: true,
+                    });
+                }
+            } else {
+                querResult.destroy({
+                    useMasterKey: true,
+                });
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    document.location.reload()
+                }, 3000);
+
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
-        csvHei() {
+        excelHei() {
             this.$router.push("/hei/upload");
         },
         addHei() {
@@ -353,118 +403,50 @@ export default {
             }
         },
         async filterHEI() {
-            var i = 0;
-            if (this.sort_type == "Private") {
-                var heisPriv = [];
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
-                query.equalTo("hei_type", "PRIVATE COLLEGES");
-                const querResult = await query.find({
-                    useMasterKey: true,
+            var heisPriv = [];
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
+
+            const accQuerResult = await queryACC.first();
+
+            const query = new Parse.Query(Parse.User);
+            query.equalTo("access_type", accQuerResult.id);
+            query.equalTo("hei_type", this.sort_type.id);
+            const querResult = await query.find({
+                useMasterKey: true,
+            });
+            for (var i = 0; i < querResult.length; i++) {
+                const hei = querResult[i];
+
+                const index = this.hei_Types.findIndex(object => {
+                    return object.id == hei.get("hei_type");
                 });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisPriv.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisPriv.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisPriv;
-                } else {
-                    this.sort_type_var = true;
-                }
-            }
-            if (this.sort_type == "State Univeristies") {
-                var heisState = [];
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
-                query.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
-                const querResult = await query.find({
-                    useMasterKey: true,
+
+                heisPriv.push({
+                    id: hei.id,
+                    InstNo: hei.get("inst_code"),
+                    HeiName: hei.get("hei_name"),
+                    address: hei.get("address"),
+                    type: this.hei_Types[index].name,
+                    email: hei.get("email"),
                 });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisState.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisState.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisState;
-                } else {
-                    this.sort_type_var = true;
-                }
             }
-            if (this.sort_type == "Local Universities") {
-                var heisLocal = [];
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
-                query.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisLocal.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisLocal.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisLocal;
-                } else {
-                    this.sort_type_var = true;
-                }
+            if (heisPriv.length > 0) {
+                this.sort_type_var = false;
+                this.tables = heisPriv;
+            } else {
+                this.sort_type_var = true;
             }
-            if (this.sort_type == "Others") {
-                var heisOthers = [];
-                const query = new Parse.Query(Parse.User);
-                query.equalTo("access_type", "HEI");
-                query.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
-                const querResult = await query.find({
-                    useMasterKey: true,
-                });
-                for (i = 0; i < querResult.length; i++) {
-                    const hei = querResult[i];
-                    heisOthers.push({
-                        id: hei.id,
-                        InstNo: hei.get("inst_code"),
-                        HeiName: hei.get("hei_name"),
-                        address: hei.get("address"),
-                        type: hei.get("hei_type"),
-                        email: hei.get("email"),
-                    });
-                }
-                if (heisOthers.length > 0) {
-                    this.sort_type_var = false;
-                    this.tables = heisOthers;
-                } else {
-                    this.sort_type_var = true;
-                }
-            }
+
         },
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -480,61 +462,75 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "HEI");
+
+            const accQuerResult = await queryACC.first();
+
             var heis = [];
             const query = new Parse.Query(Parse.User);
-            query.equalTo("access_type", "HEI");
+            query.equalTo("access_type", accQuerResult.id);
             const querResult = await query.find({
                 useMasterKey: true,
             });
+
+            const HEITypes = Parse.Object.extend("HEI_Types");
+            const hTypeQuery = new Parse.Query(HEITypes);
+
+            const hTypeQuerResult = await hTypeQuery.find();
+
+            var heiTypes = [];
+            var hTypeCounter = [];
+
+            for (var h = 0; h < hTypeQuerResult.length; h++) {
+                const heiType = hTypeQuerResult[h];
+                heiTypes.push({
+                    id: heiType.id,
+                    name: heiType.get("name"),
+                });
+                hTypeCounter.push(0);
+            }
+
+            this.hei_Types = heiTypes;
+
             for (var i = 0; i < querResult.length; i++) {
                 const hei = querResult[i];
-                console.log(heis);
-                console.log(hei.id);
+
+                const index = heiTypes.findIndex(object => {
+                    return object.id == hei.get("hei_type");
+                });
+
+                const htypeName = heiTypes[index].name;
+
+                console.log(index);
+
+                hTypeCounter[index] += 1;
+
                 heis.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
                     address: hei.get("address"),
-                    type: hei.get("hei_type"),
+                    type: htypeName,
                     email: hei.get("email"),
                 });
             }
             this.totalEntries = querResult.length;
             this.tables = heis;
-            console.log(heis);
-            const queryPrivate = new Parse.Query(Parse.User);
-            queryPrivate.equalTo("access_type", "HEI");
-            queryPrivate.equalTo("hei_type", "PRIVATE COLLEGES");
-            const queryState = new Parse.Query(Parse.User);
-            queryState.equalTo("access_type", "HEI");
-            queryState.equalTo("hei_type", "STATE UNIVERSITIES AND COLLEGES");
-            const queryLocal = new Parse.Query(Parse.User);
-            queryLocal.equalTo("access_type", "HEI");
-            queryLocal.equalTo("hei_type", "LOCAL UNIVERSITIES AND COLLEGES");
-            const queryOthers = new Parse.Query(Parse.User);
-            queryOthers.equalTo("access_type", "HEI");
-            queryOthers.equalTo("hei_type", "OTHER GOVERNMENT SCHOOLS");
-            this.datas = [{
-                    title: "STATE UNIVERSITIES AND COLLEGES",
-                    num: await queryState.count(),
-                    color: "orange",
-                },
-                {
-                    title: "LOCAL UNIVERSITIES AND COLLEGES",
-                    num: await queryLocal.count(),
-                    color: "blue",
-                },
-                {
-                    title: "PRIVATE COLLEGES",
-                    num: await queryPrivate.count(),
-                    color: "violet",
-                },
-                {
-                    title: "OTHER GOVERNMENT SCHOOLS",
-                    num: await queryOthers.count(),
-                    color: "green",
-                },
-            ];
+
+            var dataCol = [];
+            for (var t = 0; t < heiTypes.length; t++) {
+                dataCol.push({
+                    title: heiTypes[t].name,
+                    num: hTypeCounter[t],
+                    color: this.colors[t],
+                })
+
+            }
+
+            this.datas = dataCol;
         }
     },
 };

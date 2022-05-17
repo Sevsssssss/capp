@@ -32,14 +32,23 @@
         <div v-if="status.toUpperCase() === 'FOR APPROVAL'">
             <ForApproval :appID="appID" />
         </div>
+        <div v-if="status.toUpperCase() === 'FOR PAYMENT'">
+            <ForPayment :appID="appID" />
+        </div>
         <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
             <ForRevision :appID="appID" />
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
             <ForEvaluation :appID="appID" />
         </div>
+         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION ASSIGNED'">
+            <ForEvalAssigned :appID="appID" />
+        </div>
+        <div v-else-if="status.toUpperCase() === 'FOR VERIFICATION'">
+            <ForVerification :appID="appID"/>
+        </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
-            <ForIssuance></ForIssuance>
+            <ForIssuance :appID="appID"/>>
         </div>
         <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>
@@ -49,10 +58,13 @@
 
 <script>
 import ForApproval from "../../Application/ForApproval.vue";
+import ForPayment from "../../Application/ForPayment.vue";
 import ForEvaluation from "../../Application/ForEvaluation.vue";
 import ForRevision from "../../Application/ForRevision.vue";
+import ForVerification from "../../Application/ForVerification.vue";
 import ForIssuance from "../../Application/ForIssuance.vue";
 import ForCompleted from "../../Application/ForCompletedView.vue";
+import ForEvalAssigned from "../../Application/ForEvalAssigned.vue";
 import Parse from "parse";
 
 export default {
@@ -60,10 +72,13 @@ export default {
     name: "StatusApplication",
     components: {
         ForApproval,
+        ForPayment,
         ForEvaluation,
         ForRevision,
+        ForVerification,
         ForIssuance,
         ForCompleted,
+        ForEvalAssigned,
     },
     data() {
         return {
@@ -99,13 +114,15 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var i = 0; i < accType.length; i++) {
+            //console.log(accType[i])
             if (accType[i] === "/application") {
+                console.log(accType[i])
                 flag = 1;
             }
         }

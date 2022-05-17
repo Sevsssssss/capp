@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Arimo&display=swap");
+@import url("http://fonts.googleapis.com/icon?family=Material+Icons");
 
 @tailwind base;
 
@@ -201,8 +202,8 @@
   }
 
   .homeIcon.orange {
-    fill: #fa582e;
-    background-color: rgba(250, 88, 46, 0.15);
+    fill: #FF6E48;
+    background-color: rgba(255, 110, 72, 0.15);
   }
 
   .homeIcon.blue {
@@ -220,6 +221,15 @@
     background-color: rgba(5, 174, 74, 0.15);
   }
 
+  .homeIcon.yellow {
+    fill: #EDD500;
+    background-color: rgba(237, 213, 0, 0.15);
+  }
+
+  .homeIcon.red {
+    fill: #FF2F2F;
+    background-color: rgba(255, 47, 47, 0.15);
+  }
 
   .homeIcon.pink {
     fill: #FF49CC;
@@ -337,30 +347,63 @@
   }
 
   .approval {
-    color: #fa582e;
-    background-color: rgba(250, 88, 46, 0.15);
+    fill: #FF6E48;
+    color: #FF6E48;
+    background-color: rgba(255, 110, 72, 0.15);
     border: none;
   }
 
   .revision {
+    fill: #0053d9;
     color: #0053d9;
     background-color: rgba(0, 67, 212, 0.15);
     border: none;
   }
 
+  .payment {
+    fill: #00EDDF;
+    color: #00EDDF;
+    background-color: rgba(0, 237, 223, 0.15);
+    border: none;
+  }
+
   .evaluation {
+    fill: #FF49CC;
     color: #FF49CC;
     background-color: rgba(255, 73, 204, 0.15);
     border: none;
   }
 
   .issuance {
+    fill: #620cce;
     color: #620cce;
     background-color: rgba(96, 8, 205, 0.15);
     border: none;
   }
 
+  .forcompliance{
+    fill: #EDD500;
+    color: #EDD500;
+    background-color: rgba(237, 213, 0, 0.15);
+    border: none;
+  }
+
+  .verification {
+    fill: #2408CD;
+    color: #2408CD;
+    background-color: rgba(36, 8, 205, 0.15);
+    border: none;
+  }
+
+  .noncompliant{
+    fill: #FF2F2F;
+    color: #FF2F2F;
+    background-color: rgba(255, 47, 47, 0.15);
+    border: none;
+  }
+
   .completed {
+    fill: #04ad48;
     color: #04ad48;
     background-color: rgba(5, 174, 74, 0.15);
     border: none;
@@ -396,6 +439,10 @@
 
   .aoe {
     width: 30%;
+  }
+
+  .aoe2 {
+    width: 50%;
   }
 
   .eval-table :where(th, td) {

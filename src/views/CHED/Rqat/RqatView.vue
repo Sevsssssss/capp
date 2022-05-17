@@ -23,12 +23,12 @@
             <div class="flex flex-row">
                 <!-- button -->
                 <div class="h-fit pt-3 items-center">
-                    <button @click="csvRQAT()" type="button" class="btn-table">
+                    <button @click="excelRQAT()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
                         </svg>
-                        <div class="pl-2">Upload CSV</div>
+                        <div class="pl-2">Upload Excel</div>
                     </button>
                 </div>
                 <!-- button -->
@@ -72,11 +72,19 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex  space-x-2 items-end justify-end">
-                                <a href="#" @click="$router.replace({path: '/rqat/edit'})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <router-link :to="{
+                                name: 'EditRQATView',
+                                params: {
+                                rqatID: table.id,
+                                },
+                            }">
+                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                </router-link>
+
                                 <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
-                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectAcc(table.id)">
                                             <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                         </svg>
                                     </label>
@@ -126,6 +134,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -136,153 +145,225 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+                <label @click="deleteRQAT" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
             </div>
         </div>
     </div>
 </div>
 </template>
+
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 // var dataNumber = 10;
 // var page = 0;
 
 import NoDataAvail from "@/components//NoDataAvail.vue";
-
+const toast = useToast();
 export default {
-  name: "RqatView",
-  data() {
-    return {
-      currentpage: 0,
-      numPerPage: 10,
-      totalEntries: 0,
-      headers: [
-        {
-          title: "RQAT MEMBER NAME",
-        },
-        {
-          title: "HEI",
-        },
-        {
-          title: "CONTACT NUMBER",
-        },
-        {
-          title: "USERNAME",
-        },
-      ],
+    name: "RqatView",
+    data() {
+        return {
+            currentpage: 0,
+            numPerPage: 10,
+            totalEntries: 0,
+            currentDelAcc: "",
+            headers: [{
+                    title: "RQAT MEMBER NAME",
+                },
+                {
+                    title: "HEI",
+                },
+                {
+                    title: "CONTACT NUMBER",
+                },
+                {
+                    title: "USERNAME",
+                },
+            ],
 
-      datas: [
-        {
-          title: "FOR APPROVAL",
-          num: 300,
+            datas: [{
+                    title: "FOR APPROVAL",
+                    num: 300,
+                },
+                {
+                    title: "FOR REVISION",
+                    num: 300,
+                },
+                {
+                    title: "FOR ISSUANCE",
+                    num: 300,
+                },
+                {
+                    title: "FOR EVALUATION",
+                    num: 300,
+                },
+                {
+                    title: "FOR COMPLETION",
+                    num: 300,
+                },
+            ],
+            tables: [],
+            search: "",
+        };
+    },
+    components: {
+        NoDataAvail,
+        VueInstantLoadingSpinner,
+    },
+    computed: {
+        searchRqat() {
+            this.newEntCount();
+            return this.tables
+                .filter((p) => {
+                    return (
+                        p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                    );
+                })
+                .slice(
+                    this.numPerPage * this.currentpage,
+                    (this.currentpage + 1) * this.numPerPage
+                );
         },
-        {
-          title: "FOR REVISION",
-          num: 300,
+    },
+    methods: {
+        addRQAT() {
+            this.$router.push("/rqat/add");
         },
-        {
-          title: "FOR ISSUANCE",
-          num: 300,
+        selectAcc(id) {
+            this.currentDelAcc = id;
         },
-        {
-          title: "FOR EVALUATION",
-          num: 300,
-        },
-        {
-          title: "FOR COMPLETION",
-          num: 300,
-        },
-      ],
-      tables: [],
-      search: "",
-    };
-  },
-  components: {
-    NoDataAvail,
-  },
-  computed: {
-    searchRqat() {
-      this.newEntCount();
-      return this.tables
-        .filter((p) => {
-          return (
-            p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-          );
-        })
-        .slice(
-          this.numPerPage * this.currentpage,
-          (this.currentpage + 1) * this.numPerPage
-        );
-    },
-  },
-  methods: {
-    addRQAT() {
-      this.$router.push("/rqat/add");
-    },
-    viewAssignments() {
-      this.$router.push("/rqat-assignment");
-    },
-    newEntCount() {
-      this.totalEntries = this.tables.filter((p) => {
-        return (
-          p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-        );
-      }).length;
-    },
-    prevPage() {
-      if (this.currentpage > 0) this.currentpage -= 1;
-    },
-    nextPage() {
-      if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
-        this.currentpage += 1;
-      }
-    },
-  },
-  mounted: async function () {
-    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes);
-    query.equalTo("name", Parse.User.current().get("access_type"));
+        async deleteRQAT() {
+            this.$refs.Spinner.show();
 
-    const querResult = await query.find();
-    var accType = querResult[0].get("privileges");
-    var flag = 0;
-    for (var y = 0; y < accType.length; y++) {
-      if (accType[y] === this.$route.path) {
-        flag = 1;
-      }
-    }
-    if (flag === 0) {
-      this.$router.push("/403");
-    } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-      var rqats = [];
-      const query = new Parse.Query(Parse.User);
-      query.equalTo("access_type", "RQAT");
-      query.notEqualTo("hei_affil", null);
-      const querResult = await query.find();
-      for (var i = 0; i < querResult.length; i++) {
-        const rqat = querResult[i];
-        rqats.push({
-          id: rqat.id,
-          rqatName:
-            rqat.get("name")["lastname"] +
-            ", " +
-            rqat.get("name")["firstname"] +
-            " " +
-            rqat.get("name")["middleinitial"] +
-            ".",
-          hei: rqat.get("hei_affil"),
-          contactNum: rqat.get("contact_num"),
-          username: rqat.get("username"),
-        });
-      }
-      this.totalEntries = querResult.length;
-      this.tables = rqats;
-    }
-  },
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("objectId", this.currentDelAcc);
+            const querResult = await acc.first({
+                useMasterKey: true,
+            });
+
+            const applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(applications);
+            queryApp.equalTo("selectedRQAT", querResult.id)
+            const application = await queryApp.find();
+
+            if (application.length > 0) {
+                if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
+                    querResult.set("isArchived", true);
+                    querResult.save({
+                        useMasterKey: true,
+                    });
+                }
+            } else {
+                querResult.destroy({
+                    useMasterKey: true,
+                });
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 3000);
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
+        viewAssignments() {
+            this.$router.push("/rqat-assignment");
+        },
+        newEntCount() {
+            this.totalEntries = this.tables.filter((p) => {
+                return (
+                    p.rqatName.toLowerCase().indexOf(this.search.toLowerCase()) != -1
+                );
+            }).length;
+        },
+        prevPage() {
+            if (this.currentpage > 0) this.currentpage -= 1;
+        },
+        nextPage() {
+            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+                this.currentpage += 1;
+            }
+        },
+        excelRQAT() {
+            this.$router.push("/rqat/upload");
+        },
+    },
+    mounted: async function () {
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
+
+        const querResult = await query.find();
+        var accType = querResult[0].get("privileges");
+        var flag = 0;
+        for (var y = 0; y < accType.length; y++) {
+            if (accType[y] === this.$route.path) {
+                flag = 1;
+            }
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const queryACC = new Parse.Query(AccessType);
+            queryACC.equalTo("name", "RQAT");
+
+            const accQuerResult = await queryACC.first();
+
+            var rqats = [];
+            const query = new Parse.Query(Parse.User);
+            query.equalTo("access_type", accQuerResult.id);
+            query.notEqualTo("hei_affil", null);
+            const querResult = await query.find();
+            for (var i = 0; i < querResult.length; i++) {
+                const rqat = querResult[i];
+
+                var heiAffil = "";
+                if (rqat.get("hei_affil").hei != "None") {
+                    const heis = new Parse.Query(Parse.User);
+                    heis.equalTo("objectId", rqat.get("hei_affil").hei);
+                    const hei = await heis.first();
+                    heiAffil = hei.get("hei_name");
+                } else {
+                    heiAffil = rqat.get("hei_affil").hei;
+                }
+
+                rqats.push({
+                    id: rqat.id,
+                    rqatName: rqat.get("name")["lastname"] +
+                        ", " +
+                        rqat.get("name")["firstname"] +
+                        " " +
+                        rqat.get("name")["middleinitial"] +
+                        ".",
+                    hei: heiAffil,
+                    contactNum: rqat.get("contact_num"),
+                    username: rqat.get("username"),
+                });
+            }
+            this.totalEntries = querResult.length;
+            this.tables = rqats;
+        }
+    },
 };
 </script>
 

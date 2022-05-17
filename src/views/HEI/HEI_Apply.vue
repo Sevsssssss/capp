@@ -155,7 +155,7 @@
               ">
                             Cancel
                         </button>
-                        <button type="submit" class="
+                        <button @click="scrollToTop()" type="submit" class="
                 submit
                 w-40
                 text-white
@@ -176,6 +176,7 @@
             </div>
         </form>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </section>
 </template>
 
@@ -186,6 +187,7 @@ import {
     POSITION
 } from "vue-toastification";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 // import NoDataAvail from "@/components//NoDataAvail.vue";
 import {
     required,
@@ -196,6 +198,9 @@ const toast = useToast();
 export default {
     name: "HEIapply",
     // components: { NoDataAvail,},
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             v$: useVuelidate(),
@@ -227,79 +232,123 @@ export default {
             phoneNumber: {
                 required,
             },
+            programSelect:{
+                required,
+            }
         };
     },
     methods: {
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
         submitApplication(values) {
-            try {
-                var reqFiles = [];
-                let requirement = null;
-                for (var i = 0; i < this.reqs.length; i++) {
-                    const file = values.target[5 + i].files[0];
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
-                    requirement = new Parse.File(
-                        file.name.replace(/[^a-zA-Z]/g, ""),
-                        file,
-                        file.type
-                    );
-                    reqFiles.push({
-                        id: i + 1,
-                        file: requirement,
-                        status: "",
-                        comment: "",
-                    });
-                }
-                // const file = values.target[4].files[0];
-                // console.log(file);
-                // console.log(file.name);
-                // console.log(file.type);
-                const application = Parse.Object.extend("Applications");
-                const newApplication = new application();
-                //requirement = new Parse.File(file.name, file, file.type);
-                newApplication
-                    .save({
-                        pointPerson: this.pointPerson,
-                        email: this.email,
-                        phoneNumber: this.phoneNumber,
-                        requirements: reqFiles,
-                        applicationType: this.selected,
-                        applicationStatus: "For Approval",
-                        createdBy: Parse.User.current().id,
-                        program: this.programSelect,
-                    })
-                    .then(
-                        (newApplication) => {
-                            toast("Application Added: " + newApplication.id, {
-                                    type: TYPE.SUCCESS,
-                                    timeout: 3000,
-                                    position: POSITION.TOP_RIGHT,
-                                }),
-                               setTimeout(() => {
-                                   this.$router.replace({path: "/HEIapplication"})
-                               }, 3000);
-                            // console.log("New Access Type Added:" + newApplication.id)
-                        },
-                        (e) => {
-                            toast("Application Adding Failed: " + e.message, {
-                                type: TYPE.ERROR,
-                                timeout: 2000,
-                                hideProgressBar: true,
-                                position: POSITION.TOP_RIGHT,
-                            });
-                            // alert("Access Type Adding Failed: " + error)
-                        }
-                    );
-            } catch (error) {
+            this.$refs.Spinner.show();
+            var has_error = 0;
+
+            if (this.pointPerson == "" ||
+                this.email == "" ||
+                this.phoneNumber == "" || 
+                this.programSelect == ""
+            ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error);
+                has_error = 1;
             }
+            if (has_error < 1) {
+                try {
+                    var reqFiles = [];
+                    let requirement = null;
+                    for (var i = 0; i < this.reqs.length; i++) {
+                        const file = values.target[5 + i].files[0];
+                        // console.log(file);
+                        // console.log(file.name);
+                        // console.log(file.type);
+                        requirement = new Parse.File(
+                            file.name.replace(/[^a-zA-Z]/g, ""),
+                            file,
+                            file.type
+                        );
+                        reqFiles.push({
+                            id: i + 1,
+                            file: requirement,
+                            status: "",
+                            comment: "",
+                        });
+                    }
+                    // const file = values.target[4].files[0];
+                    // console.log(file);
+                    // console.log(file.name);
+                    // console.log(file.type);
+                    const application = Parse.Object.extend("Applications");
+                    const newApplication = new application();
+                    //requirement = new Parse.File(file.name, file, file.type);
+                    var currentDate = new Date();
+                    var yesterday = currentDate.setDate(currentDate.getDate() - 1);
+                    newApplication
+                        .save({
+                            pointPerson: this.pointPerson,
+                            email: this.email,
+                            phoneNumber: this.phoneNumber,
+                            requirements: reqFiles,
+                            applicationType: this.selected,
+                            applicationStatus: "For Approval",
+                            createdBy: Parse.User.current().id,
+                            program: this.programSelect,
+                            selectedRQAT: [],
+                            selectedSupervisor: '',
+                            summary: '',
+                            //certificate: '',
+                            resubmittedFiles: [],
+                            actualSituations: [],
+                            remarks: [],
+                            recommendation: '',
+                            paymentStatus: '',
+                            complianceDueDate: yesterday,
+                        })
+                        .then(
+                            (newApplication) => {
+                                toast("Application Added: " + newApplication.id, {
+                                        type: TYPE.SUCCESS,
+                                        timeout: 3000,
+                                        position: POSITION.TOP_RIGHT,
+                                    }),
+                                    setTimeout(() => {
+                                        this.$router.replace({
+                                            path: "/hei/application"
+                                        })
+                                    }, 3000);
+                                // console.log("New Access Type Added:" + newApplication.id)
+                            },
+                            (e) => {
+                                toast("Application Adding Failed: " + e.message, {
+                                    type: TYPE.ERROR,
+                                    timeout: 2000,
+                                    hideProgressBar: true,
+                                    position: POSITION.TOP_RIGHT,
+                                });
+                                // alert("Access Type Adding Failed: " + error)
+                            }
+                        );
+                } catch (error) {
+                    toast("Please fill out the required information", {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    console.log(error);
+                }
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         changeItem: function changeItem(event) {
             for (var i = 0; i < this.applicationTypes.length; i++) {
@@ -343,7 +392,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");

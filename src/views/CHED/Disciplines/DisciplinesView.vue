@@ -1,28 +1,30 @@
 <template>
-<!-- <div v-if="!tables.length" style="height: 100%">
-    <NoDataAvail names="DisciplinesView" />
-</div> -->
-<div class="p-3">
-    <div class="grid xxl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3">
-        <div class="bg-brand-white shadow-md rounded-md m-3 p-4" v-for="data in datas" :key="data">
-            <div class="flex flex-col justify-between text-left">
-                <div class="flex flex-row">
-                    <div :class="'homeIcon ' + data.color" class="mr-3">
-                        <svg class="icon" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M19 21H5a1 1 0 0 1-1-1v-9H1l10.327-9.388a1 1 0 0 1 1.346 0L23 11h-3v9a1 1 0 0 1-1 1zM6 19h12V9.157l-6-5.454-6 5.454V19z" />
-                        </svg>
-                    </div>
-                    <div class="text-sm font-semibold" style="color: #8fa0b9">
-                        {{ data.title }}
-                    </div>
-                </div>
-                <div class="text-2xl text-right font-semibold text-grey-300">
-                    {{ data.num }}
-                </div>
-            </div>
+<div v-if="!tables.length" style="height: 100%">
+    <div class="flex flex-col center h-full p-5">
+        <div class="noDataAvail">No Data Available</div>
+        <div class="h-fit pt-3 items-center">
+            <button @click="excelDisciplines()" type="button" class="btn-table">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                </svg>
+                <div class="pl-2">Upload Excel</div>
+            </button>
+        </div>
+        <!-- button -->
+        <div class="items-center">
+            <button @click="addDisciplines()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                </svg>
+                <div class="pl-2">Add Discipline</div>
+            </button>
         </div>
     </div>
+</div>
+<div v-else class="p-3">
+
     <!-- Table -->
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
@@ -32,87 +34,39 @@
                 <div class="mr-5">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative mt-1">
-                        <div class="
-                  absolute
-                  inset-y-0
-                  left-0
-                  flex
-                  items-center
-                  pl-3
-                  pointer-events-none
-                ">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <input v-model="search" type="text" id="search" class="
-                  bg-gray-50
-                  border border-gray-300
-                  text-gray-900 text-sm
-                  rounded-lg
-                  focus:ring-blue-500 focus:border-blue-500
-                  block
-                  w-80
-                  pl-10
-                  p-2.5
-                " placeholder="Search for items" />
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
                     </div>
                 </div>
             </div>
             <div class="flex flex-row">
+                <div class="h-fit pt-3 items-center">
+                    <button @click="excelDisciplines()" type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload Excel</div>
+                    </button>
+                </div>
                 <!-- button -->
                 <div class="h-fit pr-2 pt-3 items-center">
-                    <label type="button" for="createDisciplines" class="
-                flex
-                items-center
-                text-white
-                bg-brand-darkblue
-                hover:bg-blue-800
-                focus:ring-4 focus:ring-blue-300
-                font-medium
-                rounded-lg
-                text-sm
-                px-3
-                py-2.5
-                mr-2
-                mb-2
-                focus:outline-none
-              ">
+                    <button @click="addDisciplines()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
                         </svg>
                         <div class="pl-2">Add Discipline</div>
-                    </label>
+                    </button>
                 </div>
-                <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
-                    <label type="button" for="createPrograms" class="
-                flex
-                items-center
-                text-white
-                bg-brand-darkblue
-                hover:bg-blue-800
-                focus:ring-4 focus:ring-blue-300
-                font-medium
-                rounded-lg
-                text-sm
-                px-3
-                py-2.5
-                mr-2
-                mb-2
-                focus:outline-none
-              ">
-                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                        </svg>
-                        <div class="pl-2">Add Program</div>
-                    </label>
-                </div>
+
             </div>
         </div>
         <!-- Table body -->
-
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
@@ -124,23 +78,20 @@
             <tbody>
                 <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ i.Name }}
+                        {{ i.MajorDiscipline }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ i.Programs }}
+                        <div v-for="x in i.specificDiscipline" :key="x" class="flex flwx-row justify-between">
+                            {{x.SpecificDiscipline}}
+                        </div>
                     </td>
-                    <td class="py-4 text-right">
-                        <label for="editDisciplines" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.Name, i.id)">Edit Disciplines</label>
-                    </td>
-                    <td class="py-4 text-right">
-                        <label for="editPrograms" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
-                    </td>
-                    <td class="px-6 py-4 flex flex-row">
-                        <div class="hover:text-brand-red/60">
+                    <td class="px-6 py-4  flex flex-row justify-end space-x-3">
+                        <label for="editPrograms" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.MajorDiscipline, i.id)">Edit Disciplines</label>
+                        <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
-                        </div>
+                        </label>
                     </td>
                 </tr>
             </tbody>
@@ -172,29 +123,10 @@
                 <div class="btn-group">
                     <ul class="inline-flex -space-x-px">
                         <li>
-                            <a href="javascript:void(0)" class="
-                    py-2
-                    px-3
-                    ml-0
-                    leading-tight
-                    text-gray-500
-                    bg-white
-                    rounded-l-lg
-                    border border-gray-300
-                    hover:bg-gray-100 hover:text-gray-700
-                  " @click="prevPage()">Previous</a>
+                            <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="
-                    py-2
-                    px-3
-                    leading-tight
-                    text-gray-500
-                    bg-white
-                    rounded-r-lg
-                    border border-gray-300
-                    hover:bg-gray-100 hover:text-gray-700
-                  " @click="nextPage()">Next</a>
+                            <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -210,224 +142,28 @@
             <form v-on:submit.prevent="submit">
                 <div class="mb-6">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.disciplineName) }" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="v$.disciplineName.$model" />
+                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.disciplineName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.disciplineName.$model" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="createDisciplines" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="modal()">Submit</label>
+                <label for="createDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
             </div>
         </div>
     </label>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Add Discipline</div>
+            <div class="font-semibold text-md">Add Discipline</div>
             <p class="text-sm xxs:leading-tight text-grey-200">
                 Are you sure you want to add this discipline?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " @click="modal()">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            " @click="addDiscipline()">Continue</label>
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addDiscipline()">Continue</label>
             </div>
         </div>
     </div>
-
-    <!-- edit -->
-    <input type="checkbox" id="editDisciplines" class="modal-toggle" />
-    <label for="editDisciplines" class="modal cursor-pointer">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">EDIT DISCIPLINE NAME</div>
-            <p class="py-2 text-sm">Input the new name of the dicipline.</p>
-            <form v-on:submit.prevent="submit">
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editDisciplineName) }" class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-md
-                focus:ring-blue-500 focus:border-blue-500
-                block
-                w-full
-                p-2.5
-              " placeholder="Enter Name" v-model="v$.editDisciplineName.$model" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="editDisciplines" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="modal1()">Submit</label>
-            </div>
-        </div>
-    </label>
-
-    <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Edit Discipline</div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to edit this discipline?
-            </p>
-            <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " @click="modal1()">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            " @click="newDiscName()">Continue</label>
-            </div>
-        </div>
-    </div>
-
-    <input type="checkbox" id="createPrograms" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="flex flex-row justify-between">
-                <div>
-                    <div class="font-semibold text-md">ADD A PROGRAM</div>
-                    <p class="py-2 text-sm">
-                        Input the Program Name and the Designated Discipline.
-                    </p>
-                </div>
-                <div class="space-x-4 " style="text-align-last: right">
-                    <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
-                        Add Category
-                    </button> -->
-                    <button data-tip="Add Program" @click="addProgramName()" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
-                        <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                        </svg>
-                    </button>
-
-                </div>
-            </div>
-
-            <form v-on:submit.prevent="submit">
-                <div class="mb-6" v-for="program in programs" :key="program">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                    <div class="flex flex-row">
-                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.programs) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="program.programName" />
-                        <div class="pl-4">
-                            <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
-                            {{ discipline.name }}
-                        </option>
-                    </select>
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createPrograms" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="modal2()">Submit</label>
-            </div>
-        </div>
-    </div>
-
-    <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="text-brand-darkblue font-bold label-xl">Add Program</div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this program?
-            </p>
-            <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            " @click="modal2()">Cancel</label>
-                <label for="my-modal-6" class="
-              btn btn-sm
-              bg-red-500
-              hover:bg-red-600
-              rounded-md
-              border-none
-            " @click="addProgram()">Continue</label>
-            </div>
-        </div>
-    </div>
-
     <input type="checkbox" id="editPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -441,45 +177,64 @@
             </div>
 
             <form v-on:submit.prevent="submit">
-                <div class="mb-6" v-for="program in programs" :key="program">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                    <div class="flex flex-row">
-                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
-                        <div class="pl-4">
-                            <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                </svg>
-                            </button>
+
+                <div class="mb-6" v-for="i in searchDiscipline" :key="i">
+                    <div v-if="editDisciplineName === i.MajorDiscipline">
+                        <div v-for="x in i.specificDiscipline" :key="x">
+
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                            <div class="flex flex-row">
+                                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
+                                <div class="pl-4">
+                                    <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                            <path fill="none" d="M0 0h24v24H0z" />
+                                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
-                            {{ discipline.name }}
-                        </option>
-                    </select>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
                 </div>
             </form>
             <div class="modal-action">
-                <label for="editPrograms" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              rounded-md
-              hover:bg-blue-800
-              border-none
-            " @click="editProgram()">Submit</label>
+                <label for="editPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="editProgram()">Submit</label>
+            </div>
+        </div>
+    </div>
+
+    <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">
+                Edit Discipline
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to edit this discipline?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal1()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="newDiscName()">Continue</label>
+            </div>
+        </div>
+    </div>
+
+    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Delete Discipline</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to delete this
+                discipline?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteDiscipline()">Delete</label>
             </div>
         </div>
     </div>
@@ -506,10 +261,11 @@ export default {
     name: "DisciplinesView",
     components: {
         // NoDataAvail,
-        VueInstantLoadingSpinner
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
+            deleteDis: '',
             showModal1: false,
             showModal2: false,
             showModal3: false,
@@ -518,10 +274,10 @@ export default {
             numPerPage: 10,
             totalEntries: 0,
             headers: [{
-                    title: "DISCIPLINES",
+                    title: "MAJOR DISCIPLINES",
                 },
                 {
-                    title: "PROGRAMS",
+                    title: "SPECIFIC DISCIPLINES",
                 },
             ],
             tables: [],
@@ -535,6 +291,7 @@ export default {
             selectedDiscipline: "",
             programs: [],
             progCounter: 0,
+            selectedMajDiscipline: "",
         };
     },
     validations() {
@@ -557,7 +314,7 @@ export default {
         searchDiscipline() {
             return this.tables
                 .filter((p) => {
-                    return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+                    return p.MajorDiscipline.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
                 })
                 .slice(
                     this.numPerPage * this.currentpage,
@@ -566,12 +323,21 @@ export default {
         },
     },
     methods: {
+        // sendData(item) {
+        //     this.selectedMajDiscipline = item;
+        // },
+        addDisciplines() {
+            this.$router.push("/disciplines/add");
+        },
         addProgramName() {
             this.progCounter++;
             this.programs.push({
                 id: this.progCounter,
                 programName: "",
             });
+        },
+        selectedDisciplineDelete(id) {
+            this.deleteDis = id;
         },
         removeProgram(id) {
             console.log(this.programs.length);
@@ -587,6 +353,45 @@ export default {
             }
         },
 
+        async deleteDiscipline() {
+            this.$refs.Spinner.show();
+            const disciplines = Parse.Object.extend("Disciplines");
+            const discQuery = new Parse.Query(disciplines);
+            discQuery.equalTo("objectId", this.deleteDis);
+
+            const discipline = await discQuery.first();
+
+            discipline.destroy().then(
+                (disc) => {
+                    toast("Deleting...", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                    console.log("Deleted object: " + disc.id);
+                },
+                (error) => {
+                    toast("Error:" + error.message, {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    console.log(error.message);
+                }
+            )
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
+
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -595,7 +400,6 @@ export default {
             if (!this.v$.$pending || !this.v$.$error) return;
         },
 
-        
         validate() {
             return this.showModal1;
         },
@@ -606,7 +410,6 @@ export default {
         validate2() {
             return this.showModal3;
         },
-
 
         modal() {
             var has_error = 0;
@@ -626,7 +429,7 @@ export default {
 
         modal1() {
             var has_error = 0;
-            if (this.editDisciplineName == "" ) {
+            if (this.editDisciplineName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -642,7 +445,7 @@ export default {
 
         modal2() {
             var has_error = 0;
-            if (this.programs == "" ) {
+            if (this.programs == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -655,7 +458,6 @@ export default {
                 this.showModal3 = !this.showModal3;
             }
         },
-
 
         editDiscipline(name, id) {
             this.editDisciplineName = name;
@@ -687,11 +489,10 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
 
             console.log("Edit Successful");
-
         },
         addDiscipline() {
             this.$refs.Spinner.show();
@@ -702,7 +503,7 @@ export default {
                     disciplineName: this.disciplineName,
                 });
                 //alert("New Discipline Added: " + newDiscipline.id);
-                toast("New Discipline Added: " + newDiscipline.id, {
+                toast("New Discipline Added: " + this.disciplineName, {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
@@ -718,7 +519,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
         },
         addProgram() {
@@ -731,17 +532,18 @@ export default {
                         programName: this.programs[i].programName,
                         programDiscipline: this.selectedDiscipline,
                     });
+                    toast("New Program Added: " + this.programs[i].programName, {
+                            type: TYPE.SUCCESS,
+                            timeout: 3000,
+                            position: POSITION.TOP_RIGHT,
+                        }),
+                        // window.location.reload()
+                        setTimeout(() => {
+                            document.location.reload();
+                        }, 2000);
                 }
                 //alert("New Discipline Added: " + this.atname);
-                toast("New Program Added: " + this.atname, {
-                        type: TYPE.SUCCESS,
-                        timeout: 3000,
-                        position: POSITION.TOP_RIGHT,
-                    }),
-                    // window.location.reload()
-                    setTimeout(() => {
-                        document.location.reload();
-                    }, 2000);
+
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -749,7 +551,7 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-                console.log(error.message)
+                console.log(error.message);
             }
         },
         addAccessType() {
@@ -789,12 +591,15 @@ export default {
                 this.currentpage += 1;
             }
         },
+        excelDisciplines() {
+            this.$router.push("/disciplines/upload");
+        },
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -817,39 +622,24 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
-                const programs = Parse.Object.extend("Programs");
-                const queryProg = new Parse.Query(programs);
-                queryProg.equalTo("programDiscipline", discipline.id);
-                const progResult = await queryProg.find();
-                var programsMat = [];
-                var programsText = "";
-                for (var j = 0; j < progResult.length; j++) {
-                    const prog = progResult[j];
-
-                    if (programsText === "") {
-                        programsText = programsText + prog.get("programName");
-                    } else {
-                        programsText = programsText + ", " + prog.get("programName");
-                    }
-                    programsMat.push({
-                        id: prog.id,
-                        name: prog.get("programName"),
-                    });
-                }
+                console.log(discipline.get("MajorDiscipline"), );
+                const sDiscipline = discipline.get("specificDiscipline");
+                console.log(sDiscipline);
 
                 disciplineTable.push({
                     id: discipline.id,
-                    Name: discipline.get("disciplineName"),
-                    Programs: programsText,
+                    MajorDiscipline: discipline.get("MajorDiscipline"),
+                    specificDiscipline: sDiscipline,
+
                 });
                 disciplinesNames.push({
                     id: discipline.id,
-                    name: discipline.get("disciplineName"),
+                    name: discipline.get("MajorDiscipline"),
                 });
             }
             this.disciplines = disciplinesNames;
             this.tables = disciplineTable;
-            // console.log(this.tables);
+            console.log(this.tables);
         }
     },
 };

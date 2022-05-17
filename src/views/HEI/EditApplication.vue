@@ -172,7 +172,7 @@ export default {
                                 }),
                                 setTimeout(() => {
                                     this.$router.replace({
-                                        path: "/HEIapplication"
+                                        path: "/hei/application"
                                     });
                                 }, 3000);
                             // console.log("New Access Type Added:" + newApplication.id)
@@ -213,12 +213,12 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var homeType = querResult[0].get("hometype");
         var flag = 0;
-        if (homeType === "/HEIhome") {
+        if (homeType === "/hei/home") {
             flag = 1;
         }
         if (flag === 0) {

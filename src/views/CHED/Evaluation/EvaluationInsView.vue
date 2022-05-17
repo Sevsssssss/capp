@@ -52,7 +52,7 @@
                         <td class="px-6 py-4">
                             {{ table.description }}
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-right flex-row space-x-2">
                             <!-- {{table.id}} -->
                             <router-link v-if="table && table.id" :to="{
                                 name: 'EvalFileView',
@@ -61,6 +61,15 @@
                                 },
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            </router-link>
+
+                            <router-link v-if="table && table.id" :to="{
+                                name: 'EditEvalInstView',
+                                params: {
+                                id: table.id,
+                                },
+                            }">
+                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </router-link>
 
                         </td>
@@ -125,14 +134,11 @@ export default {
                     title: "PROGRAM NAME",
                 },
                 {
-                    title: "DESCRIPTION",
+                    title: "EVALUATION FORM NAME",
                 },
             ],
 
-            tables: [{
-                programName: "BACHELOR OF CULTURE & ARTS EDUCATION ",
-                description: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum.",
-            }, ],
+            tables: [],
         };
     },
     components: {
@@ -173,7 +179,7 @@ export default {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
-        query.equalTo("name", Parse.User.current().get("access_type"));
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");
@@ -190,17 +196,26 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedEvalInstruments = [];
-            const instruments = Parse.Object.extend("EvaluationForms");
+            const instruments = Parse.Object.extend("EvaluationInstruments");
             const evalInsQuery = new Parse.Query(instruments);
             const evalInsResult = await evalInsQuery.find();
 
             for (var i = 0; i < evalInsResult.length; i++) {
                 const evalInst = evalInsResult[i];
-                console.log(evalInst)
+
+                //Query the program of the application
+                const programs = Parse.Object.extend("Programs");
+                const programQuery = new Parse.Query(programs);
+                programQuery.equalTo("objectId", evalInst.get("evaluationFormProgram"));
+
+                const program = await programQuery.first();
+
+                // console.log("test" + program.id)
+
                 storedEvalInstruments.push({
                     id: evalInst.id,
-                    programName: evalInst.get("evaluationFormName"),
-                    description: evalInst.get("evaluationFormDesc"),
+                    programName: program.get("programName"),
+                    description: evalInst.get("evaluationFormName"),
                 });
             }
             this.totalEntries = evalInsResult.length;
