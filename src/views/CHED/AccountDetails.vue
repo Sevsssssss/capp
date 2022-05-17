@@ -75,16 +75,7 @@
                         Contact Number is Required</span>
                 </label>
             </div>
-            <hr>
-            <div class="label">Change Password</div>
-            <div class="">
-                <label for="password" class="label label-text">Password</label>
-                <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
-            </div>
-            <div class="">
-                <label for="confirm_password" class="label label-text">Confirm password</label>
-                <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
-            </div>
+            
             <div class="flex justify-end pt-8 space-x-4">
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
