@@ -263,8 +263,16 @@ export default {
         validate2() {
             return this.showModal2;
         },
-        selectHeiType(id) {
+        async selectHeiType(id) {
             this.heiTypeSelected = id;
+
+            const heiTypesSel = Parse.Object.extend("HEI_Types");
+            const htQuerySel = new Parse.Query(heiTypesSel);
+            htQuerySel.equalTo("objectId", this.heiTypeSelected);
+
+            const heiTypeSel = await htQuerySel.first();
+
+            this.heiTypeName = heiTypeSel.get("name");
         },
         modalUpdate() {
             var has_error = 0;
