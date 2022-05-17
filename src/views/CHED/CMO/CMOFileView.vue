@@ -10,7 +10,7 @@
         </button> -->
         <div class="flex space-x-2 pr-2">
             <!-- add -->
-            <button @click="$router.replace({ path: '/evaluationins/edit' })" class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
+            <button @click="$router.replace({ path: '/cmo/edit' })" class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
                 <div class="flex flex-row">
                     <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
@@ -18,7 +18,7 @@
                     <div class="btn-text">EDIT</div>
                 </div>
             </button>
-            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteEvalInst()">
+            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteCMO()">
                 <div class="flex flex-row">
                     <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -114,14 +114,14 @@ export default {
         };
     },
     methods: {
-        async deleteEvalInst(){
-            const EvalInstruments = Parse.Object.extend("EvaluationForms");
-            const evalQuery = new Parse.Query(EvalInstruments);
-            evalQuery.equalTo("objectId", this.id);
+        async deleteCMO(){
+            const CMO = Parse.Object.extend("CHED_MEMO");
+            const cmoQuery = new Parse.Query(CMO);
+            cmoQuery.equalTo("objectId", this.id);
 
-            const evalInstrument = await evalQuery.first();
+            const cmo = await cmoQuery.first();
             if(confirm("Are You sure you want to delete this evaluation instrument?")){
-                evalInstrument.destroy().then(
+                cmo.destroy().then(
                     (evalinst) => {
                         console.log("Deleted object: " + evalinst.id);
                     },
