@@ -408,7 +408,7 @@ export default {
 
                     // window.location.reload()
                     setTimeout(() => {
-                        window.location.reload()
+                        document.location.reload()
                     }, 2000);
             } catch (error) {
                 toast("Please fill out the required information", {
