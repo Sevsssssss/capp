@@ -169,9 +169,9 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="flex flex-row justify-between">
                 <div>
-                    <div class="font-semibold text-md">EDIT PROGRAMS</div>
+                    <div class="font-semibold text-md">EDIT SPECIFIC DISCIPLINES</div>
                     <p class="py-2 text-sm">
-                        Input the Program Name and the Designated Discipline.
+                        Edit the Specific Discipline Name.
                     </p>
                 </div>
             </div>
@@ -182,7 +182,7 @@
                     <div v-if="editDisciplineName === i.MajorDiscipline">
                         <div v-for="x in i.specificDiscipline" :key="x">
 
-                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Specific Discipline Name:</label> 
                             <div class="flex flex-row">
                                 <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
                                 <div class="pl-4">
