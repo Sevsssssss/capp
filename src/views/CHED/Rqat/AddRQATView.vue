@@ -303,6 +303,11 @@ export default {
                     affilendDate: "current",
                 }
                 var password = Math.random().toString(36).slice(-12);
+                
+                ////////////////////////////////////
+                console.log(password); /////////////
+                ////////////////////////////////////
+                
                 newRQAT.set("name", rqatName);
                 newRQAT.set("username", this.username);
                 newRQAT.set("email", this.email);

@@ -636,7 +636,7 @@ const routes = [
       },
       {
         path: "/rqat/history",
-        name: "History",
+        name: "rqatEvaluationHistory",
         component: rqatHistory,
         meta: {
           breadcrumb: [
