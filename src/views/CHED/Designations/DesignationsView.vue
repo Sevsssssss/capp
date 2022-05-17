@@ -275,8 +275,16 @@ export default {
         validate() {
             return this.showModal1;
         },
-        selectDesignation(id) {
+        async selectDesignation(id) {
             this.designationSelected = id;
+
+            const designations = Parse.Object.extend("Designations");
+            const desigQuery = new Parse.Query(designations);
+            desigQuery.equalTo("objectId", this.designationSelected);
+
+            const designation = await desigQuery.first();
+
+            this.designationName = designation.get("name")
         },
         async modal() {
             var has_error = 0;
