@@ -1,5 +1,6 @@
 <template>
 <div class="mx-3">
+    {{type}}
     <div class="py-4 px-1 flex justify-between">
         <div class="flex justify-start space-x-4">
             <div class="font-normal text-sm">
@@ -51,9 +52,15 @@
             </div>
         </div>
         <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
-            <div class="btn border-none text-white bg-blue-700 hover:bg-blue-800">
-                Evaluate
-            </div>
+            <router-link :to="{
+            name: 'EvaluateView',
+                params: {
+                    id: appID,
+                },
+            }">
+                <button class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800"> Evaluate </button>
+            </router-link>
+            
         </div>
         <div v-else>
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">

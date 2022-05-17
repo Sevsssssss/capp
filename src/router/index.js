@@ -7,6 +7,7 @@ import RQATViewLayout from "../layout/RQATViewLayout.vue";
 import chedAccountDetails from '../views/CHED/AccountDetails.vue';
 import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
+import EvaluateView from "../views/CHED/EvaluationFile/Evaluate.vue";
 
 import HeiView from "../views/CHED/Hei/HeiView.vue";
 import UploadExcel from '../views/CHED/Hei/UploadExcel.vue';
@@ -127,6 +128,18 @@ const routes = [
           breadcrumb: [
             { name: 'Application', link: '/application' },
             { name: 'Status' }
+          ]
+        }
+      },
+      {
+        path: "/application/evaluate=:appID",
+        name: "EvaluateView",
+        component: EvaluateView,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Application', link: '/application' },
+            { name: 'Evaluate' }
           ]
         }
       },
