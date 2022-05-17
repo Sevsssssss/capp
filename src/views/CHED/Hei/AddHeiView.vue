@@ -235,6 +235,11 @@ export default {
             this.hei_acc_id = accQuerResult.id;
             
                 var password = Math.random().toString(36).slice(-12);
+
+                ////////////////////////////////////
+                console.log(password); /////////////
+                ////////////////////////////////////
+
                 const newHEI = new Parse.User();
                 newHEI.set("hei_name", this.hei_name);
                 newHEI.set("username", this.username);

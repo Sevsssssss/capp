@@ -1,5 +1,5 @@
 <template>
-<div v-if="!table.length" style="height: 100%">
+<div v-if="!table.length || table.status != 'For Evaluation'" style="height: 100%">
     <NoDataAvail names="ApplicationView" />
 </div>
 <div v-else class="px-3 py-2">

@@ -1,8 +1,9 @@
 <template>
 <div v-if="!table.length" style="height: 100%">
-    <NoDataAvail names="ApplicationView" />
+  <NoDataAvail names="ApplicationView" />
 </div>
 <div v-else class="px-3 py-2">
+    
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 ">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
@@ -18,22 +19,22 @@
             <tbody>
                 <tr v-for="tables in table" :key="tables" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     
-                        <th v-if="tables.status == 'For Evaluation'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {{tables.program}}
                         </th>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td class="px-6 py-4">
                             {{tables.HeiName}}
                         </td>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td class="px-6 py-4">
                             {{tables.address}}
                         </td>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td class="px-6 py-4">
                             {{tables.rep}}
                         </td>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td class="px-6 py-4">
                             {{tables.email}}
                         </td>
-                         <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
                             {{tables.dateApplied}}
                         </td>
 
@@ -59,7 +60,7 @@
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from 'parse'
 export default {
-    name: "rqatEvaluationView",
+    name: "rqatEvaluationHistory",
     components: {
         NoDataAvail,
     },

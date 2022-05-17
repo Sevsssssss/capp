@@ -258,7 +258,13 @@ export default {
         },
         async addEmployee() {
             const newEmployee = new Parse.User();
+
             var password = Math.random().toString(36).slice(-12);
+            
+            ////////////////////////////////////
+            console.log(password); /////////////
+            ////////////////////////////////////
+            
             var employeeName = {
                 lastname: this.lastname,
                 firstname: this.firstname,

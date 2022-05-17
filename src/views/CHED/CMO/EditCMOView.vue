@@ -317,7 +317,7 @@
             "
             @click="modal()"
           >
-            Create
+            Update
           </button>
         </div>
       </div>
@@ -329,10 +329,10 @@
     >
       <div class="modal-box relative rounded-md text-left">
         <div class="text-brand-darkblue font-bold label-xl">
-          Add Evaluation Instrument
+          Update Evaluation Instrument
         </div>
         <p class="text-sm xxs:leading-tight text-grey-200">
-          Are you sure you want to add this Evaluation Instrument?
+          Are you sure you want to update this Evaluation Instrument?
         </p>
         <div class="modal-action">
           <label
@@ -356,7 +356,7 @@
               rounded-md
               border-none
             "
-            @click="saveEvalForm()"
+            @click="editEvalForm()"
             >Continue</label
           >
         </div>
@@ -556,29 +556,33 @@ export default {
         this.showModal1 = !this.showModal1;
       }
     },
-    async saveEvalForm() {
+    async editEvalForm() {
       this.$refs.Spinner.show();
       try {
         console.log("save");
 
-        const CMOs = Parse.Object.extend("CHED_MEMO");
-        const newCMO = new CMOs();
-        newCMO.set("CMO_No", this.cmoNo.toUpperCase());
-        newCMO.set(
+        const CMOsUpdate = Parse.Object.extend("CHED_MEMO");
+        const cmoUpdateQuery = new Parse.Query(CMOsUpdate);
+        cmoUpdateQuery.equalTo("objectId", this.id);
+        const CMOUpdate = await cmoUpdateQuery.first({
+            useMasterKey: true,
+        });
+        CMOUpdate.set("CMO_No", this.cmoNo.toUpperCase());
+        CMOUpdate.set(
           "Series_Year",
           this.seriesYear.toUpperCase()
         );
-        newCMO.set(
+        CMOUpdate.set(
           "CMOName",
           this.evalDesc.toUpperCase()
         );
-        newCMO.set("evaluationFormReqs", this.categories);
+        CMOUpdate.set("evaluationFormReqs", this.categories);
 
         // await newEvaluationForm.save();
         // console.log(newEvaluationForm.save())
 
-        await newCMO.save();
-        toast("Evaluation Added", {
+        await CMOUpdate.save();
+        toast("Evaluation Updated", {
           type: TYPE.SUCCESS,
           timeout: 3000,
           position: POSITION.TOP_RIGHT,
@@ -736,6 +740,18 @@ export default {
         });
       }
       this.programs = programsMat;
+
+      const CMOs = Parse.Object.extend("CHED_MEMO");
+      const cmoQuery = new Parse.Query(CMOs);
+      cmoQuery.equalTo("objectId", this.id);
+      const CMO = await cmoQuery.first({
+          useMasterKey: true,
+      });
+
+      this.cmoNo = CMO.get("CMO_No");
+      this.seriesYear = CMO.get("Series_Year");
+      this.evalDesc = CMO.get("CMOName");
+      this.categories = CMO.get("evaluationFormReqs");
     }
   },
 };
