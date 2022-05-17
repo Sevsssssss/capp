@@ -58,7 +58,7 @@
                     <td class="px-6 py-4 flex flex-row justify-end">
                         <label for="editHei" href="#" class="font-medium text-blue-600 hover:underline pr-3" @click="selectHeiType(i.id)">Edit</label>
                         <label for="deleteFunc" class="hover:text-brand-red/60 self-center">
-                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedHeiDelete(i.id)">
+                            <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedHeiTypeDelete(i.id)">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
                         </label>
@@ -263,8 +263,16 @@ export default {
         validate2() {
             return this.showModal2;
         },
-        selectHeiType(id) {
+        async selectHeiType(id) {
             this.heiTypeSelected = id;
+
+            const heiTypesSel = Parse.Object.extend("HEI_Types");
+            const htQuerySel = new Parse.Query(heiTypesSel);
+            htQuerySel.equalTo("objectId", this.heiTypeSelected);
+
+            const heiTypeSel = await htQuerySel.first();
+
+            this.heiTypeName = heiTypeSel.get("name");
         },
         modalUpdate() {
             var has_error = 0;

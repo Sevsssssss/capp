@@ -1,5 +1,6 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
+    <div class="space-y-2">
     <div class="
         card
         over
@@ -118,6 +119,40 @@
                 </button>
             </div>
         </form>
+    </div>
+    <div class="card over p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
+            <form v-on:submit.prevent="submit" class="card-body">
+                <div class="flex flex-row space-x-4 text-left justify-start items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
+                    </svg>
+                    <span class="text-2xl font-semibold text-grey-100">UPDATE PASSWORD</span>
+                </div>
+
+                <div class="">
+                    <label for="password" class="label label-text">Current Password</label>
+                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                </div>
+                <hr>
+                <div class="">
+                    <label for="password" class="label label-text">New Password</label>
+                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                </div>
+                <div class="">
+                    <label for="confirm_password" class="label label-text">Confirm password</label>
+                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                </div>
+                <div class="flex justify-end pt-8 space-x-4">
+                    <button class="btn btn-m btn-outline" @click="$router.go(-1)">
+                        Cancel
+                    </button>
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                        Update Password
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">

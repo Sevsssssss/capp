@@ -1,41 +1,6 @@
 <template>
 <div class="m-3">
-    <div class="flex flex-row p-2 justify-end">
-        <!-- <button class="flex flex-row" >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z" />
-            </svg>
-            <div class="font-semibold text-grey-300">Back</div>
-        </button> -->
-        <div class="flex space-x-2 pr-2">
-            <!-- add -->
-            <button @click="$router.replace({ path: '/cmo/edit' })" class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none">
-                <div class="flex flex-row">
-                    <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-                    </svg>
-                    <div class="btn-text">EDIT</div>
-                </div>
-            </button>
-            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteCMO()">
-                <div class="flex flex-row">
-                    <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                    </svg>
-                    <label for="deleteFunc" class="btn-text">DELETE</label>
-                </div>
-            </button>
-        </div>
-    </div>
-    <!-- <div class="flex space-x-10 text-left center">
-        <div class="">
-            <img src="../assets/img/CHED_logo.png" alt="ChedLogo" width="90px" height="90px">
-        </div>
-        <div class="">
-            <div class="font-bold" style="width: 490px;"> COMMISION ON HIGHER EDUCATION OFFICE OF PROGRAMS AND STANDARDS MONITORING INSTRUMENT FOR UNDERGRADUATE ACADEMIC PROGRAMS</div>
-        </div>
-    </div> -->
+    
     <div class="overflow-x-auto shadow-lg rounded-lg m-3 p-5">
         <div class="flex flex-row justify-center items-center space-x-4">
             <div class="">
@@ -81,6 +46,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -91,7 +57,7 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+                <label for="deleteFunc" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteCMO()">Delete</label>
             </div>
         </div>
     </div>
@@ -99,13 +65,23 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
+const toast = useToast();
 export default {
     props: ["id"],
     name: "EvalFileView",
-    components: {},
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
+            showModal1: false,
             categories: [],
             Name: "",
             cmoNo: "",
@@ -114,22 +90,35 @@ export default {
         };
     },
     methods: {
-        async deleteCMO(){
+        modal() {
+            this.showModal1 = !this.showModal1;
+        },
+        async deleteCMO() {
+            this.$refs.Spinner.show();
+
             const CMO = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMO);
             cmoQuery.equalTo("objectId", this.id);
 
             const cmo = await cmoQuery.first();
-            if(confirm("Are You sure you want to delete this evaluation instrument?")){
-                cmo.destroy().then(
-                    (evalinst) => {
-                        console.log("Deleted object: " + evalinst.id);
-                    },
-                    (error) => {
-                        console.log("Error: " + error);
-                    }
-                );
-            }
+
+            cmo.destroy().then(
+                () => toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                }),
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    3000
+                ),
+                
+                this.$router.push("/cmo"),
+            );
+            
         }
     },
     mounted: async function () {
@@ -186,8 +175,6 @@ export default {
 
                 }
                 this.Name = CMO.get("evaluationFormName");
-
-              
 
                 this.cmoNo = CMO.get("CMO_No");
                 this.seriesYear = CMO.get("Series_Year");

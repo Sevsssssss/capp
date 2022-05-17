@@ -112,19 +112,21 @@
                     </th>
                 </tr>
             </thead>
+
+            
             <tbody>
                 <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <td v-if="i.Programs.length > 0" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ i.Name }}
                     </td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <td v-if="i.Programs.length > 0" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         <div v-for="x in i.Programs" :key="x" class="flex flwx-row justify-between">
                             {{x.name}}
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 flex flex-row space-x-4 justify-end">
-                        <label for="editPrograms" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
+                    <td v-if="i.Programs.length > 0" class="px-6 py-4 flex flex-row space-x-4 justify-end">
+                        <label for="editPrograms" @click="editDiscipline(i.Name, i.id)" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
                         <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -255,7 +257,6 @@
                     </button>
                 </div>
             </div>
-            {{programs}}
             <form v-on:submit.prevent="submit">
                 <div class="mb-6" v-for="program in programs" :key="program">
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
@@ -309,33 +310,31 @@
                         Input the Program Name and the Designated Discipline.
                     </p>
                 </div>
-            </div>
-
+            </div>  
             <form v-on:submit.prevent="submit">
 
                 <div class="mb-6" v-for="i in searchDiscipline" :key="i">
-                    <div v-for="x in i.Programs" :key="x">
-                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                        <div class="flex flex-row">
-                            <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
-                            <div class="pl-4">
-                                <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                    </svg>
-                                </button>
+                    
+                    <div v-if="editDisciplineName === i.Name">
+                        <div v-for="x in i.Programs" :key="x">
+                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                            <div class="flex flex-row">
+                                <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="x.editProgramName" />
+                                <div class="pl-4">
+                                    <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                            <path fill="none" d="M0 0h24v24H0z" />
+                                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
-                            {{ discipline.name }}
-                        </option>
-                    </select>
+                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editDisciplineName.$model" disabled />
                 </div>
             </form>
             <div class="modal-action">
