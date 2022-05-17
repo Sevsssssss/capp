@@ -49,7 +49,6 @@ import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
-import EditApplicationView from '../views/CHED/AppSettings/EditApplicationTypeView.vue';
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import AddDisciplineView from '../views/CHED/Disciplines/AddDisciplineView.vue';
@@ -296,9 +295,10 @@ const routes = [
         }
       },
       {
-        path: "/evaluationins/edit",
-        name: "editevaluationins",
+        path: "/evaluationins/edit=:id",
+        name: "EditEvalInstView",
         component: EditEvaluationsView,
+        props: true,
         meta:{
           breadcrumb: [
             { name: 'EVALUATION Ins.', link: '/evaluationins' },
@@ -340,9 +340,10 @@ const routes = [
         }
       },
       {
-        path: "/cmo/edit",
-        name: "editcmo",
+        path: "/cmo/edit=:id",
+        name: "EditCMOView",
         component: EditCMOView,
+        props: true,
         meta:{
           breadcrumb: [
             { name: 'Ched Memorandum Order', link: '/cmo' },
@@ -379,18 +380,6 @@ const routes = [
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
             { name: 'ADD APPLICATION TYPE' }
-          ]
-        }
-      },
-      {
-        path: "/app-settings/edit/:appID",
-        name: "EditEvalInstView",
-        component: EditApplicationView,
-        props: true,
-        meta: {
-          breadcrumb: [
-            { name: 'APPLICATION SETTINGS', link: '/app-settings' },
-            { name: 'EDIT APPLICATION TYPE' }
           ]
         }
       },

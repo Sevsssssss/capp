@@ -136,8 +136,8 @@
                                 empID: table.id,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </router-link>
+                                    <a href="#" v-if="table.status != 'For Compliance'" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectAcc(table.id)">
@@ -214,6 +214,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -245,10 +246,17 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 // var dataNumber = 10;
 // var page = 0;
 import NoDataAvail from "@/components//NoDataAvail.vue";
+const toast = useToast();
 export default {
     name: "EmployeesView",
     data() {
@@ -284,6 +292,7 @@ export default {
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchEmployee() {
@@ -305,6 +314,8 @@ export default {
             this.currentDelAcc = id;
         },
         async deleteEmployee() {
+            this.$refs.Spinner.show();
+
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("objectId", this.currentDelAcc);
             const querResult = await acc.first({
@@ -318,35 +329,58 @@ export default {
 
             const applications = Parse.Object.extend("Applications");
             const queryApp = new Parse.Query(applications);
-            if(educSup != undefined){
+            if (educSup != undefined) {
                 queryApp.equalTo("selectedSupervisor", querResult.id)
                 const application = await queryApp.find();
-                if(application.length > 0){
-                if(confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")){
-                    querResult.set("isArchived", true);
-                    querResult.save({
-                        useMasterKey: true,
-                    });
-                }
-                }else {
-                    if(confirm("Are you sure you would like to delete this account?")){
-                        querResult.destroy({
+                if (application.length > 0) {
+                    if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
+                        querResult.set("isArchived", true);
+                        querResult.save({
                             useMasterKey: true,
                         });
                     }
-                }
-            }
-            else{
-                if(confirm("Are you sure you would like to delete this account?")){
+                } else {
+
+                    //if(confirm("Are you sure you would like to delete this account?")){
                     querResult.destroy({
                         useMasterKey: true,
                     });
-                }
-            }
-            
+                    //}
+                    toast("Deleting...", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        document.location.reload()
+                    }, 3000);
 
-            
-            
+                }
+            } else {
+
+                //if (confirm("Are you sure you would like to delete this account?")) {
+                querResult.destroy({
+                    useMasterKey: true,
+                });
+                //}
+                toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                });
+                setTimeout(() => {
+                    document.location.reload()
+                }, 3000);
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+
         },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
@@ -396,7 +430,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             } else {
                 var employeesFiltered = [];
                 const query = new Parse.Query(Parse.User);
@@ -430,10 +464,9 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-                
+
             }
 
-            
         },
         excelEmployees() {
             this.$router.push("/employees/upload");
@@ -514,9 +547,9 @@ export default {
             const designationQuery = new Parse.Query(designations);
             const designationResult = await designationQuery.find();
             storedDesignations.push({
-                    id: 0,
-                    name: "All",
-                });
+                id: 0,
+                name: "All",
+            });
             for (var j = 0; j < designationResult.length; j++) {
                 const designation = designationResult[j];
                 storedDesignations.push({

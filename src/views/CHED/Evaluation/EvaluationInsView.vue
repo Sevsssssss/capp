@@ -52,7 +52,7 @@
                         <td class="px-6 py-4">
                             {{ table.description }}
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-right flex-row space-x-2">
                             <!-- {{table.id}} -->
                             <router-link v-if="table && table.id" :to="{
                                 name: 'EvalFileView',
@@ -61,6 +61,15 @@
                                 },
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            </router-link>
+
+                            <router-link v-if="table && table.id" :to="{
+                                name: 'EditEvalInstView',
+                                params: {
+                                id: table.id,
+                                },
+                            }">
+                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </router-link>
 
                         </td>
