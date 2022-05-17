@@ -140,7 +140,7 @@
             "
             @click="modal()"
           >
-            Create
+            Update
           </button>
         </div>
       </div>
@@ -179,7 +179,7 @@
               rounded-md
               border-none
             "
-            @click="saveEvalForm()"
+            @click="editEvalForm()"
             >Continue</label
           >
         </div>
@@ -389,30 +389,25 @@ export default {
             // }
 
             // if (has_error < 1) {
-            //     // var password = "";
-            //     // var characters =
-            //     //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            //     // var charactersLength = characters.length;
-            //     // for (var i = 0; i < 8; i++) {
-            //     //   password += characters.charAt(
-            //     //     Math.floor(Math.random() * charactersLength)
-            //     //   );
-            //     // }
+                
                 this.showModal1 = !this.showModal1;
-            // }
+            //}
             
         },
-        async saveEvalForm() {
+        async editEvalForm() {
             this.$refs.Spinner.show();
             try {
-                console.log("save");
 
-                const EvaluationForm = Parse.Object.extend("EvaluationInstruments");
-                const newEvaluationForm = new EvaluationForm();
+                const evalInstrumentsUpdate = Parse.Object.extend("EvaluationInstruments");
+                const evalQueryUpdate = new Parse.Query(evalInstrumentsUpdate);
+                evalQueryUpdate.equalTo("objectId", this.id);
+                const evalInstrumentUpdate = await evalQueryUpdate.first({
+                    useMasterKey: true,
+                });
 
-                newEvaluationForm.set("evaluationFormProgram", this.programName);
-                newEvaluationForm.set("evaluationFormName", this.evalDesc);
-                newEvaluationForm.set(
+                evalInstrumentUpdate.set("evaluationFormProgram", this.programName);
+                evalInstrumentUpdate.set("evaluationFormName", this.evalDesc);
+                evalInstrumentUpdate.set(
                     "evalInstReqs",
                     this.eval
                 );
@@ -420,8 +415,8 @@ export default {
                 // await newEvaluationForm.save();
                 // console.log(newEvaluationForm.save())
 
-                await newEvaluationForm.save();
-                toast("Evaluation Added", {
+                await evalInstrumentUpdate.save();
+                toast("Evaluation Update", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
@@ -536,6 +531,7 @@ export default {
                 this.programs = programsMat;
             }
 
+            //Get CMOs
             var storedCMO = [];
             const CMOs = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMOs);
@@ -557,6 +553,17 @@ export default {
             }
 
             this.cmos = storedCMO;
+
+            const evalInstruments = Parse.Object.extend("EvaluationInstruments");
+            const evalQuery = new Parse.Query(evalInstruments);
+            evalQuery.equalTo("objectId", this.id);
+            const evalInstrument = await evalQuery.first({
+                useMasterKey: true,
+            });
+
+            this.evalDesc = evalInstrument.get("evaluationFormName");
+            this.programName = evalInstrument.get("evaluationFormProgram");
+            this.eval = evalInstrument.get("evalInstReqs");
         }
     },
 };
