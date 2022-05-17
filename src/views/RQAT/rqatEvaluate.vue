@@ -82,14 +82,16 @@
                                     </div>
                                 </td>
                                 <td class="text-end">
-                                    <textarea v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                    <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="py-4">
+            <div class="py-2">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
