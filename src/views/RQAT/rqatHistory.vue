@@ -2,7 +2,7 @@
 <div v-if="!table.length" style="height: 100%">
   <NoDataAvail names="ApplicationView" />
 </div>
-<div v-else-if="table.status == 'For Issuance' || table.status != 'For Compliance' || table.status != 'Completed' || table.status != 'Non Compliant'" class="px-3 py-2">
+<div v-else class="px-3 py-2">
     
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 ">
@@ -33,6 +33,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{tables.email}}
+                        </td>
+                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                            {{tables.dateApplied}}
                         </td>
 
                         <!-- <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4 text-right flex justify-end">
@@ -79,6 +82,9 @@ export default {
                 {
                     title: "EMAIL",
                 },
+                {
+                    title: "Date Evaluated",
+                },
             ],
             table: [],
         };
@@ -116,7 +122,7 @@ export default {
             this.$router.push("/403");
             console.log("Hello");
         } else {
-            console.log("Hi!, You have permission to access this Pagea");
+            console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedApplications = [];

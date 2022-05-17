@@ -9,16 +9,15 @@
                 Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mx-1 my-1">
+            <span class="text-sm">Assigned To:</span>
+            <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
+                <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
+            </div>
 
-    </div>
-    
-    <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mb-2">
-        ASSIGNED To:
-        <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
-            <p class="font-semibold uppercase badge badge-accent text-sm rounded-lg mx-2">{{rqat}}</p>
         </div>
-
     </div>
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -66,7 +65,7 @@
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            
+
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative mt-2">
@@ -237,7 +236,6 @@ export default {
         console.log(accQuerResultRQAT.id);
         console.log(rqatResult);
 
-        
         if (application.get("selectedRQAT").length > 0) {
             const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
             const selRQATResult = await selectRqatQuery.find();
