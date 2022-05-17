@@ -88,8 +88,8 @@
                         <span class="label-text">HEI Type:</span>
                     </label>
                     <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                        <option v-for="hei in heis" :key="hei">
-                            <div class="hei-name">{{ hei.title }}</div>
+                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                            <div class="hei-name">{{ heiType.title }}</div>
                         </option>
                     </select>
                 </div>
@@ -202,12 +202,13 @@ export default {
                 },
             ],
             hei_name: "",
+            hei_type: "",
+            hei_types:[],
             username: "",
             email: "",
             address: "",
             number: "",
             inst_code: "",
-            hei_type: "STATE UNIVERSITIES AND COLLEGES",
             hei_nameError: "",
             usernameError: "",
             emailError: "",
@@ -410,6 +411,21 @@ export default {
             this.number = hei.get("number")
             this.inst_code = hei.get("inst_code")
             this.hei_type = hei.get("hei_type")
+
+            const HeiTypes = Parse.Object.extend("HEI_Types");
+            const queryHT = new Parse.Query(HeiTypes);
+            const querResultHT = await queryHT.find();
+
+            var heiTypes = [];
+            for (var w = 0; w < querResultHT.length; w++) {
+                const heitype = querResultHT[w];
+                heiTypes.push({
+                    id: heitype.id,
+                    title: heitype.get("name"),
+                });
+            }
+            console.log(heiTypes);
+            this.hei_types = heiTypes;
         }
     },
 };
