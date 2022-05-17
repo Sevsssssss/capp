@@ -52,6 +52,7 @@ import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import AddDisciplineView from '../views/CHED/Disciplines/AddDisciplineView.vue';
+import EditDisciplineView from '../views/CHED/Disciplines/EditDisciplineView.vue';
 import UploadExcelDisciplines from '../views/CHED/Disciplines/UploadExcel.vue';
 
 import ProgramView from '../views/CHED/Programs/ProgramsView.vue';
@@ -475,6 +476,18 @@ const routes = [
           breadcrumb: [
             { name: 'DISCIPLINES', link: "/disciplines/add" },
             {name: 'ADD DISCIPLINES'},
+          ]
+        }
+      },
+      {
+        path: "/disciplines/edit=:id",
+        name: "EditDisciplinesView",
+        component: EditDisciplineView,
+        props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'DISCIPLINES', link: "/disciplines/add" },
+            {name: 'EDIT DISCIPLINES'},
           ]
         }
       },
