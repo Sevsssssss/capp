@@ -18,7 +18,7 @@
                     <div class="btn-text">EDIT</div>
                 </div>
             </button>
-            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteCMO()">
+            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="modal()">
                 <div class="flex flex-row">
                     <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -81,6 +81,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -91,7 +92,7 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+                <label for="deleteFunc" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteCMO()">Delete</label>
             </div>
         </div>
     </div>
@@ -99,13 +100,23 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
+const toast = useToast();
 export default {
     props: ["id"],
     name: "EvalFileView",
-    components: {},
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
+            showModal1: false,
             categories: [],
             Name: "",
             cmoNo: "",
@@ -114,22 +125,35 @@ export default {
         };
     },
     methods: {
-        async deleteCMO(){
+        modal() {
+            this.showModal1 = !this.showModal1;
+        },
+        async deleteCMO() {
+            this.$refs.Spinner.show();
+
             const CMO = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMO);
             cmoQuery.equalTo("objectId", this.id);
 
             const cmo = await cmoQuery.first();
-            if(confirm("Are You sure you want to delete this evaluation instrument?")){
-                cmo.destroy().then(
-                    (evalinst) => {
-                        console.log("Deleted object: " + evalinst.id);
-                    },
-                    (error) => {
-                        console.log("Error: " + error);
-                    }
-                );
-            }
+
+            cmo.destroy().then(
+                () => toast("Deleting...", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: false,
+                    position: POSITION.TOP_RIGHT,
+                }),
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    3000
+                ),
+                
+                this.$router.push("/cmo"),
+            );
+            
         }
     },
     mounted: async function () {
@@ -186,8 +210,6 @@ export default {
 
                 }
                 this.Name = CMO.get("evaluationFormName");
-
-              
 
                 this.cmoNo = CMO.get("CMO_No");
                 this.seriesYear = CMO.get("Series_Year");
