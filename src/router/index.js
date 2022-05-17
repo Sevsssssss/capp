@@ -70,14 +70,16 @@ import rqatEvaluate from '../views/RQAT/rqatEvaluate.vue';
 import rqatHistory from '../views/RQAT/rqatHistory.vue';
 import rqatAccountDetails from '../views/RQAT/AccountDetails.vue';
 
+import appNotifView from '../views/CHED/AppNotification/AppNotifView.vue';
+
 import Parse from 'parse';
 
 import Forbidden403 from "../views/errors/403.vue";
 import NotFound404 from "../views/errors/404.vue";
 import StatusApplication from '../views/CHED/Application/StatusApplication.vue';
 
-const routes = [
 
+const routes = [
   {
     path: "/",
     name: "landing",
@@ -94,6 +96,16 @@ const routes = [
         meta: {
           breadcrumb: [
             { name: 'Dashboard' },
+          ]
+        }
+      },
+      {
+        path: "/notif",
+        name: "appNotifView",
+        component: appNotifView,
+        meta: {
+          breadcrumb: [
+            { name: 'Inbox' },
           ]
         }
       },
