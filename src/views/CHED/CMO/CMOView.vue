@@ -55,7 +55,7 @@
                         <td class="px-6 py-4">
                             {{ table.CMO_Name }}
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-right flex-row space-x-2">
                             <!-- {{table.id}} -->
                             <router-link v-if="table && table.id" :to="{
                                 name: 'CMOFileView',
@@ -64,6 +64,15 @@
                                 },
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                            </router-link>
+                            <!-- {{table.id}} -->
+                            <router-link v-if="table && table.id" :to="{
+                                name: 'EditCMOView',
+                                params: {
+                                id: table.id,
+                                },
+                            }">
+                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </router-link>
 
                         </td>
