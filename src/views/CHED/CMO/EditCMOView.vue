@@ -341,7 +341,8 @@ import Parse from "parse";
 const toast = useToast();
 
 export default {
-  name: "AddEvalInstView",
+  props: ["id"],
+  name: "EditCMOView",
   components: VueInstantLoadingSpinner,
   data() {
     return {

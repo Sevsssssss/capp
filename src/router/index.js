@@ -340,9 +340,10 @@ const routes = [
         }
       },
       {
-        path: "/cmo/edit",
-        name: "editcmo",
+        path: "/cmo/edit=:id",
+        name: "EditCMOView",
         component: EditCMOView,
+        props: true,
         meta:{
           breadcrumb: [
             { name: 'Ched Memorandum Order', link: '/cmo' },
