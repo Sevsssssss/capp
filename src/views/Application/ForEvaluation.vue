@@ -60,7 +60,7 @@
             }">
                 <button class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800"> Evaluate </button>
             </router-link>
-            
+
         </div>
         <div v-else>
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
@@ -72,7 +72,8 @@
     <input type="checkbox" id="for-evaluation" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-
+            <div class="font-semibold text-md">SELECT EVALUATION DATE:</div>
+            <Datepicker v-model="date" class="my-2"></Datepicker>
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
             <div class="relative mt-2">
@@ -108,12 +109,15 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const toast = useToast();
 
 export default {
     props: ["appID"],
     name: "ForEvaluation",
+    components: { Datepicker },
     data() {
         return {
             // id: this.$route.params.id,
@@ -133,6 +137,7 @@ export default {
             selectedRqat: [],
             storedRqats: [],
             supervisor: false,
+            date: null,
         };
     },
     computed: {
