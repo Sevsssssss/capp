@@ -231,7 +231,7 @@ export default {
                         position: POSITION.TOP_RIGHT,
                     });
                     setTimeout(() => {
-                        window.location.reload()
+                        document.location.reload()
                     }, 3000);
                 },
                 setTimeout(
@@ -240,8 +240,7 @@ export default {
                     }.bind(this),
                     3000
                 ),
-
-                this.$router.push("/cmo"),
+                
             );
 
         }
