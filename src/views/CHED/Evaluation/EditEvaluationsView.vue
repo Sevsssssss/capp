@@ -204,10 +204,12 @@ import Parse from "parse";
 const toast = useToast();
 
 export default {
-    name: "AddEvalInstView",
+  props: ["id"],
+    name: "EditEvalInstView",
     components: {
         VueInstantLoadingSpinner,
     },
+    
     data() {
         return {
             showModal1: false,
@@ -483,7 +485,7 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            if (accType[y] === this.$route.path) {
+            if (accType[y] === "/evaluationins") {
                 flag = 1;
             }
         }
