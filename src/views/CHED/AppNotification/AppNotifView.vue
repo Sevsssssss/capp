@@ -27,7 +27,7 @@
                 </th>
                 <th class="px-6 py-3 text-left">
                     <div class="flex space-x-4 justify-end">
-<span> <a href="#">Sort</a> </span>
+                        <!-- <span> <a href="#">Sort</a> </span> -->
                         <span> <a href="#">Delete</a> </span>
                     </div>
                 </th>
@@ -42,10 +42,19 @@
                     </div>
                 </td>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                    <div class="flex justify-between">
-                        <span class="truncate text-grey-300"> {{item.i}} </span>
-                        <span class="text-sm text-grey-300 font-semibold"> {{item.date}} </span>
-                    </div>
+                    <router-link :to="{
+                                name: 'appNotifItem',
+                                params: {
+                                    id: item.id,
+                                    item: item.item,
+                                    date: item.date,
+                                },
+                            }">
+                        <div class="flex justify-between">
+                            <span class="truncate text-grey-300"> {{item.item}} </span>
+                            <span class="text-sm text-grey-300 font-normal"> {{item.date}} </span>
+                        </div>
+                    </router-link>
                 </th>
             </tr>
         </tbody>
@@ -58,11 +67,26 @@ export default {
     data() {
         return {
             items: [{
-                i: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                date: "May 15",
-            }, ]
+                    id: 1,
+                    item: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
+                    date: "May 15",
+                },
+                {
+                    id: 2,
+                    item: "Ano na Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
+                    date: "May 22",
+                },
+                {
+                    id: 3,
+                    item: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
+                    date: "May 30",
+                },
+            ]
         }
     },
+    methods: {
+
+    }
 }
 </script>
 

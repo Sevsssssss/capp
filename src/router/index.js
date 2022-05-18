@@ -73,6 +73,8 @@ import rqatHistory from '../views/RQAT/rqatHistory.vue';
 import rqatAccountDetails from '../views/RQAT/AccountDetails.vue';
 
 import appNotifView from '../views/CHED/AppNotification/AppNotifView.vue';
+import appNotifItem from '../views/CHED/AppNotification/AppNotifItem.vue';
+
 
 import Parse from 'parse';
 
@@ -108,6 +110,18 @@ const routes = [
         meta: {
           breadcrumb: [
             { name: 'Inbox' },
+          ]
+        }
+      },
+      {
+        path: "/notif/:id",
+        name: "appNotifItem",
+        component: appNotifItem,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Inbox', link: '/notif' },
+            { name: 'Item' }
           ]
         }
       },
