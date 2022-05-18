@@ -12,6 +12,7 @@
         Submit
     </button>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+
 </div>
 </template>
 
@@ -19,8 +20,8 @@
 import {
     ref
 } from "vue";
-// import Parse from "parse";
-import Worker from "@/js/disciplinesParse.worker.js";
+import Parse from 'parse';
+import Worker from "@/js/designationsParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -35,7 +36,7 @@ export default {
         }
     },
     components: {
-        VueInstantLoadingSpinner,
+        VueInstantLoadingSpinner
     },
     setup() {
         const active = ref(false);
@@ -59,7 +60,7 @@ export default {
     },
     methods: {
         validate(filename) {
-            console.log("validate");
+            console.log("validate")
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
             if (filename === "") {
                 this.className = "alert-error";
@@ -80,61 +81,89 @@ export default {
             this.$refs.Spinner.hide();
         },
         createWorker(data, self) {
-            console.log("worker");
+            console.log("worker")
             // var worker1 = new Worker();
             // if (typeof Worker !== "undefined") {
-            console.log("in worker");
+            console.log("in worker")
             if (typeof self.worker == "undefined") {
-                console.log("setWorker");
+                console.log('setWorker')
                 self.worker = new Worker();
             }
             self.worker.postMessage({
-                d: data,
+                d: data
             });
 
             self.worker.onmessage = function (event) {
-                console.log("onMessage");
+                console.log('onMessage')
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeDisciplines(event.data.rows);
+                    self.storeDesignations(
+                        event.data.rows,
+                    )
                 } else {
                     alert(event.data.reason);
                     self.closeSpinner();
                 }
             };
-
             // }
         },
-        // upload() {
-        //     if (this.dropzoneFile === "") {
-        //         toast("Please select a file", {
-        //             type: TYPE.ERROR,
-        //             timeout: 3000,
-        //             hideProgressBar: true,
-        //             position: POSITION.TOP_RIGHT,
-        //         });
-        //     } else {
-        //         console.log("upload");
-        //         var validation = this.validate(this.dropzoneFile);
-        //         if (validation) {
-        //             this.pending = true;
-        //             this.$refs.Spinner.show();
-        //             const self = this;
-        //             var reader = new FileReader();
-        //             reader.onload = function (e) {
-        //                 var data = e.target.result;
-        //                 try {
-        //                     self.createWorker(data, self);
-        //                 } catch (e) {
-        //                     console.log(e);
-        //                     this.pending = false;
-        //                     this.$refs.Spinner.hide();
-        //                 }
-        //             };
-        //             reader.readAsArrayBuffer(this.dropzoneFile);
-        //         }
-        //     }
-        // },
+        upload() {
+            if (this.dropzoneFile === "") {
+                toast("Please select a file", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+            } else {
+                console.log("upload")
+                var validation = this.validate(this.dropzoneFile);
+                if (validation) {
+                    this.pending = true;
+                    this.$refs.Spinner.show();
+                    const self = this;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result;
+                        try {
+                            self.createWorker(data, self);
+                        } catch (e) {
+                            console.log(e);
+                            this.pending = false;
+                            this.$refs.Spinner.hide();
+                        }
+                    };
+                    reader.readAsArrayBuffer(this.dropzoneFile);
+                }
+            }
+        },
+
+        async storeDesignations(designationsData) {
+            console.log("store")
+            for (let i = 0; i < designationsData.length; i++) {
+                this.counter = this.counter + 1;
+                try {
+                    const designation = Parse.Object.extend("Designations");
+                    const newDesignation = new designation();
+                    newDesignation.save({
+                        name: designationsData[i].A.toUpperCase(),
+                    })
+
+                } catch (error) {
+                    console.log(error.message);
+                    this.counter = this.counter - 1;
+                }
+
+            }
+            toast(this.counter + " DESIGNATIONS Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+            });
+            this.$refs.Spinner.hide();
+            this.$router.push("/designations");
+            this.pending = false;
+        },
     },
 };
 </script>
