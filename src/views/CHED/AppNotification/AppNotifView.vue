@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import Parse from "parse";
 export default {
     data() {
         return {
@@ -84,9 +85,23 @@ export default {
             ]
         }
     },
-    methods: {
+    mounted: async function () {
+        //Application Notifs
+        let applicationQuery = new Parse.Query('Applications')
+        let applicationSub = await applicationQuery.subscribe();
 
-    }
+        applicationSub.on('open', () => {
+            console.log("Application Subscription Open");
+        });
+
+        applicationSub.on('create', () => {
+            console.log("Application Created");
+        });
+
+        applicationSub.on('update', () => {
+            console.log("Application Updated");
+        });
+    },
 }
 </script>
 
