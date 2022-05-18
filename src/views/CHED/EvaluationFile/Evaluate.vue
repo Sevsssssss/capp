@@ -263,7 +263,7 @@ export default {
         modal(){
             var has_error = 0;
             var missing_comment = 0;
-            var missing_comment1 = 0;
+            // var missing_comment1 = 0;
             var missing_checkbox = 0;
             console.log(this.comment1.length)
 
@@ -273,21 +273,22 @@ export default {
                     console.log(this.comment1[i])
                 }
             }
-            for (var x = 0; x < this.comment2.length; x++) {
-                if(this.comment2[x] == null ||  this.comment2[x] == ''){
-                    missing_comment1++;
-                    console.log(this.comment1[i])
-                }
-            }
+            // for (var x = 0; x < this.comment2.length; x++) {
+            //     if(this.comment2[x] == null ||  this.comment2[x] == ''){
+            //         missing_comment1++;
+            //         console.log(this.comment1[i])
+            //     }
+            // }
 
             for (var j = 0; j < this.statusShow.length; j++ ){
-                if(this.statusShow[j] == ""){
+                if(this.statusShow[j] == 'NotComplied' && this.comment2[j] == ''){
                     missing_checkbox++;
                 }
             }
+
             console.log(missing_comment)
             if (
-                this.summary == "" || this.recommendation == "" || missing_comment > 0 || missing_comment1 > 0 || this.statusShow.length == 0 || missing_checkbox > 0
+                this.summary == "" || this.recommendation == "" || missing_comment > 0 || this.statusShow.length == 0 || missing_checkbox > 0
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -417,7 +418,7 @@ export default {
             setTimeout(
                 () =>
                 this.$router.push({
-                    path: "/rqat/assignments",
+                    path: "/application",
                 }),
                 1000
             );
@@ -554,87 +555,56 @@ export default {
                     }
                 }
 
-                var hasSubCat = [];
-
-                for(var cs = 0; cs < catIndexes.length; cs++) {
-                    if(subcatIndexes[cs].every(x => x < 0)) {
-                        hasSubCat.push(false);
-                    }
-                    else{
-                        hasSubCat.push(true);
-                    }
-                    for(var ss = 0; ss < subcatIndexes[cs].length; ss++){
-                        if(subcatIndexes[cs][ss] == -1){
-                            subcatIndexes[cs].splice(ss, 1)
-                        }
-                    }
-                }
-
                 var categories = [];
+
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
-                        var catIndex = catIndexes.indexOf(i + 1)
-                        if(hasSubCat[catIndex] == true){
-                            console.log(chedMemo.get("evaluationFormReqs")[i].subcategory.length);
-                            for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                                //for(var sub = 0; sub < subcatIndexes.length)
-                                if (subcatIndexes[catIndex].includes(j + 1)) {
-                                    var items = [];
-
-                                    for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                                        items.push({
-                                            id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].id,
-                                            Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j].items[k].Item,
-                                        })
-                                    }
-
-                                    subcat.push({
-                                        id: chedMemo.get("evaluationFormReqs")[i].subcategory[j].id,
-                                        Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j].Subcategory,
-                                        items: items,
-                                    })
-
+                        // this.statusShow.push("");
+                        // this.comment1.push("");
+                        // this.comment2.push("");
+                        for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                            if (subcatIndexes[i].includes(j + 1)) {
+                                var items = [];
+                                // this.statusShow.push("");
+                                // this.comment1.push("");
+                                // this.comment2.push("");
+                                for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                    // this.statusShow.push("");
+                                    // this.comment1.push("");
+                                    // this.comment2.push("");
+                                    items.push({
+                                        id: k + 1,
+                                        Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                            .items[k].Item,
+                                    });
                                 }
 
+                                subcat.push({
+                                    id: j + 1,
+                                    Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                        .Subcategory,
+                                    items: items,
+                                });
                             }
-                            this.Name = chedMemo.get("evaluationFormName");
+                        }
 
-                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
-                                this.cmoNoYr.push({
-                                    cmoNo: chedMemo.get("CMO_No"),
-                                    seriesYear: chedMemo.get("Series_Year"),
-                                })
-                            }
+                        this.Name = chedMemo.get("evaluationFormName");
 
-                            categories.push({
-                                id: chedMemo.get("evaluationFormReqs")[i].id,
-                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
-                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
-                                subcategory: subcat,
+                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                            this.cmoNoYr.push({
+                                cmoNo: chedMemo.get("CMO_No"),
+                                seriesYear: chedMemo.get("Series_Year"),
                             })
                         }
-                        else{
-                            this.Name = chedMemo.get("evaluationFormName");
 
-                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
-                                this.cmoNoYr.push({
-                                    cmoNo: chedMemo.get("CMO_No"),
-                                    seriesYear: chedMemo.get("Series_Year"),
-                                })
-                            }
-
-                            categories.push({
-                                id: chedMemo.get("evaluationFormReqs")[i].id,
-                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
-                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
-                                subcategory: [],
-                            })
-                        }
-                        
-
+                        categories.push({
+                            id: i + 1,
+                            Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                            Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                            subcategory: subcat,
+                        });
                     }
-
                 }
                 this.categories = categories;
 

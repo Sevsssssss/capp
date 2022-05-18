@@ -257,14 +257,16 @@ export default {
             window.scrollTo(0, 0);
         },
         async addEmployee() {
+            this.$refs.Spinner.show();
+
             const newEmployee = new Parse.User();
 
             var password = Math.random().toString(36).slice(-12);
-            
+
             ////////////////////////////////////
             console.log(password); /////////////
             ////////////////////////////////////
-            
+
             var employeeName = {
                 lastname: this.lastname,
                 firstname: this.firstname,
@@ -302,7 +304,6 @@ export default {
                         1000
                     );
                 });
-                this.$refs.Spinner.show();
                 setTimeout(
                     function () {
                         this.$refs.Spinner.hide();
