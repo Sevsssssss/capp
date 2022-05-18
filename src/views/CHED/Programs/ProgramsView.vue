@@ -86,7 +86,7 @@
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
+                        <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for Programs" />
                     </div>
                 </div>
             </div>
@@ -114,16 +114,16 @@
             </thead>
 
             <tbody>
-                <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
+                <tr v-for="i in searchProgram" :key="i" class="bg-white border-b">
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ i.programName }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{i.specificDiscipline}}
+                        {{i.specificDisciplineName}}
                     </td>
 
                     <td class="px-6 py-4 flex flex-row space-x-4 justify-end">
-                        <label for="editPrograms" @click="editDiscipline(i.Name, i.id, i.Programs)" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
+                        <label for="editPrograms" @click="editProgramSelect(i.id)" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
                         <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -133,7 +133,7 @@
                 </tr>
             </tbody>
         </table>
-        <div v-if="searchDiscipline.length == 0" class="p-5 font-medium">
+        <div v-if="searchProgram.length == 0" class="p-5 font-medium">
             <!-- NO DATA FOUND {{search}} -->
             Sorry, the keyword "{{ search }}" cannot be found in the database.
         </div>
@@ -171,71 +171,8 @@
         </div>
     </div>
 
-    <input type="checkbox" id="createDisciplines" class="modal-toggle" />
-    <label for="createDisciplines" class="modal cursor-pointer">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD A DISCIPLINE</div>
-            <p class="py-2 text-sm">Input the entire name of the dicipline.</p>
-            <form v-on:submit.prevent="submit">
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.disciplineName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.disciplineName.$model" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
-            </div>
-        </div>
-    </label>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
-    <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Add Discipline</div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this discipline?
-            </p>
-            <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addDiscipline()">Continue</label>
-            </div>
-        </div>
-    </div>
-    <!-- edit -->
-    <input type="checkbox" id="editDisciplines" class="modal-toggle" />
-    <label for="editDisciplines" class="modal cursor-pointer">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">EDIT DISCIPLINE NAME</div>
-            <p class="py-2 text-sm">Input the new name of the dicipline.</p>
-            <form v-on:submit.prevent="submit">
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" :class="{
-                'input-error': validationStatus(v$.editDisciplineName),
-              }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editDisciplineName.$model" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="editDisciplines" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal1()">Submit</label>
-            </div>
-        </div>
-    </label>
+    
 
-    <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">
-                Edit Discipline
-            </div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to edit this discipline?
-            </p>
-            <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal1()">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="newDiscName()">Continue</label>
-            </div>
-        </div>
-    </div>
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -300,7 +237,6 @@
     <input type="checkbox" id="editPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            {{editPrograms}}
             <div class="flex flex-row justify-between">
                 <div>
                     <div class="font-semibold text-md">EDIT PROGRAMS</div>
@@ -310,27 +246,19 @@
                 </div>
             </div>  
             <form v-on:submit.prevent="submit">
-                <div class="mb-6" v-for="i in searchDiscipline" :key="i">
-                    <div v-if="editDisciplineName === i.Name">
-                        <div v-for="x in i.Programs" :key="x">
-                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                            <div class="flex flex-row">
-                                <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="x.name" />
-                                <div class="pl-4">
-                                    <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgramEdit(x.id)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
+                    <div>
+                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                        <div class="flex flex-row">
+                            <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="editProgramName" />
                         </div>
                     </div>
-                </div>
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editDisciplineName.$model" disabled />
+                    <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                            {{ discipline.name }}
+                        </option>
+                    </select>
                 </div>
             </form>
             <div class="modal-action">
@@ -342,14 +270,14 @@
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Delete Discipline</div>
+            <div class="font-semibold text-md">Delete Program</div>
             <p class="py-2 text-sm">
                 This action cannot be undone. Are you sure you want to delete this
-                discipline?
+                program?
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteDiscipline()">Delete</label>
+                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteProgram()">Delete</label>
             </div>
         </div>
     </div>
@@ -363,7 +291,7 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
-import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+//import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
@@ -376,11 +304,11 @@ export default {
     name: "DisciplinesView",
     components: {
         // NoDataAvail,
-        VueInstantLoadingSpinner,
+        // VueInstantLoadingSpinner,
     },
     data() {
         return {
-            deleteDis: '',
+            deleteProg: '',
             showModal1: false,
             showModal2: false,
             showModal3: false,
@@ -415,7 +343,6 @@ export default {
             ],
             search: "",
             disciplineName: "",
-            editDisciplineName: "",
             editID: "",
 
             disciplines: [],
@@ -431,19 +358,16 @@ export default {
             disciplineName: {
                 required,
             },
-            editDisciplineName: {
+            editProgramName: {
                 required,
             },
             programs: {
                 required,
             },
-            editProgramName: {
-                required,
-            },
         };
     },
     computed: {
-        searchDiscipline() {
+        searchProgram() {
             return this.tables
                 .filter((p) => {
                     return p.programName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -465,8 +389,8 @@ export default {
         reset(){
             this.programs = [];
         },
-        selectedDisciplineDelete(id) {
-            this.deleteDis = id;
+        selectedProgramDelete(id) {
+            this.deleteProg = id;
         },
         removeProgram(id) {
             console.log(this.programs.length);
@@ -490,13 +414,13 @@ export default {
             }
         },
 
-        async deleteDiscipline() {
+        async deleteProgram() {
             this.$refs.Spinner.show();
-            const disciplines = Parse.Object.extend("Disciplines");
-            const discQuery = new Parse.Query(disciplines);
-            discQuery.equalTo("objectId", this.deleteDis);
+            const programsDel = Parse.Object.extend("Programs");
+            const progDelQuery = new Parse.Query(programsDel);
+            progDelQuery.equalTo("objectId", this.deleteProg);
 
-            const discipline = await discQuery.first();
+            const discipline = await progDelQuery.first();
 
             discipline.destroy().then(
                 (disc) => {
@@ -566,7 +490,7 @@ export default {
 
         modal1() {
             var has_error = 0;
-            if (this.editDisciplineName == "") {
+            if (this.editProgramName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -596,69 +520,16 @@ export default {
             }
         },
 
-        editDiscipline(name, id, programs) {
-            this.editDisciplineName = name;
+        async editProgramSelect(id) {
             this.editID = id;
-            this.editPrograms = programs;
-        },
-        async newDiscName() {
-            this.$refs.Spinner.show();
-            const Disciplines = Parse.Object.extend("Disciplines");
-            const discipline = new Parse.Query(Disciplines);
-            discipline.equalTo("objectId", this.editID);
-            const disc = await discipline.first();
-            disc.set("disciplineName", this.editDisciplineName);
-            disc.save();
-            try {
-                //alert("New Discipline Added: " + newDiscipline.id);
-                toast("Edited Dicsipline Name Successfully", {
-                        type: TYPE.SUCCESS,
-                        timeout: 3000,
-                        position: POSITION.TOP_RIGHT,
-                    }),
-                    // window.location.reload()
-                    setTimeout(() => {
-                        document.location.reload();
-                    }, 2000);
-            } catch (error) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
 
-            console.log("Edit Successful");
-        },
-        addDiscipline() {
-            this.$refs.Spinner.show();
-            const disciplines = Parse.Object.extend("Disciplines");
-            const newDiscipline = new disciplines();
-            try {
-                newDiscipline.save({
-                    disciplineName: this.disciplineName,
-                });
-                //alert("New Discipline Added: " + newDiscipline.id);
-                toast("New Discipline Added: " + this.disciplineName, {
-                        type: TYPE.SUCCESS,
-                        timeout: 3000,
-                        position: POSITION.TOP_RIGHT,
-                    }),
-                    // window.location.reload()
-                    setTimeout(() => {
-                        document.location.reload();
-                    }, 2000);
-            } catch (error) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
+            const programs = Parse.Object.extend("Programs");
+            const queryProg = new Parse.Query(programs);
+            queryProg.equalTo("objectId", this.editID);
+            const progResult = await queryProg.first();
+
+            this.editProgramName = progResult.get("programName")
+            this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
             this.$refs.Spinner.show();
@@ -693,19 +564,16 @@ export default {
             }
         },
         async editProgram() {
-            this.$refs.Spinner.show();
             try {
-                for (var i = 0; i < this.editPrograms.length; i++) {
-                    const programsUpdate = Parse.Object.extend("Programs");
-                    const queryProgUpdate = new Parse.Query(programsUpdate);
-                    queryProgUpdate.equalTo("objectId", this.editPrograms[i].id)
-                    const programToEdit = await queryProgUpdate.first();
-                    programToEdit.save({
-                        programName: this.editPrograms[i].name,
-                        programDiscipline: this.editPrograms[i].specDiscCode,
-                    });
-                }
-                toast("Programs Updated: " + this.editPrograms[i].specDiscCode, {
+                const programsUpdate = Parse.Object.extend("Programs");
+                const queryProgUpdate = new Parse.Query(programsUpdate);
+                queryProgUpdate.equalTo("objectId", this.editID)
+                const programToEdit = await queryProgUpdate.first();
+                programToEdit.save({
+                    programName: this.editProgramName,
+                    programDiscipline: this.selectedDiscipline,
+                });
+                toast("Programs Updated: " + this.editID, {
                             type: TYPE.SUCCESS,
                             timeout: 3000,
                             position: POSITION.TOP_RIGHT,
@@ -787,7 +655,7 @@ export default {
             console.log("Hi!, You have permission to access this Page1");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            var disciplineTable = [];
+            var programsData = [];
             var disciplinesNames = [];
             const disciplines = Parse.Object.extend("Disciplines");
             const query = new Parse.Query(disciplines);
@@ -799,39 +667,27 @@ export default {
                     const queryProg = new Parse.Query(programs);
                     queryProg.equalTo("programDiscipline", discipline.get("specificDiscipline")[a].SpecDiscCode);
                     const progResult = await queryProg.find();
-                    var programsMat = [];
-                    var programsText = "";
                     for (var j = 0; j < progResult.length; j++) {
                         const prog = progResult[j];
 
-                        if (programsText === "") {
-                            programsText = programsText + prog.get("programName");
-                        } else {
-                            programsText = programsText + ", " + prog.get("programName");
-                        }
-                        programsMat.push({
+                        programsData.push({
                             id: prog.id,
-                            name: prog.get("programName"),
-                            specDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
+                            programName: prog.get("programName"),
+                            specificDiscipline: prog.get("programDiscipline"),
+                            specificDisciplineName: discipline.get("specificDiscipline")[a].SpecificDiscipline,
                         });
                     }
-
-                    disciplineTable.push({
-                        id: discipline.id,
-                        Name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
-                        SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
-                        Programs: programsMat,
-                    });
                     disciplinesNames.push({
                         id: discipline.get("specificDiscipline")[a].id,
                         SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
                         name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
-                    });
+                    })
                 }
 
             }
+            this.tables = programsData;
             this.disciplines = disciplinesNames;
-            //this.tables = disciplineTable;
+            this.selectedDiscipline = disciplinesNames[0].SpecDiscCode;
             // console.log(this.tables);
         }
     },
