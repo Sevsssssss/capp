@@ -307,7 +307,7 @@ export default {
                             remarks: [],
                             recommendation: '',
                             paymentStatus: '',
-                            complianceDueDate: yesterday,
+                            complianceDueDate: new Date(yesterday),
                         })
                         .then(
                             (newApplication) => {

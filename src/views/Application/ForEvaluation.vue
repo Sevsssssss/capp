@@ -177,6 +177,7 @@ export default {
             return this.supervisor;
         },
         appTypeChecker(){
+
             return this.apptypeChecker
         },
         async assignRQAT() {
@@ -375,7 +376,6 @@ export default {
 
         for (var j = 0; j < rqatResult.length; j++) {
             const rqat = rqatResult[j];
-            console.log("HEllo");
             dbRqat.push({
                 id: rqat.id,
                 name: rqat.get("name")["lastname"] +
@@ -392,23 +392,14 @@ export default {
         
         const AppTypes = Parse.Object.extend("ApplicationTypes");
         const AppTypeQuery = new Parse.Query(AppTypes);
+        AppTypeQuery.equalTo("applicationTypeName", "RENEWAL")
 
-        const appTypeQuerResult = await AppTypeQuery.find();
+        const appTypeQuerResult = await AppTypeQuery.first();
 
-        // console.log(appTypeQuerResult);
-        
-        for (var h = 0; h < appTypeQuerResult.length; h++) {
-            const appType = appTypeQuerResult[h];
+        console.log(appTypeQuerResult.id);
+        console.log(this.type);
 
-            console.log(this.type); 
-            console.log(appType.id);
-
-            if (this.type == appType.id){
-                this.apptype = appType.id;
-            }
-        }
-
-        if (this.type == this.apptype){
+        if (this.type == appTypeQuerResult.id){
             this.apptypeChecker = true;
         }
 
