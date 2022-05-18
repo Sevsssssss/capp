@@ -82,8 +82,8 @@
                             <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class="relative pt-3">
-                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="absolute top-0 left-0 badge badge-accent text-sm">assigned</span>
+                            <div v-else-if="table.status === 'For Evaluation'" class="indicator">
+                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="indicator-item indicator-top indicator-end  badge badge-accent text-sm">assigned</span>
                                 <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
 
                                     {{ table.status }}
