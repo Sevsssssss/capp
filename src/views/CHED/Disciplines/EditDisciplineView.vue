@@ -2,81 +2,62 @@
 <!--Header-->
 <div class="m-3">
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between">
-        
-        <div class="flex flex-row mt-5 justify-between items-center">
-            <div class="font-semibold">MAJOR DISCIPLINES</div>
-            
-        </div>
         <!-- Body -->
-        
-            <div class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2">
-                <div class="flex flex-row justify-between items-end">
-                    <div class="flex flex-row w-full space-x-4">
-                        <div class="form-control w-50">
-                            <label class="label">
-                                <span class="label-text">Major Discipline ID*</span>
-                            </label>
-                            <input v-model="MajDiscCode" type="number" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
-                        </div>
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="label-text">Major Discipline*</span>
-                            </label>
-                            <input v-model="MajorDiscipline" type="text" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
-                        </div>
+        <div class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2">
+            <div class="flex flex-row justify-between items-end">
+                <div class="flex flex-row w-full space-x-4">
+                    <div class="form-control w-50">
+                        <label class="label">
+                            <span class="label-text">Major Discipline ID*</span>
+                        </label>
+                        <input v-model="majorDiscipline.MajDiscCode" type="number" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
                     </div>
-                    <div class="pl-4">
-                        <button data-tip="Remove Major Discipline" class="
-                  btn btn-outline
-                  tooltip tooltip-left
-                  hover:bg-brand-red/60
-                " @click="removeMajorDiscipline(id)">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                            </svg>
-                        </button>
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Major Discipline*</span>
+                        </label>
+                        <input v-model="majorDiscipline.MajorDiscipline" type="text" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
                     </div>
                 </div>
+            </div>
 
-                <div class="flex flex-row mt-5 justify-between items-center">
-                    <div class="font-semibold">SPECIFIC DISCIPLINES</div>
-                    <div class="">
-                        <button class="btn bg-brand-darkblue hover:bg-brand-blue border-none" @click="addSpecificDiscipline(majDiscipline.specificDiscipline)">
-                            Add Specific Discipline
-                        </button>
-                    </div>
+            <div class="flex flex-row mt-5 justify-between items-center">
+                <div class="font-semibold">SPECIFIC DISCIPLINES</div>
+                <div class="">
+                    <button class="btn bg-brand-darkblue hover:bg-brand-blue border-none" @click="addSpecificDiscipline(majorDiscipline.specificDiscipline)">
+                        Add Specific Discipline
+                    </button>
                 </div>
+            </div>
 
-                <!-- v-for="specificDiscipline in majDiscipline.specificDiscipline" :key="specificDiscipline" means it accesses each specificDiscipline in the specificDiscipline array inside each majDiscipline in the majorDisciplines array -->
-                <div class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2">
-                    <div  class="overflow-x-auto rounded-lg" id="add-subcat">
-                        <div>
-                            <div v-if="viewSpecDisc()">
-                                <div class="">
+            <!-- v-for="specificDiscipline in majDiscipline.specificDiscipline" :key="specificDiscipline" means it accesses each specificDiscipline in the specificDiscipline array inside each majDiscipline in the majorDisciplines array -->
+            <div v-if="majorDiscipline.specificDiscipline.length > 0" class="overflow-x-auto shadow-lg rounded-lg mt-4 p-4 w-full border-2">
+                <div v-for="specificDiscipline in majorDiscipline.specificDiscipline" :key="specificDiscipline" class="overflow-x-auto rounded-lg" id="add-subcat">
+                    <div>
+                        <div v-if="viewSpecDisc()">
+                            <div class="">
 
-                                    <div class="form-control w-full flex flex-row space-x-4" style="justify-content: space-between">
-                                        <div class="form-control w-50">
-                                            <label class="label"><span class="label-text">Specific Discipline ID</span></label>
-                                            <input v-model="aa" type="number" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
-                                        </div>
-                                        <div class="form-control w-full">
-                                            <label class="label"><span class="label-text">Specific Discipline</span></label>
-                                            <input v-model="a" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
-                                        </div>
-                                        <div class="flex flex-row justify-center items-center">
-                                            <!-- Delete Sub-MajorDiscipline -->
-                                            <button data-tip="Remove Specific Discipline" class="
+                                <div class="form-control w-full flex flex-row space-x-4" style="justify-content: space-between">
+                                    <div class="form-control w-50">
+                                        <label class="label"><span class="label-text">Specific Discipline ID</span></label>
+                                        <input v-model="specificDiscipline.SpecDiscCode" type="number" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text">Specific Discipline</span></label>
+                                        <input v-model="specificDiscipline.SpecificDiscipline" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
+                                    </div>
+                                    <div class="flex flex-row justify-center items-center">
+                                        <!-- Delete Sub-MajorDiscipline -->
+                                        <button data-tip="Remove Specific Discipline" class="
                                                 btn btn-outline
                                                 tooltip tooltip-left
                                                 hover:bg-brand-red/60
-                                              " @click="removeSpecificDiscipline(id)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                                    <path fill="none" d="M0 0h24v24H0z" />
-                                                    <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                              " @click="removeSpecificDiscipline(specificDiscipline.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                                <path fill="none" d="M0 0h24v24H0z" />
+                                                <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -84,21 +65,21 @@
                     </div>
                 </div>
             </div>
-        
+        </div>
         <!-- Footer -->
         <div class="table-footer flex flex-row justify-center">
             <div class="flex flex-row pt-5">
                 <button class="btn btn-margin btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit"  class="
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="
               border-none
               btn btn-m
               submit
               bg-brand-darkblue
               hover:bg-brand-blue
             " @click="modal()">
-                    Create
+                    Update
                 </button>
             </div>
         </div>
@@ -107,10 +88,10 @@
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="text-brand-darkblue font-bold label-xl">
-                Add Discipline
+                Update Discipline
             </div>
             <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add these Disciplines?
+                Are you sure you want to update this Discipline?
             </p>
             <div class="modal-action">
                 <label for="my-modal-6" class="
@@ -127,7 +108,7 @@
               hover:bg-blue-800
               rounded-md
               border-none
-            " @click="saveDiscipline()">Continue</label>
+            " @click="updateDiscipline()">Continue</label>
             </div>
         </div>
     </div>
@@ -159,7 +140,11 @@ export default {
         return {
             showModal1: false,
             v$: useVuelidate(),
-            majorDisciplines: [],
+            majorDiscipline: {
+                MajDiscCode: "",
+                MajorDiscipline: "",
+                specificDiscipline: [],
+            },
             MajorDisciplineId: 0,
             SpecificDisciplineId: 0,
             viewSpecDiscbool: true,
@@ -185,7 +170,7 @@ export default {
             evalDesc: {
                 required,
             },
-            majDiscipline: {
+            majorDiscipline: {
                 required,
             },
             catdescription: {
@@ -217,27 +202,26 @@ export default {
             var errMD = 0;
             var errSD = 0;
 
-            for (var i = 0; i < this.majorDisciplines.length; i++) {
-                if (this.majorDisciplines[i].MajorDiscipline != "" && this.majorDisciplines[i].MajDiscCode != "") {
-                    errMD = errMD - 0;
-                } else {
-                    errMD = errMD + 1;
-                }
-                if (this.majorDisciplines[i].specificDiscipline.length == 0) {
-                    errSD = 0;
-                } else {
-                    for (var x = 0; x < this.majorDisciplines[i].specificDiscipline.length; x++) {
-                        if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline != null && this.majorDisciplines[i].specificDiscipline[x].SpecDiscCode != "") {
-                            errSD = errSD - 0;
-                        } else {
-                            errSD = errSD + 1;
-                        }
-                        if (this.majorDisciplines[i].specificDiscipline[x].SpecificDiscipline.length == 0) {
-                            errSD = 1;
-                        }
+            if (this.majorDiscipline.MajorDiscipline != "" && this.majorDiscipline.MajDiscCode != "") {
+                errMD = errMD - 0;
+            } else {
+                errMD = errMD + 1;
+            }
+            if (this.majorDiscipline.specificDiscipline.length == 0) {
+                errSD = 0;
+            } else {
+                for (var x = 0; x < this.majorDiscipline.specificDiscipline.length; x++) {
+                    if (this.majorDiscipline.specificDiscipline[x].SpecificDiscipline != null && this.majorDiscipline.specificDiscipline[x].SpecDiscCode != "") {
+                        errSD = errSD - 0;
+                    } else {
+                        errSD = errSD + 1;
+                    }
+                    if (this.majorDiscipline.specificDiscipline[x].SpecificDiscipline.length == 0) {
+                        errSD = 1;
                     }
                 }
             }
+
             if (
                 errMD == 1 ||
                 errSD >= 1
@@ -265,21 +249,21 @@ export default {
             }
         },
 
-        saveDiscipline() {
-            const Disciplines = Parse.Object.extend("Disciplines");
-            for (var m = 0; m < this.majorDisciplines.length; m++) {
-                const newDiscipline = new Disciplines();
-                newDiscipline.set("MajDiscCode", this.majorDisciplines[m].MajDiscCode);
-                newDiscipline.set("MajorDiscipline", this.majorDisciplines[m].MajorDiscipline.toUpperCase());
-                newDiscipline.set("specificDiscipline", this.majorDisciplines[m].specificDiscipline);
+        async updateDiscipline() {
+            const disciplinesUpdate = Parse.Object.extend("Disciplines");
+            const queryUpdate = new Parse.Query(disciplinesUpdate);
+            queryUpdate.equalTo("objectId", this.id);
+            const querResultUpdate = await queryUpdate.first();
+            querResultUpdate.set("MajDiscCode", this.majorDiscipline.MajDiscCode);
+            querResultUpdate.set("MajorDiscipline", this.majorDiscipline.MajorDiscipline.toUpperCase());
+            querResultUpdate.set("specificDiscipline", this.majorDiscipline.specificDiscipline);
 
-                newDiscipline.save().then((discipline) => {
-                    console.log("Discipline Saved: " + discipline.id);
-                }, (error) => {
-                    console.log("Discipline Saved: " + error.message);
-                });
+            querResultUpdate.save().then((discipline) => {
+                console.log("Discipline Saved: " + discipline.id);
+            }, (error) => {
+                console.log("Discipline Saved: " + error.message);
+            });
 
-            }
             toast("Discipline Added!", {
                 type: TYPE.SUCCESS,
                 timeout: 2000,
@@ -302,41 +286,8 @@ export default {
             );
         },
 
-        //This add a majDiscipline
-        addMajorDiscipline() {
-            if (this.majorDisciplines.length === 0) {
-                this.MajorDisciplineId = 0; // Should we overide id if all items in array is deleted?
-                //Also should we adjust ids of items in array if some items are deleted?
-            }
-            this.MajorDisciplineId = this.MajorDisciplineId + 1;
-            this.majorDisciplines.push({
-                id: this.MajorDisciplineId,
-                MajDiscCode: "",
-                MajorDiscipline: "",
-                specificDiscipline: [],
-            });
-        },
-        //This removes a majDiscipline
-        removeMajorDiscipline(id) {
-            console.log(this.majorDisciplines.length);
-            for (var i = 0; i < this.majorDisciplines.length; i++) {
-                console.log(i, id);
-                console.log(this.majorDisciplines[i]);
-                if (this.majorDisciplines[i].id === id) {
-                    console.log("true");
-                    console.log(id, this.majorDisciplines[i].id);
-                    this.majorDisciplines.splice(i, 1);
-                    i--;
-                }
-            }
-        },
         //This adds a specificDiscipline inside of a majDiscipline
         addSpecificDiscipline(MajorDiscipline) {
-            console.log(MajorDiscipline);
-            if (MajorDiscipline.length === 0) {
-                console.log(true);
-                this.SpecificDisciplineId = 0;
-            }
             this.SpecificDisciplineId = this.SpecificDisciplineId + 1;
             MajorDiscipline.push({
                 id: this.SpecificDisciplineId,
@@ -346,15 +297,13 @@ export default {
         },
         //This removes a specificDiscipline inside of a majDiscipline
         removeSpecificDiscipline(id) {
-            for (var i = 0; i < this.majorDisciplines.length; i++) {
-                for (
-                    var specDisc = 0; specDisc < this.majorDisciplines[i].specificDiscipline.length; specDisc++
-                ) {
-                    console.log(this.majorDisciplines[i].specificDiscipline[specDisc].id);
-                    if (this.majorDisciplines[i].specificDiscipline[specDisc].id === id) {
-                        this.majorDisciplines[i].specificDiscipline.splice(specDisc, 1);
-                        specDisc--;
-                    }
+            for (
+                var specDisc = 0; specDisc < this.majorDiscipline.specificDiscipline.length; specDisc++
+            ) {
+                console.log(this.majorDiscipline.specificDiscipline[specDisc].id);
+                if (this.majorDiscipline.specificDiscipline[specDisc].id === id) {
+                    this.majorDiscipline.specificDiscipline.splice(specDisc, 1);
+                    specDisc--;
                 }
             }
         },
@@ -406,6 +355,17 @@ export default {
                 });
             }
             this.programs = programsMat;
+
+            const disciplines = Parse.Object.extend("Disciplines");
+            const query = new Parse.Query(disciplines);
+            query.equalTo("objectId", this.id);
+            const querResult = await query.first();
+
+            this.majorDiscipline.MajDiscCode = querResult.get("MajDiscCode");
+            this.majorDiscipline.MajorDiscipline = querResult.get("MajorDiscipline");
+            this.majorDiscipline.specificDiscipline = querResult.get("specificDiscipline");
+            this.SpecificDisciplineId = querResult.get("specificDiscipline").length;
+
         }
     },
 };
