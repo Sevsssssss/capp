@@ -186,6 +186,7 @@ export default {
                             username: heiData[i].B,
                             email: heiData[i].C,
                             password: password,
+                            type: "sendCredentials",
                             approved: true,
                         };
                         Parse.Cloud.run("sendEmailNotification", params);

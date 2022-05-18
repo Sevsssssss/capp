@@ -25,18 +25,32 @@ async function sendEmail(params = {}) {
       pass: 'Ched123#',
     },
   });
+  if (params.type == "sendStatusUpdate") {
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"CAPP" <chedcapp@gmail.com>', // sender address
+      to: params.email, // list of receivers
+      subject: "CAPP Application Status", // Subject line
+      text: params.status, // plain text body
+    });
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"CAPP Credentials ✔" <chedcapp@gmail.com>', // sender address
-    to: params.email, // list of receivers
-    subject: "Hello CAPP User!", // Subject line
-    text: "Username: " + params.username
-          + "\nPassword: " + params.password, // plain text body
-  });
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  }
+  if (params.type == "sendCredentials") {
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"CAPP Credentials ✔" <chedcapp@gmail.com>', // sender address
+      to: params.email, // list of receivers
+      subject: "Hello CAPP User!", // Subject line
+      text: "Username: " + params.username
+        + "\nPassword: " + params.password, // plain text body
+    });
 
-  console.log("Message sent: %s", info.messageId);
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  }
+
 }
 
 Parse.Cloud.define("sendEmailNotification", async (request) => {
@@ -50,3 +64,13 @@ Parse.Cloud.define("sendEmailNotification", async (request) => {
   }
 });
 
+Parse.Cloud.define("sendStatusUpdate", async (request) => {
+  if (request.params.approved) {
+    sendEmail(request.params).then(function () {
+      return 'ok'
+    }, (error) => {
+      console.log(error)
+      throw new Error(error)
+    })
+  }
+});
