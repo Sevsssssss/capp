@@ -276,7 +276,25 @@ export default {
                     ".");
             }
 
-            this.dateOfEval = application.get("dateOfEval");
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var month = application.get("dateOfEval").getMonth();
+            var day = application.get("dateOfEval").getDate();
+            var year = application.get("dateOfEval").getFullYear();
+
+            this.dateOfEval = months[month] + " " + day + ", " + year;
 
             this.storedRqats = selRQATS;
         }

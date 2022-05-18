@@ -323,24 +323,7 @@ export default {
                     title: "DISCIPLINES",
                 },
             ],
-            tables: [
-                {
-                    programName: "BS Information Technology",
-                    specificDiscipline: "Information Technology Education",
-                },
-                {
-                    programName: "BS Information Technology",
-                    specificDiscipline: "Information Technology Education",
-                },
-                {
-                    programName: "BS Information Technology",
-                    specificDiscipline: "Information Technology Education",
-                },
-                {
-                    programName: "BS Information Technology",
-                    specificDiscipline: "Information Technology Education",
-                },
-            ],
+            tables: [],
             search: "",
             disciplineName: "",
             editID: "",
@@ -532,7 +515,7 @@ export default {
             this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
-            this.$refs.Spinner.show();
+            //this.$refs.Spinner.show();
             try {
                 for (var i = 0; i < this.programs.length; i++) {
                     const programs = Parse.Object.extend("Programs");

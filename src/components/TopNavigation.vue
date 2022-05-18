@@ -7,9 +7,10 @@
         </div>
         <div class="flex items-center lg:order-last lg:right-0 lg:absolute lg:pr-10">
             <div class="flex justify-evenly space-x-2">
-                <button @click="notifApp()" class="flex flex-row">
+                <button @click="notifApp()" class="indicator">
                     <BellOutline class="h-6" />
-                    <span class=" badge badge-secondary text-sm">99+</span> 
+                    
+                    <span class="indicator-item indicator-top indicator-end  badge1 badge-accent text-xs">99+</span> 
                 </button>
                 <button @click="accountDetails()" class="flex space-x-1 mr-3 justify-center items-center text-blue-500 ">
                     <svg style="fill: #FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -43,3 +44,27 @@ export default {
     }
 };
 </script>
+
+<style>
+.badge1 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    height: 15px/* 20px */;
+    font-size: 0.875rem/* 14px */;
+    line-height: 1.25rem/* 20px */;
+    width: fit-content;
+    padding: 2px;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: hsl(var(--n) / var(--tw-border-opacity));
+    --tw-bg-opacity: 1;
+    background-color: hsl(var(--n) / var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: hsl(var(--nc) / var(--tw-text-opacity));
+    border-radius: var(--rounded-badge, 1.9rem);
+}
+</style>
