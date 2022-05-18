@@ -1,5 +1,6 @@
 <template>
 <div class="mx-3">
+
     <div class="flex justify-between mt-2">
         <div class="flex space-x-4">
             <div class="font-normal text-sm">
@@ -50,12 +51,12 @@
                 <div>Dismiss</div>
             </button>
         </div>
-        <div v-if="supervisorChecker()" class="pr-5">
-            <div class="btn border text-white bg-brand-red hover:bg-brand-red/60">
-                Request Re-Assign
-            </div>
+        <div v-if="appTypeChecker() && dateOfEval == null" class="pr-5">
+            <label for="sched-evaluation" class="btn border text-white bg-blue-700 hover:bg-blue-800">
+                Schedule Evaluation Date
+            </label>
         </div>
-        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker()">
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker() && dateOfEval != null">
             <router-link :to="{
             name: 'EvaluateView',
                 params: {
@@ -100,6 +101,19 @@
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label @click="this.selectedRqat.length > 0 ? assignRQAT() : showToastRqat()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+            </div>
+        </div>
+    </div>
+
+    <input type="checkbox" id="sched-evaluation" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">SELECT EVALUATION DATE:</div>
+            <Datepicker v-model="date" class="my-2"></Datepicker>
+            
+            <div class="modal-action">
+                <label for="sched-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label @click="date != null ? schedEval() : showToastSched()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Schedule</label>
             </div>
         </div>
     </div>
@@ -209,6 +223,51 @@ export default {
                 hideProgressBar: true,
                 position: POSITION.TOP_RIGHT,
             });
+        },
+
+        async schedEval() {
+            try {
+                console.log("Hellos");
+                const applications1 = Parse.Object.extend("Applications");
+                const query1 = new Parse.Query(applications1);
+                query1.equalTo("objectId", this.appID);
+
+                const application1 = await query1.first();
+
+                application1.set("dateOfEval", this.date);
+
+                application1.save().then((application1) => {
+                    toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
+                            type: TYPE.INFO,
+                            timeout: 2000,
+                            position: POSITION.TOP_RIGHT,
+                            hideProgressBar: false,
+                            closeButton: false,
+
+                        }),
+                        console.log("Object Updated: " + application1.id);
+                });
+                setTimeout(() => {
+                    this.$router.push({
+                        path: "/application/ " + this.appID.slice(0, 2).join(""),
+                    })
+                }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            } catch (error) {
+                alert(error.message)
+            }
+
+        },
+        showToastSched() {
+            toast("Please select a scheduled date for the evaluation ", {
+                type: TYPE.ERROR,
+                timeout: 3000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+            });
         }
     },
 
@@ -278,6 +337,7 @@ export default {
                     ".");
             }
 
+            console.log("HELLO!")
             var months = [
                 "January",
                 "February",
@@ -351,6 +411,29 @@ export default {
         if (this.type == this.apptype){
             this.apptypeChecker = true;
         }
+
+        if (this.apptypeChecker == true && application.get("dateOfEval") != null){
+            var months1 = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var month1 = application.get("dateOfEval").getMonth();
+            var day1 = application.get("dateOfEval").getDate();
+            var year1 = application.get("dateOfEval").getFullYear();
+
+            this.dateOfEval = months1[month1] + " " + day1 + ", " + year1;
+        }
+        
 
 
     },
