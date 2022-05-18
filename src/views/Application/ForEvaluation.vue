@@ -1,30 +1,27 @@
 <template>
 <div class="mx-3">
-    {{dateOfEval}}
-    
-
-        <div class="flex justify-between mt-2">
-            <div class="flex space-x-4">
-                <div class="font-normal text-sm">
-                    Point Person: <span class="font-semibold">{{ rep }}</span>
-                </div>
-                <div class="font-normal text-sm">
-                    Email: <span class="font-semibold">{{ email }}</span>
-                </div>
+    <div class="flex justify-between mt-2">
+        <div class="flex space-x-4">
+            <div class="font-normal text-sm">
+                Point Person: <span class="font-semibold">{{ rep }}</span>
             </div>
-            <div>
-                <div class="font-normal text-sm">
-                    Scheduled Evaluation: <span class="font-semibold">{{ dateOfEval }}</span>
-                </div>
+            <div class="font-normal text-sm">
+                Email: <span class="font-semibold">{{ email }}</span>
             </div>
         </div>
-        <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mx-1 my-1">
-            <span class="text-sm">Assigned To:</span>
-            <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
-                <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
+        <div>
+            <div class="font-normal text-sm">
+                Scheduled Evaluation: <span class="font-semibold">{{ dateOfEval }}</span>
             </div>
-
         </div>
+    </div>
+    <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mx-1 my-1">
+        <span class="text-sm">Assigned To:</span>
+        <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
+            <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
+        </div>
+
+    </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
@@ -58,7 +55,7 @@
                 Request Re-Assign
             </div>
         </div>
-        <div v-if="this.storedRqats != null && this.storedRqats.length > 0">
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker()">
             <router-link :to="{
             name: 'EvaluateView',
                 params: {
@@ -69,7 +66,7 @@
             </router-link>
 
         </div>
-        <div v-else>
+        <div v-if="!appTypeChecker()">
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                 Assign RQAT
             </label>
@@ -102,7 +99,7 @@
             </div>
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="this.selectedRqat.length > 0 ? assignRQAT() : showToastSupervisor()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                <label @click="this.selectedRqat.length > 0 ? assignRQAT() : showToastRqat()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
             </div>
         </div>
     </div>
@@ -148,6 +145,8 @@ export default {
             supervisor: false,
             date: null,
             dateOfEval: null,
+            apptypeChecker: false,
+            apptype: "",
         };
     },
     computed: {
@@ -162,6 +161,9 @@ export default {
     methods: {
         supervisorChecker() {
             return this.supervisor;
+        },
+        appTypeChecker(){
+            return this.apptypeChecker
         },
         async assignRQAT() {
             try {
@@ -200,8 +202,8 @@ export default {
             }
 
         },
-        showToastSupervisor() {
-            toast("Please select the required supervisor", {
+        showToastRqat() {
+            toast("Please assign the RQAT for the evaluation ", {
                 type: TYPE.ERROR,
                 timeout: 3000,
                 hideProgressBar: true,
@@ -325,6 +327,31 @@ export default {
             });
         }
         this.Rqat = dbRqat;
+        
+
+        
+        const AppTypes = Parse.Object.extend("ApplicationTypes");
+        const AppTypeQuery = new Parse.Query(AppTypes);
+
+        const appTypeQuerResult = await AppTypeQuery.find();
+
+        // console.log(appTypeQuerResult);
+        
+        for (var h = 0; h < appTypeQuerResult.length; h++) {
+            const appType = appTypeQuerResult[h];
+
+            console.log(this.type); 
+            console.log(appType.id);
+
+            if (this.type == appType.id){
+                this.apptype = appType.id;
+            }
+        }
+
+        if (this.type == this.apptype){
+            this.apptypeChecker = true;
+        }
+
 
     },
 };
