@@ -174,6 +174,7 @@ export default {
                             username: rqatData[i].D,
                             email: rqatData[i].G,
                             password: password,
+                            type: "sendCredentials",
                             approved: true,
                         };
                         Parse.Cloud.run("sendEmailNotification", params);

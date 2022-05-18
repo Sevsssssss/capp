@@ -308,6 +308,13 @@ export default {
                 application
                     .save()
                     .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: this.type.toLowerCase() + " has been accepted and moved for payment",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
                         toast(this.type.toLowerCase() + " has been accepted and moved for payment", {
                                 type: TYPE.INFO,
                                 timeout: 2000,

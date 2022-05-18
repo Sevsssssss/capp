@@ -290,6 +290,7 @@ export default {
                         username: this.username,
                         email: this.email,
                         password: password,
+                        type: "sendCredentials",
                         approved: true,
                     };
                     Parse.Cloud.run("sendEmailNotification", params);

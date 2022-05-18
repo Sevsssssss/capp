@@ -175,6 +175,7 @@ export default {
                             username: employeesData[i].D,
                             email: employeesData[i].E,
                             password: password,
+                            type: "sendCredentials",
                             approved: true,
                         };
                         Parse.Cloud.run("sendEmailNotification", params);
