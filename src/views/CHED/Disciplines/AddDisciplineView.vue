@@ -20,7 +20,7 @@
                             <label class="label">
                                 <span class="label-text">Major Discipline ID*</span>
                             </label>
-                            <input v-model="majDiscipline.MajDiscCode" type="number" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
+                            <input v-model="majDiscipline.MajDiscCode" type="text" placeholder="Enter Major Discipline Name" class="input input-bordered w-full" />
                         </div>
                         <div class="form-control w-full">
                             <label class="label">
@@ -62,7 +62,7 @@
                                     <div class="form-control w-full flex flex-row space-x-4" style="justify-content: space-between">
                                         <div class="form-control w-50">
                                             <label class="label"><span class="label-text">Specific Discipline ID</span></label>
-                                            <input v-model="specificDiscipline.SpecDiscCode" type="number" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
+                                            <input v-model="specificDiscipline.SpecDiscCode" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
                                         </div>
                                         <div class="form-control w-full">
                                             <label class="label"><span class="label-text">Specific Discipline</span></label>
