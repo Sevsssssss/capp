@@ -1,6 +1,6 @@
 <template>
 <div class="mx-3">
-    {{type}}
+    {{dateOfEval}}
     <div class="py-4 px-1 flex justify-between">
         <div class="flex justify-start space-x-4">
             <div class="font-normal text-sm">
@@ -138,6 +138,7 @@ export default {
             storedRqats: [],
             supervisor: false,
             date: null,
+            dateOfEval: null,
         };
     },
     computed: {
@@ -163,6 +164,7 @@ export default {
                 const application = await query.first();
 
                 application.set("selectedRQAT", this.selectedRqat);
+                application.set("dateOfEval", this.date);
 
                 application.save().then((application) => {
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
@@ -264,6 +266,8 @@ export default {
                     selrqat.get("name")["middleinitial"] +
                     ".");
             }
+
+            this.dateOfEval = application.get("dateOfEval");
 
             this.storedRqats = selRQATS;
         }
