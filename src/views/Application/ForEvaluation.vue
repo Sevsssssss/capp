@@ -1,13 +1,21 @@
 <template>
 <div class="mx-3">
     {{dateOfEval}}
-    <div class="py-4 px-1 flex justify-between">
-        <div class="flex justify-start space-x-4">
-            <div class="font-normal text-sm">
-                Point Person: <span class="font-semibold">{{ rep }}</span>
+    
+
+        <div class="flex justify-between mt-2">
+            <div class="flex space-x-4">
+                <div class="font-normal text-sm">
+                    Point Person: <span class="font-semibold">{{ rep }}</span>
+                </div>
+                <div class="font-normal text-sm">
+                    Email: <span class="font-semibold">{{ email }}</span>
+                </div>
             </div>
-            <div class="font-normal text-sm">
-                Email: <span class="font-semibold">{{ email }}</span>
+            <div>
+                <div class="font-normal text-sm">
+                    Scheduled Evaluation: <span class="font-semibold">{{ dateOfEval }}</span>
+                </div>
             </div>
         </div>
         <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mx-1 my-1">
@@ -17,7 +25,6 @@
             </div>
 
         </div>
-    </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
@@ -117,7 +124,9 @@ const toast = useToast();
 export default {
     props: ["appID"],
     name: "ForEvaluation",
-    components: { Datepicker },
+    components: {
+        Datepicker
+    },
     data() {
         return {
             // id: this.$route.params.id,

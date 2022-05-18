@@ -115,16 +115,14 @@
 
             <tbody>
                 <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
-                    <td v-if="i.Programs.length > 0" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ i.Name }}
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{ i.programName }}
                     </td>
-                    <td v-if="i.Programs.length > 0" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        <div v-for="x in i.Programs" :key="x" class="flex flwx-row justify-between">
-                            {{x.name}}
-                        </div>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{i.specificDiscipline}}
                     </td>
 
-                    <td v-if="i.Programs.length > 0" class="px-6 py-4 flex flex-row space-x-4 justify-end">
+                    <td class="px-6 py-4 flex flex-row space-x-4 justify-end">
                         <label for="editPrograms" @click="editDiscipline(i.Name, i.id, i.Programs)" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
                         <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
@@ -391,13 +389,30 @@ export default {
             numPerPage: 10,
             totalEntries: 0,
             headers: [{
-                    title: "DISCIPLINES",
-                },
-                {
                     title: "PROGRAMS",
                 },
+                {
+                    title: "DISCIPLINES",
+                },
             ],
-            tables: [],
+            tables: [
+                {
+                    programName: "BS Information Technology",
+                    specificDiscipline: "Information Technology Education",
+                },
+                {
+                    programName: "BS Information Technology",
+                    specificDiscipline: "Information Technology Education",
+                },
+                {
+                    programName: "BS Information Technology",
+                    specificDiscipline: "Information Technology Education",
+                },
+                {
+                    programName: "BS Information Technology",
+                    specificDiscipline: "Information Technology Education",
+                },
+            ],
             search: "",
             disciplineName: "",
             editDisciplineName: "",
@@ -431,7 +446,7 @@ export default {
         searchDiscipline() {
             return this.tables
                 .filter((p) => {
-                    return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+                    return p.programName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
                 })
                 .slice(
                     this.numPerPage * this.currentpage,
@@ -816,7 +831,7 @@ export default {
 
             }
             this.disciplines = disciplinesNames;
-            this.tables = disciplineTable;
+            //this.tables = disciplineTable;
             // console.log(this.tables);
         }
     },
