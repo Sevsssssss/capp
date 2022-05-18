@@ -56,25 +56,32 @@
                             {{ table.CMO_Name }}
                         </td>
                         <td class="px-6 py-4 text-right flex-row space-x-2">
-                            <!-- {{table.id}} -->
-                            <router-link v-if="table && table.id" :to="{
+                            <div class="flex space-x-4 items-end justify-end">
+                                <!-- {{table.id}} -->
+                                <router-link v-if="table && table.id" :to="{
                                 name: 'CMOFileView',
                                 params: {
                                 id: table.id,
                                 },
                             }">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
-                            </router-link>
-                            <!-- {{table.id}} -->
-                            <router-link v-if="table && table.id" :to="{
+                                    <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
+                                </router-link>
+                                <!-- {{table.id}} -->
+                                <router-link v-if="table && table.id" :to="{
                                 name: 'EditCMOView',
                                 params: {
                                 id: table.id,
                                 },
                             }">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </router-link>
+                                    <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                </router-link>
 
+                                <label for="deleteFunc" class="hover:text-brand-red/60">
+                                    <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedCMODelete(table.id)">
+                                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                    </svg>
+                                </label>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -117,13 +124,35 @@
                     </div>
                 </div>
             </div>
+            <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+            <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+            <div class="modal">
+                <div class="modal-box relative rounded-md text-left">
+                    <div class="font-semibold text-md">Delete Document</div>
+                    <p class="py-2 text-sm">
+                        This action cannot be undone. Are you sure you want to delete this
+                        document?
+                    </p>
+                    <div class="modal-action">
+                        <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                        <label for="deleteFunc" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteCMO()">Delete</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+const toast = useToast();
 import NoDataAvail from "@/components//NoDataAvail.vue";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 
 export default {
@@ -149,6 +178,7 @@ export default {
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchEval() {
@@ -180,6 +210,40 @@ export default {
                 this.currentpage += 1;
             }
         },
+
+        selectedCMODelete(id) {
+            this.cmoId = id;
+        },
+        async deleteCMO() {
+            this.$refs.Spinner.show();
+
+            const CMO = Parse.Object.extend("CHED_MEMO");
+            const cmoQuery = new Parse.Query(CMO);
+            cmoQuery.equalTo("objectId", this.cmoId);
+
+            const cmo = await cmoQuery.first();
+
+            cmo.destroy().then(() => {
+                    toast("Deleting...", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        document.location.reload()
+                    }, 3000);
+                },
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    3000
+                ),
+                
+            );
+
+        }
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE

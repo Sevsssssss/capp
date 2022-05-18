@@ -86,7 +86,15 @@
                         </div>
                     </td>
                     <td class="px-6 py-4  flex flex-row justify-end space-x-3">
-                        <label for="editPrograms" class="font-medium text-blue-600 hover:underline" @click="editDiscipline(i.MajorDiscipline, i.id)">Edit Disciplines</label>
+                        <router-link :to="{
+                                name: 'EditDisciplinesView',
+                                params: {
+                                id: i.id,
+                                },
+                            }">
+                                   <a  class="font-medium text-blue-600 hover:underline">Edit Disciplines</a>
+                                </router-link>
+                        
                         <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -182,9 +190,12 @@
                     <div v-if="editDisciplineName === i.MajorDiscipline">
                         <div v-for="x in i.specificDiscipline" :key="x">
 
-                            <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Specific Discipline Name:</label> 
+                            
                             <div class="flex flex-row">
-                                <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
+                                <div>
+                                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Specific Discipline Name:</label> 
+                                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
+                                </div>
                                 <div class="pl-4">
                                     <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

@@ -7,6 +7,7 @@ import RQATViewLayout from "../layout/RQATViewLayout.vue";
 import chedAccountDetails from '../views/CHED/AccountDetails.vue';
 import CHED_HomeView from "../views/CHED/CHED_HomeView.vue";
 import ApplicationView from "../views/CHED/Application/ApplicationView.vue";
+import EvaluateView from "../views/CHED/EvaluationFile/Evaluate.vue";
 
 import HeiView from "../views/CHED/Hei/HeiView.vue";
 import UploadExcel from '../views/CHED/Hei/UploadExcel.vue';
@@ -52,6 +53,7 @@ import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
 import AddDisciplineView from '../views/CHED/Disciplines/AddDisciplineView.vue';
+import EditDisciplineView from '../views/CHED/Disciplines/EditDisciplineView.vue';
 import UploadExcelDisciplines from '../views/CHED/Disciplines/UploadExcel.vue';
 
 import ProgramView from '../views/CHED/Programs/ProgramsView.vue';
@@ -126,6 +128,18 @@ const routes = [
           breadcrumb: [
             { name: 'Application', link: '/application' },
             { name: 'Status' }
+          ]
+        }
+      },
+      {
+        path: "/application/evaluate=:appID",
+        name: "EvaluateView",
+        component: EvaluateView,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Application', link: '/application' },
+            { name: 'Evaluate' }
           ]
         }
       },
@@ -475,6 +489,18 @@ const routes = [
           breadcrumb: [
             { name: 'DISCIPLINES', link: "/disciplines/add" },
             {name: 'ADD DISCIPLINES'},
+          ]
+        }
+      },
+      {
+        path: "/disciplines/edit=:id",
+        name: "EditDisciplinesView",
+        component: EditDisciplineView,
+        props: true,
+        meta:{
+          breadcrumb: [
+            { name: 'DISCIPLINES', link: "/disciplines/add" },
+            {name: 'EDIT DISCIPLINES'},
           ]
         }
       },
