@@ -310,7 +310,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: this.type.toLowerCase() + " has been accepted and moved for payment",
+                            status: "Your has been accepted and moved for payment",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
