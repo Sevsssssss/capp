@@ -51,7 +51,7 @@
                             <div class="flex space-x-4 items-end justify-end">
                                 <a @click="goToAppTypeView(table.Name)" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                                 <router-link :to="{
-                                    name: 'EditEvalInstView',
+                                    name: 'EditAppTypeView',
                                     params: {
                                     appID: table.Id,
                                     },

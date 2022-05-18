@@ -49,6 +49,7 @@ import AccountDetails from '../views/HEI/AccountDetails.vue';
 import AccessSettingsView from '../views/CHED/AccessSettings/AccessSettingsView.vue';
 import AppSettingsView from '../views/CHED/AppSettings/AppSettingsView.vue';
 import AddApplicationView from '../views/CHED/AppSettings/AddApplicationTypeView.vue';
+import EditApplicationView from '../views/CHED/AppSettings/EditApplicationTypeView.vue';
 import ApplicationTypeView from '../views/CHED/AppSettings/AppTypeView.vue';
 
 import DisciplineView from '../views/CHED/Disciplines/DisciplinesView.vue';
@@ -406,6 +407,18 @@ const routes = [
           breadcrumb: [
             { name: 'APPLICATION SETTINGS', link: '/app-settings' },
             { name: 'ADD APPLICATION TYPE' }
+          ]
+        }
+      },
+      {
+        path: "/app-settings/edid=:appID",
+        name: "EditAppTypeView",
+        component: EditApplicationView,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'APPLICATION SETTINGS', link: '/app-settings' },
+            { name: 'EDIT APPLICATION TYPE' }
           ]
         }
       },
