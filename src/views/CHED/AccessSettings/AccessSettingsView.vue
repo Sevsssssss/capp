@@ -283,6 +283,12 @@
                                         Account
                                     </div>
                                 </label>
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/notif" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Notif
+                                    </div>
+                                </label>
 
                             </div>
                         </div>
@@ -471,6 +477,12 @@
                                     <input type="checkbox" class="checkbox mr-1" value="/ched/account" v-model="checkedAccessTypes" />
                                     <div class="label-text viewSubCatbool" style="align-self: center">
                                         Account
+                                    </div>
+                                </label>
+                                <label class="flex flex-row viewSubCatbool cursor-pointer p-1" style="align-items: center">
+                                    <input type="checkbox" class="checkbox mr-1" value="/notif" v-model="checkedAccessTypes" />
+                                    <div class="label-text viewSubCatbool" style="align-self: center">
+                                        Notif
                                     </div>
                                 </label>
 

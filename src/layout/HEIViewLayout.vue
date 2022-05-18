@@ -1,7 +1,7 @@
 <template>
 <div class="">
     <div class="flex">
-        <TopNavigation class="z-40" />
+        <TopNavigationHEI class="z-40" />
         <sidebar-menu :menu="menu" class="z-10" @update:collapsed="toggle" v-model="collapsed">
             <template v-slot:toggle-icon>
                 <MenuOpen class="h-6" /></template>
@@ -155,7 +155,7 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
-import TopNavigation from "@/components/TopNavigation.vue";
+import TopNavigationHEI from "@/components/TopNavigation_HEI.vue";
 import {
     SidebarMenu
 } from "vue-sidebar-menu";
@@ -173,7 +173,7 @@ const toast = useToast();
 export default {
     name: "ViewLayout",
     components: {
-        TopNavigation,
+        TopNavigationHEI,
         SidebarMenu,
         MenuOpen,
         Logout,

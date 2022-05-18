@@ -94,7 +94,7 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var y = 0; y < accType.length; y++) {
-            if (accType[y] === "/notif") {
+            if (accType[y] === "/rqat/notif") {
                 flag = 1;
             }
         }
