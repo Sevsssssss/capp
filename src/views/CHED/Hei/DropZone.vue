@@ -187,6 +187,14 @@ export default {
                                         approved: true,
                                     };
                                     Parse.Cloud.run("sendEmailNotification", params);
+                                    toast(this.counter + " HEI Accounts Added!", {
+                                        type: TYPE.SUCCESS,
+                                        timeout: 3000,
+                                        position: POSITION.TOP_RIGHT,
+                                    });
+                                    this.$refs.Spinner.hide();
+                                    this.$router.push("/hei");
+                                    this.pending = false;
                                 })
                             })
 
@@ -197,9 +205,9 @@ export default {
                         newHEI.set("hei_type", queryRes.id);
                         newHEI.set("access_type", this.hei_acc_id);
                         newHEI.set("hasTransactions", false);
-                        
+
                     }
-                    if(flag===0){
+                    if (flag === 0) {
                         newHEI.save().then(() => {
                             const params = {
                                 name: heiData[i].A,
@@ -210,6 +218,14 @@ export default {
                                 approved: true,
                             };
                             Parse.Cloud.run("sendEmailNotification", params);
+                            toast(this.counter + " HEI Accounts Added!", {
+                                type: TYPE.SUCCESS,
+                                timeout: 3000,
+                                position: POSITION.TOP_RIGHT,
+                            });
+                            this.$refs.Spinner.hide();
+                            this.$router.push("/hei");
+                            this.pending = false;
                         })
                     }
 
@@ -217,15 +233,9 @@ export default {
                     console.log(error.message);
                     this.counter = this.counter - 1;
                 }
+
             }
-            toast(this.counter + " HEI Accounts Added!", {
-                type: TYPE.SUCCESS,
-                timeout: 3000,
-                position: POSITION.TOP_RIGHT,
-            });
-            this.$refs.Spinner.hide();
-            this.$router.push("/hei");
-            this.pending = false;
+
         },
     },
 };
