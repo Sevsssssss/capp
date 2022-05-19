@@ -172,8 +172,10 @@ export default {
                         try {
                             newHeiType.save({
                                 name: heiData[i].G.toUpperCase(),
+                            }).then(()=>{
+                                newHEI.set("hei_type", newHeiType.id);
                             })
-                            newHEI.set("hei_type", newHeiType.id);
+                            
                         } catch (error) {
                             console.log(error.message);
                         }
