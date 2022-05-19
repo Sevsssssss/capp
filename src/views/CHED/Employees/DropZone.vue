@@ -162,10 +162,27 @@ export default {
                     const designations = Parse.Object.extend("Designations");
                     const designationQuery = new Parse.Query(designations);
                     designationQuery.equalTo("name", employeesData[i].H);
-                    const designationResult = await designationQuery.find();
+                    const designationResult = await designationQuery.first();
+
+                    if (designationResult === undefined) {
+                        const desig = Parse.Object.extend("Designations");
+                        const newDesignation = new desig();
+                        try {
+                            newDesignation.save({
+                                name: employeesData[i].H.toUpperCase(),
+                            }).then(()=>{
+                                newEmployee.set("designation", newDesignation.id);
+                            })
+                            
+                        } catch (error) {
+                            console.log(error.message);
+                        }
+                    }else{
+                        newEmployee.set("designation", designationResult.id);
+                    }
 
                     newEmployee.set("access_type", accesstypeResult[0].id);
-                    newEmployee.set("designation", designationResult[0].id);
+                    
 
                     newEmployee.set("discipline", employeesData[i].I);
 
