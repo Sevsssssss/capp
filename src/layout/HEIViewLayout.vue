@@ -245,6 +245,21 @@ export default {
 
             this.updateList();
         }
+        //Application Notifs
+        let applicationQuery = new Parse.Query('Applications')
+        let applicationSub = await applicationQuery.subscribe();
+
+        applicationSub.on('open', () => {
+            console.log("Application Subscription Open");
+        });
+
+        applicationSub.on('create', (object) => {
+            console.log("Application Created Notif" + object.attributes);
+        });
+
+        applicationSub.on('update', (object) => {
+            console.log("Application Updated" + object.attributes);
+        });
     },
     methods: {
         accountDetails() {

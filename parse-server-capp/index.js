@@ -19,7 +19,7 @@ const config = {
   masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/api', // Don't forget to change to https if needed
   liveQuery: {
-    classNames: ['Posts', 'Comments'], // List of classes to support for query subscriptions
+    classNames: ['Posts', 'Comments', 'Applications'], // List of classes to support for query subscriptions
   },
   javascriptKey : ';9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o',
 
