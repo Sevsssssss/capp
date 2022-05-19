@@ -31,7 +31,8 @@ const toast = useToast();
 export default {
     data() {
         return {
-            counter: 0
+            counter: 0,
+            pending: false
         }
     },
     components: {
@@ -170,64 +171,53 @@ export default {
                         flag = 1;
                         const heiType = Parse.Object.extend("HEI_Types");
                         const newHeiType = new heiType();
-                        try {
-                            newHeiType.save({
-                                name: heiData[i].G.toUpperCase(),
-                            }).then(() => {
-                                try {
-                                    newHEI.set("hei_type", newHeiType.id);
-                                    newHEI.set("access_type", this.hei_acc_id);
-                                    newHEI.set("hasTransactions", false);
-                                    newHEI.save().then(() => {
-                                        const params = {
-                                            name: heiData[i].A,
-                                            username: heiData[i].B,
-                                            email: heiData[i].C,
-                                            password: password,
-                                            type: "sendCredentials",
-                                            approved: true,
-                                        };
-                                        Parse.Cloud.run("sendEmailNotification", params);
 
-                                    })
-                                } catch (error) {
-                                    this.counter = this.counter - 1;
-                                    console.log(error.message);
-                                }
+                        await newHeiType.save({
+                            name: heiData[i].G.toUpperCase(),
+                        }).then(() => {
+
+                            newHEI.set("hei_type", newHeiType.id);
+                            newHEI.set("access_type", this.hei_acc_id);
+                            newHEI.set("hasTransactions", false);
+                             newHEI.save().then(() => {
+                                const params = {
+                                    name: heiData[i].A,
+                                    username: heiData[i].B,
+                                    email: heiData[i].C,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
 
                             })
 
-                        } catch (error) {
-                            this.counter = this.counter - 1;
-                            console.log(error.message);
-                        }
+                        })
+
                     } else {
                         newHEI.set("hei_type", queryRes.id);
                         newHEI.set("access_type", this.hei_acc_id);
                         newHEI.set("hasTransactions", false);
                         if (flag === 0) {
-                            try {
-                                newHEI.save().then(() => {
-                                    const params = {
-                                        name: heiData[i].A,
-                                        username: heiData[i].B,
-                                        email: heiData[i].C,
-                                        password: password,
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
 
-                                })
+                            await newHEI.save().then(() => {
+                                const params = {
+                                    name: heiData[i].A,
+                                    username: heiData[i].B,
+                                    email: heiData[i].C,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
 
-                            } catch (error) {
-                                console.log(error.message);
-                                this.counter = this.counter - 1;
-                            }
+                            })
+
                         }
                     }
 
                 } catch (error) {
+                    console.log(error.message)
                     this.counter = this.counter - 1;
                 }
 
@@ -238,7 +228,7 @@ export default {
                 position: POSITION.TOP_RIGHT,
             });
             this.$refs.Spinner.hide();
-            this.$router.push("/hei");
+            this.$router.push("/hei")
             this.pending = false;
 
         },

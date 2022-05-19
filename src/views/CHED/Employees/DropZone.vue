@@ -168,11 +168,11 @@ export default {
                         flag = 1;
                         const desig = Parse.Object.extend("Designations");
                         const newDesignation = new desig();
-                        try {
-                            newDesignation.save({
+                    
+                            await newDesignation.save({
                                 name: employeesData[i].H.toUpperCase(),
                             }).then(() => {
-                                try {
+                             
                                     newEmployee.set("designation", newDesignation.id);
 
                                     newEmployee.set("access_type", accesstypeResult[0].id);
@@ -191,17 +191,9 @@ export default {
                                         Parse.Cloud.run("sendEmailNotification", params);
 
                                     });
-                                } catch (error) {
-
-                                    console.log(error.message);
-                                    this.counter = this.counter - 1;
-                                }
+                             
                             })
 
-                        } catch (error) {
-                            console.log(error.message);
-                            this.counter = this.counter - 1;
-                        }
                     } else {
                         newEmployee.set("designation", designationResult.id);
 
@@ -209,8 +201,8 @@ export default {
 
                         newEmployee.set("discipline", employeesData[i].I);
                         if (flag === 0) {
-                            try {
-                                newEmployee.save().then(() => {
+                          
+                                await newEmployee.save().then(() => {
                                     const params = {
                                         name: this.employeeName,
                                         username: employeesData[i].D,
@@ -222,10 +214,6 @@ export default {
                                     Parse.Cloud.run("sendEmailNotification", params);
 
                                 });
-                            } catch (error) {
-                                console.log(error.message);
-                                this.counter = this.counter - 1;
-                            }
                         }
                     }
 
