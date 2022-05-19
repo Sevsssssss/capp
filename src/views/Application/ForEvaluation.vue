@@ -246,7 +246,7 @@ export default {
 
                 application1.save().then((application1) => {
                     const params = {
-                        email: application.get("email"),
+                        email: application1.get("email"),
                         status: "Your Application has been assigned to RQAT Member",
                         type: "sendStatusUpdate",
                         approved: true,
