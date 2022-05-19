@@ -117,6 +117,13 @@ export default {
                     application
                         .save()
                         .then((application) => {
+                            const params = {
+                                email: application.get("email"),
+                                status: "Your Application issuance is completed",
+                                type: "sendStatusUpdate",
+                                approved: true,
+                            };
+                            Parse.Cloud.run("sendStatusUpdate", params);
                             toast("For Issuance Completed!", {
                                 type: TYPE.SUCCESS,
                                 timeout: 2000,

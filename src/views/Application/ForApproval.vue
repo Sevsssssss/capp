@@ -210,6 +210,13 @@ export default {
                 application
                     .save()
                     .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been moved for evaluation",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
                         toast(this.type.toLowerCase() + " has been moved for evalutaion", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -259,6 +266,13 @@ export default {
                 application
                     .save()
                     .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been moved for revision",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
                         toast(this.type.toLowerCase() + " has been moved for revision", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -310,7 +324,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your has been accepted and moved for payment",
+                            status: "Your Application has been accepted and moved for payment",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
