@@ -170,33 +170,49 @@ export default {
                         try {
                             newDesignation.save({
                                 name: employeesData[i].H.toUpperCase(),
-                            }).then(()=>{
+                            }).then(() => {
                                 newEmployee.set("designation", newDesignation.id);
+
+                                newEmployee.set("access_type", accesstypeResult[0].id);
+
+                                newEmployee.set("discipline", employeesData[i].I);
+
+                                await newEmployee.save().then(() => {
+                                    const params = {
+                                        name: this.employeeName,
+                                        username: employeesData[i].D,
+                                        email: employeesData[i].E,
+                                        password: password,
+                                        type: "sendCredentials",
+                                        approved: true,
+                                    };
+                                    Parse.Cloud.run("sendEmailNotification", params);
+                                });
                             })
-                            
+
                         } catch (error) {
                             console.log(error.message);
                         }
-                    }else{
+                    } else {
                         newEmployee.set("designation", designationResult.id);
+
+                        newEmployee.set("access_type", accesstypeResult[0].id);
+
+                        newEmployee.set("discipline", employeesData[i].I);
+
+                        await newEmployee.save().then(() => {
+                            const params = {
+                                name: this.employeeName,
+                                username: employeesData[i].D,
+                                email: employeesData[i].E,
+                                password: password,
+                                type: "sendCredentials",
+                                approved: true,
+                            };
+                            Parse.Cloud.run("sendEmailNotification", params);
+                        });
                     }
 
-                    newEmployee.set("access_type", accesstypeResult[0].id);
-                    
-
-                    newEmployee.set("discipline", employeesData[i].I);
-
-                    await newEmployee.save().then(() => {
-                        const params = {
-                            name: this.employeeName,
-                            username: employeesData[i].D,
-                            email: employeesData[i].E,
-                            password: password,
-                            type: "sendCredentials",
-                            approved: true,
-                        };
-                        Parse.Cloud.run("sendEmailNotification", params);
-                    });
                 } catch (error) {
                     console.log(error.message);
                     this.counter = this.counter - 1;
