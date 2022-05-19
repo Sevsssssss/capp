@@ -177,7 +177,7 @@ export default {
                                 newHEI.set("hei_type", newHeiType.id);
                                 newHEI.set("access_type", this.hei_acc_id);
                                 newHEI.set("hasTransactions", false);
-                                await newHEI.save().then(() => {
+                                newHEI.save().then(() => {
                                     const params = {
                                         name: heiData[i].A,
                                         username: heiData[i].B,
@@ -200,7 +200,7 @@ export default {
                         
                     }
                     if(flag===0){
-                        await newHEI.save().then(() => {
+                        newHEI.save().then(() => {
                             const params = {
                                 name: heiData[i].A,
                                 username: heiData[i].B,

@@ -178,7 +178,7 @@ export default {
 
                                 newEmployee.set("discipline", employeesData[i].I);
 
-                                await newEmployee.save().then(() => {
+                                newEmployee.save().then(() => {
                                     const params = {
                                         name: this.employeeName,
                                         username: employeesData[i].D,
@@ -203,7 +203,7 @@ export default {
 
                     }
                     if (flag === 0) {
-                        await newEmployee.save().then(() => {
+                        newEmployee.save().then(() => {
                             const params = {
                                 name: this.employeeName,
                                 username: employeesData[i].D,
