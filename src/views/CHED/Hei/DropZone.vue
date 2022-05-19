@@ -165,7 +165,9 @@ export default {
 
                     const queryRes = await queryHEIType.first();
                     console.log(queryRes)
+                    var flag = 0;
                     if (queryRes === undefined) {
+                        flag = 1;
                         const heiType = Parse.Object.extend("HEI_Types");
                         const newHeiType = new heiType();
                         try {
@@ -195,6 +197,9 @@ export default {
                         newHEI.set("hei_type", queryRes.id);
                         newHEI.set("access_type", this.hei_acc_id);
                         newHEI.set("hasTransactions", false);
+                        
+                    }
+                    if(flag===0){
                         await newHEI.save().then(() => {
                             const params = {
                                 name: heiData[i].A,

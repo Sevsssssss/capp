@@ -163,8 +163,9 @@ export default {
                     const designationQuery = new Parse.Query(designations);
                     designationQuery.equalTo("name", employeesData[i].H);
                     const designationResult = await designationQuery.first();
-
+                    var flag = 0;
                     if (designationResult === undefined) {
+                        flag = 1;
                         const desig = Parse.Object.extend("Designations");
                         const newDesignation = new desig();
                         try {
@@ -200,6 +201,8 @@ export default {
 
                         newEmployee.set("discipline", employeesData[i].I);
 
+                    }
+                    if (flag === 0) {
                         await newEmployee.save().then(() => {
                             const params = {
                                 name: this.employeeName,
