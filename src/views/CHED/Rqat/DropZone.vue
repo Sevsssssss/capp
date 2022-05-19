@@ -152,6 +152,25 @@ export default {
                     const accQuerResultRQAT = await queryACCR.first();
 
                     this.rqat_acc_id = accQuerResultRQAT.id;
+                    var months = [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December",
+                    ];
+                    var today = new Date();
+                    var month = today.getMonth();
+                    var day = today.getDate();
+                    var year = today.getFullYear();
+                    var currentDay = months[month] + " " + day + ", " + year;
 
                     const newRQAT = new Parse.User();
                     var rqatName = {
@@ -159,12 +178,21 @@ export default {
                         firstname: rqatData[i].B,
                         middleinitial: rqatData[i].C,
                     };
+                    const query = new Parse.Query(Parse.User);
+                    query.equalTo("hei_name", rqatData[i].F);
+                    const querResult = await query.first();
+                    var heiAffil = {
+                        hei: querResult.id,
+                        affilrecordDate: currentDay,
+                        affilendDate: "current",
+                    }
+
                     var password = Math.random().toString(36).slice(-12);
                     newRQAT.set("name", rqatName);
                     newRQAT.set("username", rqatData[i].D);
                     newRQAT.set("password", "password");
                     newRQAT.set("contact_num", "0" + rqatData[i].E.toString());
-                    newRQAT.set("hei_affil", rqatData[i].F);
+                    newRQAT.set("hei_affil", heiAffil);
                     newRQAT.set("email", rqatData[i].G);
                     newRQAT.set("access_type", this.rqat_acc_id);
                     newRQAT.set("hasTransactions", false);
