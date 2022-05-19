@@ -188,13 +188,13 @@ export default {
                                         approved: true,
                                     };
                                     Parse.Cloud.run("sendEmailNotification", params);
-                                    toast(this.counter + " HEI Accounts Added!", {
+                                    toast(this.counter + " EMPLOYEE Accounts Added!", {
                                         type: TYPE.SUCCESS,
                                         timeout: 3000,
                                         position: POSITION.TOP_RIGHT,
                                     });
                                     this.$refs.Spinner.hide();
-                                    this.$router.push("/hei");
+                                    this.$router.push("/employees");
                                     this.pending = false;
                                 });
                             })
@@ -208,28 +208,27 @@ export default {
                         newEmployee.set("access_type", accesstypeResult[0].id);
 
                         newEmployee.set("discipline", employeesData[i].I);
-
-                    }
-                    if (flag === 0) {
-                        newEmployee.save().then(() => {
-                            const params = {
-                                name: this.employeeName,
-                                username: employeesData[i].D,
-                                email: employeesData[i].E,
-                                password: password,
-                                type: "sendCredentials",
-                                approved: true,
-                            };
-                            Parse.Cloud.run("sendEmailNotification", params);
-                            toast(this.counter + " HEI Accounts Added!", {
-                                type: TYPE.SUCCESS,
-                                timeout: 3000,
-                                position: POSITION.TOP_RIGHT,
+                        if (flag === 0) {
+                            newEmployee.save().then(() => {
+                                const params = {
+                                    name: this.employeeName,
+                                    username: employeesData[i].D,
+                                    email: employeesData[i].E,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
+                                toast(this.counter + " EMPLOYEE Accounts Added!", {
+                                    type: TYPE.SUCCESS,
+                                    timeout: 3000,
+                                    position: POSITION.TOP_RIGHT,
+                                });
+                                this.$refs.Spinner.hide();
+                                this.$router.push("/employees");
+                                this.pending = false;
                             });
-                            this.$refs.Spinner.hide();
-                            this.$router.push("/hei");
-                            this.pending = false;
-                        });
+                        }
                     }
 
                 } catch (error) {
