@@ -519,9 +519,9 @@ export default {
                 const Designation = Parse.Object.extend("Designations");
                 const queryDes = new Parse.Query(Designation);
                 queryDes.equalTo("objectId", emp.get("designation"));
-
+                console.log(emp)
                 const desigResult = await queryDes.first();
-
+                console.log(desigResult)
                 employees.push({
                     id: emp.id,
                     Name: emp.get("name")["lastname"] +
