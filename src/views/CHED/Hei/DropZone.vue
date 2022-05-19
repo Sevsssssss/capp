@@ -158,7 +158,7 @@ export default {
                     newHEI.set("address", heiData[i].D);
                     newHEI.set("number", heiData[i].E.toString());
                     newHEI.set("inst_code", heiData[i].F.toString());
-                    newHEI.set("hei_type", heiData[i].G.toUpperCase());
+                    
 
                     const heiType = Parse.Object.extend("HEI_Types");
                     const queryHEIType = new Parse.Query(heiType);
@@ -177,6 +177,8 @@ export default {
                         } catch (error) {
                             console.log(error.message);
                         }
+                    }else{
+                        newHEI.set("hei_type", queryRes.id);
                     }
 
                     newHEI.set("access_type", this.hei_acc_id);
