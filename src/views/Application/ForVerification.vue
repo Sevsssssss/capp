@@ -121,6 +121,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -131,6 +132,7 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
@@ -141,6 +143,9 @@ const toast = useToast();
 export default {
     props: ["appID"],
     name: "ForApproval",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -241,6 +246,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for compliance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -264,6 +272,12 @@ export default {
                 alert("Error" + error.message);
                 // console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async submitEvaluation() {
             try {
@@ -298,6 +312,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for issuance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -321,6 +338,12 @@ export default {
                 alert("Error" + error.message);
                 // console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         modal() {
             var has_error = 0;

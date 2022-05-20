@@ -97,6 +97,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -111,12 +112,16 @@ import {
     required
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 
 const toast = useToast();
 
 export default {
     props: ["appID"],
     name: "ForApproval",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -186,6 +191,7 @@ export default {
             return this.showModal2;
         },
         async submitChanges() {
+            
             try {
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
@@ -217,6 +223,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+                        
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for evalutaion", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -241,8 +250,15 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async submitRevision() {
+            
             try {
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
@@ -273,6 +289,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for revision", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -296,8 +315,15 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async submitApproval() {
+            
             try {
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
@@ -329,6 +355,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been accepted and moved for payment", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -348,6 +377,12 @@ export default {
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    2000
+                );
 
             } catch (error) {
                 alert("Error" + error.message);

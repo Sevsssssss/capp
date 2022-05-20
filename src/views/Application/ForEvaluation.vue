@@ -117,6 +117,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -127,6 +128,7 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -136,7 +138,8 @@ export default {
     props: ["appID"],
     name: "ForEvaluation",
     components: {
-        Datepicker
+        Datepicker,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -200,6 +203,9 @@ export default {
                         approved: true,
                     };
                     Parse.Cloud.run("sendStatusUpdate", params);
+
+                    this.$refs.Spinner.show();
+
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
                             type: TYPE.INFO,
                             timeout: 2000,
@@ -222,7 +228,12 @@ export default {
             } catch (error) {
                 alert(error.message)
             }
-
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         showToastRqat() {
             toast("Please assign the RQAT for the evaluation ", {
@@ -252,6 +263,9 @@ export default {
                         approved: true,
                     };
                     Parse.Cloud.run("sendStatusUpdate", params);
+
+                    this.$refs.Spinner.show();
+
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
                             type: TYPE.INFO,
                             timeout: 2000,
@@ -274,6 +288,12 @@ export default {
             } catch (error) {
                 alert(error.message)
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
 
         },
         showToastSched() {

@@ -99,6 +99,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -113,12 +114,16 @@ import {
     required
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 
 const toast = useToast();
 
 export default {
     props: ["appID"],
     name: "ForApproval",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -213,6 +218,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for evalutaion", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -237,6 +245,12 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
         async submitRevision() {
             try {
@@ -270,6 +284,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for revision", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -293,6 +310,12 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
 
         modal() {
