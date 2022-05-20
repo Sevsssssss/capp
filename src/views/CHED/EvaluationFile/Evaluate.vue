@@ -394,7 +394,7 @@ export default {
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
-                application.set("complianceDueDate", complianceDueDate);
+                application.set("complianceDueDate", new Date(complianceDueDate));
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);

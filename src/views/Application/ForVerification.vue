@@ -201,63 +201,6 @@ export default {
         validate2() {
             return this.showModal2;
         },
-        async submitChanges() {
-            try {
-                const applications = Parse.Object.extend("Applications");
-                const query = new Parse.Query(applications);
-                query.equalTo("objectId", this.appID);
-
-                const application = await query.first();
-
-                var requirements = [];
-
-                for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
-                        status: this.statusShow[i],
-                        comment: this.comment[i],
-                    });
-                }
-                application.set("requirements", requirements);
-                application.set("applicationStatus", "For Evaluation");
-                application.set("selectedSupervisor", this.selectedSupervisor);
-
-                application
-                    .save()
-                    .then((application) => {
-                        const params = {
-                            email: application.get("email"),
-                            status: "Your Application has been moved for evaluation",
-                            type: "sendStatusUpdate",
-                            approved: true,
-                        };
-                        Parse.Cloud.run("sendStatusUpdate", params);
-                        toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-                                type: TYPE.INFO,
-                                timeout: 2000,
-                                position: POSITION.TOP_RIGHT,
-                                hideProgressBar: false,
-                                closeButton: false,
-
-                            }),
-                            console.log("Object Updated: " + application.id);
-                    })
-
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
-                    })
-                }, 2000);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-
-            } catch (error) {
-                alert("Error" + error.message);
-                console.log(error);
-            }
-        },
         async submitRevision() {
             try {
                 const applications = Parse.Object.extend("Applications");

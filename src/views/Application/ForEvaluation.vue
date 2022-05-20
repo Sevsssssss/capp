@@ -56,7 +56,7 @@
                 Schedule Evaluation Date
             </label>
         </div>
-        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker() && dateOfEval != null">
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker() && dateOfEval != null" class="pr-5">
             <router-link :to="{
             name: 'EvaluateView',
                 params: {
