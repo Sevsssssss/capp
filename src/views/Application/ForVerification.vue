@@ -1,6 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{tables}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">

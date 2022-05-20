@@ -4,7 +4,6 @@
 </div> -->
 <div>
     <div class="p-3">
-        {{checkedAccessTypes}}
         <!-- Table -->
         <div class="overflow-x-auto shadow-lg rounded-lg m-2">
             <!-- Table header -->

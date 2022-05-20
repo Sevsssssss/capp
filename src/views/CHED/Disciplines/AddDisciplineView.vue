@@ -2,7 +2,6 @@
 <!--Header-->
 <div class="m-3">
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between">
-        {{majorDisciplines}}
         <div class="flex flex-row mt-5 justify-between items-center">
             <div class="font-semibold">MAJOR DISCIPLINES</div>
             <div :class="{ hide: majorDisciplines.length > 0 }" class="">
