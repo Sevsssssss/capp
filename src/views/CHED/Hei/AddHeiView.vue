@@ -1,15 +1,6 @@
 <template>
-<div class="main-page flex justify-center items-center p-5">
-    <div class="
-        card
-        over
-        p-4
-        w-fit
-        bg-white
-        rounded-lg
-        border border-gray-200
-        shadow-md
-      ">
+<div class="overflow-x-auto flex justify-center items-center p-5">
+    <div class="p-4 w-fit bg-white rounded-lg border border-gray-100 shadow-lg">
         <!-- {{hei_types}} -->
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
@@ -19,7 +10,7 @@
                 </svg>
                 <span class="text-2xl font-semibold text-grey-100">ADD HEI ACCOUNT</span>
             </div>
-            <hr class="border border-light-400 w-full">
+            <hr class="border w-full" />
             <div class="flex">
                 <div class="form-control w-full pr-4">
                     <label class="label">
@@ -131,39 +122,33 @@
             </div>
 
             <hr class="border border-light-400 w-full my-4" />
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">Institutional Code</span>
-                    </label>
-                    <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" v-model="v$.inst_code.$model" />
-                    <!-- <label class="label">
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Institutional Code</span>
+                </label>
+                <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" v-model="v$.inst_code.$model" />
+                <!-- <label class="label">
                             <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
                                 Institutional Code is Required</span>
                         </label> -->
-                </div>
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">HEI Type:</span>
-                    </label>
-                    <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
-                            <div class="">{{ heiType.title }}</div>
-                        </option>
-                    </select>
-                </div>
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">HEI Type:</span>
+                </label>
+                <select class="select select-bordered w-full font-normal" v-model="hei_type">
+                    <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                        <div class="">{{ heiType.title }}</div>
+                    </option>
+                </select>
+            </div>
 
             <div class="flex justify-end pt-4 space-x-4">
                 <button class="btn btn-md btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="
-              border-none
-              btn btn-md
-              submit
-              bg-brand-darkblue
-              hover:bg-blue-800
-            " @click="modal(), scrollToTop()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
                     Add HEI
                 </button>
             </div>
@@ -177,21 +162,8 @@
                 Are you sure you want to add this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-brand-darkblue
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            " @click="addHEI(), scrollToTop()">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addHEI(), scrollToTop()">
                     Continue
                 </label>
             </div>
@@ -307,7 +279,6 @@ export default {
 
     methods: {
         handleProvince(e) {
-
             this.regionName = e.target.selectedOptions[0].text;
             this.regionNo = e.target.value;
             provinces(e.target.value).then((response) => {

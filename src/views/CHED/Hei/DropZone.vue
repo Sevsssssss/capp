@@ -6,11 +6,15 @@
         <label for="dropzoneFile">Select File</label>
         <input type="file" id="dropzoneFile" class="dropzoneFile" />
     </div>
-    <span class="mt-5 font-semibold">File:
-        <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
-    <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue" type="submit">
-        Submit
-    </button>
+    <div class="flex flex-col items-center">
+        <span class="mt-5 font-semibold">File:
+            <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
+        <div class="w-fit">
+            <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue" type="submit">
+                Submit
+            </button>
+        </div>
+    </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
