@@ -100,22 +100,22 @@
             
             <div class="">
                 <label for="password" class="label label-text">Current Password</label>
-                <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" v-model="currPass" required>
             </div>
             <hr>
             <div class="">
                 <label for="password" class="label label-text">New Password</label>
-                <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPass" required>
             </div>
             <div class="">
                 <label for="confirm_password" class="label label-text">Confirm password</label>
-                <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPassConf" required>
             </div>
             <div class="flex justify-end pt-8 space-x-4">
                 <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                     Cancel
                 </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="changePassword()">
                     Update Password
                 </button>
             </div>
@@ -181,6 +181,9 @@ export default {
             educSupId: "",
             access_type: "",
             discipline: "",
+            currPass: "",
+            newPass: "",
+            newPassConf: "",
         };
     },
     validations() {
@@ -281,6 +284,26 @@ export default {
                 });
                 console.log(error.message);
             }
+        },
+        async changePassword() {
+            const currentUser = Parse.User.current();
+            console.log(currentUser.get("username"));
+            try{
+                var testLogin = await Parse.User.logIn(currentUser.get("username"), this.currPass);
+                console.log(testLogin)
+                console.log("Current Password is Correct");
+                if(this.newPass == this.newPassConf){
+                    currentUser.setPassword(this.newPass)
+                    console.log("Password Updated")
+                    currentUser.save();
+                }
+                else {
+                    console.log("New Password and Confirm New Password doesn't match")
+                }
+            } catch(error) {
+                console.log("Current Password is wrong");
+            }
+           
         },
         modal() {
             var has_error = 0;

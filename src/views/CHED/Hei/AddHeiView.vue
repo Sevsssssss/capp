@@ -114,7 +114,7 @@
                 <label class="label">
                     <span class="label-text">Street:</span>
                 </label>
-                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.address) }" class="input input-bordered w-full" v-model="v$.address.$model" />
+                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.street) }" class="input input-bordered w-full" v-model="v$.street.$model" />
                 <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
                         Address is Required</span>
@@ -225,7 +225,7 @@ export default {
             hei_name: "",
             username: "",
             email: "",
-            address: "",
+            address: {},
             number: "",
             inst_code: "",
             hei_type: "None",
@@ -247,6 +247,7 @@ export default {
             province: null,
             city: null,
             barangay: null,
+            street: null,
         };
     },
     validations() {
@@ -261,7 +262,7 @@ export default {
                 required,
                 email,
             },
-            address: {
+            street: {
                 required,
             },
             number: {
@@ -288,6 +289,7 @@ export default {
         },
         handleCity(e) {
             this.province = e.target.selectedOptions[0].text;
+            console.log(this.province);
             cities(e.target.value).then((response) => {
                 this.cities = response;
             });
@@ -337,6 +339,13 @@ export default {
                 ////////////////////////////////////
                 console.log(password); /////////////
                 ////////////////////////////////////
+                this.address = {
+                    regionName: this.regionName,
+                    province: this.province,
+                    city: this.city,
+                    barangay: this.barangay,
+                    street: this.street,
+                }
 
                 const newHEI = new Parse.User();
                 newHEI.set("hei_name", this.hei_name);

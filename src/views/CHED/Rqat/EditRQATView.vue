@@ -131,23 +131,18 @@
                 </div>
 
                 <div class="">
-                    <label for="password" class="label label-text">Current Password</label>
-                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
-                </div>
-                <hr>
-                <div class="">
                     <label for="password" class="label label-text">New Password</label>
-                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPass" required>
                 </div>
                 <div class="">
                     <label for="confirm_password" class="label label-text">Confirm password</label>
-                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPassConf" required>
                 </div>
                 <div class="flex justify-end pt-8 space-x-4">
                     <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                         Cancel
                     </button>
-                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="changePassword()">
                         Update Password
                     </button>
                 </div>
@@ -228,7 +223,9 @@ export default {
                 affilrecordDate: "",
                 affilendDate: "",
             },
-            past_affil: []
+            past_affil: [],
+            newPass: "",
+            newPassConf: "",
         };
     },
     validations() {
@@ -275,6 +272,24 @@ export default {
 
         validate() {
             return this.showModal1;
+        },
+        async changePassword() {
+            const rqat = new Parse.Query(Parse.User);
+            rqat.equalTo("objectId", this.rqatID);
+            const selectedRQAT = await rqat.first({
+                useMasterKey: true,
+            });
+        
+            if(this.newPass == this.newPassConf){
+                selectedRQAT.setPassword(this.newPass)
+                console.log("Password Updated")
+                selectedRQAT.save( null, {
+                        useMasterKey: true,
+                    });
+            }
+            else {
+                console.log("New Password and Confirm New Password doesn't match")
+            }  
         },
 
         async updateRQAT() {
