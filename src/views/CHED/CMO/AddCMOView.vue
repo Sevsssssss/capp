@@ -41,7 +41,7 @@
       </div>
       <div class="form-control w-full pt-2">
         <label class="label">
-          <span class="label-text">CMO Discription*</span>
+          <span class="label-text">CMO Description*</span>
         </label>
         <!-- <textarea v-model="evalDesc" type="text" placeholder="Enter Description" class="textarea textarea-bordered w-full" required></textarea> -->
         <textarea

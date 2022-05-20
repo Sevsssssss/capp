@@ -64,6 +64,7 @@
     <div class="m-3">
 
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -74,10 +75,16 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+
 const toast = useToast();
+
 export default {
     props: ["id", "statusA"],
     name: "PaymentApplication",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -125,8 +132,10 @@ export default {
     },
     methods: {
         async submitPayment(values) {
+            
             //count how many rows have uploader
             try {
+                
                 let pay = null;
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
@@ -155,6 +164,7 @@ export default {
                     })
                     .then(
                         (application) => {
+                            this.$refs.Spinner.show();
                             toast("Application Updated: " + application.id, {
                                     type: TYPE.SUCCESS,
                                     timeout: 3000,
@@ -186,6 +196,12 @@ export default {
                 });
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
     },
 

@@ -242,7 +242,7 @@ export default {
             window.scrollTo(0, 0);
         },
         submitApplication(values) {
-            this.$refs.Spinner.show();
+            
             var has_error = 0;
 
             if (this.pointPerson == "" ||
@@ -259,6 +259,7 @@ export default {
                 has_error = 1;
             }
             if (has_error < 1) {
+                this.$refs.Spinner.show();
                 try {
                     var reqFiles = [];
                     let requirement = null;

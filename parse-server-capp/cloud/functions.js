@@ -1,3 +1,5 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
+
 Parse.Cloud.define('hello', req => {
   req.log.info(req);
   return 'Hi';
@@ -24,6 +26,9 @@ async function sendEmail(params = {}) {
       user: 'chedcapp@gmail.com',
       pass: 'Ched123#',
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
   if (params.type == "sendStatusUpdate") {
     // send mail with defined transport object

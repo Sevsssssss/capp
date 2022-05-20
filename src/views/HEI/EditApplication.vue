@@ -64,6 +64,7 @@
             </div>
         </form>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -74,10 +75,14 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 const toast = useToast();
 export default {
     props: ["id"],
     name: "EditHEIapplication",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -165,6 +170,8 @@ export default {
                     })
                     .then(
                         (application) => {
+                            this.$refs.Spinner.show();
+
                             toast("Application Updated: " + application.id, {
                                     type: TYPE.SUCCESS,
                                     timeout: 3000,
@@ -196,6 +203,12 @@ export default {
                 });
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
     },
 
