@@ -193,9 +193,9 @@ export default {
                                     //     timeout: 3000,
                                     //     position: POSITION.TOP_RIGHT,
                                     // });
-                                    this.$refs.Spinner.hide();
-                                    this.$router.push("/employees");
-                                    this.pending = false;
+                                    // this.$refs.Spinner.hide();
+                                    // this.$router.push("/employees");
+                                    // this.pending = false;
                                 });
                             })
 
@@ -224,9 +224,9 @@ export default {
                                 //     timeout: 3000,
                                 //     position: POSITION.TOP_RIGHT,
                                 // });
-                                this.$refs.Spinner.hide();
-                                this.$router.push("/employees");
-                                this.pending = false;
+                                // this.$refs.Spinner.hide();
+                                // this.$router.push("/employees");
+                                // this.pending = false;
                             });
                         }
                     }
@@ -241,6 +241,9 @@ export default {
                 timeout: 3000,
                 position: POSITION.TOP_RIGHT,
             });
+            this.$refs.Spinner.hide();
+            this.$router.push("/employees");
+            this.pending = false;
         },
     },
 };

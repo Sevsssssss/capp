@@ -187,14 +187,14 @@ export default {
                                         approved: true,
                                     };
                                     Parse.Cloud.run("sendEmailNotification", params);
-                                    toast(this.counter + " HEI Accounts Added!", {
-                                        type: TYPE.SUCCESS,
-                                        timeout: 3000,
-                                        position: POSITION.TOP_RIGHT,
-                                    });
-                                    this.$refs.Spinner.hide();
-                                    this.$router.push("/hei");
-                                    this.pending = false;
+                                    // toast(this.counter + " HEI Accounts Added!", {
+                                    //     type: TYPE.SUCCESS,
+                                    //     timeout: 3000,
+                                    //     position: POSITION.TOP_RIGHT,
+                                    // });
+                                    // this.$refs.Spinner.hide();
+                                    // this.$router.push("/hei");
+                                    // this.pending = false;
                                 })
                             })
 
@@ -216,14 +216,14 @@ export default {
                                     approved: true,
                                 };
                                 Parse.Cloud.run("sendEmailNotification", params);
-                                toast(this.counter + " HEI Accounts Added!", {
-                                    type: TYPE.SUCCESS,
-                                    timeout: 3000,
-                                    position: POSITION.TOP_RIGHT,
-                                });
-                                this.$refs.Spinner.hide();
-                                this.$router.push("/hei");
-                                this.pending = false;
+                                // toast(this.counter + " HEI Accounts Added!", {
+                                //     type: TYPE.SUCCESS,
+                                //     timeout: 3000,
+                                //     position: POSITION.TOP_RIGHT,
+                                // });
+                                // this.$refs.Spinner.hide();
+                                // this.$router.push("/hei");
+                                // this.pending = false;
                             })
                         }
                     }
@@ -234,7 +234,14 @@ export default {
                 }
 
             }
-
+            toast(this.counter + " HEI Accounts Added!", {
+                type: TYPE.SUCCESS,
+                timeout: 3000,
+                position: POSITION.TOP_RIGHT,
+            });
+            this.$refs.Spinner.hide();
+            this.$router.push("/hei");
+            this.pending = false;
         },
     },
 };
