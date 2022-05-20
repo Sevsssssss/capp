@@ -18,115 +18,115 @@ Parse.masterKey = "master"
 
 // RUN THIS CODE TO HAVE SUPER ADMIN ACCESS TYPE (Edited - Jeff)
 
-const accessType = Parse.Object.extend("AccessTypes");
-const newAccessType = new accessType();
-try {
-    newAccessType.save({
-        name: "SUPER ADMIN",
-        hometype: '/home',
-        privileges: [
-            "/application",
-            "/hei",
-            "/hei/upload",
-            "/employees",
-            "/rqat-assignment",
-            "/evaluationins",
-            "/evaluationins/add",
-            "/app-settings/view",
-            "/app-settings",
-            "/designations",
-            "/disciplines",
-            "/access-settings",
-            "/heiTypes",
-            "/app-settings/add",
-            "/reporting",
-            "/evaluationins/view",
-            "/rqat/add",
-            "/employees/add",
-            "/rqat",
-            "/application:id",
-            "/hei/add",
-            "/hei/edit",
-            "/rqat/edit",
-            "/employee/edit",
-            "/heiTypes",
-            "/cmo",
-            "/cmo/add",
-            "/cmo/edit",
-            "/cmo/view",
-            "/ched/account",
-            "/programs",
-            "/ched/account"
-        ],
-    }).then((accesstype) => {
-        const Designations = Parse.Object.extend("Designations");
-        const newDesignation = new Designations();
-      //  var password = Math.random().toString(36).slice(-12);
-        newDesignation.save({
-            name: "SUPER ADMIN",
-        }).then((designation) => {
-            const user = new Parse.User();
-            var employeeName = {
-                lastname: "Ched",
-                firstname: "Region V",
-                middleinitial: "N/A",
-            };
-            user.set("name", employeeName);
-            user.set("contact_num", "09123456789");
-            user.set("username", "CHEDROV");
-            user.set("password", "password");
-            user.set("email", "chedcapp@gmail.com");
-            user.set("access_type", accesstype.id);
-            user.set("designation", designation.id);
-            try {
-                user.save().then(() => {
-                    const params = {
-                        name: employeeName,
-                        username: "CHEDROV",
-                        email: "chedcapp@gmail.com",
-                        password: "password",
-                        approved: true,
-                    };
-                    Parse.Cloud.run("sendEmailNotification", params);
-                })
-                // Hooray! Let them use the app now.
-            } catch (error) {
-                // Show the error message somewhere and let the user try again.
-                alert("Error: " + error.code + " " + error.message);
-            }
-        }, (error) => {
-            console.log('error: ' + error.message)
-        })
+// const accessType = Parse.Object.extend("AccessTypes");
+// const newAccessType = new accessType();
+// try {
+//     newAccessType.save({
+//         name: "SUPER ADMIN",
+//         hometype: '/home',
+//         privileges: [
+//             "/application",
+//             "/hei",
+//             "/hei/upload",
+//             "/employees",
+//             "/rqat-assignment",
+//             "/evaluationins",
+//             "/evaluationins/add",
+//             "/app-settings/view",
+//             "/app-settings",
+//             "/designations",
+//             "/disciplines",
+//             "/access-settings",
+//             "/heiTypes",
+//             "/app-settings/add",
+//             "/reporting",
+//             "/evaluationins/view",
+//             "/rqat/add",
+//             "/employees/add",
+//             "/rqat",
+//             "/application:id",
+//             "/hei/add",
+//             "/hei/edit",
+//             "/rqat/edit",
+//             "/employee/edit",
+//             "/heiTypes",
+//             "/cmo",
+//             "/cmo/add",
+//             "/cmo/edit",
+//             "/cmo/view",
+//             "/ched/account",
+//             "/programs",
+//             "/ched/account"
+//         ],
+//     }).then((accesstype) => {
+//         const Designations = Parse.Object.extend("Designations");
+//         const newDesignation = new Designations();
+//       //  var password = Math.random().toString(36).slice(-12);
+//         newDesignation.save({
+//             name: "SUPER ADMIN",
+//         }).then((designation) => {
+//             const user = new Parse.User();
+//             var employeeName = {
+//                 lastname: "Ched",
+//                 firstname: "Region V",
+//                 middleinitial: "N/A",
+//             };
+//             user.set("name", employeeName);
+//             user.set("contact_num", "09123456789");
+//             user.set("username", "CHEDROV");
+//             user.set("password", "password");
+//             user.set("email", "chedcapp@gmail.com");
+//             user.set("access_type", accesstype.id);
+//             user.set("designation", designation.id);
+//             try {
+//                 user.save().then(() => {
+//                     const params = {
+//                         name: employeeName,
+//                         username: "CHEDROV",
+//                         email: "chedcapp@gmail.com",
+//                         password: "password",
+//                         approved: true,
+//                     };
+//                     Parse.Cloud.run("sendEmailNotification", params);
+//                 })
+//                 // Hooray! Let them use the app now.
+//             } catch (error) {
+//                 // Show the error message somewhere and let the user try again.
+//                 alert("Error: " + error.code + " " + error.message);
+//             }
+//         }, (error) => {
+//             console.log('error: ' + error.message)
+//         })
 
-    }, (error) => {
-        console.log('error: ' + error.message);
-    });
-} catch (error) {
-    alert("Error: " + error.code + " " + error.message);
-}
+//     }, (error) => {
+//         console.log('error: ' + error.message);
+//     });
+// } catch (error) {
+//     alert("Error: " + error.code + " " + error.message);
+// }
 
-const accessType1 = Parse.Object.extend("AccessTypes");
-const newAccessType1 = new accessType1();
-try {
-    newAccessType1.save({
-        name: "HEI",
-        hometype: "/hei/home",
-        privileges: [ "/hei/apply", "/hei/application", "/hei/application/:id", "/hei/account", "/hei/notif"],
-    });
-} catch (error) {
-    alert("Error: " + error.code + " " + error.message);
-}
-const accessType2 = Parse.Object.extend("AccessTypes");
-const newAccessType2 = new accessType2();
-try {
-    newAccessType2.save({
-        name: "RQAT",
-        hometype: "/rqat/assignments",
-        privileges: ["/rqat/assignments", "/rqat/history", "/rqat/account", "/rqat/notif" ],
-    });
-} catch (error) {
-    alert("Error: " + error.code + " " + error.message);
-}
+// const accessType1 = Parse.Object.extend("AccessTypes");
+// const newAccessType1 = new accessType1();
+// try {
+//     newAccessType1.save({
+//         name: "HEI",
+//         hometype: "/hei/home",
+//         privileges: [ "/hei/apply", "/hei/application", "/hei/application/:id", "/hei/account", "/hei/notif"],
+//     });
+// } catch (error) {
+//     alert("Error: " + error.code + " " + error.message);
+// }
+// const accessType2 = Parse.Object.extend("AccessTypes");
+// const newAccessType2 = new accessType2();
+// try {
+//     newAccessType2.save({
+//         name: "RQAT",
+//         hometype: "/rqat/assignments",
+//         privileges: ["/rqat/assignments", "/rqat/history", "/rqat/account", "/rqat/notif" ],
+//     });
+// } catch (error) {
+//     alert("Error: " + error.code + " " + error.message);
+// }
 
 export default {};
 </script>

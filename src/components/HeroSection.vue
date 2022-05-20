@@ -144,7 +144,7 @@ export default {
             showModal: false,
             showErr: false,
             showErr1: false,
-            title: "CHED APPLICATION MANAGEMENT SYSTEM",
+            title: "CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM",
             Info: "Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur!",
             username: "",
             password: "",

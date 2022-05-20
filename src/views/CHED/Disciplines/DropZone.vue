@@ -166,7 +166,7 @@ console.log(disciplinesData.length)
                             const newDiscipline = new Disciplines();
                             try {
                                 newDiscipline.save({
-                                    MajDiscCode: disciplinesData[i].D,
+                                    MajDiscCode: disciplinesData[i].D.toString(),
                                     MajorDiscipline: disciplinesData[i].C.toUpperCase(),
                                     specificDiscipline: specificDisc
                                 })

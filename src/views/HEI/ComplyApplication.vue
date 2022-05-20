@@ -388,16 +388,16 @@ export default {
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
 
-            this.compInitDate = new Date(application.get("complianceDueDate"));
+            // this.compInitDate = new Date(application.get("complianceDueDate"));
 
           
 
             var compDateCalc = this.compInitDate;
 
-            if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
-                compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
+            // if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
+            //     compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
              
-            }
+            // }
 
             var compMonth = compDateCalc.getMonth();
             var compDay = compDateCalc.getDate();
