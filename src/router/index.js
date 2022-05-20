@@ -75,6 +75,11 @@ import rqatAccountDetails from '../views/RQAT/AccountDetails.vue';
 import appNotifView from '../views/CHED/AppNotification/AppNotifView.vue';
 import appNotifItem from '../views/CHED/AppNotification/AppNotifItem.vue';
 
+import appHEINotifView from '../views/HEI/AppNotification/AppNotifView.vue';
+import appHEINotifItem from '../views/HEI/AppNotification/AppNotifItem.vue';
+
+import appRQATNotifView from '../views/RQAT/AppNotification/AppNotifView.vue';
+import appRQATNotifItem from '../views/RQAT/AppNotification/AppNotifItem.vue';
 
 import Parse from 'parse';
 
@@ -671,6 +676,29 @@ const routes = [
           ]
         }
       },
+      {
+        path: "/hei/notif",
+        name: "appHEINotifView",
+        component: appHEINotifView,
+        meta: {
+          breadcrumb: [
+            { name: 'Inbox' },
+          ]
+        }
+      },
+      {
+        path: "/hei/notif/:id",
+        name: "appHEINotifItem",
+        component: appHEINotifItem,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Inbox', link: '/notif' },
+            { name: 'Item' }
+          ]
+        }
+      },
+      
     ]
   },
   {
@@ -718,6 +746,28 @@ const routes = [
           breadcrumb: [
             { name: 'Account Details', link: "/rqat/applications" },
             { name: 'View' }
+          ]
+        }
+      },
+      {
+        path: "/rqat/notif",
+        name: "appRQATNotifView",
+        component: appRQATNotifView,
+        meta: {
+          breadcrumb: [
+            { name: 'Inbox' },
+          ]
+        }
+      },
+      {
+        path: "/rqat/notif/:id",
+        name: "appRQATNotifItem",
+        component: appRQATNotifItem,
+        props: true,
+        meta: {
+          breadcrumb: [
+            { name: 'Inbox', link: '/notif' },
+            { name: 'Item' }
           ]
         }
       },

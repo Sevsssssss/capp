@@ -17,7 +17,7 @@
     <div v-for="(appType, index) in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="p-2  flex justify-between items-center">
             <div class="text-lg font-semibold"> {{appType.applicationType}} </div>
-            <button class="btn-table" @click="exportToPdfTables(index)">Export PDF</button>
+            <button class="btn-table" @click="exportToPdfTables(appType.applicationType, index)">Export PDF</button>
         </div>
         <table class=" w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -115,7 +115,7 @@ export default {
         };
     },
     methods: {
-        exportToPdfTables(index) {
+        exportToPdfTables(appType,index) {
             const columns = [{
                     title: "PROGRAMS",
                     dataKey: "program",
@@ -131,7 +131,7 @@ export default {
                 format: "letter",
             });
             // text is placed using x, y coordinates
-            doc.setFontSize(16).text("Application", 0.5, 1.0);
+            doc.setFontSize(16).text(appType.toString(), 0.5, 1.0);
             // create a line under heading
             doc.setLineWidth(0.01).line(0.5, 1.1, 8.0, 1.1);
             // Using autoTable plugin

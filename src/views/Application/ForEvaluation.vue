@@ -110,7 +110,7 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT EVALUATION DATE:</div>
             <Datepicker v-model="date" class="my-2"></Datepicker>
-            
+
             <div class="modal-action">
                 <label for="sched-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label @click="date != null ? schedEval() : showToastSched()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Schedule</label>
@@ -176,7 +176,7 @@ export default {
         supervisorChecker() {
             return this.supervisor;
         },
-        appTypeChecker(){
+        appTypeChecker() {
 
             return this.apptypeChecker
         },
@@ -193,6 +193,13 @@ export default {
                 application.set("dateOfEval", this.date);
 
                 application.save().then((application) => {
+                    const params = {
+                        email: application.get("email"),
+                        status: "Your Application has been assigned to RQAT Member",
+                        type: "sendStatusUpdate",
+                        approved: true,
+                    };
+                    Parse.Cloud.run("sendStatusUpdate", params);
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
                             type: TYPE.INFO,
                             timeout: 2000,
@@ -238,6 +245,13 @@ export default {
                 application1.set("dateOfEval", this.date);
 
                 application1.save().then((application1) => {
+                    const params = {
+                        email: application1.get("email"),
+                        status: "Your Application has been assigned to RQAT Member",
+                        type: "sendStatusUpdate",
+                        approved: true,
+                    };
+                    Parse.Cloud.run("sendStatusUpdate", params);
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
                             type: TYPE.INFO,
                             timeout: 2000,
@@ -387,9 +401,7 @@ export default {
             });
         }
         this.Rqat = dbRqat;
-        
 
-        
         const AppTypes = Parse.Object.extend("ApplicationTypes");
         const AppTypeQuery = new Parse.Query(AppTypes);
         AppTypeQuery.equalTo("applicationTypeName", "RENEWAL")
@@ -399,11 +411,11 @@ export default {
         console.log(appTypeQuerResult.id);
         console.log(this.type);
 
-        if (this.type == appTypeQuerResult.id){
+        if (this.type == appTypeQuerResult.id) {
             this.apptypeChecker = true;
         }
 
-        if (this.apptypeChecker == true && application.get("dateOfEval") != null){
+        if (this.apptypeChecker == true && application.get("dateOfEval") != null) {
             var months1 = [
                 "January",
                 "February",
@@ -424,8 +436,6 @@ export default {
 
             this.dateOfEval = months1[month1] + " " + day1 + ", " + year1;
         }
-        
-
 
     },
 };

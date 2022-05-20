@@ -226,6 +226,13 @@ export default {
                 application
                     .save()
                     .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been moved for evaluation",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
                         toast(this.type.toLowerCase() + " has been moved for evalutaion", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -284,6 +291,13 @@ export default {
                 application
                     .save()
                     .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been moved for compliance",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
                         toast(this.type.toLowerCase() + " has been moved for compliance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -330,11 +344,17 @@ export default {
 
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Issuance");
-                
 
                 application
                     .save()
                     .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been moved for issuance",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
                         toast(this.type.toLowerCase() + " has been moved for issuance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,

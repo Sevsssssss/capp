@@ -263,31 +263,31 @@ export default {
         modal(){
             var has_error = 0;
             var missing_comment = 0;
-            var missing_comment1 = 0;
+            // var missing_comment1 = 0;
             var missing_checkbox = 0;
             console.log(this.comment1.length)
 
             for (var i = 0; i < this.comment1.length; i++) {
                 if(this.comment1[i] == null ||  this.comment1[i] == ''){
                     missing_comment++;
-                    console.log(this.comment1[i])
+                    
                 }
             }
-            for (var x = 0; x < this.comment2.length; x++) {
-                if(this.comment2[x] == null ||  this.comment2[x] == ''){
-                    missing_comment1++;
-                    console.log(this.comment1[i])
-                }
-            }
+            // for (var x = 0; x < this.comment2.length; x++) {
+            //     if(this.comment2[x] == null ||  this.comment2[x] == ''){
+            //         missing_comment1++;
+            //         console.log(this.comment2[i])
+            //     }
+            // }
 
             for (var j = 0; j < this.statusShow.length; j++ ){
-                if(this.statusShow[j] == ""){
+                if(this.statusShow[j] == 'NotComplied' && this.comment2[j] == ''){
                     missing_checkbox++;
                 }
             }
-            console.log(missing_comment)
+          
             if (
-                this.summary == "" || this.recommendation == "" || missing_comment > 0 || missing_comment1 > 0 || this.statusShow.length == 0 || missing_checkbox > 0
+                this.summary == "" || this.recommendation == "" || missing_comment > 0 || this.statusShow.length == 0 || missing_checkbox > 0
             ) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -296,7 +296,6 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
                 has_error = 1;
-                console.log("array is empty")
             }
 
             if (has_error < 1) {
