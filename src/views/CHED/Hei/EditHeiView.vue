@@ -1,7 +1,7 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
     <div class="space-y-2">
-    <div class="
+        <div class="
         card
         over
         p-4
@@ -11,108 +11,108 @@
         border border-gray-200
         shadow-md
       ">
-        <form v-on:submit.prevent="submit" class="card-body">
-            <div class="flex flex-row space-x-4 text-left justify-start items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
-                </svg>
-                <span class="text-2xl font-semibold text-grey-100">UPDATE HEI ACCOUNT</span>
-            </div>
-            <div class="line"></div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">HEI Name</span>
-                </label>
-                <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
-                <label class="label">
-                    <span v-if="validationStatus(v$.hei_name)" :class="{ 'text-error': validationStatus(v$.hei_name) }" class="label-text-alt">
-                        HEI Name is Required</span>
-                </label>
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Username</span>
-                </label>
-                <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
-                        Username is Required</span>
-                </label>
-            </div>
-
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Email</span>
-                </label>
-                <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
-                        Email is Required</span>
-                </label>
-            </div>
-
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Address</span>
-                </label>
-                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.address) }" class="input input-bordered w-full" v-model="v$.address.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
-                        Address is Required</span>
-                </label>
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Contact Number</span>
-                </label>
-                <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.number) }" class="input input-bordered w-full" v-model="v$.number.$model" />
-                <label class="label">
-                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.number) }" v-if="validationStatus(v$.number)">
-                        Contact Number is Required</span>
-                </label>
-            </div>
-            <div class="flex flex-row justify-between">
-                <div class="form-control">
+            <form v-on:submit.prevent="submit" class="card-body">
+                <div class="flex flex-row space-x-4 text-left justify-start items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 6v-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z" />
+                    </svg>
+                    <span class="text-2xl font-semibold text-grey-100">UPDATE HEI ACCOUNT</span>
+                </div>
+                <div class="line"></div>
+                <div class="form-control w-full">
                     <label class="label">
-                        <span class="label-text">Institutional Code</span>
+                        <span class="label-text">HEI Name</span>
                     </label>
-                    <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" style="width: 170px" v-model="v$.inst_code.$model" />
+                    <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
                     <label class="label">
-                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
-                            Institutional Code is Required</span>
+                        <span v-if="validationStatus(v$.hei_name)" :class="{ 'text-error': validationStatus(v$.hei_name) }" class="label-text-alt">
+                            HEI Name is Required</span>
+                    </label>
+                </div>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Username</span>
+                    </label>
+                    <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
+                            Username is Required</span>
                     </label>
                 </div>
 
-                <div class="form-control w-full pl-4">
+                <div class="form-control w-full">
                     <label class="label">
-                        <span class="label-text">HEI Type:</span>
+                        <span class="label-text">Email</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
-                            <div class="hei-name">{{ heiType.title }}</div>
-                        </option>
-                    </select>
+                    <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
+                            Email is Required</span>
+                    </label>
                 </div>
-            </div>
-            <div class="flex justify-end pt-4 space-x-4">
-                <button class="btn btn-md btn-outline" @click="$router.go(-1)">
-                    Cancel
-                </button>
 
-                <button for="my-modal-6" id="my-modal-6" type="submit" class="
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Address</span>
+                    </label>
+                    <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.address) }" class="input input-bordered w-full" v-model="v$.address.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
+                            Address is Required</span>
+                    </label>
+                </div>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Contact Number</span>
+                    </label>
+                    <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.number) }" class="input input-bordered w-full" v-model="v$.number.$model" />
+                    <label class="label">
+                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.number) }" v-if="validationStatus(v$.number)">
+                            Contact Number is Required</span>
+                    </label>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Institutional Code</span>
+                        </label>
+                        <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" style="width: 170px" v-model="v$.inst_code.$model" />
+                        <label class="label">
+                            <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
+                                Institutional Code is Required</span>
+                        </label>
+                    </div>
+
+                    <div class="form-control w-full pl-4">
+                        <label class="label">
+                            <span class="label-text">HEI Type:</span>
+                        </label>
+                        <select class="select select-bordered w-full font-normal" v-model="hei_type">
+                            <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                                <div class="hei-name">{{ heiType.title }}</div>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end pt-4 space-x-4">
+                    <button class="btn btn-md btn-outline" @click="$router.go(-1)">
+                        Cancel
+                    </button>
+
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="
               border-none
               btn btn-md
               submit
               bg-brand-darkblue
               hover:bg-blue-800
             " @click="modal(), scrollToTop()">
-                    Update HEI
-                </button>
-            </div>
-        </form>
-    </div>
-    <div class="card over p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
+                        Update HEI
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="card over p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
             <form v-on:submit.prevent="submit" class="card-body">
                 <div class="flex flex-row space-x-4 text-left justify-start items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -134,7 +134,7 @@
                     <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                         Cancel
                     </button>
-                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="changePassword()">
+                    <button for="my-modal-8" id="my-modal-8" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal1()">
                         Update Password
                     </button>
                 </div>
@@ -166,6 +166,33 @@
             " @click="updateHEI(), scrollToTop()">
                     Continue
                 </button>
+            </div>
+        </div>
+    </div>
+    <div :class="{ 'modal-open ': validate1() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold">Update Password</div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want update this account's password?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-8" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label for="my-modal-8" type="submit" class="
+              btn btn-sm
+              bg-brand-darkblue
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            " @click="changePassword()">
+                    Continue
+                </label>
             </div>
         </div>
     </div>
@@ -214,6 +241,7 @@ export default {
         return {
             showModal: false,
             showModal1: false,
+            showModal2: false,
             savingSuccessful: false,
             addAgain: false,
             text: "Account added!",
@@ -233,7 +261,7 @@ export default {
             ],
             hei_name: "",
             hei_type: "",
-            hei_types:[],
+            hei_types: [],
             username: "",
             email: "",
             address: "",
@@ -284,17 +312,28 @@ export default {
             const selectedHEI = await heis.first({
                 useMasterKey: true,
             });
-        
-            if(this.newPass == this.newPassConf){
-                selectedHEI.setPassword(this.newPass)
-                console.log("Password Updated")
-                selectedHEI.save( null, {
-                        useMasterKey: true,
-                    });
-            }
-            else {
-                console.log("New Password and Confirm New Password doesn't match")
-            }  
+
+            selectedHEI.setPassword(this.newPass)
+
+            selectedHEI.save(null, {
+                useMasterKey: true,
+            });
+            
+            this.$refs.Spinner.show();
+
+            toast("Password Updated ", {
+                    type: TYPE.SUCCESS,
+                    timeout: 2000,
+                    position: POSITION.TOP_RIGHT,
+                }),
+                document.location.reload();
+
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async updateHEI() {
             const heis = new Parse.Query(Parse.User);
@@ -396,6 +435,9 @@ export default {
         validate() {
             return this.showModal1;
         },
+        validate1() {
+            return this.showModal2;
+        },
         showaddAgain() {
             return this.addAgain;
         },
@@ -426,6 +468,27 @@ export default {
             }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
+            }
+        },
+        modal1() {
+            if (this.newPass == "" || this.newPassConf == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+            } else {
+                if (this.newPass == this.newPassConf) {
+                    this.showModal2 = !this.showModal2;
+                } else {
+                    toast("New Password and Confirm New Password doesn't match", {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                }
             }
         },
     },
