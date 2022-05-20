@@ -1,9 +1,9 @@
 <template>
-<div class=" pl-3 breadcrumbs mt-14 w-full fixed shadow-sm">
-    <div class="text-sm breadcrumbs">
+<div class="pl-3 breadcrumbs mt-14 w-full fixed shadow-sm">
+    <div class="text-sm">
         <ul>
             <li v-for="(crumb, ci) in crumbs" :key="ci">
-                <a class="link no-underline hover:text-blue-400 " :class="{ disabled: isLast(ci) }" @click="selected(crumb)">
+                <a class="link no-underline hover:text-blue-500 " :class="{ disabled: isLast(ci) }" @click="selected(crumb)">
                     {{ crumb.title }}
                 </a>
             </li>

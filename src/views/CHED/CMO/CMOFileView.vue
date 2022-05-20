@@ -1,7 +1,6 @@
 <template>
 <div class="m-3">
-    
-    <div class="overflow-x-auto shadow-lg rounded-lg m-3 p-5">
+    <div class="p-3">
         <div class="flex flex-row justify-center items-center space-x-4">
             <div class="">
                 <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
@@ -22,22 +21,22 @@
             <div>{{Program}}</div>
         </div>
         <div class="">
-            <div class="overflow-x-auto">
-                <table class="table eval-table w-full">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-fulltext-left text-gray-500 text-left">
                     <tbody>
                         <!-- row 1 -->
-                        <div v-for="cat in categories" :key="cat">
-                            <th>{{ cat.id }}</th>
-                            <td class="font-bold">{{ cat.Category }}</td>
+                        <div class="bg-white border-b" v-for="cat in categories" :key="cat">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ cat.id }}</th>
+                            <td class="px-6 py-4 font-semibold">{{ cat.Category }}</td>
                             <div v-for="subcat in cat.subcategory" :key="subcat">
-                                <td></td>
-                                <th>{{ cat.id }}.{{ subcat.id }}</th>
-                                <td class="font-medium">{{ subcat.Subcategory }}</td>
+                                <td class="px-6 py-4"></td>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ cat.id }}.{{ subcat.id }}</th>
+                                <td class="px-6 py-4 font-semibold">{{ subcat.Subcategory }}</td>
                                 <div v-for="item in subcat.items" :key="item">
-                                    <td></td>
-                                    <td></td>
-                                    <th>{{ cat.id }}.{{ subcat.id }}.{{ item.id }}</th>
-                                    <td class="font-thin">{{ item.Item }}</td>
+                                    <td class="px-6 py-4"></td>
+                                    <td class="px-6 py-4"></td>
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ cat.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                                    <td class="px-6 py-4">{{ item.Item }}</td>
                                 </div>
                             </div>
                         </div>

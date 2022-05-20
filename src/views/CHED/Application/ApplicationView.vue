@@ -43,7 +43,7 @@
             </div>
         </div>
         <!-- Table body -->
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -59,16 +59,16 @@
                     <tr class="bg-white border-b " v-for="table in searchApplication" :key="table">
                         <td class="px-6 py-4">
                             <div class="">
-                                <div class="font-semibold text-grey-300">
+                                <div class="font-bold">
                                     {{ table.HeiName }}
                                 </div>
                                 <div class="font-normal">{{ table.address }}</div>
                             </div>
                         </td>
-                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <td scope="row" class="px-6 py-4">
                             {{ table.type }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 ">
                             {{ table.program }}
                         </td>
                         <td class="px-6 py-4">
@@ -76,36 +76,38 @@
                         </td>
                         <td class="px-6 py-4 ">
                             <!-- :class="'homeIcon.' + data.color" -->
-                            <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval">
+                            <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
+                            <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class="indicator">
-                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="indicator-item indicator-top indicator-end  badge badge-accent text-sm">assigned</span>
-                                <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
+                            <div v-else-if="table.status === 'For Evaluation'" class="indicator w-fit">
+                                <div class="">
+                                    <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="indicator-item indicator-top indicator-end right-7 badge badge-accent text-sm text-brand-white">assigned</span>
+                                </div>
+                                <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation uppercase">
 
                                     {{ table.status }}
 
                                 </div>
                             </div>
-                            <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
+                            <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
+                            <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
+                            <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
+                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
+                            <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant uppercase">
                                 {{ table.status }}
                             </div>
                         </td>
@@ -145,7 +147,7 @@
                 database.
             </div>
             <div class="table-footer flex flex-row justify-between">
-                <div class="flex flex-row pl-4 justify-center items-center">
+                <div class="flex flex-row pl-3 justify-center items-center">
                     <span class="text-sm text-gray-700">
                         Showing
                         <span class="font-semibold text-gray-900">{{
@@ -164,7 +166,7 @@
                         Entries
                     </span>
                 </div>
-                <div class="p-2 pr-4">
+                <div class="p-3 pr-3">
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
@@ -195,7 +197,7 @@ export default {
     data() {
         return {
             currentpage: 0,
-            numPerPage: 10,
+            numPerPage: 5,
             sort_type: "All",
             search: "",
             headers: [{
