@@ -291,6 +291,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -301,7 +302,7 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
-//import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
@@ -314,7 +315,7 @@ export default {
     name: "DisciplinesView",
     components: {
         // NoDataAvail,
-        // VueInstantLoadingSpinner,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -424,7 +425,7 @@ export default {
                         position: POSITION.TOP_RIGHT,
                     });
                     setTimeout(() => {
-                        window.location.reload();
+                        document.location.reload();
                     }, 3000);
                     console.log("Deleted object: " + disc.id);
                 },
@@ -525,7 +526,7 @@ export default {
             this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
-            //this.$refs.Spinner.show();
+            
             try {
                 for (var i = 0; i < this.programs.length; i++) {
                     const programs = Parse.Object.extend("Programs");
@@ -536,9 +537,10 @@ export default {
                     });
                     toast("New Program Added: " + this.programs[i].programName, {
                             type: TYPE.SUCCESS,
-                            timeout: 3000,
+                            timeout: 2000,
                             position: POSITION.TOP_RIGHT,
                         }),
+                        this.$refs.Spinner.show();
                         // window.location.reload()
                         setTimeout(() => {
                             document.location.reload();
@@ -555,6 +557,12 @@ export default {
                 });
                 console.log(error.message);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async editProgram() {
             try {
