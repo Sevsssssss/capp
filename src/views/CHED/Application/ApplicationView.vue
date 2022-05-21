@@ -123,7 +123,7 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Approval' && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="(table.status == 'For Approval' && supervisor)  && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                             <label v-if="table.status == 'For Approval' && table.selectedSupervisor == null || table.selectedSupervisor == '' " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
                             <label for="tracking" @click="id(table.appID)" class="font-medium text-blue-600 hover:underline">Track</label>
@@ -822,19 +822,22 @@ export default {
             const query = new Parse.Query(applications);
 
             //Get to view applications to specific user (Education Supervisor)
-            // const Designations = Parse.Object.extend("Designations");
-            // const queryDes = new Parse.Query(Designations);
-            // queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+            const Designations = Parse.Object.extend("Designations");
+            const queryDes = new Parse.Query(Designations);
+            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
 
-            // const desigQueryResult = await queryDes.first();
+            const desigQueryResult = await queryDes.first();
 
-            // if (Parse.User.current().get("designation") == desigQueryResult.id) {
-            //     query.equalTo("selectedSupervisor", Parse.User.current().id);
-            //     query.equalTo("applicationStatus", "For Inspection");
-            //     this.supervisor = true;
-            // }
+            console.log(Parse.User.current().get("designation"));
+            if (Parse.User.current().get("designation") == desigQueryResult.id) {
+                query.equalTo("selectedSupervisor", Parse.User.current().id);
+                // query.equalTo("applicationStatus", "For Approval");
+                this.supervisor = true;
+            }
+
+
             const querResult = await query.find();
-
+            
             //Get details of the applications
             for (var i = 0; i < querResult.length; i++) {
                 var hei_name = "";
@@ -919,6 +922,7 @@ export default {
 
                 const program = await programQuery.first();
 
+                
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -1022,14 +1026,14 @@ export default {
             ];
 
             //Query Supervisors
-            const Designations = Parse.Object.extend("Designations");
-            const queryDes = new Parse.Query(Designations);
-            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+            
+            const queryDesig = new Parse.Query(Designations);
+            queryDesig.equalTo("name", "EDUCATION SUPERVISOR");
 
-            const desigQueryResult = await queryDes.first();
+            const designationQueryResult = await queryDesig.first();
 
             const user = new Parse.Query(Parse.User);
-            user.equalTo("designation", desigQueryResult.id);
+            user.equalTo("designation", designationQueryResult.id);
             const supervisorResult = await user.find();
 
             var dbSupervisors = [];
@@ -1050,6 +1054,8 @@ export default {
 
             this.supervisors = dbSupervisors;
         }
+
+
     },
 };
 </script>
