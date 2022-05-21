@@ -65,7 +65,7 @@
                     <label class="label">
                         <span class="label-text" for="region">Region:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" required>
+                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" v-model="regionCode" required>
                         <option value="" disabled selected>Select Region</option>
                         <option v-for="region in regions" :value="region.region_code" :key="region.region_code">
                             {{ region.region_name }}
@@ -77,7 +77,7 @@
                     <label class="label">
                         <span class="label-text" for="city">Province:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" required>
+                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" v-model="provinceCode" required>
                         <option value="" disabled selected>Select Province</option>
                         <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
                             {{ province.province_name }}
@@ -90,7 +90,7 @@
                     <label class="label">
                         <span class="label-text" for="city">City:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" required>
+                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" v-model="cityCode" required>
                         <option value="" disabled selected>Select City</option>
                         <option v-for="city in cities" :value="city.city_code" :key="city.city_code">
                             {{ city.city_name }}
@@ -102,7 +102,7 @@
                     <label class="label">
                         <span class="label-text" for="barangay">Barangay:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" required>
+                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" v-model="barangayCode" required>
                         <option value="" disabled selected>Select Barangay</option>
                         <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">
                             {{ barangay.brgy_name }}
@@ -241,6 +241,10 @@ export default {
             provinces: [],
             cities: [],
             barangays: [],
+            regionCode: null,
+            provinceCode: null,
+            cityCode: null,
+            barangayCode: null,
             region: null,
             regionNo: null,
             regionName: null,
@@ -340,9 +344,13 @@ export default {
                 console.log(password); /////////////
                 ////////////////////////////////////
                 this.address = {
+                    regionCode: this.regionCode,
                     regionName: this.regionName,
+                    provinceCode: this.provinceCode,
                     province: this.province,
+                    cityCode: this.cityCode,
                     city: this.city,
+                    barangayCode: this.barangayCode,
                     barangay: this.barangay,
                     street: this.street,
                 }

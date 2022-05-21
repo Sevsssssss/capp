@@ -72,7 +72,7 @@
                     <label class="label">
                         <span class="label-text" for="region">Region:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" required>
+                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" v-model="regionCode" required>
                         <option value="" disabled selected>Select Region</option>
                         <option v-for="region in regions" :value="region.region_code" :key="region.region_code">
                             {{ region.region_name }}
@@ -84,7 +84,7 @@
                     <label class="label">
                         <span class="label-text" for="city">Province:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" required>
+                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" v-model="provinceCode" required>
                         <option value="" disabled selected>Select Province</option>
                         <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
                             {{ province.province_name }}
@@ -97,7 +97,7 @@
                     <label class="label">
                         <span class="label-text" for="city">City:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" required>
+                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" v-model="cityCode" required>
                         <option value="" disabled selected>Select City</option>
                         <option v-for="city in cities" :value="city.city_code" :key="city.city_code">
                             {{ city.city_name }}
@@ -109,7 +109,7 @@
                     <label class="label">
                         <span class="label-text" for="barangay">Barangay:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" required>
+                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" v-model="barangayCode" required>
                         <option value="" disabled selected>Select Barangay</option>
                         <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">
                             {{ barangay.brgy_name }}
@@ -324,7 +324,7 @@ export default {
             hei_types: [],
             username: "",
             email: "",
-            address: "",
+            address: {},
             number: "",
             inst_code: "",
             hei_nameError: "",
@@ -342,6 +342,10 @@ export default {
             provinces: [],
             cities: [],
             barangays: [],
+            regionCode: null,
+            provinceCode: null,
+            cityCode: null,
+            barangayCode: null,
             region: null,
             regionNo: null,
             regionName: null,
@@ -380,6 +384,7 @@ export default {
     },
     methods: {
         handleProvince(e) {
+            console.log(e)
             this.regionName = e.target.selectedOptions[0].text;
             this.regionNo = e.target.value;
             provinces(e.target.value).then((response) => {
@@ -442,6 +447,19 @@ export default {
             });
 
             this.$refs.Spinner.show();
+
+            this.address = {
+                regionCode: this.regionCode,
+                regionName: this.regionName,
+                provinceCode: this.provinceCode,
+                province: this.province,
+                cityCode: this.cityCode,
+                city: this.city,
+                barangayCode: this.barangayCode,
+                barangay: this.barangay,
+                street: this.street,
+            }
+
             try {
                 selectedHEI.set("hei_name", this.hei_name);
                 selectedHEI.set("username", this.username);
@@ -553,10 +571,6 @@ export default {
                 has_error = 1;
                 this.usernameError = "Username is Required";
             }
-            if (this.address == "") {
-                has_error = 1;
-                this.addressError = "Address is Required";
-            }
             if (this.number == "") {
                 has_error = 1;
                 this.numberError = "Contact Number is Required";
@@ -624,7 +638,25 @@ export default {
             this.hei_name = hei.get("hei_name")
             this.username = hei.get("username")
             this.email = hei.get("email")
-            this.address = hei.get("address")
+            this.regionCode = hei.get("address").regionCode;
+            this.region = hei.get("address").regionName;
+            this.street = hei.get("address").street;
+
+            provinces(hei.get("address").regionCode).then((response) => {
+                this.provinces = response;
+                this.provinceCode = hei.get("address").provinceCode;
+            });
+       
+            cities(hei.get("address").provinceCode).then((response) => {
+                this.cities = response;
+                this.cityCode = hei.get("address").cityCode;
+            });
+            barangays(hei.get("address").cityCode).then((response) => {
+                this.barangays = response;
+                this.barangayCode = hei.get("address").barangayCode;
+            });
+            this.barangay = hei.get("address").barangay;
+
             this.number = hei.get("number")
             this.inst_code = hei.get("inst_code")
             this.hei_type = hei.get("hei_type")
