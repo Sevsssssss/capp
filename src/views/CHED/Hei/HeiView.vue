@@ -430,11 +430,14 @@ export default {
                     return object.id == hei.get("hei_type");
                 });
 
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
+                                    + hei.get("address").province + ", " + hei.get("address").regionName
+
                 heisPriv.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
-                    address: hei.get("address"),
+                    address: heiAddress,
                     type: this.hei_Types[index].name,
                     email: hei.get("email"),
                 });
