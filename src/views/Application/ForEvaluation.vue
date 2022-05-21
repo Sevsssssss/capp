@@ -67,7 +67,7 @@
             </router-link>
 
         </div>
-        <div v-if="!appTypeChecker() && this.storedRqats.length < 0 ">
+        <div v-if="appTypeChecker() == false && this.storedRqats.length == 0 ">
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                 Assign RQAT
             </label>
@@ -162,7 +162,7 @@ export default {
             supervisor: false,
             date: null,
             dateOfEval: null,
-            apptypeChecker: false,
+            apptypechecker: false,
             apptype: "",
         };
     },
@@ -181,7 +181,8 @@ export default {
         },
         appTypeChecker() {
 
-            return this.apptypeChecker
+            return this.apptypechecker
+            
         },
         async assignRQAT() {
             try {
@@ -432,10 +433,11 @@ export default {
         console.log(this.type);
 
         if (this.type == appTypeQuerResult.id) {
-            this.apptypeChecker = true;
+            this.apptypechecker = true;
+            
         }
-
-        if (this.apptypeChecker == true && application.get("dateOfEval") != null) {
+        console.log(this.apptypechecker);
+        if (this.apptypechecker == true && application.get("dateOfEval") != null) {
             var months1 = [
                 "January",
                 "February",
