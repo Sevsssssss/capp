@@ -67,23 +67,12 @@
     </div>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ASSIGN SUPERVISOR</div>
+            <div class="font-semibold text-md">PROCEED WITH INSPECTION?</div>
 
-            <div class="flex flex-row py-6 justify-start items-start">
-                <div class="month-sort flex flex-row border rounded-md w-full">
-                    <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
-                        <option disabled>
-                            Select A Supervisor
-                        </option>
-                        <option v-for="supervisor in supervisors" :key="supervisor" :value="supervisor.id">
-                            {{ supervisor.name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
+            
             <div class="modal-action">
                 <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitChanges()">Continue</label>
             </div>
         </div>
     </div>
@@ -207,7 +196,6 @@ export default {
 
                 const application = await query.first();
                 application.set("applicationStatus", "For Inspection");
-                application.set("selectedSupervisor", this.selectedSupervisor);
 
                 this.statusTracker.push({
                     status: "For Inspection",
