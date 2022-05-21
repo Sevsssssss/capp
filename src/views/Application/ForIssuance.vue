@@ -162,7 +162,6 @@ export default {
         }
     },
     mounted: async function () {
-        var storedApplications = [];
 
         //Query Application
         const applications = Parse.Object.extend("Applications");
