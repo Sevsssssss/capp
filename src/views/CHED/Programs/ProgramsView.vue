@@ -134,7 +134,7 @@
 
                     <td class="px-6 py-4 flex flex-row space-x-4 justify-end">
                         <label for="editPrograms" @click="editProgramSelect(i.id)" class="font-medium text-blue-600 hover:underline">Edit Programs</label>
-                        <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
+                        <label for="deleteFunc" @click="selectedProgramDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
@@ -291,6 +291,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -301,7 +302,7 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
-//import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
@@ -314,7 +315,7 @@ export default {
     name: "DisciplinesView",
     components: {
         // NoDataAvail,
-        // VueInstantLoadingSpinner,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -413,9 +414,9 @@ export default {
             const progDelQuery = new Parse.Query(programsDel);
             progDelQuery.equalTo("objectId", this.deleteProg);
 
-            const discipline = await progDelQuery.first();
+            const programs = await progDelQuery.first();
 
-            discipline.destroy().then(
+            programs.destroy().then(
                 (disc) => {
                     toast("Deleting...", {
                         type: TYPE.WARNING,
@@ -424,7 +425,7 @@ export default {
                         position: POSITION.TOP_RIGHT,
                     });
                     setTimeout(() => {
-                        window.location.reload();
+                        document.location.reload();
                     }, 3000);
                     console.log("Deleted object: " + disc.id);
                 },
@@ -525,7 +526,7 @@ export default {
             this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
-            //this.$refs.Spinner.show();
+            
             try {
                 for (var i = 0; i < this.programs.length; i++) {
                     const programs = Parse.Object.extend("Programs");
@@ -536,9 +537,10 @@ export default {
                     });
                     toast("New Program Added: " + this.programs[i].programName, {
                             type: TYPE.SUCCESS,
-                            timeout: 3000,
+                            timeout: 2000,
                             position: POSITION.TOP_RIGHT,
                         }),
+                        this.$refs.Spinner.show();
                         // window.location.reload()
                         setTimeout(() => {
                             document.location.reload();
@@ -555,6 +557,12 @@ export default {
                 });
                 console.log(error.message);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async editProgram() {
             try {
