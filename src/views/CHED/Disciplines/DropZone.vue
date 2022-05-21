@@ -208,7 +208,7 @@ export default {
                     } else {
                         specificDisc.push({
                             id: disciplinesData[i].A,
-                            SpecDiscCode: disciplinesData[i].A,
+                            SpecDiscCode: disciplinesData[i].A.toString(),
                             SpecificDiscipline: disciplinesData[i].B
                         })
                         this.counter = this.counter - 1;
