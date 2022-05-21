@@ -387,7 +387,7 @@ export default {
                         setTimeout(
                             () =>
                             this.$router.push({
-                                path: "/hei",
+                                path: "/employees",
                             }),
                             2000
                         );
