@@ -836,6 +836,10 @@ export default {
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
+                var hour = application.createdAt.getHours();
+                var minutes = application.createdAt.getMinutes();
+                var seconds = application.createdAt.getSeconds();
+                
 
                 var statTrack = [];
 
@@ -886,7 +890,7 @@ export default {
                     phoneNumber: application.get("phoneNumber"),
                     type: appType.get("applicationTypeName"),
                     requirements: application.get("requirements"),
-                    dateApplied: months[month] + " " + day + ", " + year,
+                    dateApplied: months[month] + " " + day + ", " + year + " " + hour + ":" + minutes + ":" + seconds,
                     status: application.get("applicationStatus"),
                     program: program.get("programName"),
                     HeiName: hei_name,

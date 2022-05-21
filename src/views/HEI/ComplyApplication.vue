@@ -399,6 +399,14 @@ export default {
             var month = application.createdAt.getMonth();
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
+            var hour = application.createdAt.getHours();
+            var minutes = application.createdAt.getMinutes();
+            var seconds = application.createdAt.getSeconds();
+            var period = "AM";
+            if(hour >= 12) {
+                hour -= 12;
+                period = "PM"
+            }
 
             // this.compInitDate = new Date(application.get("complianceDueDate"));
 
@@ -428,7 +436,7 @@ export default {
             var compMinute = compDateCalc.getMinutes();
             var compSeconds = compDateCalc.getSeconds();
 
-            this.dateApplied = months[month] + " " + day + ", " + year;
+            this.dateApplied = months[month] + " " + day + ", " + year + " " + hour + ":" + minutes + ":" + seconds + " " + period;
             this.summary = application.get("summary");
             this.recommendation = application.get("recommendation");
             this.complianceDueDate = months[compMonth] + " " + compDay + ", " + compYear + " " + compHour + ":" + compMinute + ":" + compSeconds + " " + timePeriod;
