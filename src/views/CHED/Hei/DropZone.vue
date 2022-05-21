@@ -44,7 +44,8 @@ export default {
     data() {
         return {
             counter: 0,
-            pending: false
+            pending: false,
+            address: {},
         }
     },
     components: {
@@ -163,14 +164,23 @@ export default {
 
                     this.hei_acc_id = accQuerResult.id;
                     var password = Math.random().toString(36).slice(-12);
+
+                    this.address = {
+                        regionName:  heiData[i].D,
+                        province:  heiData[i].E,
+                        city:  heiData[i].F,
+                        barangay:  heiData[i].G,
+                        street:  heiData[i].H,
+                    }
+
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
                     newHEI.set("username", heiData[i].B);
                     newHEI.set("password", password);
                     newHEI.set("email", heiData[i].C);
-                    newHEI.set("address", heiData[i].D);
-                    newHEI.set("number", heiData[i].E.toString());
-                    newHEI.set("inst_code", heiData[i].F.toString());
+                    newHEI.set("address", this.address);
+                    newHEI.set("number", heiData[i].I.toString());
+                    newHEI.set("inst_code", heiData[i].J.toString());
 
                     const heiType = Parse.Object.extend("HEI_Types");
                     const queryHEIType = new Parse.Query(heiType);
@@ -185,13 +195,13 @@ export default {
                         const newHeiType = new heiType();
 
                         await newHeiType.save({
-                            name: heiData[i].G.toUpperCase(),
+                            name: heiData[i].K.toUpperCase(),
                         }).then(() => {
 
                             newHEI.set("hei_type", newHeiType.id);
                             newHEI.set("access_type", this.hei_acc_id);
                             newHEI.set("hasTransactions", false);
-                             newHEI.save().then(() => {
+                            newHEI.save().then(() => {
                                 const params = {
                                     name: heiData[i].A,
                                     username: heiData[i].B,
