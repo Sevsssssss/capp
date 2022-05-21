@@ -125,7 +125,8 @@
                             }">
                                 <a href="#" v-if="table.status != 'For Approval' && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
-                            <label href="#" @click="id(table.appID)" for="for-approval" v-if="table.status == 'For Approval'" class="font-medium text-blue-600 hover:underline">Assign</label>
+                            <label v-if="table.status == 'For Approval' && table.selectedSupervisor == null && table.selectedSupervisor == '' " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
+                            <label for="tracking" @click="id(table.appID)" class="font-medium text-blue-600 hover:underline">Track</label>
                         </td>
                     </tr>
                 </tbody>
@@ -208,6 +209,77 @@
                 </div>
             </div>
         </div>
+
+        <input type="checkbox" id="tracking" class="modal-toggle" />
+        <div class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md mb-2">TRACK APPLICATION</div>
+                <div class="mb-2">
+                    <div class="flex flex-row space-x-2 space-between">
+                        <div class="flex flex-row">
+                            <div class="font-semibold">
+                                ID:
+                            </div> {{this.appID}}
+                        </div>
+                        <div class="flex flex-row">
+                            <div class="font-semibold">Application Type: </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="flex flex-row">
+                            <div class="font-semibold">HEI: </div> 
+                        </div>
+                        <div class="flex flex-row">
+                            <div class="font-semibold">Program: </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
+
+                        <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div>
+                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div v-if="index+1 < statusTracker.length" class="w-px h-full bg-gray-300"></div>
+                            </div>
+                            <div class="pb-4 ">
+                                <div class="text-md font-semibold">{{track.detail}}</div>
+                                <div>{{track.dateTime}}</div>
+                            </div>
+                        </div>
+                        
+
+                        <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div>
+                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="pb-4 ">
+                                <div class="text-md font-semibold">{{track.detail}}</div>
+                                <div>{{track.dateTime}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                </div>
+            </div>
+        </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
@@ -262,6 +334,23 @@ export default {
             selectedSupervisor: "Select A Supervisor",
             datas: [],
             tables: [],
+            statusTracker: [
+                {   
+                    status: "For Approval",
+                    detail: "Application was Created",
+                    dateTime: "Thursday, July 4, 2021 - 9:14 am"
+                },
+                {
+                    status: "For Evaluation",
+                    detail: "Application was assigned to CHED Education Supervisor",
+                    dateTime: "Thursday, July 4, 2021 - 9:16 am"
+                },
+                {
+                    status: "Completed",
+                    detail: "Application was deemed not worthy of their time and efforts",
+                    dateTime: "Thursday, July 4, 2021 - 9:18 am"
+                },
+            ],
             appID: "",
         };
     },
