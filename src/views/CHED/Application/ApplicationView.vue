@@ -391,7 +391,7 @@ export default {
 
             //Query HEI
             const heis = new Parse.Query(Parse.User);
-            heis.equalTo("objectId", querResultApp.createdBy);
+            heis.equalTo("objectId", querResultApp.get("createdBy"));
             const querResultHEI = await heis.first({
                 useMasterKey: true,
             });
