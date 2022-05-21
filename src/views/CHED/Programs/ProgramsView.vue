@@ -66,6 +66,18 @@
                 </div>
             </div>
         </div>
+        <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Add Program</div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this program?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal2()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addProgram()">Continue</label>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 <div v-else class="p-3">

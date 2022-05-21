@@ -67,7 +67,7 @@
             </router-link>
 
         </div>
-        <div v-if="!appTypeChecker()">
+        <div v-if="!appTypeChecker() && this.storedRqats.length < 0 ">
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                 Assign RQAT
             </label>
