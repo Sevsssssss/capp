@@ -859,7 +859,7 @@ export default {
                         period = "PM";
                     }
 
-                    var statDateText = days[statDay] + ", " + statMonth + " " + statNumDate + ", " + statYear + " - " 
+                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " 
                     + statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
 
                     statTrack.push({
@@ -868,6 +868,8 @@ export default {
                         dateTime: statDateText,
                     })
                 }
+
+                this.statusTracker = statTrack;
 
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");
