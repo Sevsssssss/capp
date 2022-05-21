@@ -52,10 +52,10 @@
                         <td scope="row" class="px-6 py-4 font-medium spacer text-gray-900">
                             <span class="bg-blue-100 text-xs mr-2 p-2 rounded"> {{ i.Privileges }}</span>
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td v-if="i.Name != 'SUPER ADMIN'" class="px-6 py-4 text-right">
                             <label for="editAccessType" @click="changeSelectedAT(i.id, i.Name)" class="font-medium text-blue-600 hover:underline">Edit</label>
                         </td>
-                        <td class="px-6 py-4">
+                        <td v-if="i.Name != 'SUPER ADMIN'" class="px-6 py-4">
                             <label for="deleteFunc" class="hover:text-brand-red/60">
                                 <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedAccessDelete(i.id)">
                                     <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
