@@ -190,80 +190,79 @@ export default {
         validate2() {
             return this.showModal2;
         },
-        //Move application to For Evaluation
-        async submitChanges() {
+        // //Move application to For Evaluation
+        // async submitChanges() {
             
-            try {
-                const applications = Parse.Object.extend("Applications");
-                const query = new Parse.Query(applications);
-                query.equalTo("objectId", this.appID);
+        //     try {
+        //         const applications = Parse.Object.extend("Applications");
+        //         const query = new Parse.Query(applications);
+        //         query.equalTo("objectId", this.appID);
 
-                const application = await query.first();
+        //         const application = await query.first();
 
-                var requirements = [];
+        //         var requirements = [];
 
-                for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
-                        status: this.statusShow[i],
-                        comment: this.comment[i],
-                    });
-                }
-                application.set("requirements", requirements);
-                application.set("applicationStatus", "For Evaluation");
-                application.set("selectedSupervisor", this.selectedSupervisor);
-                this.statusTracker.push({
-                    status: "For Evaluation",
-                    detail: "Your Application has been moved for evaluation",
-                    dateTime: new Date(),
-                });
-                application.set("statusTracker", this.statusTracker);
+        //         for (var i = 0; i < this.statusShow.length; i++) {
+        //             requirements.push({
+        //                 id: application.get("requirements")[i].id,
+        //                 file: application.get("requirements")[i].file,
+        //                 status: this.statusShow[i],
+        //                 comment: this.comment[i],
+        //             });
+        //         }
+        //         application.set("requirements", requirements);
+        //         application.set("applicationStatus", "For Evaluation");
+        //         this.statusTracker.push({
+        //             status: "For Evaluation",
+        //             detail: "Your Application has been moved for evaluation",
+        //             dateTime: new Date(),
+        //         });
+        //         application.set("statusTracker", this.statusTracker);
 
-                application
-                    .save()
-                    .then((application) => {
-                        const params = {
-                            email: application.get("email"),
-                            status: "Your Application has been moved for evaluation",
-                            type: "sendStatusUpdate",
-                            approved: true,
-                        };
-                        Parse.Cloud.run("sendStatusUpdate", params);
+        //         application
+        //             .save()
+        //             .then((application) => {
+        //                 const params = {
+        //                     email: application.get("email"),
+        //                     status: "Your Application has been moved for evaluation",
+        //                     type: "sendStatusUpdate",
+        //                     approved: true,
+        //                 };
+        //                 Parse.Cloud.run("sendStatusUpdate", params);
                         
-                        this.$refs.Spinner.show();
+        //                 this.$refs.Spinner.show();
 
-                        toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-                                type: TYPE.INFO,
-                                timeout: 2000,
-                                position: POSITION.TOP_RIGHT,
-                                hideProgressBar: false,
-                                closeButton: false,
+        //                 toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+        //                         type: TYPE.INFO,
+        //                         timeout: 2000,
+        //                         position: POSITION.TOP_RIGHT,
+        //                         hideProgressBar: false,
+        //                         closeButton: false,
 
-                            }),
-                            console.log("Object Updated: " + application.id);
-                    })
+        //                     }),
+        //                     console.log("Object Updated: " + application.id);
+        //             })
 
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
-                    })
-                }, 2000);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+        //         setTimeout(() => {
+        //             this.$router.push({
+        //                 path: "/application/ " + this.appID.slice(0, 2).join(""),
+        //             })
+        //         }, 2000);
+        //         setTimeout(() => {
+        //             window.location.reload();
+        //         }, 2000);
 
-            } catch (error) {
-                alert("Error" + error.message);
-                console.log(error);
-            }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
-        },
+        //     } catch (error) {
+        //         alert("Error" + error.message);
+        //         console.log(error);
+        //     }
+        //     setTimeout(
+        //         function () {
+        //             this.$refs.Spinner.hide();
+        //         }.bind(this),
+        //         2000
+        //     );
+        // },
         //Move application to For Revision
         async submitRevision() {
             
@@ -360,7 +359,6 @@ export default {
                 }
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Payment");
-                application.set("selectedSupervisor", "");
                 this.statusTracker.push({
                     status: "For Payment",
                     detail: "Your Application has been moved for payment",

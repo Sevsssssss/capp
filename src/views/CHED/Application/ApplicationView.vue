@@ -125,7 +125,7 @@
                             }">
                                 <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
-                            <label v-if="table.status == 'For Approval' && table.selectedSupervisor == null || table.selectedSupervisor == '' " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
+                            <label v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
                             <label for="tracking" @click="id(table.appID)" class="font-medium text-blue-600 hover:underline">Track</label>
                         </td>
                     </tr>
@@ -334,23 +334,7 @@ export default {
             selectedSupervisor: "Select A Supervisor",
             datas: [],
             tables: [],
-            statusTracker: [
-                {   
-                    status: "For Approval",
-                    detail: "Application was Created",
-                    dateTime: "Thursday, July 4, 2021 - 9:14 am"
-                },
-                {
-                    status: "For Evaluation",
-                    detail: "Application was assigned to CHED Education Supervisor",
-                    dateTime: "Thursday, July 4, 2021 - 9:16 am"
-                },
-                {
-                    status: "Completed",
-                    detail: "Application was deemed not worthy of their time and efforts",
-                    dateTime: "Thursday, July 4, 2021 - 9:18 am"
-                },
-            ],
+            statusTracker: [],
             appID: "",
             stAppType: "",
             stHEI: "",
