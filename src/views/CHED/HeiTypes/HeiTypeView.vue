@@ -1,5 +1,44 @@
 <template>
-<div class="p-3">
+<div v-if="!tables.length" class="flex flex-col center h-full p-5">
+    <div class="noDataAvail">No Data Available</div>
+    <div class="h-fit pr-5 pt-3 items-center">
+        <label type="button" for="createHei" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+            </svg>
+            <div class="pl-2">Add Hei Type</div>
+        </label>
+        <div class="h-fit pt-3 items-center">
+            <button @click="excelHeiTypes()" type="button" class="btn-table">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                </svg>
+                <div class="pl-2">Upload Excel</div>
+            </button>
+        </div>
+    </div>
+    <input type="checkbox" id="createHei" class="modal-toggle" />
+    <label for="createHei" class="modal cursor-pointer">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">ADD HEI TYPE</div>
+            <p class="py-2 text-sm">Input the name of the Hei Type.</p>
+            <form v-on:submit.prevent="submit">
+                <div class="mb-6">
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Hei Type:
+                    </label>
+                    <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.heiTypeName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.heiTypeName.$model" />
+                </div>
+            </form>
+            <div class="modal-action">
+                <label for="createHei" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="createHei" id="createHei" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="modal()">Submit</label>
+            </div>
+        </div>
+    </label>
+</div>
+<div v-else class="px-3 py-2">
     <!-- Table -->
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
@@ -287,7 +326,7 @@ export default {
                 has_error = 1;
             }
             if (has_error < 1) {
-                this.showModal2 = !this.showModal2;   
+                this.showModal2 = !this.showModal2;
             }
         },
         async updateHEIType() {
@@ -469,7 +508,7 @@ export default {
             const HeiTypes = Parse.Object.extend("HEI_Types");
             const query = new Parse.Query(HeiTypes);
             const querResult = await query.find();
-            
+
             for (var i = 0; i < querResult.length; i++) {
                 const ht = querResult[i];
 

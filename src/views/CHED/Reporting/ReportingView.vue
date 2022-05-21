@@ -14,12 +14,12 @@
         </div>
     </div>
     <br>
-    <div v-for="(appType, index) in listofPrograms" :key="appType" class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div v-for="(appType, index) in listofPrograms" :key="appType" class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="p-2  flex justify-between items-center">
-            <div class="text-lg font-semibold"> {{appType.applicationType}} </div>
-            <button class="btn-table" @click="exportToPdfTables(appType.applicationType, index)">Export PDF</button>
+            <div class="p-4 text-lg font-semibold"> {{appType.applicationType}} </div>
+            <button v-if="appType.programList.length > 0" class="btn-table" @click="exportToPdfTables(appType.applicationType, index)">Export PDF</button>
         </div>
-        <table class=" w-full text-sm text-left text-gray-500">
+        <table v-if="appType.programList.length > 0" class=" w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3">PROGRAMS</th>
@@ -35,8 +35,12 @@
                         {{ prog.count }}
                     </td>
                 </tr>
+                
             </tbody>
         </table>
+        <div v-if="appType.programList.length == 0" class="p-5 font-medium">
+                   <div class="noDataAvail text-center">No Data Available</div>
+                </div>
         <div class="table-footer flex flex-row justify-between">
             <div class="flex flex-row pl-4 justify-center items-center">
                 <span class="text-sm text-gray-700">
@@ -179,25 +183,29 @@ export default {
             var applicationTypes = [];
             var appTypeCount = [];
             for (var i = 0; i < appTypeResults.length; i++) {
-                var listOfHEI = [];
+                var counter = 0;
+
+                const pipeline = [
+                    {
+                        group: {
+                            objectId: '$createdBy',
+                        }
+                    }
+                ];
+
                 const applicationType = appTypeResults[i];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
-                const querResult = await newQuery.find();
-                // var counter = 0;
-                for (var j = 0; j < querResult.length; j++) {
-                    const application = querResult[j];
-                    if (!listOfHEI.includes(application.get("createdBy"))) {
-                        listOfHEI.push(application.get("createdBy"));
-                        // counter++;
-                    }
-                    totalApplication++;
-                }
+                newQuery.aggregate(pipeline)
+
+                counter = await newQuery.count();
+                totalApplication += counter;
+                console.log(totalApplication)
 
                 applicationTypes.push(applicationType.get("applicationTypeName"));
-                appTypeCount.push(querResult.length);
+                appTypeCount.push(counter);
                 this.numberOfHEI.push({
                     title: applicationType.get("applicationTypeName"),
-                    num: querResult.length,
+                    num: counter,
                     type: this.color[i],
                 });
 
@@ -227,10 +235,7 @@ export default {
                     // const hei = await users.first({
                     //     useMasterKey: true,
                     // });
-                    console.log(progResults.get("programName"));
-                    console.log("sad " + programList.includes(progResults.get("programName")));
                     if (programList.includes(progResults.get("programName"))) {
-                        console.log("nanis");
                         var index = programList.indexOf(progResults.get("programName"))
                         programInstance[index] += 1;
                     } else {
@@ -239,8 +244,6 @@ export default {
                         );
                         programInstance.push(1);
                     }
-
-                    console.log(programList);
 
                 }
 

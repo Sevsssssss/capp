@@ -1,6 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{statusShow}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">
@@ -97,6 +96,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -111,12 +111,16 @@ import {
     required
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 
 const toast = useToast();
 
 export default {
     props: ["appID"],
     name: "ForApproval",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -147,6 +151,7 @@ export default {
             search: "",
             disapproved: '',
             approved: '',
+            statusTracker: [],
         };
     },
     validations() {
@@ -185,7 +190,9 @@ export default {
         validate2() {
             return this.showModal2;
         },
+        //Move application to For Evaluation
         async submitChanges() {
+            
             try {
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
@@ -206,6 +213,12 @@ export default {
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Evaluation");
                 application.set("selectedSupervisor", this.selectedSupervisor);
+                this.statusTracker.push({
+                    status: "For Evaluation",
+                    detail: "Your Application has been moved for evaluation",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
@@ -217,6 +230,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+                        
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for evalutaion", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -241,8 +257,16 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
+        //Move application to For Revision
         async submitRevision() {
+            
             try {
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
@@ -263,6 +287,13 @@ export default {
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Revision");
 
+                this.statusTracker.push({
+                    status: "For Revision",
+                    detail: "Application was made For Revision",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then((application) => {
@@ -273,6 +304,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for revision", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -296,8 +330,17 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
+
+        //Application updated for Payment
         async submitApproval() {
+            
             try {
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
@@ -318,6 +361,12 @@ export default {
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Payment");
                 application.set("selectedSupervisor", "");
+                this.statusTracker.push({
+                    status: "For Payment",
+                    detail: "Your Application has been moved for payment",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
@@ -329,6 +378,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been accepted and moved for payment", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -348,6 +400,12 @@ export default {
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    2000
+                );
 
             } catch (error) {
                 alert("Error" + error.message);
@@ -415,6 +473,7 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        this.statusTracker = application.get("statusTracker");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
@@ -435,6 +494,7 @@ export default {
 
         const desigQueryResult = await queryDes.first();
 
+        //Get Education Supervisors
         const user = new Parse.Query(Parse.User);
         user.equalTo("designation", desigQueryResult.id);
         const supervisorResult = await user.find();
@@ -457,6 +517,7 @@ export default {
 
         this.supervisors = dbSupervisors;
 
+        //Get Application Requirements
         for (var i = 0; i < application.get("requirements").length; i++) {
             this.statusShow.push("");
             this.comment.push("");

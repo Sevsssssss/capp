@@ -48,6 +48,11 @@ export default {
     components: {
         VueInstantLoadingSpinner,
     },
+    data(){
+        return{
+            statusTracker: [],
+        }
+    },
     setup() {
         const active = ref(false);
         let dropzoneFile = ref("");
@@ -114,6 +119,13 @@ export default {
                     application.set("certificate", certification);
                     application.set("applicationStatus", "Completed");
 
+                    this.statusTracker.push({
+                        status: "Completed",
+                        detail: "Application Complete!",
+                        dateTime: new Date(),
+                    });
+                    application.set("statusTracker", this.statusTracker);
+
                     application
                         .save()
                         .then((application) => {
@@ -148,7 +160,17 @@ export default {
                 }
             }
         }
-    }
+    },
+    mounted: async function () {
+
+        //Query Application
+        const applications = Parse.Object.extend("Applications");
+        const query = new Parse.Query(applications);
+        query.equalTo("objectId", this.appID);
+
+        const application = await query.first();
+        this.statusTracker = application.get("statusTracker");
+    },
 }
 </script>
 

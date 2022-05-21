@@ -1,8 +1,8 @@
 <template>
-<div class="main-page flex justify-center items-center p-5">
-    <div class="card over p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md ">
+<div class="overflow-x-auto flex justify-center items-center p-5">
+    <div class="p-4 w-fit bg-white rounded-lg border border-gray-100 shadow-lg">
         <!-- {{hei_types}} -->
-        <form v-on:submit.prevent="submit" class="card-body ">
+        <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -10,7 +10,7 @@
                 </svg>
                 <span class="text-2xl font-semibold text-grey-100">ADD HEI ACCOUNT</span>
             </div>
-            <div class="line"></div>
+            <hr class="border w-full" />
             <div class="flex">
                 <div class="form-control w-full pr-4">
                     <label class="label">
@@ -47,16 +47,6 @@
 
             <div class="form-control w-full">
                 <label class="label">
-                    <span class="label-text">Address</span>
-                </label>
-                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.address) }" class="input input-bordered w-full" v-model="v$.address.$model" />
-                <!-- <label class="label">
-                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
-                        Address is Required</span>
-                </label> -->
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
                     <span class="label-text">Contact Number</span>
                 </label>
                 <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.number) }" class="input input-bordered w-full" v-model="v$.number.$model" />
@@ -65,15 +55,82 @@
                         Contact Number is Required</span>
                 </label> -->
             </div>
+
+            <div class="flex items-center my-4">
+                <label class="block text-dark-200 text-sm mr-5"> Address </label>
+                <hr class="border border-light-400 w-full" />
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="region">Region:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" required>
+                        <option value="" disabled selected>Select Region</option>
+                        <option v-for="region in regions" :value="region.region_code" :key="region.region_code">
+                            {{ region.region_name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="city">Province:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" required>
+                        <option value="" disabled selected>Select Province</option>
+                        <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
+                            {{ province.province_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="city">City:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" required>
+                        <option value="" disabled selected>Select City</option>
+                        <option v-for="city in cities" :value="city.city_code" :key="city.city_code">
+                            {{ city.city_name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="barangay">Barangay:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" required>
+                        <option value="" disabled selected>Select Barangay</option>
+                        <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">
+                            {{ barangay.brgy_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Street:</span>
+                </label>
+                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.street) }" class="input input-bordered w-full" v-model="v$.street.$model" />
+                <!-- <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
+                        Address is Required</span>
+                </label> -->
+            </div>
+
+            <hr class="border border-light-400 w-full my-4" />
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text">Institutional Code</span>
                 </label>
                 <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" v-model="v$.inst_code.$model" />
                 <!-- <label class="label">
-                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
-                            Institutional Code is Required</span>
-                    </label> -->
+                            <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
+                                Institutional Code is Required</span>
+                        </label> -->
             </div>
             <div class="form-control w-full">
                 <label class="label">
@@ -85,6 +142,7 @@
                     </option>
                 </select>
             </div>
+
             <div class="flex justify-end pt-4 space-x-4">
                 <button class="btn btn-md btn-outline" @click="$router.go(-1)">
                     Cancel
@@ -134,6 +192,12 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
+import {
+    regions,
+    provinces,
+    cities,
+    barangays,
+} from "select-philippines-address";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
@@ -161,7 +225,7 @@ export default {
             hei_name: "",
             username: "",
             email: "",
-            address: "",
+            address: {},
             number: "",
             inst_code: "",
             hei_type: "None",
@@ -173,7 +237,17 @@ export default {
             inst_codeError: "",
             hei_typeError: "",
             hei_acc_id: "",
-
+            regions: [],
+            provinces: [],
+            cities: [],
+            barangays: [],
+            region: null,
+            regionNo: null,
+            regionName: null,
+            province: null,
+            city: null,
+            barangay: null,
+            street: null,
         };
     },
     validations() {
@@ -188,7 +262,7 @@ export default {
                 required,
                 email,
             },
-            address: {
+            street: {
                 required,
             },
             number: {
@@ -202,8 +276,34 @@ export default {
             },
         };
     },
+
     methods: {
-   
+        handleProvince(e) {
+            this.regionName = e.target.selectedOptions[0].text;
+            this.regionNo = e.target.value;
+            provinces(e.target.value).then((response) => {
+                this.provinces = response;
+            });
+            console.log(this.regionNo);
+            console.log(this.provinces);
+        },
+        handleCity(e) {
+            this.province = e.target.selectedOptions[0].text;
+            console.log(this.province);
+            cities(e.target.value).then((response) => {
+                this.cities = response;
+            });
+        },
+        handleBarangay(e) {
+            this.city = e.target.selectedOptions[0].text;
+            barangays(e.target.value).then((response) => {
+                this.barangays = response;
+            });
+        },
+        barangaysChange(e) {
+            this.barangay = e.target.selectedOptions[0].text;
+        },
+
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -226,19 +326,26 @@ export default {
         async addHEI() {
             this.$refs.Spinner.show();
             try {
-            const AccessType = Parse.Object.extend("AccessTypes");
-            const queryACC = new Parse.Query(AccessType);
-            queryACC.equalTo("name", "HEI");
+                const AccessType = Parse.Object.extend("AccessTypes");
+                const queryACC = new Parse.Query(AccessType);
+                queryACC.equalTo("name", "HEI");
 
-            const accQuerResult = await queryACC.first();
+                const accQuerResult = await queryACC.first();
 
-            this.hei_acc_id = accQuerResult.id;
-            
+                this.hei_acc_id = accQuerResult.id;
+
                 var password = Math.random().toString(36).slice(-12);
 
                 ////////////////////////////////////
                 console.log(password); /////////////
                 ////////////////////////////////////
+                this.address = {
+                    regionName: this.regionName,
+                    province: this.province,
+                    city: this.city,
+                    barangay: this.barangay,
+                    street: this.street,
+                }
 
                 const newHEI = new Parse.User();
                 newHEI.set("hei_name", this.hei_name);
@@ -250,26 +357,29 @@ export default {
                 newHEI.set("inst_code", this.inst_code);
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
-                await newHEI.save()
-                    .then(() => {
-                        toast("HEI Account Added!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        })
-                        const params = {
-                            name: this.hei_name,
-                            username: this.username,
-                            email: this.email,
-                            password: password,
-                            type: "sendCredentials",
-                            approved: true,
-                        };
-                        Parse.Cloud.run("sendEmailNotification", params);
-                        setTimeout(() => this.$router.push({
-                            path: "/hei"
-                        }), 2000);
+                await newHEI.save().then(() => {
+                    toast("HEI Account Added!", {
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
                     });
+                    const params = {
+                        name: this.hei_name,
+                        username: this.username,
+                        email: this.email,
+                        password: password,
+                        type: "sendCredentials",
+                        approved: true,
+                    };
+                    Parse.Cloud.run("sendEmailNotification", params);
+                    setTimeout(
+                        () =>
+                        this.$router.push({
+                            path: "/hei",
+                        }),
+                        2000
+                    );
+                });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -337,6 +447,9 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            regions().then((response) => {
+                this.regions = response;
+            });
 
             const HeiTypes = Parse.Object.extend("HEI_Types");
             const queryHT = new Parse.Query(HeiTypes);
@@ -352,7 +465,6 @@ export default {
             }
             this.hei_types = heiTypes;
             this.hei_type = this.hei_types[0].id;
-
         }
     },
 };

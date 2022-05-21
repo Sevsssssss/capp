@@ -1,8 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{statusShow}}
-    {{comment1.length}}
-    {{eval.length}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -394,7 +391,7 @@ export default {
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
-                application.set("complianceDueDate", complianceDueDate);
+                application.set("complianceDueDate", new Date(complianceDueDate));
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);

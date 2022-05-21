@@ -53,8 +53,15 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-row">
+            <div class="flex flex-row justify-center items-center">
                 <!-- button -->
+                <div class="pr-4">
+                    <label class="hover:text-brand-lightblue hover:" @click="onUpdate()">
+                        <svg class="" style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M2 12C2 16.97 6.03 21 11 21C13.39 21 15.68 20.06 17.4 18.4L15.9 16.9C14.63 18.25 12.86 19 11 19C4.76 19 1.64 11.46 6.05 7.05C10.46 2.64 18 5.77 18 12H15L19 16H19.1L23 12H20C20 7.03 15.97 3 11 3C6.03 3 2 7.03 2 12Z" />
+                        </svg>
+                    </label>
+                </div>
                 <div class="h-fit pt-3 items-center">
                     <button @click="excelHei()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -78,7 +85,7 @@
         </div>
         <!-- Table body -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500">
+            <table class="w-full text-sm text-left text-gray-500" :ref="table">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3" v-for="header in headers" :key="header">
@@ -102,6 +109,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ table.type }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ table.userName }}
                         </td>
                         <td class="px-6 py-4">
                             {{ table.email }}
@@ -140,7 +150,7 @@
             </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
-                <div class="flex flex-row pl-4 justify-center items-center">
+                <div class="flex flex-row pl-3 justify-center items-center">
                     <span class="text-sm text-gray-700">
                         Showing
                         <span class="font-semibold text-gray-900">{{
@@ -159,7 +169,7 @@
                         Entries
                     </span>
                 </div>
-                <div class="p-2 pr-4">
+                <div class="p-3 pr-3">
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
@@ -208,7 +218,7 @@ export default {
         return {
             currentDelAcc: "",
             currentpage: 0,
-            numPerPage: 10,
+            numPerPage: 5,
             totalEntries: 0,
             columns: [{
                     label: "Name",
@@ -286,6 +296,9 @@ export default {
                     title: "TYPE",
                 },
                 {
+                    title: "USERNAME",
+                },
+                {
                     title: "EMAIL",
                 },
             ],
@@ -337,6 +350,16 @@ export default {
         },
     },
     methods: {
+        onUpdate() {
+            this.$refs.Spinner.show();
+            this.$router.go()
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
         selectAcc(instNum) {
             this.currentDelAcc = instNum;
         },
@@ -424,11 +447,14 @@ export default {
                     return object.id == hei.get("hei_type");
                 });
 
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
+                                    + hei.get("address").province + ", " + hei.get("address").regionName
+
                 heisPriv.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
-                    address: hei.get("address"),
+                    address: heiAddress,
                     type: this.hei_Types[index].name,
                     email: hei.get("email"),
                 });
@@ -512,6 +538,7 @@ export default {
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
+                    userName: hei.get("username"),
                     address: hei.get("address"),
                     type: htypeName,
                     email: hei.get("email"),

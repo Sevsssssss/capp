@@ -56,7 +56,7 @@
                 Schedule Evaluation Date
             </label>
         </div>
-        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker() && dateOfEval != null">
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0 || appTypeChecker() && dateOfEval != null" class="pr-5">
             <router-link :to="{
             name: 'EvaluateView',
                 params: {
@@ -67,7 +67,7 @@
             </router-link>
 
         </div>
-        <div v-if="!appTypeChecker() && this.storedRqats.length < 0 ">
+        <div v-if="appTypeChecker() == false && this.storedRqats.length == 0 ">
             <label for="for-evaluation" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                 Assign RQAT
             </label>
@@ -117,6 +117,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -127,6 +128,7 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -136,7 +138,8 @@ export default {
     props: ["appID"],
     name: "ForEvaluation",
     components: {
-        Datepicker
+        Datepicker,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -159,8 +162,9 @@ export default {
             supervisor: false,
             date: null,
             dateOfEval: null,
-            apptypeChecker: false,
+            apptypechecker: false,
             apptype: "",
+            statusTracker: [],
         };
     },
     computed: {
@@ -178,7 +182,8 @@ export default {
         },
         appTypeChecker() {
 
-            return this.apptypeChecker
+            return this.apptypechecker
+            
         },
         async assignRQAT() {
             try {
@@ -191,6 +196,12 @@ export default {
 
                 application.set("selectedRQAT", this.selectedRqat);
                 application.set("dateOfEval", this.date);
+                this.statusTracker.push({
+                    status: "For Evaluation",
+                    detail: "Application was assigned to an RQAT",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application.save().then((application) => {
                     const params = {
@@ -200,6 +211,9 @@ export default {
                         approved: true,
                     };
                     Parse.Cloud.run("sendStatusUpdate", params);
+
+                    this.$refs.Spinner.show();
+
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
                             type: TYPE.INFO,
                             timeout: 2000,
@@ -222,7 +236,12 @@ export default {
             } catch (error) {
                 alert(error.message)
             }
-
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         showToastRqat() {
             toast("Please assign the RQAT for the evaluation ", {
@@ -244,14 +263,24 @@ export default {
 
                 application1.set("dateOfEval", this.date);
 
+                this.statusTracker.push({
+                    status: "For Evaluation",
+                    detail: "Your Application's Evaluation has been scheduled.",
+                    dateTime: new Date(),
+                });
+                application1.set("statusTracker", this.statusTracker);
+
                 application1.save().then((application1) => {
                     const params = {
                         email: application1.get("email"),
-                        status: "Your Application has been assigned to RQAT Member",
+                        status: "Your Application's Evaluation has been scheduled.",
                         type: "sendStatusUpdate",
                         approved: true,
                     };
                     Parse.Cloud.run("sendStatusUpdate", params);
+
+                    this.$refs.Spinner.show();
+
                     toast(this.type.toLowerCase() + " has been assigned to RQAT Member", {
                             type: TYPE.INFO,
                             timeout: 2000,
@@ -274,6 +303,12 @@ export default {
             } catch (error) {
                 alert(error.message)
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
 
         },
         showToastSched() {
@@ -299,11 +334,12 @@ export default {
         const appTypeQuery = new Parse.Query(applicationTypes);
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+        this.statusTracker = application.get("statusTracker");
 
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
             query.equalTo("selectedSupervisor", Parse.User.current().id);
-            query.equalTo("applicationStatus", "For Evaluation");
+            query.equalTo("applicationStatus", "For Inspection");
             this.supervisor = true;
         }
 
@@ -412,10 +448,11 @@ export default {
         console.log(this.type);
 
         if (this.type == appTypeQuerResult.id) {
-            this.apptypeChecker = true;
+            this.apptypechecker = true;
+            
         }
-
-        if (this.apptypeChecker == true && application.get("dateOfEval") != null) {
+        console.log(this.apptypechecker);
+        if (this.apptypechecker == true && application.get("dateOfEval") != null) {
             var months1 = [
                 "January",
                 "February",

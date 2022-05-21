@@ -148,23 +148,18 @@
                 </div>
 
                 <div class="">
-                    <label for="password" class="label label-text">Current Password</label>
-                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
-                </div>
-                <hr>
-                <div class="">
                     <label for="password" class="label label-text">New Password</label>
-                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPass" required>
                 </div>
                 <div class="">
                     <label for="confirm_password" class="label label-text">Confirm password</label>
-                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" required>
+                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPassConf" required>
                 </div>
                 <div class="flex justify-end pt-8 space-x-4">
                     <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                         Cancel
                     </button>
-                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
+                    <button for="my-modal-8" id="my-modal-8" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal1()">
                         Update Password
                     </button>
                 </div>
@@ -200,6 +195,33 @@
             </div>
         </div>
     </div>
+    <div :class="{ 'modal-open ': validate1() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold">Update Password</div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want update this account's password?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-8" class="
+              btn btn-sm
+              rounded-md
+              text-blue-700
+              bg-transparent
+              border border-blue-700
+              hover:bg-white
+            ">Cancel</label>
+                <label for="my-modal-8" type="submit" class="
+              btn btn-sm
+              bg-brand-darkblue
+              hover:bg-blue-800
+              rounded-md
+              border-none
+            " @click="changePassword()">
+                    Continue
+                </label>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Add Employee Type -->
 </template>
@@ -231,6 +253,7 @@ export default {
         return {
             showModal: false,
             showModal1: false,
+            showModal2: false,
             savingSuccessful: false,
             v$: useVuelidate(),
             accessTypes: [],
@@ -246,6 +269,8 @@ export default {
             educSupId: "",
             access_type: "",
             discipline: "",
+            newPass: "",
+            newPassConf: "",
         };
     },
     validations() {
@@ -296,6 +321,38 @@ export default {
         validate() {
             return this.showModal1;
         },
+        validate1() {
+            return this.showModal2;
+        },
+        async changePassword() {
+            const empl = new Parse.Query(Parse.User);
+            empl.equalTo("objectId", this.empID);
+            const selectedEMP = await empl.first({
+                useMasterKey: true,
+            });
+
+            selectedEMP.setPassword(this.newPass)
+            console.log("Password Updated")
+            selectedEMP.save(null, {
+                useMasterKey: true,
+            });
+
+            this.$refs.Spinner.show();
+
+            toast("Password Updated ", {
+                    type: TYPE.SUCCESS,
+                    timeout: 2000,
+                    position: POSITION.TOP_RIGHT,
+                }),
+                document.location.reload();
+
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
+        },
         async updateEmployee() {
             const empl = new Parse.Query(Parse.User);
             empl.equalTo("objectId", this.empID);
@@ -330,7 +387,7 @@ export default {
                         setTimeout(
                             () =>
                             this.$router.push({
-                                path: "/hei",
+                                path: "/employees",
                             }),
                             2000
                         );
@@ -376,6 +433,27 @@ export default {
                 //     );
                 //}
                 this.showModal1 = !this.showModal1;
+            }
+        },
+        modal1() {
+            if (this.newPass == "" || this.newPassConf == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+            } else {
+                if (this.newPass == this.newPassConf) {
+                    this.showModal2 = !this.showModal2;
+                } else {
+                    toast("New Password and Confirm New Password doesn't match", {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                }
             }
         },
     },

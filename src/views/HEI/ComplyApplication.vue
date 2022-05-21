@@ -1,7 +1,6 @@
 <template>
 <div>
     <div class="mx-3">
-        {{resubmittedDesc}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
@@ -199,6 +198,7 @@ export default {
             ],
             search: "",
             descCounter: 0,
+            statusTracker: [],
         };
     },
     methods: {
@@ -234,6 +234,15 @@ export default {
 
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Verification")
+
+                this.statusTracker.push({
+                    status: "For Approval",
+                    detail: "Application pending for approval by CHED",
+                    dateTime: new Date(),
+                });
+
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then(
@@ -366,10 +375,13 @@ export default {
             const appTypeQuery = new Parse.Query(appTypes);
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
+
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");
             this.reqs = application.get("requirements");
+            this.statusTracker = application.get("statusTracker");
+
             var months = [
                 "January",
                 "February",
@@ -387,17 +399,25 @@ export default {
             var month = application.createdAt.getMonth();
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
+            var hour = application.createdAt.getHours();
+            var minutes = application.createdAt.getMinutes();
+            var seconds = application.createdAt.getSeconds();
+            var period = "AM";
+            if(hour >= 12) {
+                hour -= 12;
+                period = "PM"
+            }
 
-            this.compInitDate = new Date(application.get("complianceDueDate"));
+            // this.compInitDate = new Date(application.get("complianceDueDate"));
 
           
 
             var compDateCalc = this.compInitDate;
 
-            if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
-                compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
+            // if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
+            //     compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
              
-            }
+            // }
 
             var compMonth = compDateCalc.getMonth();
             var compDay = compDateCalc.getDate();
@@ -416,7 +436,7 @@ export default {
             var compMinute = compDateCalc.getMinutes();
             var compSeconds = compDateCalc.getSeconds();
 
-            this.dateApplied = months[month] + " " + day + ", " + year;
+            this.dateApplied = months[month] + " " + day + ", " + year + " " + hour + ":" + minutes + ":" + seconds + " " + period;
             this.summary = application.get("summary");
             this.recommendation = application.get("recommendation");
             this.complianceDueDate = months[compMonth] + " " + compDay + ", " + compYear + " " + compHour + ":" + compMinute + ":" + compSeconds + " " + timePeriod;

@@ -8,7 +8,7 @@
                         <div class="flex justify-between items-center bg-brand-lightblue/5 w-full px-5 py-2 rounded-sm">
                             <div class="flex">
                                 <div class="font-semibold text-lg">
-                                    APPLY FOR APPLICATION
+                                    CHOOSE APPLICATION TYPE
                                 </div>
                                 <div class="dropdown dropdown-start pl-1 pr-16">
                                     <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
@@ -242,7 +242,7 @@ export default {
             window.scrollTo(0, 0);
         },
         submitApplication(values) {
-            this.$refs.Spinner.show();
+            
             var has_error = 0;
 
             if (this.pointPerson == "" ||
@@ -259,6 +259,7 @@ export default {
                 has_error = 1;
             }
             if (has_error < 1) {
+                this.$refs.Spinner.show();
                 try {
                     var reqFiles = [];
                     let requirement = null;
@@ -308,6 +309,13 @@ export default {
                             recommendation: '',
                             paymentStatus: '',
                             complianceDueDate: new Date(yesterday),
+                            statusTracker: [
+                                {
+                                    status: "For Approval",
+                                    detail: "Application was submitted to CHED",
+                                    dateTime: new Date(),
+                                }
+                            ]
                         })
                         .then(
                             (newApplication) => {

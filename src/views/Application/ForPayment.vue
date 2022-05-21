@@ -19,7 +19,7 @@
                             Proof of Payment for Application
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Proof of Payment for Evaluation
+                            Proof of Payment For Inspection
                         </th>
                     </tr>
                 </thead>
@@ -29,7 +29,7 @@
                             <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment for Application</a>
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment for Evaluation</a>
+                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment For Inspection</a>
                         </th>
                     </tr>
                 </tbody>
@@ -99,6 +99,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -113,12 +114,16 @@ import {
     required
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 
 const toast = useToast();
 
 export default {
     props: ["appID"],
     name: "ForApproval",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -152,6 +157,7 @@ export default {
             disapproved: '',
             approved: '',
             fileCheker: false,
+            statusTracker: [],
         };
     },
     validations() {
@@ -200,20 +206,30 @@ export default {
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-                application.set("applicationStatus", "For Evaluation");
+                application.set("applicationStatus", "For Inspection");
                 application.set("selectedSupervisor", this.selectedSupervisor);
+
+                this.statusTracker.push({
+                    status: "For Inspection",
+                    detail: "Application was changed For Inspection",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved for evaluation",
+                            status: "Your Application has been moved For Inspection",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
-                        toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+
+                        this.$refs.Spinner.show();
+
+                        toast(this.type.toLowerCase() + " has been moved for inspection", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
@@ -237,7 +253,14 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
+        //Move application to For Revision due to wrong uploaded files
         async submitRevision() {
             try {
                 const applications = Parse.Object.extend("Applications");
@@ -260,6 +283,13 @@ export default {
                 application.set("applicationStatus", "For Revision");
                 application.set("paymentStatus", "Verified");
 
+                this.statusTracker.push({
+                    status: "For Revision",
+                    detail: "Application was made For Revision",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then((application) => {
@@ -270,6 +300,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for revision", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -293,22 +326,16 @@ export default {
                 alert("Error" + error.message);
                 console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
         },
 
         modal() {
             var has_error = 0;
-            //var error_text = "Account not created due to the following reasons:\n";
-            // if (
-            //     this.statusShow.filter(x => x == "Approved").length != this.statusShow.length
-            // ) {
-            //     toast("Please fill out the required information", {
-            //         type: TYPE.ERROR,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     has_error = 1;
-            // }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
             }
@@ -375,6 +402,7 @@ export default {
         const applicationType = await appTypeQuery.first();
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+        this.statusTracker = application.get("statusTracker");
 
         //Query Supervisors
         const Designations = Parse.Object.extend("Designations");

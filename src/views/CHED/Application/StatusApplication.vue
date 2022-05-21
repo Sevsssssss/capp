@@ -38,10 +38,10 @@
         <div v-else-if="status.toUpperCase() === 'FOR REVISION'">
             <ForRevision :appID="appID" />
         </div>
-        <div v-else-if="status.toUpperCase() === 'FOR EVALUATION'">
+        <div v-else-if="status.toUpperCase() === 'FOR INSPECTION'">
             <ForEvaluation :appID="appID" />
         </div>
-         <div v-else-if="status.toUpperCase() === 'FOR EVALUATION ASSIGNED'">
+         <div v-else-if="status.toUpperCase() === 'FOR INSPECTION ASSIGNED'">
             <ForEvalAssigned :appID="appID" />
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR VERIFICATION'">

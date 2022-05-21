@@ -1,7 +1,6 @@
 <template>
 <!--Header-->
 <div class="m-5">
-    {{appReqs}}
     <form v-on:submit.prevent="submit">
         <div class="overflow-x-auto shadow-lg rounded-lg px-8 py-5">
             <div class="" style="justify-content: space-between">

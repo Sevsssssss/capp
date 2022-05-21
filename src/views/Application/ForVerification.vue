@@ -1,6 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{tables}}
     <div class="mx-3">
         <div class="py-4 px-1">
             <div class="flex justify-start space-x-4">
@@ -121,6 +120,7 @@
             </div>
         </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -131,6 +131,7 @@ import {
     POSITION
 } from "vue-toastification";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     required
 } from "@vuelidate/validators";
@@ -141,6 +142,9 @@ const toast = useToast();
 export default {
     props: ["appID"],
     name: "ForApproval",
+    components: {
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             // id: this.$route.params.id,
@@ -172,6 +176,7 @@ export default {
             search: "",
             disapproved: '',
             approved: '',
+            statusTracker: [],
         };
     },
     validations() {
@@ -200,63 +205,6 @@ export default {
         },
         validate2() {
             return this.showModal2;
-        },
-        async submitChanges() {
-            try {
-                const applications = Parse.Object.extend("Applications");
-                const query = new Parse.Query(applications);
-                query.equalTo("objectId", this.appID);
-
-                const application = await query.first();
-
-                var requirements = [];
-
-                for (var i = 0; i < this.statusShow.length; i++) {
-                    requirements.push({
-                        id: application.get("requirements")[i].id,
-                        file: application.get("requirements")[i].file,
-                        status: this.statusShow[i],
-                        comment: this.comment[i],
-                    });
-                }
-                application.set("requirements", requirements);
-                application.set("applicationStatus", "For Evaluation");
-                application.set("selectedSupervisor", this.selectedSupervisor);
-
-                application
-                    .save()
-                    .then((application) => {
-                        const params = {
-                            email: application.get("email"),
-                            status: "Your Application has been moved for evaluation",
-                            type: "sendStatusUpdate",
-                            approved: true,
-                        };
-                        Parse.Cloud.run("sendStatusUpdate", params);
-                        toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-                                type: TYPE.INFO,
-                                timeout: 2000,
-                                position: POSITION.TOP_RIGHT,
-                                hideProgressBar: false,
-                                closeButton: false,
-
-                            }),
-                            console.log("Object Updated: " + application.id);
-                    })
-
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/application/ " + this.appID.slice(0, 2).join(""),
-                    })
-                }, 2000);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-
-            } catch (error) {
-                alert("Error" + error.message);
-                console.log(error);
-            }
         },
         async submitRevision() {
             try {
@@ -287,6 +235,12 @@ export default {
 
                     application.set("complianceDueDate", new Date(complianceDueDate));
                 }
+                this.statusTracker.push({
+                    status: "For Compliance",
+                    detail: "Application didn't Comply, updated to For Compliance status.",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
@@ -298,6 +252,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for compliance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -321,6 +278,12 @@ export default {
                 alert("Error" + error.message);
                 // console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         async submitEvaluation() {
             try {
@@ -345,6 +308,13 @@ export default {
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Issuance");
 
+                this.statusTracker.push({
+                    status: "For Issuance",
+                    detail: "Your Application has been moved for issuance",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then((application) => {
@@ -355,6 +325,9 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
                         toast(this.type.toLowerCase() + " has been moved for issuance", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
@@ -378,6 +351,12 @@ export default {
                 alert("Error" + error.message);
                 // console.log(error);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         modal() {
             var has_error = 0;
@@ -440,6 +419,7 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        this.statusTracker = application.get("statusTracker");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

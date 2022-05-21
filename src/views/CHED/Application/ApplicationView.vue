@@ -31,7 +31,7 @@
                             <option>For Approval</option>
                             <option>For Revision</option>
                             <option>For Payment</option>
-                            <option>For Evaluation</option>
+                            <option>For Inspection</option>
                             <option>For Compliance</option>
                             <option>For Verification</option>
                             <option>For Issuance</option>
@@ -43,7 +43,7 @@
             </div>
         </div>
         <!-- Table body -->
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -59,57 +59,63 @@
                     <tr class="bg-white border-b " v-for="table in searchApplication" :key="table">
                         <td class="px-6 py-4">
                             <div class="">
-                                <div class="font-semibold text-grey-300">
+                                <div class="font-bold">
                                     {{ table.HeiName }}
                                 </div>
                                 <div class="font-normal">{{ table.address }}</div>
                             </div>
                         </td>
-                        <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <td scope="row" class="px-6 py-4">
                             {{ table.type }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 ">
                             {{ table.program }}
                         </td>
                         <td class="px-6 py-4">
                             {{ table.dateApplied }}
                         </td>
                         <td class="px-6 py-4 ">
-                            <!-- :class="'homeIcon.' + data.color" -->
-                            <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval">
+                            <div v-if="table.status === 'For Approval'" class="indicator w-fit">
+                                <div class="">
+                                    <span v-if="table.selectedSupervisor != null && table.selectedSupervisor != '' " class="indicator-item indicator-top indicator-end right-7 badge badge-accent text-sm text-brand-white">assigned</span>
+                                </div>
+                                <div class="btn-sm1 rounded-md p-2 font-normal approval uppercase">
+                                    {{ table.status }}
+                                </div>
+                            </div>
+                            <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision">
-                                {{ table.status }}
-                            </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class="indicator">
-                                <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="indicator-item indicator-top indicator-end  badge badge-accent text-sm">assigned</span>
-                                <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation ">
+                            <div v-else-if="table.status === 'For Inspection'" class="indicator w-fit">
+                                <div class="">
+                                    <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="indicator-item indicator-top indicator-end right-7 badge badge-accent text-sm text-brand-white">assigned</span>
+                                </div>
+                                <div class="flex btn-sm1 rounded-md p-2 font-normal evaluation uppercase">
 
                                     {{ table.status }}
 
                                 </div>
                             </div>
-                            <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
+                            <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance">
+                            <div v-else-if="table.status === 'For Issuance'" class="btn-sm1 rounded-md p-2 font-normal issuance uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
+                            <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment">
+                            <div v-else-if="table.status === 'For Payment'" class="btn-sm1 rounded-md p-2 font-normal payment uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification">
+                            <div v-else-if="table.status === 'For Verification'" class="btn-sm1 rounded-md p-2 font-normal verification uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
+                            <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant uppercase">
                                 {{ table.status }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-6 py-4 text-center space-x-3">
                             <router-link :to="{
                                 name: 'StatusApplication',
                                 params: {
@@ -117,8 +123,10 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
+                            <label v-if="table.status == 'For Approval' && table.selectedSupervisor == null || table.selectedSupervisor == '' " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
+                            <label for="tracking" @click="id(table.appID)" class="font-medium text-blue-600 hover:underline">Track</label>
                         </td>
                     </tr>
                 </tbody>
@@ -145,7 +153,7 @@
                 database.
             </div>
             <div class="table-footer flex flex-row justify-between">
-                <div class="flex flex-row pl-4 justify-center items-center">
+                <div class="flex flex-row pl-3 justify-center items-center">
                     <span class="text-sm text-gray-700">
                         Showing
                         <span class="font-semibold text-gray-900">{{
@@ -164,7 +172,7 @@
                         Entries
                     </span>
                 </div>
-                <div class="p-2 pr-4">
+                <div class="p-3 pr-3">
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
@@ -178,24 +186,129 @@
                 </div>
             </div>
         </div>
+        <input type="checkbox" id="for-approval" class="modal-toggle" />
+        <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">ASSIGN SUPERVISOR</div>
+
+                <div class="flex flex-row py-6 justify-start items-start">
+                    <div class="month-sort flex flex-row border rounded-md w-full">
+                        <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
+                            <option disabled>
+                                Select A Supervisor
+                            </option>
+                            <option v-for="supervisor in supervisors" :key="supervisor" :value="supervisor.id">
+                                {{ supervisor.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="for-approval" id="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                </div>
+            </div>
+        </div>
+
+        <input type="checkbox" id="tracking" class="modal-toggle" />
+        <div class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md mb-2">TRACK APPLICATION</div>
+                <div class="mb-2">
+                    <div class="flex flex-row space-x-2 space-between">
+                        <div class="flex flex-row">
+                            <div class="font-semibold">
+                                ID:
+                            </div> {{this.appID}}
+                        </div>
+                        <div class="flex flex-row">
+                            <div class="font-semibold">Application Type: {{stAppType}} </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="flex flex-row">
+                            <div class="font-semibold">HEI: {{stHEI}} </div> 
+                        </div>
+                        <div class="flex flex-row">
+                            <div class="font-semibold">Program: {{stProgram}} </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
+
+                        <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div>
+                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div v-if="index+1 < statusTracker.length" class="w-px h-full bg-gray-300"></div>
+                            </div>
+                            <div class="pb-4 ">
+                                <div class="text-md font-semibold">{{track.detail}}</div>
+                                <div>{{track.dateTime}}</div>
+                            </div>
+                        </div>
+                        
+
+                        <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div>
+                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="pb-4 ">
+                                <div class="text-md font-semibold">{{track.detail}}</div>
+                                <div>{{track.dateTime}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                </div>
+            </div>
+        </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+
+const toast = useToast();
+
 export default {
     name: "ApplicationView",
     components: {
         DataCards,
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
             currentpage: 0,
-            numPerPage: 10,
+            numPerPage: 5,
             sort_type: "All",
             search: "",
             headers: [{
@@ -216,9 +329,32 @@ export default {
             ],
             supervisor: false,
             sort_type_var: false,
-
+            showModal1: false,
+            supervisors: [],
+            selectedSupervisor: "Select A Supervisor",
             datas: [],
             tables: [],
+            statusTracker: [
+                {   
+                    status: "For Approval",
+                    detail: "Application was Created",
+                    dateTime: "Thursday, July 4, 2021 - 9:14 am"
+                },
+                {
+                    status: "For Evaluation",
+                    detail: "Application was assigned to CHED Education Supervisor",
+                    dateTime: "Thursday, July 4, 2021 - 9:16 am"
+                },
+                {
+                    status: "Completed",
+                    detail: "Application was deemed not worthy of their time and efforts",
+                    dateTime: "Thursday, July 4, 2021 - 9:18 am"
+                },
+            ],
+            appID: "",
+            stAppType: "",
+            stHEI: "",
+            stProgram: "",
         };
     },
     computed: {
@@ -236,6 +372,49 @@ export default {
     },
 
     methods: {
+        async id(appid) {
+            this.appID = appid;
+
+            //For Tracking
+
+            //Query Application
+            const Applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(Applications);
+            queryApp.equalTo("objectId", this.appID);
+            const querResultApp = await queryApp.first();
+
+            //Query Application Type
+            const AppTypes = Parse.Object.extend("ApplicationTypes");
+            const queryAppTypes = new Parse.Query(AppTypes);
+            queryAppTypes.equalTo("objectId", querResultApp.get("applicationType"));
+            const querResultAppType = await queryAppTypes.first();
+
+            //Query HEI
+            const heis = new Parse.Query(Parse.User);
+            heis.equalTo("objectId", querResultApp.get("createdBy"));
+            const querResultHEI = await heis.first({
+                useMasterKey: true,
+            });
+
+            //Query Program
+            const Programs = Parse.Object.extend("Programs");
+            const queryProgs = new Parse.Query(Programs);
+            queryProgs.equalTo("objectId", querResultApp.get("program"));
+            const querResultProgs = await queryProgs.first();
+
+            this.stAppType = querResultAppType.get("applicationTypeName");
+            this.stHEI = querResultHEI.get("hei_name");
+            this.stProgram = querResultProgs.get("programName");
+        },
+        modal() {
+            var has_error = 0;
+            if (has_error < 1) {
+                this.showModal1 = !this.showModal1;
+            }
+        },
+        validate() {
+            return this.showModal1;
+        },
         supervisorChecker() {
             return this.supervisor;
         },
@@ -417,13 +596,13 @@ export default {
 
             }
 
-            //If Selected For Evaluation
-            else if (this.sort_type == "For Evaluation") {
+            //If Selected For Inspection
+            else if (this.sort_type == "For Inspection") {
                 var storedApplicationsFE = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
-                query.equalTo("applicationStatus", "For Evaluation");
+                query.equalTo("applicationStatus", "For Inspection");
 
                 const querResult = await query.find();
 
@@ -552,6 +731,69 @@ export default {
 
             }
         },
+        async submitChanges() {
+            try {
+                const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.equalTo("objectId", this.appID);
+
+                const application = await query.first();
+                // application.set("applicationStatus", "For Approval");
+                console.log(this.selectedSupervisor);
+                application.set("selectedSupervisor", this.selectedSupervisor);
+
+                application
+                    .save()
+                    .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been sent to the Designated Education Supervisor",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
+                        toast(this.type.toLowerCase() + " has been assigned to an Education Supervisor", {
+                                type: TYPE.INFO,
+                                timeout: 2000,
+                                position: POSITION.TOP_RIGHT,
+                                hideProgressBar: false,
+                                closeButton: false,
+
+                            }),
+                            console.log("Object Updated: " + application.id);
+                    })
+
+                setTimeout(() => {
+                    this.$router.push({
+                        path: "/application",
+                    })
+                }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            } catch (error) {
+                alert("Error" + error.message);
+                console.log(error);
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
+        showToastSupervisor() {
+            toast("Please select the required supervisor", {
+                type: TYPE.ERROR,
+                timeout: 3000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+            });
+        }
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -586,13 +828,16 @@ export default {
 
             const desigQueryResult = await queryDes.first();
 
+            console.log(Parse.User.current().get("designation"));
             if (Parse.User.current().get("designation") == desigQueryResult.id) {
                 query.equalTo("selectedSupervisor", Parse.User.current().id);
-                query.equalTo("applicationStatus", "For Evaluation");
+                // query.equalTo("applicationStatus", "For Approval");
                 this.supervisor = true;
             }
-            const querResult = await query.find();
 
+
+            const querResult = await query.find();
+            
             //Get details of the applications
             for (var i = 0; i < querResult.length; i++) {
                 var hei_name = "";
@@ -616,9 +861,52 @@ export default {
                     "November",
                     "December",
                 ];
+                var days = [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Satursday",
+                    "Sunday",
+                ]
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
+                var hour = application.createdAt.getHours();
+                var minutes = application.createdAt.getMinutes();
+                var seconds = application.createdAt.getSeconds();
+                
+
+                var statTrack = [];
+
+                for(var s = 0; s < application.get("statusTracker").length; s++){
+                    var statDate = new Date(application.get("statusTracker")[s].dateTime)
+                    var statMonth = statDate.getMonth();
+                    var statNumDate = statDate.getDate();
+                    var statYear = statDate.getFullYear();
+                    var statHour = statDate.getHours();
+                    var statMinutes = statDate.getMinutes();
+                    var statSeconds = statDate.getSeconds();
+                    var statDay = statDate.getDay();
+                    var period = "AM";
+
+                    if(statHour >= 12){
+                        statHour -= 12;
+                        period = "PM";
+                    }
+
+                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " 
+                    + statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
+
+                    statTrack.push({
+                        status: application.get("statusTracker")[s].status,
+                        detail: application.get("statusTracker")[s].detail,
+                        dateTime: statDateText,
+                    })
+                }
+
+                this.statusTracker = statTrack;
 
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");
@@ -634,6 +922,7 @@ export default {
 
                 const program = await programQuery.first();
 
+                
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -641,12 +930,13 @@ export default {
                     phoneNumber: application.get("phoneNumber"),
                     type: appType.get("applicationTypeName"),
                     requirements: application.get("requirements"),
-                    dateApplied: months[month] + " " + day + ", " + year,
+                    dateApplied: months[month] + " " + day + ", " + year + " " + hour + ":" + minutes + ":" + seconds,
                     status: application.get("applicationStatus"),
                     program: program.get("programName"),
                     HeiName: hei_name,
                     appID: application.id,
-                    selectedRqat: application.get("selectedRQAT")
+                    selectedRqat: application.get("selectedRQAT"),
+                    selectedSupervisor: application.get("selectedSupervisor")
                 });
             }
             this.totalEntries = querResult.length;
@@ -666,7 +956,7 @@ export default {
 
             const applicationsFE = Parse.Object.extend("Applications");
             const queryFE = new Parse.Query(applicationsFE);
-            queryFE.equalTo("applicationStatus", "For Evaluation");
+            queryFE.equalTo("applicationStatus", "For Inspection");
 
             const applicationsFC = Parse.Object.extend("Applications");
             const queryFC = new Parse.Query(applicationsFC);
@@ -704,7 +994,7 @@ export default {
                     type: "payment",
                 },
                 {
-                    title: "FOR EVALUATION",
+                    title: "FOR INSPECTION",
                     num: await queryFE.count(),
                     type: "evaluation",
                 },
@@ -734,7 +1024,38 @@ export default {
                     type: "noncompliant",
                 },
             ];
+
+            //Query Supervisors
+            
+            const queryDesig = new Parse.Query(Designations);
+            queryDesig.equalTo("name", "EDUCATION SUPERVISOR");
+
+            const designationQueryResult = await queryDesig.first();
+
+            const user = new Parse.Query(Parse.User);
+            user.equalTo("designation", designationQueryResult.id);
+            const supervisorResult = await user.find();
+
+            var dbSupervisors = [];
+
+            for (var j = 0; j < supervisorResult.length; j++) {
+                const sup = supervisorResult[j];
+
+                dbSupervisors.push({
+                    id: sup.id,
+                    name: sup.get("name")["lastname"] +
+                        ", " +
+                        sup.get("name")["firstname"] +
+                        " " +
+                        sup.get("name")["middleinitial"] +
+                        ".",
+                })
+            }
+
+            this.supervisors = dbSupervisors;
         }
+
+
     },
 };
 </script>

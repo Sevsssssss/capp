@@ -1,8 +1,5 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{statusShow}}
-    {{comment1.length}}
-    {{eval.length}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -225,6 +222,7 @@ export default {
             summary: "",
             recommendation: "",
             cmoNoYr: [],
+            statusTracker: [],
         };
     },
     validations() {
@@ -392,13 +390,28 @@ export default {
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
-                application.set("complianceDueDate", complianceDueDate);
+                application.set("complianceDueDate", new Date(complianceDueDate));
+                
+                this.statusTracker.push({
+                    status: "For Compliance",
+                    detail: "Application didn't comply.",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
+                
+                this.statusTracker.push({
+                    status: "For Issuance",
+                    detail: "Application Approved, waiting for Issuance.",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
             }
 
             application
@@ -478,6 +491,8 @@ export default {
                 useMasterKey: true,
             });
 
+            this.statusTracker = application.get("statusTracker")
+            
             var months = [
                 "January",
                 "February",
