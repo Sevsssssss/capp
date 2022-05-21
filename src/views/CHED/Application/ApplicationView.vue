@@ -31,7 +31,7 @@
                             <option>For Approval</option>
                             <option>For Revision</option>
                             <option>For Payment</option>
-                            <option>For Evaluation</option>
+                            <option>For Inspection</option>
                             <option>For Compliance</option>
                             <option>For Verification</option>
                             <option>For Issuance</option>
@@ -75,14 +75,18 @@
                             {{ table.dateApplied }}
                         </td>
                         <td class="px-6 py-4 ">
-                            <!-- :class="'homeIcon.' + data.color" -->
-                            <div v-if="table.status === 'For Approval'" class="btn-sm1 rounded-md p-2 font-normal approval uppercase">
-                                {{ table.status }}
+                            <div v-if="table.status === 'For Approval'" class="indicator w-fit">
+                                <div class="">
+                                    <span v-if="table.selectedSupervisor != null && table.selectedSupervisor != '' " class="indicator-item indicator-top indicator-end right-7 badge badge-accent text-sm text-brand-white">assigned</span>
+                                </div>
+                                <div class="btn-sm1 rounded-md p-2 font-normal approval uppercase">
+                                    {{ table.status }}
+                                </div>
                             </div>
                             <div v-else-if="table.status === 'For Revision'" class="btn-sm1 rounded-md p-2 font-normal revision uppercase">
                                 {{ table.status }}
                             </div>
-                            <div v-else-if="table.status === 'For Evaluation'" class="indicator w-fit">
+                            <div v-else-if="table.status === 'For Inspection'" class="indicator w-fit">
                                 <div class="">
                                     <span v-if="table.selectedRqat != null && table.selectedRqat != '' " class="indicator-item indicator-top indicator-end right-7 badge badge-accent text-sm text-brand-white">assigned</span>
                                 </div>
@@ -111,7 +115,7 @@
                                 {{ table.status }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-6 py-4 text-center space-x-3">
                             <router-link :to="{
                                 name: 'StatusApplication',
                                 params: {
@@ -119,8 +123,9 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="table.status != 'For Approval' && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
+                            <label href="#" @click="id(table.appID)" for="for-approval" v-if="table.status == 'For Approval'" class="font-medium text-blue-600 hover:underline">Assign</label>
                         </td>
                     </tr>
                 </tbody>
@@ -180,19 +185,53 @@
                 </div>
             </div>
         </div>
+        <input type="checkbox" id="for-approval" class="modal-toggle" />
+        <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">ASSIGN SUPERVISOR</div>
+
+                <div class="flex flex-row py-6 justify-start items-start">
+                    <div class="month-sort flex flex-row border rounded-md w-full">
+                        <select class="font-normal rounded-md select select-ghost select-sm w-full" style="outline: none" id="application_sort" v-model="selectedSupervisor">
+                            <option disabled>
+                                Select A Supervisor
+                            </option>
+                            <option v-for="supervisor in supervisors" :key="supervisor" :value="supervisor.id">
+                                {{ supervisor.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="for-approval" id="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'for-approval' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                </div>
+            </div>
+        </div>
     </div>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
 import DataCards from "@/components//DataCards.vue";
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import Parse from "parse";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
+
+const toast = useToast();
+
 export default {
     name: "ApplicationView",
     components: {
         DataCards,
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     data() {
         return {
@@ -218,9 +257,12 @@ export default {
             ],
             supervisor: false,
             sort_type_var: false,
-
+            showModal1: false,
+            supervisors: [],
+            selectedSupervisor: "Select A Supervisor",
             datas: [],
             tables: [],
+            appID: "",
         };
     },
     computed: {
@@ -238,6 +280,18 @@ export default {
     },
 
     methods: {
+        id(appid) {
+            this.appID = appid
+        },
+        modal() {
+            var has_error = 0;
+            if (has_error < 1) {
+                this.showModal1 = !this.showModal1;
+            }
+        },
+        validate() {
+            return this.showModal1;
+        },
         supervisorChecker() {
             return this.supervisor;
         },
@@ -419,13 +473,13 @@ export default {
 
             }
 
-            //If Selected For Evaluation
-            else if (this.sort_type == "For Evaluation") {
+            //If Selected For Inspection
+            else if (this.sort_type == "For Inspection") {
                 var storedApplicationsFE = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
-                query.equalTo("applicationStatus", "For Evaluation");
+                query.equalTo("applicationStatus", "For Inspection");
 
                 const querResult = await query.find();
 
@@ -554,6 +608,69 @@ export default {
 
             }
         },
+        async submitChanges() {
+            try {
+                const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.equalTo("objectId", this.appID);
+
+                const application = await query.first();
+                // application.set("applicationStatus", "For Approval");
+                console.log(this.selectedSupervisor);
+                application.set("selectedSupervisor", this.selectedSupervisor);
+
+                application
+                    .save()
+                    .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application has been sent to the Designated Education Supervisor",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
+
+                        this.$refs.Spinner.show();
+
+                        toast(this.type.toLowerCase() + " has been assigned to an Education Supervisor", {
+                                type: TYPE.INFO,
+                                timeout: 2000,
+                                position: POSITION.TOP_RIGHT,
+                                hideProgressBar: false,
+                                closeButton: false,
+
+                            }),
+                            console.log("Object Updated: " + application.id);
+                    })
+
+                setTimeout(() => {
+                    this.$router.push({
+                        path: "/application",
+                    })
+                }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
+            } catch (error) {
+                alert("Error" + error.message);
+                console.log(error);
+            }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
+        showToastSupervisor() {
+            toast("Please select the required supervisor", {
+                type: TYPE.ERROR,
+                timeout: 3000,
+                hideProgressBar: true,
+                position: POSITION.TOP_RIGHT,
+            });
+        }
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -582,17 +699,17 @@ export default {
             const query = new Parse.Query(applications);
 
             //Get to view applications to specific user (Education Supervisor)
-            const Designations = Parse.Object.extend("Designations");
-            const queryDes = new Parse.Query(Designations);
-            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+            // const Designations = Parse.Object.extend("Designations");
+            // const queryDes = new Parse.Query(Designations);
+            // queryDes.equalTo("name", "EDUCATION SUPERVISOR");
 
-            const desigQueryResult = await queryDes.first();
+            // const desigQueryResult = await queryDes.first();
 
-            if (Parse.User.current().get("designation") == desigQueryResult.id) {
-                query.equalTo("selectedSupervisor", Parse.User.current().id);
-                query.equalTo("applicationStatus", "For Evaluation");
-                this.supervisor = true;
-            }
+            // if (Parse.User.current().get("designation") == desigQueryResult.id) {
+            //     query.equalTo("selectedSupervisor", Parse.User.current().id);
+            //     query.equalTo("applicationStatus", "For Inspection");
+            //     this.supervisor = true;
+            // }
             const querResult = await query.find();
 
             //Get details of the applications
@@ -648,7 +765,8 @@ export default {
                     program: program.get("programName"),
                     HeiName: hei_name,
                     appID: application.id,
-                    selectedRqat: application.get("selectedRQAT")
+                    selectedRqat: application.get("selectedRQAT"),
+                    selectedSupervisor: application.get("selectedSupervisor")
                 });
             }
             this.totalEntries = querResult.length;
@@ -668,7 +786,7 @@ export default {
 
             const applicationsFE = Parse.Object.extend("Applications");
             const queryFE = new Parse.Query(applicationsFE);
-            queryFE.equalTo("applicationStatus", "For Evaluation");
+            queryFE.equalTo("applicationStatus", "For Inspection");
 
             const applicationsFC = Parse.Object.extend("Applications");
             const queryFC = new Parse.Query(applicationsFC);
@@ -706,7 +824,7 @@ export default {
                     type: "payment",
                 },
                 {
-                    title: "FOR EVALUATION",
+                    title: "FOR INSPECTION",
                     num: await queryFE.count(),
                     type: "evaluation",
                 },
@@ -736,6 +854,35 @@ export default {
                     type: "noncompliant",
                 },
             ];
+
+            //Query Supervisors
+            const Designations = Parse.Object.extend("Designations");
+            const queryDes = new Parse.Query(Designations);
+            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+
+            const desigQueryResult = await queryDes.first();
+
+            const user = new Parse.Query(Parse.User);
+            user.equalTo("designation", desigQueryResult.id);
+            const supervisorResult = await user.find();
+
+            var dbSupervisors = [];
+
+            for (var j = 0; j < supervisorResult.length; j++) {
+                const sup = supervisorResult[j];
+
+                dbSupervisors.push({
+                    id: sup.id,
+                    name: sup.get("name")["lastname"] +
+                        ", " +
+                        sup.get("name")["firstname"] +
+                        " " +
+                        sup.get("name")["middleinitial"] +
+                        ".",
+                })
+            }
+
+            this.supervisors = dbSupervisors;
         }
     },
 };

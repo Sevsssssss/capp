@@ -97,7 +97,7 @@ export default {
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
             query.equalTo("selectedSupervisor", Parse.User.current().id);
-            query.equalTo("applicationStatus", "For Evaluation");
+            query.equalTo("applicationStatus", "For Inspection");
             this.supervisor = true;
         }
 

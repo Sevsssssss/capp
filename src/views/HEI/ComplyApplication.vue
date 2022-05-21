@@ -1,7 +1,6 @@
 <template>
 <div>
     <div class="mx-3">
-        {{resubmittedDesc}}
         <div class="flex justify-between items-start">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
