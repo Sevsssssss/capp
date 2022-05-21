@@ -25,7 +25,7 @@
                 <div class="flex flex-row">
                     <!-- button -->
                     <div class="h-fit pr-5 pt-3 items-center">
-                        <label type="button" for="createAccessType" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                        <label @click="reset()" type="button" for="createAccessType" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                             <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
@@ -607,6 +607,9 @@ export default {
         },
     },
     methods: {
+        reset(){
+            this.checkedAccessTypes = [];
+        },
         async editAccessType() {
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const atQuery = new Parse.Query(AccessTypes);
