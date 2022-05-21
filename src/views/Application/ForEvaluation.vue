@@ -16,14 +16,14 @@
             </div>
         </div>
     </div>
-    <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row mx-1 my-1">
-        <span class="text-sm">Assigned To:</span>
-        <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
-            <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
+    <div class="py-2">
+        <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row">
+            <span class="text-sm">Assigned To:</span>
+            <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
+                <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
+            </div>
         </div>
-
     </div>
-
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -183,7 +183,7 @@ export default {
         appTypeChecker() {
 
             return this.apptypechecker
-            
+
         },
         async assignRQAT() {
             try {
@@ -449,7 +449,7 @@ export default {
 
         if (this.type == appTypeQuerResult.id) {
             this.apptypechecker = true;
-            
+
         }
         console.log(this.apptypechecker);
         if (this.apptypechecker == true && application.get("dateOfEval") != null) {

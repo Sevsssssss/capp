@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
                     <tr>
@@ -61,7 +61,9 @@
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">ACCEPT APPLICATION?</div>
-
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to accept the application?
+            </p>
             <div class="modal-action">
                 <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitApproval()">Continue</label>
@@ -88,7 +90,7 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">REVISE {{ type }}</div>
             <p class="py-2 text-sm">
-                Are you sure??
+                Are you sure you want to revise the application?
             </p>
             <div class="modal-action">
                 <label for="for-revision" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>

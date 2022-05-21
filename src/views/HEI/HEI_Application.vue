@@ -61,7 +61,7 @@
                         <div v-else-if="table.status === 'For Revision'" class="btn-sm1 p-2 font-normal revision rounded-md">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'For Evaluation'" class="btn-sm1 p-2 font-normal evaluation rounded-md">
+                        <div v-else-if="table.status === 'For Inspection'" class="btn-sm1 p-2 font-normal evaluation rounded-md">
                             {{ table.status }}
                         </div>
                         <div v-else-if="table.status === 'For Compliance'" class="btn-sm1 rounded-md p-2 font-normal forcompliance">
@@ -73,9 +73,9 @@
                         <div v-else-if="table.status === 'Completed'" class="btn-sm1 rounded-md p-2 font-normal completed">
                             {{ table.status }}
                         </div>
-                        <div v-else-if="table.status === 'For Payment'" class="relative pt-3">
-                            <span v-if="table.paymentStatus != ''" class="absolute top-0 left-0 badge badge-accent text-sm">{{table.paymentStatus}}</span>
-                            <div  class="btn-sm1 rounded-md font-normal payment">
+                        <div v-else-if="table.status === 'For Payment'" class="indicator w-fit">
+                            <span v-if="table.paymentStatus != ''" class="indicator-item indicator-top indicator-end right-10 badge badge-accent text-sm text-brand-white">{{table.paymentStatus}}</span>
+                            <div  class="flex btn-sm1 rounded-md p-2 font-normal payment uppercase">
                                 {{ table.status}}
                             </div>
                         </div>
