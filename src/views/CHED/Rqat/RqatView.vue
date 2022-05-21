@@ -100,7 +100,7 @@
             </div>
             <!-- Table Footer -->
             <div class="table-footer flex flex-row justify-between">
-                <div class="flex flex-row pl-4 justify-center items-center">
+                <div class="flex flex-row pl-3 justify-center items-center">
                     <span class="text-sm text-gray-700 ">
                         Showing
                         <span class="font-semibold text-gray-900 ">{{
@@ -119,7 +119,7 @@
                         Entries
                     </span>
                 </div>
-                <div class="p-2 pr-4">
+                <div class="p-3 pr-3">
                     <div class="btn-group">
                         <ul class="inline-flex -space-x-px">
                             <li>
@@ -170,7 +170,7 @@ export default {
     data() {
         return {
             currentpage: 0,
-            numPerPage: 10,
+            numPerPage: 8,
             totalEntries: 0,
             currentDelAcc: "",
             headers: [{

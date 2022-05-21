@@ -52,16 +52,7 @@
                     </label>
                 </div>
 
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">Address</span>
-                    </label>
-                    <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.address) }" class="input input-bordered w-full" v-model="v$.address.$model" />
-                    <label class="label">
-                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
-                            Address is Required</span>
-                    </label>
-                </div>
+                
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Contact Number</span>
@@ -72,29 +63,92 @@
                             Contact Number is Required</span>
                     </label>
                 </div>
-                <div class="flex flex-row justify-between">
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Institutional Code</span>
-                        </label>
-                        <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" style="width: 170px" v-model="v$.inst_code.$model" />
-                        <label class="label">
+                <div class="flex items-center my-4">
+                <label class="block text-dark-200 text-sm mr-5"> Address </label>
+                <hr class="border border-light-400 w-full" />
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="region">Region:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" required>
+                        <option value="" disabled selected>Select Region</option>
+                        <option v-for="region in regions" :value="region.region_code" :key="region.region_code">
+                            {{ region.region_name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="city">Province:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" required>
+                        <option value="" disabled selected>Select Province</option>
+                        <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
+                            {{ province.province_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="city">City:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" required>
+                        <option value="" disabled selected>Select City</option>
+                        <option v-for="city in cities" :value="city.city_code" :key="city.city_code">
+                            {{ city.city_name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text" for="barangay">Barangay:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" required>
+                        <option value="" disabled selected>Select Barangay</option>
+                        <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">
+                            {{ barangay.brgy_name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Street:</span>
+                </label>
+                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.street) }" class="input input-bordered w-full" v-model="v$.street.$model" />
+                <!-- <label class="label">
+                    <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
+                        Address is Required</span>
+                </label> -->
+            </div>
+
+            <hr class="border border-light-400 w-full my-4" />
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Institutional Code</span>
+                </label>
+                <input type="text" placeholder="Enter Code" :class="{ 'input-error': validationStatus(v$.inst_code) }" class="input input-bordered" v-model="v$.inst_code.$model" />
+                <!-- <label class="label">
                             <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.inst_code) }" v-if="validationStatus(v$.inst_code)">
                                 Institutional Code is Required</span>
-                        </label>
-                    </div>
-
-                    <div class="form-control w-full pl-4">
-                        <label class="label">
-                            <span class="label-text">HEI Type:</span>
-                        </label>
-                        <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                            <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
-                                <div class="hei-name">{{ heiType.title }}</div>
-                            </option>
-                        </select>
-                    </div>
-                </div>
+                        </label> -->
+            </div>
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">HEI Type:</span>
+                </label>
+                <select class="select select-bordered w-full font-normal" v-model="hei_type">
+                    <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                        <div class="">{{ heiType.title }}</div>
+                    </option>
+                </select>
+            </div>
                 <div class="flex justify-end pt-4 space-x-4">
                     <button class="btn btn-md btn-outline" @click="$router.go(-1)">
                         Cancel
@@ -219,6 +273,12 @@ import {
     TYPE,
     POSITION
 } from "vue-toastification";
+import {
+    regions,
+    provinces,
+    cities,
+    barangays,
+} from "select-philippines-address";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 import useVuelidate from "@vuelidate/core";
@@ -277,6 +337,18 @@ export default {
             password: "",
             newPass: "",
             newPassConf: "",
+
+            regions: [],
+            provinces: [],
+            cities: [],
+            barangays: [],
+            region: null,
+            regionNo: null,
+            regionName: null,
+            province: null,
+            city: null,
+            barangay: null,
+            street: null,
         };
     },
     validations() {
@@ -291,7 +363,8 @@ export default {
                 required,
                 email,
             },
-            address: {
+            
+            street: {
                 required,
             },
             number: {
@@ -306,6 +379,32 @@ export default {
         };
     },
     methods: {
+        handleProvince(e) {
+            this.regionName = e.target.selectedOptions[0].text;
+            this.regionNo = e.target.value;
+            provinces(e.target.value).then((response) => {
+                this.provinces = response;
+            });
+            console.log(this.regionNo);
+            console.log(this.provinces);
+        },
+        handleCity(e) {
+            this.province = e.target.selectedOptions[0].text;
+            console.log(this.province);
+            cities(e.target.value).then((response) => {
+                this.cities = response;
+            });
+        },
+        handleBarangay(e) {
+            this.city = e.target.selectedOptions[0].text;
+            barangays(e.target.value).then((response) => {
+                this.barangays = response;
+            });
+        },
+        barangaysChange(e) {
+            this.barangay = e.target.selectedOptions[0].text;
+        },
+
         async changePassword() {
             const heis = new Parse.Query(Parse.User);
             heis.equalTo("objectId", this.heiID);
@@ -512,6 +611,11 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            regions().then((response) => {
+                this.regions = response;
+            });
+
             const query = new Parse.Query(Parse.User);
             query.equalTo("objectId", this.heiID);
             const hei = await query.first({

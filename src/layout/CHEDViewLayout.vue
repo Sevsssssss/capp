@@ -7,11 +7,11 @@
                 <MenuOpen class="h-6" /></template>
             <template v-slot:footer>
                 <div class="p-5 grid grid-cols-1 content-center space-y-4" :class="collapsed ? '' : 'hidden'">
-                    <button for="my-modal-7" id="my-modal-7" type="submit" class="flex space-x-1 justify-center items-center text-blue-500" @click="modal()">
+                    <button for="my-modal-7" id="my-modal-7" type="submit" class="flex space-x-1 justify-center items-center focus:outline-none text-blue-500" @click="modal()">
                         <Logout class="h-6" />
                         <span class="text-sm hover:font-semibold">Logout</span>
                     </button>
-                    <p class="flex justify-center text-sm text-grey-300 tracking-wide">
+                    <p class="flex justify-center items-center text-sm text-grey-300 tracking-wide">
                         Copyright &copy; {{ new Date().getFullYear() }} CHEDROV
                     </p>
                 </div>
