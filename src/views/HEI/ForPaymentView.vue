@@ -127,6 +127,7 @@ export default {
                     comment: "",
                 },
             ],
+            statusTracker: [],
             search: "",
         };
     },
@@ -157,10 +158,17 @@ export default {
                     })
                 }
 
+                this.statusTracker.push({
+                    status: "For Verification",
+                    detail: "Application moved to Verification by CHED",
+                    dateTime: new Date(),
+                });
+
                 application
                     .save({
                         payment: this.payment,
-                        paymentStatus: "For Verification"
+                        paymentStatus: "For Verification",
+                        statusTracker: this.statusTracker,
                     })
                     .then(
                         (application) => {
@@ -253,10 +261,14 @@ export default {
             const appTypeQuery = new Parse.Query(appTypes);
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
+
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");
             this.reqs = application.get("requirements");
+            this.statusTracker = application.get("statusTracker")
+
+
             var months = [
                 "January",
                 "February",

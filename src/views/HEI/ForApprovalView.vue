@@ -115,6 +115,7 @@ export default {
                 },
             ],
             search: "",
+            statusTracker: [],
         };
     },
     methods: {
@@ -148,11 +149,18 @@ export default {
                     this.reqs[j].comment = "";
                 }
 
+                this.statusTracker.push({
+                    status: "For Approval",
+                    detail: "Application pending for approval by CHED",
+                    dateTime: new Date(),
+                });
+
                 application
                     .save({
                         requirements: this.reqs,
                         applicationStatus: "For Approval",
                         selectedSupervisor: "",
+                        statusTracker: this.statusTracker,
                     })
                     .then(
                         (application) => {
@@ -238,10 +246,13 @@ export default {
             const appTypeQuery = new Parse.Query(appTypes);
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
+
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");
             this.reqs = application.get("requirements");
+            this.statusTracker = application.get("statusTracker");
+
             var months = [
                 "January",
                 "February",

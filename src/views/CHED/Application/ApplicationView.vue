@@ -123,7 +123,7 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="table.status != 'For Approval' && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="(table.status == 'For Approval' && supervisor)  && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
                             <label v-if="table.status == 'For Approval' && table.selectedSupervisor == null || table.selectedSupervisor == '' " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
                             <label for="tracking" @click="id(table.appID)" class="font-medium text-blue-600 hover:underline">Track</label>
@@ -222,15 +222,15 @@
                             </div> {{this.appID}}
                         </div>
                         <div class="flex flex-row">
-                            <div class="font-semibold">Application Type: </div>
+                            <div class="font-semibold">Application Type: {{stAppType}} </div>
                         </div>
                     </div>
                     <div class="">
                         <div class="flex flex-row">
-                            <div class="font-semibold">HEI: </div> 
+                            <div class="font-semibold">HEI: {{stHEI}} </div> 
                         </div>
                         <div class="flex flex-row">
-                            <div class="font-semibold">Program: </div>
+                            <div class="font-semibold">Program: {{stProgram}} </div>
                         </div>
                     </div>
                 </div>
@@ -352,6 +352,9 @@ export default {
                 },
             ],
             appID: "",
+            stAppType: "",
+            stHEI: "",
+            stProgram: "",
         };
     },
     computed: {
@@ -369,8 +372,39 @@ export default {
     },
 
     methods: {
-        id(appid) {
-            this.appID = appid
+        async id(appid) {
+            this.appID = appid;
+
+            //For Tracking
+
+            //Query Application
+            const Applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(Applications);
+            queryApp.equalTo("objectId", this.appID);
+            const querResultApp = await queryApp.first();
+
+            //Query Application Type
+            const AppTypes = Parse.Object.extend("ApplicationTypes");
+            const queryAppTypes = new Parse.Query(AppTypes);
+            queryAppTypes.equalTo("objectId", querResultApp.get("applicationType"));
+            const querResultAppType = await queryAppTypes.first();
+
+            //Query HEI
+            const heis = new Parse.Query(Parse.User);
+            heis.equalTo("objectId", querResultApp.get("createdBy"));
+            const querResultHEI = await heis.first({
+                useMasterKey: true,
+            });
+
+            //Query Program
+            const Programs = Parse.Object.extend("Programs");
+            const queryProgs = new Parse.Query(Programs);
+            queryProgs.equalTo("objectId", querResultApp.get("program"));
+            const querResultProgs = await queryProgs.first();
+
+            this.stAppType = querResultAppType.get("applicationTypeName");
+            this.stHEI = querResultHEI.get("hei_name");
+            this.stProgram = querResultProgs.get("programName");
         },
         modal() {
             var has_error = 0;
@@ -788,19 +822,22 @@ export default {
             const query = new Parse.Query(applications);
 
             //Get to view applications to specific user (Education Supervisor)
-            // const Designations = Parse.Object.extend("Designations");
-            // const queryDes = new Parse.Query(Designations);
-            // queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+            const Designations = Parse.Object.extend("Designations");
+            const queryDes = new Parse.Query(Designations);
+            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
 
-            // const desigQueryResult = await queryDes.first();
+            const desigQueryResult = await queryDes.first();
 
-            // if (Parse.User.current().get("designation") == desigQueryResult.id) {
-            //     query.equalTo("selectedSupervisor", Parse.User.current().id);
-            //     query.equalTo("applicationStatus", "For Inspection");
-            //     this.supervisor = true;
-            // }
+            console.log(Parse.User.current().get("designation"));
+            if (Parse.User.current().get("designation") == desigQueryResult.id) {
+                query.equalTo("selectedSupervisor", Parse.User.current().id);
+                // query.equalTo("applicationStatus", "For Approval");
+                this.supervisor = true;
+            }
+
+
             const querResult = await query.find();
-
+            
             //Get details of the applications
             for (var i = 0; i < querResult.length; i++) {
                 var hei_name = "";
@@ -824,9 +861,52 @@ export default {
                     "November",
                     "December",
                 ];
+                var days = [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Satursday",
+                    "Sunday",
+                ]
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
+                var hour = application.createdAt.getHours();
+                var minutes = application.createdAt.getMinutes();
+                var seconds = application.createdAt.getSeconds();
+                
+
+                var statTrack = [];
+
+                for(var s = 0; s < application.get("statusTracker").length; s++){
+                    var statDate = new Date(application.get("statusTracker")[s].dateTime)
+                    var statMonth = statDate.getMonth();
+                    var statNumDate = statDate.getDate();
+                    var statYear = statDate.getFullYear();
+                    var statHour = statDate.getHours();
+                    var statMinutes = statDate.getMinutes();
+                    var statSeconds = statDate.getSeconds();
+                    var statDay = statDate.getDay();
+                    var period = "AM";
+
+                    if(statHour >= 12){
+                        statHour -= 12;
+                        period = "PM";
+                    }
+
+                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " 
+                    + statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
+
+                    statTrack.push({
+                        status: application.get("statusTracker")[s].status,
+                        detail: application.get("statusTracker")[s].detail,
+                        dateTime: statDateText,
+                    })
+                }
+
+                this.statusTracker = statTrack;
 
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");
@@ -842,6 +922,7 @@ export default {
 
                 const program = await programQuery.first();
 
+                
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -849,7 +930,7 @@ export default {
                     phoneNumber: application.get("phoneNumber"),
                     type: appType.get("applicationTypeName"),
                     requirements: application.get("requirements"),
-                    dateApplied: months[month] + " " + day + ", " + year,
+                    dateApplied: months[month] + " " + day + ", " + year + " " + hour + ":" + minutes + ":" + seconds,
                     status: application.get("applicationStatus"),
                     program: program.get("programName"),
                     HeiName: hei_name,
@@ -945,14 +1026,14 @@ export default {
             ];
 
             //Query Supervisors
-            const Designations = Parse.Object.extend("Designations");
-            const queryDes = new Parse.Query(Designations);
-            queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+            
+            const queryDesig = new Parse.Query(Designations);
+            queryDesig.equalTo("name", "EDUCATION SUPERVISOR");
 
-            const desigQueryResult = await queryDes.first();
+            const designationQueryResult = await queryDesig.first();
 
             const user = new Parse.Query(Parse.User);
-            user.equalTo("designation", desigQueryResult.id);
+            user.equalTo("designation", designationQueryResult.id);
             const supervisorResult = await user.find();
 
             var dbSupervisors = [];
@@ -973,6 +1054,8 @@ export default {
 
             this.supervisors = dbSupervisors;
         }
+
+
     },
 };
 </script>

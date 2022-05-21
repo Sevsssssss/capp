@@ -157,6 +157,7 @@ export default {
             disapproved: '',
             approved: '',
             fileCheker: false,
+            statusTracker: [],
         };
     },
     validations() {
@@ -208,6 +209,13 @@ export default {
                 application.set("applicationStatus", "For Inspection");
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
+                this.statusTracker.push({
+                    status: "For Inspection",
+                    detail: "Application was changed For Inspection",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then((application) => {
@@ -252,6 +260,7 @@ export default {
                 3000
             );
         },
+        //Move application to For Revision due to wrong uploaded files
         async submitRevision() {
             try {
                 const applications = Parse.Object.extend("Applications");
@@ -273,6 +282,13 @@ export default {
                 application.set("requirements", requirements);
                 application.set("applicationStatus", "For Revision");
                 application.set("paymentStatus", "Verified");
+
+                this.statusTracker.push({
+                    status: "For Revision",
+                    detail: "Application was made For Revision",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
@@ -386,6 +402,7 @@ export default {
         const applicationType = await appTypeQuery.first();
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+        this.statusTracker = application.get("statusTracker");
 
         //Query Supervisors
         const Designations = Parse.Object.extend("Designations");
