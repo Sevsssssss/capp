@@ -19,7 +19,7 @@
                             Proof of Payment for Application
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Proof of Payment for Evaluation
+                            Proof of Payment For Inspection
                         </th>
                     </tr>
                 </thead>
@@ -29,7 +29,7 @@
                             <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment for Application</a>
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment for Evaluation</a>
+                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment For Inspection</a>
                         </th>
                     </tr>
                 </tbody>
@@ -205,7 +205,7 @@ export default {
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-                application.set("applicationStatus", "For Evaluation");
+                application.set("applicationStatus", "For Inspection");
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
                 application
@@ -213,7 +213,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved for evaluation",
+                            status: "Your Application has been moved For Inspection",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
@@ -221,7 +221,7 @@ export default {
 
                         this.$refs.Spinner.show();
 
-                        toast(this.type.toLowerCase() + " has been moved for evalutaion", {
+                        toast(this.type.toLowerCase() + " has been moved for inspection", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
@@ -320,18 +320,6 @@ export default {
 
         modal() {
             var has_error = 0;
-            //var error_text = "Account not created due to the following reasons:\n";
-            // if (
-            //     this.statusShow.filter(x => x == "Approved").length != this.statusShow.length
-            // ) {
-            //     toast("Please fill out the required information", {
-            //         type: TYPE.ERROR,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     has_error = 1;
-            // }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
             }

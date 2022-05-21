@@ -8,7 +8,7 @@
                         <div class="flex justify-between items-center bg-brand-lightblue/5 w-full px-5 py-2 rounded-sm">
                             <div class="flex">
                                 <div class="font-semibold text-lg">
-                                    APPLY FOR APPLICATION
+                                    CHOOSE APPLICATION TYPE
                                 </div>
                                 <div class="dropdown dropdown-start pl-1 pr-16">
                                     <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
