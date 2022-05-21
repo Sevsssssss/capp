@@ -665,7 +665,7 @@ export default {
 
             console.log(querResult.length)
 
-            if (querResult.length < 1) {
+            // if (querResult.length < 1) {
                 accessType.destroy().then(
                     (accType) => {
                         toast("Deleting...", {
@@ -689,26 +689,26 @@ export default {
                         console.log("Error: " + error);
                     }
                 );
-            } else {
-                toast("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed): " + querResult, {
-                    type: TYPE.INFO,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                toast("Is Archived", {
-                    type: TYPE.INFO,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                setTimeout(() => {
-                    window.location.reload()
-                }, 3000);
-                console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
-                accessType.set("isArchived", true);
-                accessType.save();
-            }
+            // } else {
+            //     toast("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed): " + querResult, {
+            //         type: TYPE.INFO,
+            //         timeout: 3000,
+            //         hideProgressBar: true,
+            //         position: POSITION.TOP_RIGHT,
+            //     });
+            //     toast("Is Archived", {
+            //         type: TYPE.INFO,
+            //         timeout: 3000,
+            //         hideProgressBar: true,
+            //         position: POSITION.TOP_RIGHT,
+            //     });
+            //     setTimeout(() => {
+            //         window.location.reload()
+            //     }, 3000);
+            //     console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
+            //     accessType.set("isArchived", true);
+            //     accessType.save();
+            // }
         },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
