@@ -824,9 +824,46 @@ export default {
                     "November",
                     "December",
                 ];
+                var days = [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Satursday",
+                    "Sunday",
+                ]
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
+
+                var statTrack = [];
+
+                for(var s = 0; s < application.get("statusTracker").length; s++){
+                    var statDate = new Date(application.get("statusTracker")[s].dateTime)
+                    var statMonth = statDate.getMonth();
+                    var statNumDate = statDate.getDate();
+                    var statYear = statDate.getFullYear();
+                    var statHour = statDate.getHours();
+                    var statMinutes = statDate.getMinutes();
+                    var statSeconds = statDate.getSeconds();
+                    var statDay = statDate.getDay();
+                    var period = "AM";
+
+                    if(statHour >= 12){
+                        statHour -= 12;
+                        period = "PM";
+                    }
+
+                    var statDateText = days[statDay] + ", " + statMonth + " " + statNumDate + ", " + statYear + " - " 
+                    + statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
+
+                    statTrack.push({
+                        status: application.get("statusTracker")[s].status,
+                        detail: application.get("statusTracker")[s].detail,
+                        dateTime: statDateText,
+                    })
+                }
 
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");

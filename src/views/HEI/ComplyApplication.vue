@@ -198,6 +198,7 @@ export default {
             ],
             search: "",
             descCounter: 0,
+            statusTracker: [],
         };
     },
     methods: {
@@ -233,6 +234,15 @@ export default {
 
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Verification")
+
+                this.statusTracker.push({
+                    status: "For Approval",
+                    detail: "Application pending for approval by CHED",
+                    dateTime: new Date(),
+                });
+
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then(
@@ -365,10 +375,13 @@ export default {
             const appTypeQuery = new Parse.Query(appTypes);
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
+
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");
             this.reqs = application.get("requirements");
+            this.statusTracker = application.get("statusTracker");
+
             var months = [
                 "January",
                 "February",

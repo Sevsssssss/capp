@@ -176,6 +176,7 @@ export default {
             search: "",
             disapproved: '',
             approved: '',
+            statusTracker: [],
         };
     },
     validations() {
@@ -234,6 +235,12 @@ export default {
 
                     application.set("complianceDueDate", new Date(complianceDueDate));
                 }
+                this.statusTracker.push({
+                    status: "For Compliance",
+                    detail: "Application didn't Comply, updated to For Compliance status.",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
@@ -300,6 +307,13 @@ export default {
 
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Issuance");
+
+                this.statusTracker.push({
+                    status: "For Issuance",
+                    detail: "Your Application has been moved for issuance",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application
                     .save()
@@ -405,6 +419,7 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        this.statusTracker = application.get("statusTracker");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

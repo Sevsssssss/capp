@@ -164,6 +164,7 @@ export default {
             dateOfEval: null,
             apptypechecker: false,
             apptype: "",
+            statusTracker: [],
         };
     },
     computed: {
@@ -195,6 +196,12 @@ export default {
 
                 application.set("selectedRQAT", this.selectedRqat);
                 application.set("dateOfEval", this.date);
+                this.statusTracker.push({
+                    status: "For Evaluation",
+                    detail: "Application was assigned to an RQAT",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
 
                 application.save().then((application) => {
                     const params = {
@@ -256,10 +263,17 @@ export default {
 
                 application1.set("dateOfEval", this.date);
 
+                this.statusTracker.push({
+                    status: "For Evaluation",
+                    detail: "Your Application's Evaluation has been scheduled.",
+                    dateTime: new Date(),
+                });
+                application1.set("statusTracker", this.statusTracker);
+
                 application1.save().then((application1) => {
                     const params = {
                         email: application1.get("email"),
-                        status: "Your Application has been assigned to RQAT Member",
+                        status: "Your Application's Evaluation has been scheduled.",
                         type: "sendStatusUpdate",
                         approved: true,
                     };
@@ -320,6 +334,7 @@ export default {
         const appTypeQuery = new Parse.Query(applicationTypes);
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+        this.statusTracker = application.get("statusTracker");
 
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
