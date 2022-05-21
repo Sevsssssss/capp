@@ -121,7 +121,7 @@
                 <label class="label">
                     <span class="label-text">Street:</span>
                 </label>
-                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.street) }" class="input input-bordered w-full" v-model="v$.street.$model" />
+                <input type="text" placeholder="Enter address" class="input input-bordered w-full" v-model="street" />
                 <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
                         Address is Required</span>
@@ -362,10 +362,6 @@ export default {
             email: {
                 required,
                 email,
-            },
-            
-            street: {
-                required,
             },
             number: {
                 required,
