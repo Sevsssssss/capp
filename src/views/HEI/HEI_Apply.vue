@@ -309,6 +309,13 @@ export default {
                             recommendation: '',
                             paymentStatus: '',
                             complianceDueDate: new Date(yesterday),
+                            statusTracker: [
+                                {
+                                    status: "For Approval",
+                                    detail: "Application was submitted to CHED",
+                                    dateTime: new Date(),
+                                }
+                            ]
                         })
                         .then(
                             (newApplication) => {
