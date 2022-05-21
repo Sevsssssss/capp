@@ -222,15 +222,15 @@
                             </div> {{this.appID}}
                         </div>
                         <div class="flex flex-row">
-                            <div class="font-semibold">Application Type: </div>
+                            <div class="font-semibold">Application Type: {{stAppType}} </div>
                         </div>
                     </div>
                     <div class="">
                         <div class="flex flex-row">
-                            <div class="font-semibold">HEI: </div> 
+                            <div class="font-semibold">HEI: {{stHEI}} </div> 
                         </div>
                         <div class="flex flex-row">
-                            <div class="font-semibold">Program: </div>
+                            <div class="font-semibold">Program: {{stProgram}} </div>
                         </div>
                     </div>
                 </div>
@@ -352,6 +352,9 @@ export default {
                 },
             ],
             appID: "",
+            stAppType: "",
+            stHEI: "",
+            stProgram: "",
         };
     },
     computed: {
@@ -369,8 +372,39 @@ export default {
     },
 
     methods: {
-        id(appid) {
-            this.appID = appid
+        async id(appid) {
+            this.appID = appid;
+
+            //For Tracking
+
+            //Query Application
+            const Applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(Applications);
+            queryApp.equalTo("objectId", this.appID);
+            const querResultApp = await queryApp.first();
+
+            //Query Application Type
+            const AppTypes = Parse.Object.extend("ApplicationTypes");
+            const queryAppTypes = new Parse.Query(AppTypes);
+            queryAppTypes.equalTo("objectId", querResultApp.get("applicationType"));
+            const querResultAppType = await queryAppTypes.first();
+
+            //Query HEI
+            const heis = new Parse.Query(Parse.User);
+            heis.equalTo("objectId", querResultApp.createdBy);
+            const querResultHEI = await heis.first({
+                useMasterKey: true,
+            });
+
+            //Query Program
+            const Programs = Parse.Object.extend("Programs");
+            const queryProgs = new Parse.Query(Programs);
+            queryProgs.equalTo("objectId", querResultApp.get("program"));
+            const querResultProgs = await queryProgs.first();
+
+            this.stAppType = querResultAppType.get("applicationTypeName");
+            this.stHEI = querResultHEI.get("hei_name");
+            this.stProgram = querResultProgs.get("programName");
         },
         modal() {
             var has_error = 0;
