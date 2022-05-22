@@ -274,7 +274,7 @@
                     </div>
                 </div>
                 <div class="modal-action">
-                    <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Back</label>
                 </div>
             </div>
         </div>

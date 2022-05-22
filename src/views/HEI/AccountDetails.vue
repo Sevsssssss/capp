@@ -1,16 +1,7 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
     <div class="space-y-2">
-        <div class="
-        card
-        over
-        p-4
-        w-fit
-        bg-white
-        rounded-lg
-        border border-gray-200
-        shadow-md
-      ">
+        <div class="p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
             <form v-on:submit.prevent="submit" class="card-body">
                 <div class="flex flex-row space-x-4 text-left justify-start items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -20,25 +11,27 @@
                     <span class="text-2xl font-semibold text-grey-100">UPDATE HEI ACCOUNT</span>
                 </div>
                 <div class="line"></div>
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">HEI Name</span>
-                    </label>
-                    <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
-                    <label class="label">
+                <div class="flex space-x-4">
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">HEI Name</span>
+                        </label>
+                        <input type="text" placeholder="Enter HEI’s name" :class="{ 'input-error': validationStatus(v$.hei_name) }" class="input input-bordered w-full" v-model="v$.hei_name.$model" />
+                        <!-- <label class="label">
                         <span v-if="validationStatus(v$.hei_name)" :class="{ 'text-error': validationStatus(v$.hei_name) }" class="label-text-alt">
                             HEI Name is Required</span>
-                    </label>
-                </div>
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">Username</span>
-                    </label>
-                    <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
-                    <label class="label">
+                    </label> -->
+                    </div>
+                    <div class="form-control w-fit">
+                        <label class="label">
+                            <span class="label-text">Username</span>
+                        </label>
+                        <input type="text" placeholder="Enter username" :class="{ 'input-error': validationStatus(v$.username) }" class="input input-bordered w-full" v-model="v$.username.$model" />
+                        <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.username) }" v-if="validationStatus(v$.username)">
                             Username is Required</span>
-                    </label>
+                    </label> -->
+                    </div>
                 </div>
 
                 <div class="form-control w-full">
@@ -46,118 +39,111 @@
                         <span class="label-text">Email</span>
                     </label>
                     <input type="email" placeholder="Enter Email" :class="{ 'input-error': validationStatus(v$.email) }" class="input input-bordered w-full" v-model="v$.email.$model" />
-                    <label class="label">
+                    <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.email) }" v-if="validationStatus(v$.email)">
                             Email is Required</span>
-                    </label>
+                    </label> -->
                 </div>
 
-                
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Contact Number</span>
                     </label>
                     <input type="text" placeholder="09*********" :class="{ 'input-error': validationStatus(v$.number) }" class="input input-bordered w-full" v-model="v$.number.$model" />
-                    <label class="label">
+                    <!-- <label class="label">
                         <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.number) }" v-if="validationStatus(v$.number)">
                             Contact Number is Required</span>
-                    </label>
+                    </label> -->
                 </div>
                 <div class="flex items-center my-4">
-                <label class="block text-dark-200 text-sm mr-5"> Address </label>
-                <hr class="border border-light-400 w-full" />
-            </div>
-            <div class="grid grid-cols-2 gap-5">
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text" for="region">Region:</span>
-                    </label>
-                    <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" v-model="regionCode" required>
-                        <option value="" disabled selected>Select Region</option>
-                        <option v-for="region in regions" :value="region.region_code" :key="region.region_code">
-                            {{ region.region_name }}
-                        </option>
-                    </select>
+                    <label class="block text-dark-200 text-sm mr-5"> Address </label>
+                    <hr class="border border-light-400 w-full" />
                 </div>
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text" for="region">Region:</span>
+                        </label>
+                        <select class="select select-bordered w-full font-normal" name="region" @change="handleProvince" v-model="regionCode" required>
+                            <option value="" disabled selected>Select Region</option>
+                            <option v-for="region in regions" :value="region.region_code" :key="region.region_code">
+                                {{ region.region_name }}
+                            </option>
+                        </select>
+                    </div>
 
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text" for="city">Province:</span>
-                    </label>
-                    <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" v-model="provinceCode" required>
-                        <option value="" disabled selected>Select Province</option>
-                        <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
-                            {{ province.province_name }}
-                        </option>
-                    </select>
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text" for="city">Province:</span>
+                        </label>
+                        <select class="select select-bordered w-full font-normal" name="province" @change="handleCity" v-model="provinceCode" required>
+                            <option value="" disabled selected>Select Province</option>
+                            <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
+                                {{ province.province_name }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="grid grid-cols-2 gap-5">
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text" for="city">City:</span>
-                    </label>
-                    <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" v-model="cityCode" required>
-                        <option value="" disabled selected>Select City</option>
-                        <option v-for="city in cities" :value="city.city_code" :key="city.city_code">
-                            {{ city.city_name }}
-                        </option>
-                    </select>
-                </div>
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text" for="city">City:</span>
+                        </label>
+                        <select class="select select-bordered w-full font-normal" name="city" @change="handleBarangay" v-model="cityCode" required>
+                            <option value="" disabled selected>Select City</option>
+                            <option v-for="city in cities" :value="city.city_code" :key="city.city_code">
+                                {{ city.city_name }}
+                            </option>
+                        </select>
+                    </div>
 
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text" for="barangay">Barangay:</span>
+                        </label>
+                        <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" v-model="barangayCode" required>
+                            <option value="" disabled selected>Select Barangay</option>
+                            <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">
+                                {{ barangay.brgy_name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-control w-full">
                     <label class="label">
-                        <span class="label-text" for="barangay">Barangay:</span>
+                        <span class="label-text">Street:</span>
                     </label>
-                    <select class="select select-bordered w-full font-normal" name="barangay" @change="barangaysChange" v-model="barangayCode" required>
-                        <option value="" disabled selected>Select Barangay</option>
-                        <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">
-                            {{ barangay.brgy_name }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">Street:</span>
-                </label>
-                <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.street) }" class="input input-bordered w-full" v-model="v$.street.$model" />
-                <!-- <label class="label">
+                    <input type="text" placeholder="Enter address" :class="{ 'input-error': validationStatus(v$.street) }" class="input input-bordered w-full" v-model="v$.street.$model" />
+                    <!-- <label class="label">
                     <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.address) }" v-if="validationStatus(v$.address)">
                         Address is Required</span>
                 </label> -->
-            </div>
+                </div>
 
-            <hr class="border border-light-400 w-full my-4" />
-            
-            <div class="form-control w-full">
-                <label class="label">
-                    <span class="label-text">HEI Type:</span>
-                </label>
-                <select class="select select-bordered w-full font-normal" v-model="hei_type">
-                    <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
-                        <div class="">{{ heiType.title }}</div>
-                    </option>
-                </select>
-            </div>
+                <hr class="border border-light-400 w-full my-4" />
+
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">HEI Type:</span>
+                    </label>
+                    <select class="select select-bordered w-full font-normal" v-model="hei_type">
+                        <option v-for="heiType in hei_types" :key="heiType" :value="heiType.id">
+                            <div class="">{{ heiType.title }}</div>
+                        </option>
+                    </select>
+                </div>
                 <div class="flex justify-end pt-4 space-x-4">
                     <button class="btn btn-md btn-outline" @click="$router.go(-1)">
                         Cancel
                     </button>
 
-                    <button for="my-modal-6" id="my-modal-6" type="submit" class="
-              border-none
-              btn btn-md
-              submit
-              bg-brand-darkblue
-              hover:bg-blue-800
-            " @click="modal(), scrollToTop()">
+                    <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-md submit bg-brand-darkblue hover:bg-blue-800" @click="modal(), scrollToTop()">
                         Update HEI
                     </button>
                 </div>
             </form>
         </div>
-        <div class="card over p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
+        <div class="p-4 w-full bg-white rounded-lg border border-gray-200 shadow-md">
             <form v-on:submit.prevent="submit" class="card-body">
                 <div class="flex flex-row space-x-4 text-left justify-start items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -169,11 +155,11 @@
 
                 <div class="">
                     <label for="password" class="label label-text">New Password</label>
-                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPass" required>
+                    <input type="password" id="password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPass" required />
                 </div>
                 <div class="">
                     <label for="confirm_password" class="label label-text">Confirm password</label>
-                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPassConf" required>
+                    <input type="password" id="confirm_password" class="input input-bordered w-full" placeholder="•••••••••" v-model="newPassConf" required />
                 </div>
                 <div class="flex justify-end pt-8 space-x-4">
                     <button class="btn btn-m btn-outline" @click="$router.go(-1)">
@@ -194,21 +180,8 @@
                 Are you sure you want to update this account?
             </p>
             <div class="modal-action">
-                <label for="my-modal-6" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <button for="my-modal-6" type="submit" class="
-              btn btn-sm
-              bg-blue-700
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            " @click="updateHEI(), scrollToTop()">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <button for="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="updateHEI(), scrollToTop()">
                     Continue
                 </button>
             </div>
@@ -221,21 +194,8 @@
                 Are you sure you want update this account's password?
             </p>
             <div class="modal-action">
-                <label for="my-modal-8" class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            ">Cancel</label>
-                <label for="my-modal-8" type="submit" class="
-              btn btn-sm
-              bg-brand-darkblue
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            " @click="changePassword()">
+                <label for="my-modal-8" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-8" type="submit" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="changePassword()">
                     Continue
                 </label>
             </div>
@@ -357,7 +317,7 @@ export default {
                 required,
                 email,
             },
-            
+
             street: {
                 required,
             },
@@ -374,7 +334,7 @@ export default {
     },
     methods: {
         handleProvince(e) {
-            console.log(e)
+            console.log(e);
             this.regionName = e.target.selectedOptions[0].text;
             this.regionNo = e.target.value;
             provinces(e.target.value).then((response) => {
@@ -407,12 +367,12 @@ export default {
                 useMasterKey: true,
             });
 
-            selectedHEI.setPassword(this.newPass)
+            selectedHEI.setPassword(this.newPass);
 
             selectedHEI.save(null, {
                 useMasterKey: true,
             });
-            
+
             this.$refs.Spinner.show();
 
             toast("Password Updated ", {
@@ -448,7 +408,7 @@ export default {
                 barangayCode: this.barangayCode,
                 barangay: this.barangay,
                 street: this.street,
-            }
+            };
 
             try {
                 selectedHEI.set("hei_name", this.hei_name);
@@ -458,23 +418,24 @@ export default {
                 selectedHEI.set("number", this.number);
                 selectedHEI.set("inst_code", this.inst_code);
                 selectedHEI.set("hei_type", this.hei_type);
-                await selectedHEI.save(
-                    null, {
+                await selectedHEI
+                    .save(null, {
                         useMasterKey: true,
-                    }).then(() => {
-                    toast("HEI Account Updated!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        }),
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/hei",
+                    })
+                    .then(() => {
+                        toast("HEI Account Updated!", {
+                                type: TYPE.SUCCESS,
+                                timeout: 3000,
+                                position: POSITION.TOP_RIGHT,
                             }),
-                            2000
-                        );
-                });
+                            setTimeout(
+                                () =>
+                                this.$router.push({
+                                    path: "/hei",
+                                }),
+                                2000
+                            );
+                    });
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -493,7 +454,7 @@ export default {
                 2000
             );
         },
-        
+
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -590,9 +551,9 @@ export default {
             const hei = await query.first({
                 useMasterKey: true,
             });
-            this.hei_name = hei.get("hei_name")
-            this.username = hei.get("username")
-            this.email = hei.get("email")
+            this.hei_name = hei.get("hei_name");
+            this.username = hei.get("username");
+            this.email = hei.get("email");
             this.regionCode = hei.get("address").regionCode;
             this.region = hei.get("address").regionName;
             this.street = hei.get("address").street;
@@ -601,7 +562,7 @@ export default {
                 this.provinces = response;
                 this.provinceCode = hei.get("address").provinceCode;
             });
-       
+
             cities(hei.get("address").provinceCode).then((response) => {
                 this.cities = response;
                 this.cityCode = hei.get("address").cityCode;
@@ -612,9 +573,9 @@ export default {
             });
             this.barangay = hei.get("address").barangay;
 
-            this.number = hei.get("number")
-            this.inst_code = hei.get("inst_code")
-            this.hei_type = hei.get("hei_type")
+            this.number = hei.get("number");
+            this.inst_code = hei.get("inst_code");
+            this.hei_type = hei.get("hei_type");
 
             const HeiTypes = Parse.Object.extend("HEI_Types");
             const queryHT = new Parse.Query(HeiTypes);
