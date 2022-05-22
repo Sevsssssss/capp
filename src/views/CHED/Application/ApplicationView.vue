@@ -56,7 +56,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="sort_type_var == false">
-                    <tr class="bg-white border-b " v-for="table in searchApplication" :key="table">
+                    <tr class="bg-white border-b " v-for="(table, index) in searchApplication" :key="(table, index)">
                         <td class="px-6 py-4">
                             <div class="">
                                 <div class="font-bold">
@@ -125,8 +125,8 @@
                             }">
                                 <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
                             </router-link>
-                            <label v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " href="#" @click="id(table.appID)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
-                            <label for="tracking" @click="id(table.appID)" class="font-medium text-blue-600 hover:underline">Track</label>
+                            <label v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " href="#" @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
+                            <label for="tracking" @click="id(table.appID, index)" class="font-medium text-blue-600 hover:underline">Track</label>
                         </td>
                     </tr>
                 </tbody>
@@ -218,7 +218,7 @@
                     <div class="flex flex-row space-x-1 justify-between">
                         <div class="flex flex-row space-x-2">
                             <span class="font-semibold">ID:</span>
-                            <span class="">{{this.appID}}</span>
+                            <span class="">{{appID}}</span>
                         </div>
                         
                     </div>
@@ -238,7 +238,7 @@
                     </div>
                 </div>
                 <div>
-                    <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
+                    <div v-for="(track, index) in statusTracker[appIndex]" :key="(track, index)" class="flex flex-col">
                         <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
                             <div class="flex flex-col items-center mr-4">
                                 <div>
@@ -334,6 +334,7 @@ export default {
             tables: [],
             statusTracker: [],
             appID: "",
+            appIndex: null,
             stAppType: "",
             stHEI: "",
             stProgram: "",
@@ -354,8 +355,9 @@ export default {
     },
 
     methods: {
-        async id(appid) {
+        async id(appid, index) {
             this.appID = appid;
+            this.appIndex = index; 
 
             //For Tracking
 
@@ -905,7 +907,7 @@ export default {
                     })
                 }
 
-                this.statusTracker = statTrack;
+                this.statusTracker.push(statTrack);
 
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");
