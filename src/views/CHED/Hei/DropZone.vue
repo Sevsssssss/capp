@@ -8,9 +8,15 @@
             <input type="file" id="dropzoneFile" class="dropzoneFile" />
         </div>
         <!-- <span>OR</span> -->
-        <div v-else class="flex justify-center items-center space-x-2">
-            <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
-            <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+        <div v-else class="flex flex-col  space-y-8">
+            <div class="flex justify-center items-center space-x-2">
+                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
+                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            </div>
+            <div>
+                <label for="dropzoneFile" class="">Select File</label>
+                <input type="file" id="dropzoneFile" class="dropzoneFile" />
+            </div>
         </div>
     </div>
     <div class="flex flex-col items-center">
@@ -43,7 +49,9 @@ const toast = useToast();
 export default {
     data() {
         return {
-            counter: 0
+            counter: 0,
+            pending: false,
+            address: {},
         }
     },
     components: {
@@ -162,14 +170,23 @@ export default {
 
                     this.hei_acc_id = accQuerResult.id;
                     var password = Math.random().toString(36).slice(-12);
+
+                    this.address = {
+                        regionName:  heiData[i].D,
+                        province:  heiData[i].E,
+                        city:  heiData[i].F,
+                        barangay:  heiData[i].G,
+                        street:  heiData[i].H,
+                    }
+
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
                     newHEI.set("username", heiData[i].B);
                     newHEI.set("password", password);
                     newHEI.set("email", heiData[i].C);
-                    newHEI.set("address", heiData[i].D);
-                    newHEI.set("number", heiData[i].E.toString());
-                    newHEI.set("inst_code", heiData[i].F.toString());
+                    newHEI.set("address", this.address);
+                    newHEI.set("number", heiData[i].I.toString());
+                    newHEI.set("inst_code", heiData[i].J.toString());
 
                     const heiType = Parse.Object.extend("HEI_Types");
                     const queryHEIType = new Parse.Query(heiType);
@@ -182,42 +199,14 @@ export default {
                         flag = 1;
                         const heiType = Parse.Object.extend("HEI_Types");
                         const newHeiType = new heiType();
-                        try {
-                            newHeiType.save({
-                                name: heiData[i].G.toUpperCase(),
-                            }).then(() => {
-                                newHEI.set("hei_type", newHeiType.id);
-                                newHEI.set("access_type", this.hei_acc_id);
-                                newHEI.set("hasTransactions", false);
-                                newHEI.save().then(() => {
-                                    const params = {
-                                        name: heiData[i].A,
-                                        username: heiData[i].B,
-                                        email: heiData[i].C,
-                                        password: password,
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                    // toast(this.counter + " HEI Accounts Added!", {
-                                    //     type: TYPE.SUCCESS,
-                                    //     timeout: 3000,
-                                    //     position: POSITION.TOP_RIGHT,
-                                    // });
-                                    // this.$refs.Spinner.hide();
-                                    // this.$router.push("/hei");
-                                    // this.pending = false;
-                                })
-                            })
 
-                        } catch (error) {
-                            console.log(error.message);
-                        }
-                    } else {
-                        newHEI.set("hei_type", queryRes.id);
-                        newHEI.set("access_type", this.hei_acc_id);
-                        newHEI.set("hasTransactions", false);
-                        if (flag === 0) {
+                        await newHeiType.save({
+                            name: heiData[i].K.toUpperCase(),
+                        }).then(() => {
+
+                            newHEI.set("hei_type", newHeiType.id);
+                            newHEI.set("access_type", this.hei_acc_id);
+                            newHEI.set("hasTransactions", false);
                             newHEI.save().then(() => {
                                 const params = {
                                     name: heiData[i].A,
@@ -228,20 +217,34 @@ export default {
                                     approved: true,
                                 };
                                 Parse.Cloud.run("sendEmailNotification", params);
-                                // toast(this.counter + " HEI Accounts Added!", {
-                                //     type: TYPE.SUCCESS,
-                                //     timeout: 3000,
-                                //     position: POSITION.TOP_RIGHT,
-                                // });
-                                // this.$refs.Spinner.hide();
-                                // this.$router.push("/hei");
-                                // this.pending = false;
                             })
+
+                        })
+
+                    } else {
+                        newHEI.set("hei_type", queryRes.id);
+                        newHEI.set("access_type", this.hei_acc_id);
+                        newHEI.set("hasTransactions", false);
+                        if (flag === 0) {
+
+                            await newHEI.save().then(() => {
+                                const params = {
+                                    name: heiData[i].A,
+                                    username: heiData[i].B,
+                                    email: heiData[i].C,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
+
+                            })
+
                         }
                     }
 
                 } catch (error) {
-                    console.log(error.message);
+                    console.log(error.message)
                     this.counter = this.counter - 1;
                 }
 
@@ -253,11 +256,11 @@ export default {
             });
             this.$refs.Spinner.hide();
             this.$router.push("/hei");
-            setTimeout(() => {
+             setTimeout(() => {
                 this.$router.go()
             }, 2000);
-            // this.$forceUpdate();
             this.pending = false;
+
         },
     },
 };

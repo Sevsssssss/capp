@@ -213,62 +213,61 @@
         <input type="checkbox" id="tracking" class="modal-toggle" />
         <div class="modal modal-bottom sm:modal-middle">
             <div class="modal-box relative rounded-md text-left">
-                <div class="font-semibold text-md mb-2">TRACK APPLICATION</div>
-                <div class="mb-2">
-                    <div class="flex flex-row space-x-2 space-between">
-                        <div class="flex flex-row">
-                            <div class="font-semibold">
-                                ID:
-                            </div> {{this.appID}}
+                <div class="font-bold text-lg mb-2">TRACK APPLICATION</div>
+                <div class="space-y-1 mb-4">
+                    <div class="flex flex-row space-x-1 justify-between">
+                        <div class="flex flex-row space-x-2">
+                            <span class="font-semibold">ID:</span>
+                            <span class="">{{this.appID}}</span>
                         </div>
-                        <div class="flex flex-row">
-                            <div class="font-semibold">Application Type: {{stAppType}} </div>
-                        </div>
+                        
                     </div>
-                    <div class="">
-                        <div class="flex flex-row">
-                            <div class="font-semibold">HEI: {{stHEI}} </div> 
+                    <div class="space-y-1">
+                        <div class="flex flex-row space-x-1">
+                            <div class="font-semibold">Application Type: </div>
+                            <span class=""> {{stAppType}} </span>
                         </div>
-                        <div class="flex flex-row">
-                            <div class="font-semibold">Program: {{stProgram}} </div>
+                        <div class="flex flex-row space-x-1">
+                            <div class="font-semibold">HEI: </div>
+                            <span class="">{{stHEI}}</span>
+                        </div>
+                        <div class="flex flex-row space-x-1">
+                            <div class="font-semibold">Program:  </div>
+                            <span class="">{{stProgram}}</span>
                         </div>
                     </div>
                 </div>
-
                 <div>
                     <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
-
                         <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
                             <div class="flex flex-col items-center mr-4">
                                 <div>
                                     <div class="flex items-center justify-center w-10 h-10 border rounded-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-darkblue outline-brand-darkblue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
                                         </svg>
                                     </div>
                                 </div>
-                                <div v-if="index+1 < statusTracker.length" class="w-px h-full bg-gray-300"></div>
+                                <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
                             </div>
-                            <div class="pb-4 ">
-                                <div class="text-md font-semibold">{{track.detail}}</div>
-                                <div>{{track.dateTime}}</div>
+                            <div class="pb-4 flex flex-col">
+                                <span class="text-md font-semibold">{{track.detail}}</span>
+                                <span class="text-grey-300">{{track.dateTime}}</span>
                             </div>
                         </div>
-                        
-
                         <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
                             <div class="flex flex-col items-center mr-4">
                                 <div>
                                     <div class="flex items-center justify-center w-10 h-10 border rounded-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500 outline-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
                                 </div>
                             </div>
-                             <div class="pb-4 ">
-                                <div class="text-md font-semibold">{{track.detail}}</div>
-                                <div>{{track.dateTime}}</div>
+                            <div class="pb-4 flex flex-col">
+                                <span class="text-md font-semibold">{{track.detail}}</span>
+                                <span class="text-grey-300">{{track.dateTime}}</span>
                             </div>
                         </div>
 
@@ -819,9 +818,8 @@ export default {
                 this.supervisor = true;
             }
 
-
             const querResult = await query.find();
-            
+
             //Get details of the applications
             for (var i = 0; i < querResult.length; i++) {
                 var hei_name = "";
@@ -860,11 +858,10 @@ export default {
                 var hour = application.createdAt.getHours();
                 var minutes = application.createdAt.getMinutes();
                 var seconds = application.createdAt.getSeconds();
-                
 
                 var statTrack = [];
 
-                for(var s = 0; s < application.get("statusTracker").length; s++){
+                for (var s = 0; s < application.get("statusTracker").length; s++) {
                     var statDate = new Date(application.get("statusTracker")[s].dateTime)
                     var statMonth = statDate.getMonth();
                     var statNumDate = statDate.getDate();
@@ -875,13 +872,13 @@ export default {
                     var statDay = statDate.getDay();
                     var period = "AM";
 
-                    if(statHour >= 12){
+                    if (statHour >= 12) {
                         statHour -= 12;
                         period = "PM";
                     }
 
-                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " 
-                    + statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
+                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                        statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
 
                     statTrack.push({
                         status: application.get("statusTracker")[s].status,
@@ -906,7 +903,6 @@ export default {
 
                 const program = await programQuery.first();
 
-                
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -1010,7 +1006,7 @@ export default {
             ];
 
             //Query Supervisors
-            
+
             const queryDesig = new Parse.Query(Designations);
             queryDesig.equalTo("name", "EDUCATION SUPERVISOR");
 
@@ -1038,7 +1034,6 @@ export default {
 
             this.supervisors = dbSupervisors;
         }
-
 
     },
 };

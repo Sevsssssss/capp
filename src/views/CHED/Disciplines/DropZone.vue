@@ -8,9 +8,15 @@
             <input type="file" id="dropzoneFile" class="dropzoneFile" />
         </div>
         <!-- <span>OR</span> -->
-        <div v-else class="flex justify-center items-center space-x-2">
-            <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
-            <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+        <div v-else class="flex flex-col  space-y-8">
+            <div class="flex justify-center items-center space-x-2">
+                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
+                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            </div>
+            <div>
+                <label for="dropzoneFile" class="">Select File</label>
+                <input type="file" id="dropzoneFile" class="dropzoneFile" />
+            </div>
         </div>
     </div>
     <div class="flex flex-col items-center">
@@ -208,7 +214,7 @@ export default {
                     } else {
                         specificDisc.push({
                             id: disciplinesData[i].A,
-                            SpecDiscCode: disciplinesData[i].A,
+                            SpecDiscCode: disciplinesData[i].A.toString(),
                             SpecificDiscipline: disciplinesData[i].B
                         })
                         this.counter = this.counter - 1;

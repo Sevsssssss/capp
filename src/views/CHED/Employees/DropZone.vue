@@ -7,10 +7,15 @@
             <label for="dropzoneFile" class="">Select File</label>
             <input type="file" id="dropzoneFile" class="dropzoneFile" />
         </div>
-        <!-- <span>OR</span> -->
-        <div v-else class="flex justify-center items-center space-x-2">
-            <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
-            <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+        <div v-else class="flex flex-col  space-y-8">
+            <div class="flex justify-center items-center space-x-2">
+                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
+                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            </div>
+            <div>
+                <label for="dropzoneFile" class="">Select File</label>
+                <input type="file" id="dropzoneFile" class="dropzoneFile" />
+            </div>
         </div>
     </div>
     <div class="flex flex-col items-center">
@@ -180,47 +185,17 @@ export default {
                         flag = 1;
                         const desig = Parse.Object.extend("Designations");
                         const newDesignation = new desig();
-                        try {
-                            newDesignation.save({
-                                name: employeesData[i].H.toUpperCase(),
-                            }).then(() => {
-                                newEmployee.set("designation", newDesignation.id);
 
-                                newEmployee.set("access_type", accesstypeResult[0].id);
+                        await newDesignation.save({
+                            name: employeesData[i].H.toUpperCase(),
+                        }).then(() => {
 
-                                newEmployee.set("discipline", employeesData[i].I);
+                            newEmployee.set("designation", newDesignation.id);
 
-                                newEmployee.save().then(() => {
-                                    const params = {
-                                        name: this.employeeName,
-                                        username: employeesData[i].D,
-                                        email: employeesData[i].E,
-                                        password: password,
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                    // toast(this.counter + " EMPLOYEE Accounts Added!", {
-                                    //     type: TYPE.SUCCESS,
-                                    //     timeout: 3000,
-                                    //     position: POSITION.TOP_RIGHT,
-                                    // });
-                                    // this.$refs.Spinner.hide();
-                                    // this.$router.push("/employees");
-                                    // this.pending = false;
-                                });
-                            })
+                            newEmployee.set("access_type", accesstypeResult[0].id);
 
-                        } catch (error) {
-                            console.log(error.message);
-                        }
-                    } else {
-                        newEmployee.set("designation", designationResult.id);
+                            newEmployee.set("discipline", employeesData[i].I);
 
-                        newEmployee.set("access_type", accesstypeResult[0].id);
-
-                        newEmployee.set("discipline", employeesData[i].I);
-                        if (flag === 0) {
                             newEmployee.save().then(() => {
                                 const params = {
                                     name: this.employeeName,
@@ -231,14 +206,30 @@ export default {
                                     approved: true,
                                 };
                                 Parse.Cloud.run("sendEmailNotification", params);
-                                // toast(this.counter + " EMPLOYEE Accounts Added!1", {
-                                //     type: TYPE.SUCCESS,
-                                //     timeout: 3000,
-                                //     position: POSITION.TOP_RIGHT,
-                                // });
-                                // this.$refs.Spinner.hide();
-                                // this.$router.push("/employees");
-                                // this.pending = false;
+
+                            });
+
+                        })
+
+                    } else {
+                        newEmployee.set("designation", designationResult.id);
+
+                        newEmployee.set("access_type", accesstypeResult[0].id);
+
+                        newEmployee.set("discipline", employeesData[i].I);
+                        if (flag === 0) {
+
+                            await newEmployee.save().then(() => {
+                                const params = {
+                                    name: this.employeeName,
+                                    username: employeesData[i].D,
+                                    email: employeesData[i].E,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
+
                             });
                         }
                     }
@@ -248,7 +239,7 @@ export default {
                     this.counter = this.counter - 1;
                 }
             }
-            toast(this.counter + " EMPLOYEE Accounts Added!2", {
+            toast(this.counter + " EMPLOYEE Accounts Added!", {
                 type: TYPE.SUCCESS,
                 timeout: 3000,
                 position: POSITION.TOP_RIGHT,

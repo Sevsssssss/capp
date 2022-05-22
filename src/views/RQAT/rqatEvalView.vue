@@ -18,30 +18,30 @@
             <tbody>
                 <tr v-for="tables in table" :key="tables" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     
-                        <th v-if="tables.status == 'For Evaluation'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        <th v-if="tables.status == 'For Inspection'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {{tables.program}}
                         </th>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
                             {{tables.HeiName}}
                         </td>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
                             {{tables.address}}
                         </td>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
                             {{tables.rep}}
                         </td>
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4">
+                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
                             {{tables.email}}
                         </td>
 
-                        <td v-if="tables.status == 'For Evaluation'" class="px-6 py-4 text-right flex justify-end">
+                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4 text-right flex justify-end">
                             <router-link :to="{
                             name: 'Evaluate',
                             params: {
                                 id: tables.appID,
                             },
                             }">
-                                <button class="btn-table rounded-md"> Evaluate </button>
+                                <button @click="onInspection(tables.appID)" class="btn-table rounded-md"> Evaluate </button>
                             </router-link>
 
                         </td>
@@ -97,7 +97,24 @@ export default {
         // },
     },
     methods: {
+        async onInspection(id){
+            console.log(id);
+            const Applications = Parse.Object.extend("Applications");
+            const query = new Parse.Query(Applications);
+            query.equalTo("objectId", id);
 
+            const application = await query.first();
+
+            // application.set("On Inspection", true);
+            // application.save().then((application) => {
+            //         console.log("Object Updated: " + application.id);
+            //     })
+            
+            application
+                    .save({
+                        onInspection: true,
+                    })
+        }
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -164,6 +181,9 @@ export default {
 
                 const program = await programQuery.first();
 
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
+                                    + hei.get("address").province + ", " + hei.get("address").regionName
+
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -174,7 +194,7 @@ export default {
                     status: application.get("applicationStatus"),
                     program: program.get("programName"),
                     HeiName: hei.get("hei_name"),
-                    address: hei.get("address"),
+                    address: heiAddress,
                     appID: application.id,
                 });
             }

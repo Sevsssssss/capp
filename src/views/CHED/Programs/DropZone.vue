@@ -1,16 +1,34 @@
 <template>
 <div>
     <div fileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
-        <span>Drag or Drop File</span>
-        <span>OR</span>
-        <label for="dropzoneFile">Select File</label>
-        <input type="file" id="dropzoneFile" class="dropzoneFile" />
+        <div v-if="!dropzoneFile.name" class="flex flex-col space-y-2">
+            <span>Drag or Drop File</span>
+            <span>OR</span>
+            <label for="dropzoneFile" class="">Select File</label>
+            <input type="file" id="dropzoneFile" class="dropzoneFile" />
+        </div>
+        <!-- <span>OR</span> -->
+        <div v-else class="flex flex-col  space-y-8">
+            <div class="flex justify-center items-center space-x-2">
+                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
+                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            </div>
+            <div>
+                <label for="dropzoneFile" class="">Select File</label>
+                <input type="file" id="dropzoneFile" class="dropzoneFile" />
+            </div>
+        </div>
     </div>
-    <span class="mt-5 font-semibold">File:
-        <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
-    <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue" type="submit">
-        Submit
-    </button>
+    <div class="flex flex-col items-center">
+        <div class="w-fit space-x-4">
+            <button class="btn-small btn-outline border text-black" @click="$router.go(-1)">
+                Cancel
+            </button>
+            <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue hover:bg-brand-lightblue" type="submit">
+                Submit
+            </button>
+        </div>
+    </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
@@ -139,7 +157,7 @@ export default {
         async storeDisciplines(disciplinesData) {
             console.log("store");
             var specificDisc = [];
-console.log(disciplinesData.length)
+            console.log(disciplinesData.length)
             for (let i = 0; i < disciplinesData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
@@ -149,12 +167,12 @@ console.log(disciplinesData.length)
                             SpecDiscCode: disciplinesData[i].A,
                             SpecificDiscipline: disciplinesData[i].B
                         })
-                        if(i === disciplinesData.length-2){
+                        if (i === disciplinesData.length - 2) {
                             specificDisc.push({
-                            id: disciplinesData[i+1].A,
-                            SpecDiscCode: disciplinesData[i+1].A,
-                            SpecificDiscipline: disciplinesData[i+1].B
-                        })
+                                id: disciplinesData[i + 1].A,
+                                SpecDiscCode: disciplinesData[i + 1].A,
+                                SpecificDiscipline: disciplinesData[i + 1].B
+                            })
                         }
                         const Disciplines = Parse.Object.extend("Disciplines");
                         const queryDisc = new Parse.Query(Disciplines);
@@ -214,6 +232,9 @@ console.log(disciplinesData.length)
             });
             this.$refs.Spinner.hide();
             this.$router.push("/disciplines");
+            setTimeout(() => {
+                this.$router.go()
+            }, 2000);
             this.pending = false;
         },
     },

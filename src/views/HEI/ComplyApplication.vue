@@ -24,21 +24,19 @@
         </div>
         <hr />
     </div>
-    <div class="mx-6 mt-6">
-        <div class="alert alert-warning shadow-lg">
-            <div>
+    <div class="m-6">
+        <div class="flex p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" role="alert">
+            <div class="flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 2h2v2H6v-2zm0 4h2v2H6v-2zm4-4h8v2h-8v-2zm0 4h5v2h-5v-2z" /></svg>
-                <span>
-                    <div v-if="compInitDate != undefined" class="font-semibold text-md">
-                        Deadline: <span class="font-normal">{{ complianceDueDate }}</span>
-                    </div>
-                </span>
+                <div v-if="compInitDate != undefined" class="font-semibold text-md">
+                    Deadline: <span class="font-normal">{{ complianceDueDate }}</span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="m-3">
+    <div class="m-1">
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -56,20 +54,18 @@
                             <div class="flex flex-row justify-between">
                                 <p class="py-2 font-semibold">Summary</p>
                             </div>
-
-                            <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
+                            <textarea id="summary" rows="6" disabled class="textarea textarea-disabled block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                         </th>
-
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             <p class="py-2 font-semibold">Recommendation</p>
-                            <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
+                            <textarea id="recommendation" rows="6" disabled class="textarea textarea-disabled block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
                         </th>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <form @submit.prevent="submitFiles" class="p-4">
+        <form @submit.prevent="submitFiles" class="m-5">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
                 <div class="flex flex-row py-3 px-4 items-center justify-between">
@@ -403,20 +399,18 @@ export default {
             var minutes = application.createdAt.getMinutes();
             var seconds = application.createdAt.getSeconds();
             var period = "AM";
-            if(hour >= 12) {
+            if (hour >= 12) {
                 hour -= 12;
                 period = "PM"
             }
 
             // this.compInitDate = new Date(application.get("complianceDueDate"));
 
-          
-
             var compDateCalc = this.compInitDate;
 
             // if (Math.floor((application.get("complianceDueDate") - new Date()) / (1000 * 60 * 60 * 24)) > 15) {
             //     compDateCalc = new Date(this.compInitDate.setDate(this.compInitDate.getDate() - 15));
-             
+
             // }
 
             var compMonth = compDateCalc.getMonth();

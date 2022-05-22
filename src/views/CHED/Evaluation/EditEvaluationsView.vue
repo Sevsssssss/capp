@@ -14,17 +14,7 @@
         </label>
 
         <select
-          class="
-            select
-            bg-gray-50
-            border border-gray-300
-            text-gray-900 text-sm
-            rounded-md
-            focus:ring-blue-500 focus:border-blue-500
-            block
-            w-full
-            p-2.5
-          "
+          class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           v-model="programName"
         >
           <option
@@ -36,87 +26,86 @@
           </option>
         </select>
       </div>
-      <div class=" pr-5 pt-3 justify-right">
-          <button @click="addCMO()" type="button" class="btn-table">
-              <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-              </svg>
-              <div class="pl-2">Add CMO</div>
-          </button>
+      <div class="pr-5 pt-3 justify-right">
+        <button @click="addCMO()" type="button" class="btn-table">
+          <svg
+            style="fill: white"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+          >
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path
+              d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"
+            />
+          </svg>
+          <div class="pl-2">Add CMO</div>
+        </button>
       </div>
       <div v-for="evalinst in eval" :key="evalinst">
         <div class="flex w-full items-end">
-        <div class="form-control w-full">
-          <label class="label">
-            <span class="label-text">CMO No.*</span>
-          </label>
-          <select
-            class="
-              select
-              bg-gray-50
-              border border-gray-300
-              text-gray-900 text-sm
-              rounded-md
-              focus:ring-blue-500 focus:border-blue-500
-              block
-              w-full
-              p-2.5
-            "
-            v-model="evalinst.cmoID"
-          >
-            <option v-for="cmo in cmos" :key="cmo" :value="cmo.id">
-              {{ cmo.CMO_Name }} {{ cmo.CMO_No }}
-            </option>
-          </select>
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text">CMO No.*</span>
+            </label>
+            <select
+              class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              v-model="evalinst.cmoID"
+            >
+              <option v-for="cmo in cmos" :key="cmo" :value="cmo.id">
+                {{ cmo.CMO_Name }} {{ cmo.CMO_No }}
+              </option>
+            </select>
+          </div>
         </div>
-      </div>
 
-      <div class="mt-5 justify-between text-left overflow-x-auto shadow-lg rounded-lg p-8">
-        <table class="table eval-table w-full">
-          <tbody>
-            <div v-for="cmo in cmos" :key="cmo" :value="cmo.id">
-              <div v-if="cmo.id === evalinst.cmoID">
-                <div
-                  v-for="data in cmo.CMO_requirements"
-                  :key="data"
-                  :value="cmo.id"
-                >
-                 <div class="flex flex-row">
-                <input
+        <div
+          class="mt-5 justify-between text-left overflow-x-auto shadow-lg rounded-lg p-8"
+        >
+          <table class="table eval-table w-full">
+            <tbody>
+              <div v-for="cmo in cmos" :key="cmo" :value="cmo.id">
+                <div v-if="cmo.id === evalinst.cmoID">
+                  <div
+                    v-for="data in cmo.CMO_requirements"
+                    :key="data"
+                    :value="cmo.id"
+                  >
+                    <div class="flex flex-row">
+                      <input
                         type="checkbox"
                         class="checkbox mt-4"
                         :value="data.id.toString()"
                         v-model="evalinst.checkedRequirements"
                       />
                       <th>{{ data.id }}</th>
-                  <td class="font-bold">{{ data.Category }}</td>
-                  </div>
-                  <div v-for="subcat in data.subcategory" :key="subcat">
-                    <div class="flex flex-row">
-                      <input
-                        type="checkbox"
-                        class="checkbox mt-4"
-                        :value="data.id +'.'+subcat.id"
-                        v-model="evalinst.checkedRequirements"
-                      />
-                      <th>{{ data.id }}.{{ subcat.id }}</th>
-                      <td class="font-medium">{{ subcat.Subcategory }}</td>
-
+                      <td class="font-bold">{{ data.Category }}</td>
                     </div>
-                    <div v-for="item in subcat.items" :key="item">
+                    <div v-for="subcat in data.subcategory" :key="subcat">
+                      <div class="flex flex-row">
+                        <input
+                          type="checkbox"
+                          class="checkbox mt-4"
+                          :value="data.id + '.' + subcat.id"
+                          v-model="evalinst.checkedRequirements"
+                        />
+                        <th>{{ data.id }}.{{ subcat.id }}</th>
+                        <td class="font-medium">{{ subcat.Subcategory }}</td>
+                      </div>
+                      <div v-for="item in subcat.items" :key="item">
                         <th></th>
                         <th></th>
                         <th>{{ data.id }}.{{ subcat.id }}.{{ item.id }}</th>
                         <td class="font-thin">{{ item.Item }}</td>
                       </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
       </div>
       <!-- Body -->
 
@@ -130,13 +119,7 @@
             for="my-modal-6"
             id="my-modal-6"
             type="submit"
-            class="
-              border-none
-              btn btn-m
-              submit
-              bg-brand-darkblue
-              hover:bg-brand-blue
-            "
+            class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue"
             @click="modal()"
           >
             Update
@@ -159,25 +142,12 @@
         <div class="modal-action">
           <label
             for="my-modal-6"
-            class="
-              btn btn-sm
-              rounded-md
-              text-blue-700
-              bg-transparent
-              border border-blue-700
-              hover:bg-white
-            "
+            class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white"
             >Cancel</label
           >
           <label
             for="my-modal-6"
-            class="
-              btn btn-sm
-              bg-brand-darkblue
-              hover:bg-blue-800
-              rounded-md
-              border-none
-            "
+            class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none"
             @click="editEvalForm()"
             >Continue</label
           >
@@ -203,12 +173,12 @@ import Parse from "parse";
 const toast = useToast();
 
 export default {
-  props: ["id"],
+    props: ["id"],
     name: "EditEvalInstView",
     components: {
         VueInstantLoadingSpinner,
     },
-    
+
     data() {
         return {
             showModal1: false,
@@ -267,15 +237,15 @@ export default {
             this.checkedPrograms = [];
         },
         addCMO() {
-          console.log("HI");
+            console.log("HI");
             this.eval.push({
-                cmoID: '',
+                cmoID: "",
                 checkedRequirements: [],
-            })
+            });
         },
         removeCMO() {
             this.eval.pop({
-                cmoID: '',
+                cmoID: "",
                 checkedRequirements: [],
             });
         },
@@ -388,16 +358,16 @@ export default {
             // }
 
             // if (has_error < 1) {
-                
-                this.showModal1 = !this.showModal1;
+
+            this.showModal1 = !this.showModal1;
             //}
-            
         },
         async editEvalForm() {
             this.$refs.Spinner.show();
             try {
-
-                const evalInstrumentsUpdate = Parse.Object.extend("EvaluationInstruments");
+                const evalInstrumentsUpdate = Parse.Object.extend(
+                    "EvaluationInstruments"
+                );
                 const evalQueryUpdate = new Parse.Query(evalInstrumentsUpdate);
                 evalQueryUpdate.equalTo("objectId", this.id);
                 const evalInstrumentUpdate = await evalQueryUpdate.first({
@@ -406,10 +376,7 @@ export default {
 
                 evalInstrumentUpdate.set("evaluationFormProgram", this.programName);
                 evalInstrumentUpdate.set("evaluationFormName", this.evalDesc);
-                evalInstrumentUpdate.set(
-                    "evalInstReqs",
-                    this.eval
-                );
+                evalInstrumentUpdate.set("evalInstReqs", this.eval);
 
                 // await newEvaluationForm.save();
                 // console.log(newEvaluationForm.save())

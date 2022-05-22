@@ -448,7 +448,7 @@ export default {
                 });
 
                 const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
-                                    + hei.get("address").province + ", " + hei.get("address").regionName
+                                    + hei.get("address").province + ", " + hei.get("address").regionName;
 
                 heisPriv.push({
                     id: hei.id,
@@ -534,12 +534,15 @@ export default {
 
                 hTypeCounter[index] += 1;
 
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
+                                    + hei.get("address").province + ", " + hei.get("address").regionName;
+
                 heis.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
                     HeiName: hei.get("hei_name"),
                     userName: hei.get("username"),
-                    address: hei.get("address"),
+                    address: heiAddress,
                     type: htypeName,
                     email: hei.get("email"),
                 });

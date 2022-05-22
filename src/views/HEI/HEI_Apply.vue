@@ -40,47 +40,36 @@
                         </div>
                         <!-- <hr /> -->
 
-                        <div class="flex flex-row items-start justify-between px-2 pt-4">
+                        <div class="flex flex-row items-start px-2 pt-4">
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="text-sm">Point Person</span>
                                 </label>
-                                <input :class="{ 'input-error': validationStatus(v$.pointPerson) }" v-model="v$.pointPerson.$model" type="text" placeholder="Enter point person" class="input input-bordered w-full max-w-xs" />
+                                <input :class="{ 'input-error': validationStatus(v$.pointPerson) }" v-model="v$.pointPerson.$model" type="text" placeholder="Enter point person" class="input input-bordered w-full" />
                                 <label class="label">
-                                    <span v-if="validationStatus(v$.pointPerson)" :class="{
-                      'text-error': validationStatus(v$.pointPerson),
-                    }" class="label-text-alt">
-                                        Point Person is Required</span>
+                                    <span v-if="validationStatus(v$.pointPerson)" :class="{'text-error': validationStatus(v$.pointPerson)}" class="label-text-alt">
+                                        Point Person is Required
+                                    </span>
                                 </label>
                             </div>
                             <div class="form-control w-full max-w-xs">
                                 <label class="label">
                                     <span class="label-text">Email Address</span>
                                 </label>
-                                <input :class="{ 'input-error': validationStatus(v$.email) }" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full max-w-xs" />
-                                <!-- <label class="label">
-                                    <span v-if="validationStatus(v$.email)" :class="{ 'text-error': validationStatus(v$.email) }" class="label-text-alt">
-                                        Email is Required</span>
-                                </label> -->
+                                <input :class="{ 'input-error': validationStatus(v$.email) }" v-model="v$.email.$model" type="email" placeholder="Enter email address" class="input input-bordered w-full" />
                             </div>
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
                                     <span class="label-text">Contact Number</span>
                                 </label>
-                                <input :class="{ 'input-error': validationStatus(v$.phoneNumber) }" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full max-w-xs" />
-                                <!-- <label class="label">
-                                    <span v-if="validationStatus(v$.phoneNumber)" :class="{
-                      'text-error': validationStatus(v$.phoneNumber),
-                    }" class="label-text-alt">
-                                        Phone Number is Required</span>
-                                </label> -->
+                                <input :class="{ 'input-error': validationStatus(v$.phoneNumber) }" v-model="v$.phoneNumber.$model" maxlength="11" type="number" @input="handleUserInput" placeholder="09*********" class="input input-bordered w-full" />
                             </div>
                         </div>
                         <div class="flex flex-col items-start justify-start px-6 pb-4">
                             <label class="label">
                                 <span class="label-text">Program:</span>
                             </label>
-                            <select v-model="programSelect" class="select select-bordered  w-full ">
+                            <select v-model="programSelect" class="select select-bordered  w-fit ">
                                 <option v-for="program in programs" :key="program" :value="program.id">{{program.name}}</option>
                             </select>
                         </div>
@@ -97,42 +86,15 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="i in reqs" :key="i" class="bg-white border-b hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                        <th>{{ i.req.applicationReq }}</th>
+                                        <td class="px-6 py-4 w-2/4 overflow-x-auto">
+                                            <th class="">{{ i.req.applicationReq }}</th>
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-6 py-4 flex justify-end">
                                             <input :id="i.id" ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <!-- <div class="grid grid-cols-3 place-items-center gap-4 py-5">
-                <div v-for="i in reqs" :key="i" class="w-80 form-control">
-                  <label class="label text-left">
-                    <span
-                      class="text-sm text-ellipsis overflow-hidden"
-                      style="white-space: nowrap"
-                      >{{ i.req.applicationReq }}</span
-                    >
-                  </label>
-                  <input
-                    :id="i.id"
-                    class="
-                      block
-                      w-full
-                      text-sm text-grey-200
-                      bg-brand-white
-                      rounded-lg
-                      border border-grey-500
-                      cursor-pointer
-                      focus:outline-none focus:border-transparent
-                    "
-                    type="file"
-                    accept=".pdf,.doc"
-                  />
-                </div>
-              </div> -->
                         </div>
                     </div>
 

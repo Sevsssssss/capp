@@ -1,8 +1,9 @@
 <template>
 <div v-if="!tables.length" style="height: 100%">
-    <div class="flex flex-col center h-full p-5">
+    <div class="flex flex-col justify-center items-center h-full p-5">
         <div class="noDataAvail">No Data Available</div>
-        <div class="h-fit pt-3 items-center">
+        <div class="flex justify-center items-center">
+                    <div class="h-fit pt-3 ">
             <button @click="excelDisciplines()" type="button" class="btn-table">
                 <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -11,13 +12,16 @@
                 <div class="pl-2">Upload Excel</div>
             </button>
         </div>
-        <label type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
-            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-            </svg>
-            <div class="pl-2">Add Program</div>
-        </label>
+        <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3">
+            <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                </svg>
+                <div class="pl-2">Add Program</div>
+            </label>
+        </div>
+        </div>
         <input type="checkbox" id="createPrograms" class="modal-toggle" />
         <div class="modal">
             <div class="modal-box relative rounded-md text-left">
@@ -66,18 +70,19 @@
                 </div>
             </div>
         </div>
+
         <div :class="{ 'modal-open ': validate2() }" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Add Program</div>
-            <p class="text-sm xxs:leading-tight text-grey-200">
-                Are you sure you want to add this program?
-            </p>
-            <div class="modal-action">
-                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal2()">Cancel</label>
-                <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addProgram()">Continue</label>
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-semibold text-md">Add Program</div>
+                <p class="text-sm xxs:leading-tight text-grey-200">
+                    Are you sure you want to add this program?
+                </p>
+                <div class="modal-action">
+                    <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal2()">Cancel</label>
+                    <label for="my-modal-6" class="btn btn-sm bg-brand-darkblue hover:bg-blue-800 rounded-md border-none" @click="addProgram()">Continue</label>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </div>
 <div v-else class="p-3">
@@ -181,8 +186,6 @@
         </div>
     </div>
 
-    
-
     <input type="checkbox" id="createPrograms" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -254,14 +257,14 @@
                         Input the Program Name and the Designated Discipline.
                     </p>
                 </div>
-            </div>  
+            </div>
             <form v-on:submit.prevent="submit">
-                    <div>
-                        <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
-                        <div class="flex flex-row">
-                            <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="editProgramName" />
-                        </div>
+                <div>
+                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Program Name:</label>
+                    <div class="flex flex-row">
+                        <input type="text" id="base-input" :class="{ 'input-error': validationStatus(v$.editProgramName) }" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="editProgramName" />
                     </div>
+                </div>
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
@@ -380,7 +383,7 @@ export default {
                 programName: "",
             });
         },
-        reset(){
+        reset() {
             this.programs = [];
         },
         selectedProgramDelete(id) {
@@ -526,7 +529,6 @@ export default {
             this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
-            
             try {
                 for (var i = 0; i < this.programs.length; i++) {
                     const programs = Parse.Object.extend("Programs");
@@ -540,11 +542,12 @@ export default {
                             timeout: 2000,
                             position: POSITION.TOP_RIGHT,
                         }),
-                        this.$refs.Spinner.show();
-                        // window.location.reload()
-                        setTimeout(() => {
-                            document.location.reload();
-                        }, 2000);
+                        //this.$refs.Spinner.show();
+                    // window.location.reload()
+                    setTimeout(() => {
+                        document.location.reload();
+                        //this.$refs.Spinner.hide();
+                    }, 2000);
                 }
                 //alert("New Discipline Added: " + this.atname);
 
@@ -557,12 +560,12 @@ export default {
                 });
                 console.log(error.message);
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
+            // setTimeout(
+            //     function () {
+            //         this.$refs.Spinner.hide();
+            //     }.bind(this),
+            //     2000
+            // );
         },
         async editProgram() {
             try {
@@ -575,14 +578,14 @@ export default {
                     programDiscipline: this.selectedDiscipline,
                 });
                 toast("Programs Updated: " + this.editID, {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        }),
-                        // window.location.reload()
-                        setTimeout(() => {
-                            document.location.reload();
-                        }, 2000);
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    }),
+                    // window.location.reload()
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 2000);
                 //alert("New Discipline Added: " + this.atname);
 
             } catch (error) {
