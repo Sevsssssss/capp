@@ -166,7 +166,6 @@ export default {
                     .save({
                         requirements: this.reqs,
                         applicationStatus: "For Approval",
-                        selectedSupervisor: "",
                     })
                     .then(
                         (application) => {

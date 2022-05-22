@@ -893,7 +893,7 @@ export default {
                         statSecText = "0" + statSeconds;
                     }
                     else{
-                        statSecText = v.toString();
+                        statSecText = statSeconds.toString();
                     }
 
                     var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
@@ -942,7 +942,7 @@ export default {
                     SecText = "0" + seconds;
                 }
                 else{
-                    SecText = v.toString();
+                    SecText = seconds.toString();
                 }
 
 
