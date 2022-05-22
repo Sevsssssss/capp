@@ -394,7 +394,6 @@ export default {
                             timeout: 3000,
                             position: POSITION.TOP_RIGHT,
                         }),
-                        // this.sendEmail()
                         setTimeout(
                             () =>
                             this.$router.push({

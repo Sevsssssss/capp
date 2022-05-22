@@ -478,7 +478,6 @@ export default {
                             timeout: 3000,
                             position: POSITION.TOP_RIGHT,
                         }),
-                        // this.sendEmail()
                         setTimeout(
                             () =>
                             this.$router.push({
@@ -505,40 +504,7 @@ export default {
                 2000
             );
         },
-        sendEmail() {
-            var emailParams = {
-                message: "Your account has been created. \n Your account username is " +
-                    this.username +
-                    "\n Your temporary password is " +
-                    this.password,
-                email: this.email,
-            };
-            try {
-                //alert(this.email)
-                emailjs
-                    .send(
-                        "service_rax86wc",
-                        "template_nyqa4k6",
-                        emailParams,
-                        "wXbhKrnQCwo8bc25m"
-                    )
-                    .then(() => {
-                        toast("Email sent!", {
-                            type: TYPE.INFO,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    });
-            } catch (error) {
-                toast("Error:" + error.code + "" + error.message, {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
-        },
+        
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
