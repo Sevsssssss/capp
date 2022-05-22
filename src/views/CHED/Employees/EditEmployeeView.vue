@@ -263,6 +263,7 @@ export default {
             firstname: "",
             midinit: "",
             email: "",
+            oldEmail: "",
             username: "",
             contactnum: "",
             emp_designation: "",
@@ -374,22 +375,33 @@ export default {
             selectedEMP.set("designation", this.emp_designation);
             selectedEMP.set("discipline", this.discipline);
 
+            console.log(this.email, this.oldEmail);
             try {
                 await selectedEMP.save(null, {
                     useMasterKey: true,
                 }).then(() => {
                     toast("Employee Account Updated!", {
-                            type: TYPE.SUCCESS,
-                            timeout: 2000,
-                            position: POSITION.TOP_RIGHT,
+                        type: TYPE.SUCCESS,
+                        timeout: 2000,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    // if(this.email != this.oldEmail){
+                    //     console.log("HELLOS");
+                    //     const params = {
+                    //     name: this.employeeName,
+                    //     username: this.username,
+                    //     email: this.email,
+                    //     approved: true,
+                    //     };
+                    //     Parse.Cloud.run("sendEmailNotification", params);
+                    // }
+                    setTimeout(
+                        () =>
+                        this.$router.push({
+                            path: "/employees",
                         }),
-                        setTimeout(
-                            () =>
-                            this.$router.push({
-                                path: "/employees",
-                            }),
-                            2000
-                        );
+                        2000
+                    );
                 });
                 this.$refs.Spinner.show();
                 setTimeout(
@@ -487,6 +499,7 @@ export default {
             this.username = emp.get("username");
             this.contactnum = emp.get("contact_num");
             this.email = emp.get("email");
+            this.oldEmail = emp.get("email");
 
             const queryAT = new Parse.Query(AccessTypes);
             const queryResult = await queryAT.find();

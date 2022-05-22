@@ -90,10 +90,7 @@
                     <div class="form-control w-full">
                         <label class="label">
                             <span class="label-text">Select Affiliation:</span>
-                            <div class="text-sm font-medium text-gray-500">
-                                Add HEI Affiliation?
-                                <label for="createAffilication" href="#" class="text-blue-700 hover:underline">Create</label>
-                            </div>
+                            
                         </label>
                         <select class="select select-bordered w-full font-normal" v-model="hei_affil">
                             <option v-for="hei in heis" :key="hei" :value="hei.id">
@@ -334,7 +331,7 @@ export default {
         },
 
         async updateRQAT() {
-            this.$refs.Spinner.show();
+            // this.$refs.Spinner.show();
             try {
                 const rqat = new Parse.Query(Parse.User);
                 rqat.equalTo("objectId", this.rqatID);
@@ -373,11 +370,14 @@ export default {
                     affilrecordDate: currentDay,
                     affilendDate: "current",
                 }
+
+                
                 this.past_affil.push({
                     hei: this.current_affil.hei,
                     affilrecordDate: this.current_affil.affilrecordDate,
                     affilendDate: currentDay,
                 })
+
 
                 selectedRQAT.set("name", rqatName);
                 selectedRQAT.set("username", this.username);
@@ -411,7 +411,7 @@ export default {
             }
             setTimeout(
                 function () {
-                    this.$refs.Spinner.hide();
+                    // this.$refs.Spinner.hide();
                 }.bind(this),
                 2000
             );

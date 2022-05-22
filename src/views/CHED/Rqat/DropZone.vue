@@ -224,6 +224,7 @@ export default {
                     newRQAT.set("email", rqatData[i].G);
                     newRQAT.set("access_type", this.rqat_acc_id);
                     newRQAT.set("hasTransactions", false);
+                    newRQAT.set("past_affil", []);
                     await newRQAT.save().then(() => {
                         const params = {
                             name: this.rqatName,
