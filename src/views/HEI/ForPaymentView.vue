@@ -1,20 +1,20 @@
 <template>
 <div>
     <div class="mx-3">
-        <div class="flex justify-between items-start">
+        <div class="flex justify-between items-start text-sm">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
-                    <div class="font-normal text-sm">
+                    <div class="font-normal">
                         Type: <span class="font-semibold">{{ type }}</span>
                     </div>
-                    <div class="font-normal text-sm">
+                    <div class="font-normal">
                         Date Applied: <span class="font-semibold">{{ dateApplied }}</span>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
-                    <div class="font-normal text-sm">
+                    <div class="font-normal">
                         Status: <span class="font-semibold">{{ status }}</span>
                     </div>
                 </div>
