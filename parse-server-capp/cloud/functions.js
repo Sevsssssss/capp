@@ -48,15 +48,18 @@ async function sendEmail(params = {}) {
     let info = await transporter.sendMail({
       from: '"CAPP" <chedcapp@gmail.com>', // sender address
       to: params.email, // list of receivers
-      subject: "CAPP Application Status", // Subject line
-      text: params.status, // plain text body
+      subject: "Application Status", // Subject line
+      template: 'status',
+      context:{
+        status: params.status,
+      },
     });
 
   }
   if (params.type == "sendCredentials") {
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"CAPP Credentials ✔" <chedcapp@gmail.com>', // sender address
+      from: '"CAPP Credentials" <chedcapp@gmail.com>', // sender address
       to: params.email, // list of receivers
       subject: "Hello CAPP User!", // Subject line
       template: 'credentials',
