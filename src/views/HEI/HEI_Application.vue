@@ -196,7 +196,7 @@
             </div>
             <div>
                 <div v-for="(track, index) in statusTracker[appIndex]" :key="(track, index)" class="flex flex-col">
-                    <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
+                    <div v-if="index+1 <= statusTracker[appIndex].length && track.status != 'Completed'" class="flex">
                         <div class="flex flex-col items-center mr-4">
                             <div>
                                 <div class="flex items-center justify-center w-10 h-10 border rounded-full">
@@ -205,14 +205,14 @@
                                     </svg>
                                 </div>
                             </div>
-                            <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
+                            <div v-if="index+1 < statusTracker[appIndex].length" class="w-1 h-full bg-brand-darkblue"></div>
                         </div>
                         <div class="pb-4 flex flex-col">
                             <span class="text-md font-semibold">{{track.detail}}</span>
                             <span class="text-grey-300">{{track.dateTime}}</span>
                         </div>
                     </div>
-                    <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
+                    <div v-if="index+1 == statusTracker[appIndex].length && track.status == 'Completed'" class="flex">
                         <div class="flex flex-col items-center mr-4">
                             <div>
                                 <div class="flex items-center justify-center w-10 h-10 border rounded-full">
@@ -294,6 +294,7 @@ export default {
         async id(appid, index) {
             this.appID = appid;
             this.appIndex = index;
+
 
             //For Tracking
 
@@ -789,6 +790,7 @@ export default {
                 var statTrack = [];
 
                 for (var s = 0; s < application.get("statusTracker").length; s++) {
+                    console.log(application.get("statusTracker").length)
                     var statDate = new Date(application.get("statusTracker")[s].dateTime)
                     var statMonth = statDate.getMonth();
                     var statNumDate = statDate.getDate();
@@ -830,8 +832,7 @@ export default {
                         dateTime: statDateText,
                     })
                 }
-
-                this.statusTracker.push(statTrack);
+                this.statusTracker.push(statTrack)
 
                 storedApplications.push({
                     appID: application.id,
