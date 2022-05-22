@@ -125,7 +125,7 @@
                             }">
                                 <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-400 hover:text-blue-700">View</a>
                             </router-link>
-                            <a href="" v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-400 hover:text-blue-700">Assign</a>
+                            <label href="" v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-400 hover:text-blue-700">Assign</label>
                             <label for="tracking" @click="id(table.appID, index)" class="font-medium text-blue-400 hover:text-blue-700 ">Track</label>
                         </td>
                     </tr>
