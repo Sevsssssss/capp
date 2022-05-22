@@ -123,10 +123,10 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-400 hover:text-blue-700">View</a>
                             </router-link>
-                            <label v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " href="#" @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
-                            <label for="tracking" @click="id(table.appID, index)" class="font-medium text-blue-600 hover:underline">Track</label>
+                            <a href="" v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-400 hover:text-blue-700">Assign</a>
+                            <a href="" for="tracking" @click="id(table.appID, index)" class="font-medium text-blue-400 hover:text-blue-700 ">Track</a>
                         </td>
                     </tr>
                 </tbody>
