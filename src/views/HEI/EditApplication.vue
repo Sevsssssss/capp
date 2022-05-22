@@ -289,7 +289,7 @@ export default {
 
                 storedReqs.push({
                     credential: appType.get("applicationReqs")[i].applicationReq,
-                    file: application.get("requirements")[i].file.name(),
+                    file: application.get("requirements")[i].file.url(),
                     comment: application.get("requirements")[i].comment,
                 });
             }
