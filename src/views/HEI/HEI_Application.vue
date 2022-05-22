@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <tbody v-if="sort_type_var == false">
-                <tr v-for="table in searchApplication" :key="table" class="bg-white border-b hover:bg-gray-50">
+                <tr v-for="(table, index) in searchApplication" :key="(table, index)" class="bg-white border-b hover:bg-gray-50">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ table.dateApplied }}
                     </th>
@@ -120,7 +120,7 @@
                             </svg> -->
                             <span>Download</span>
                         </a>
-                        <a href="#" for="tracking" @click="id(table.appID)" class="pl-2 font-medium text-blue-400 hover:text-blue-700 ">Track</a>
+                        <label for="tracking" @click="id(table.appID, index)" class="pl-2 font-medium text-blue-400 hover:text-blue-700">Track</label>
                     </td>
                 </tr>
             </tbody>
