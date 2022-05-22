@@ -11,7 +11,7 @@
         </div>
     </div> -->
     <div class="flex">
-        <div class="flex flex-col w-full p-8 m-5 bg-brand-white rounded-md shadow-lg">
+        <div class="flex flex-col w-full p-5 m-5 bg-brand-white rounded-md shadow-lg">
             <div class="flex items-center pb-4">
                  <hr class="border border-light-400 w-full mx-4" />
                 <div class="text-lg items-start font-extrabold uppercase text-grey-200">
