@@ -147,6 +147,8 @@ export default {
             approved: '',
             fileCheker: false,
             statusTracker: [],
+            rep: "",
+            email: "",
         };
     },
     validations() {
