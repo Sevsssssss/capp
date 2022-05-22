@@ -4,7 +4,7 @@
 </div>
 <div v-else class="px-3 py-2">
     <!-- component for showing the cards with the datas for application -->
-    <DataCards :datas="datas" />
+    <DataCards v-if="!supervisorChecker()" :datas="datas" />
     <div class="overflow-x-auto shadow-lg rounded-lg m-2">
         <!-- Table header -->
         <div class="flex flex-row justify-between items-center">
