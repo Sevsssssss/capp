@@ -21,8 +21,8 @@
             <div>{{Program}}</div>
         </div>
         <div class="">
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-fulltext-left text-gray-500 text-left">
+            <div class="overflow-x-auto shadow-md sm:rounded-lg py-8 ">
+                <table class="w-full text-gray-500 text-left">
                     <tbody>
                         <!-- row 1 -->
                         <div class="bg-white border-b" v-for="cat in categories" :key="cat">

@@ -1,25 +1,27 @@
 <template>
 <div v-if="!tables.length" style="height: 100%">
-    <div class="flex flex-col center h-full p-5">
+    <div class="flex flex-col items-center justify-center h-full p-5">
         <div class="noDataAvail">No Data Available</div>
-        <div class="h-fit pt-3 items-center">
-            <button @click="excelDisciplines()" type="button" class="btn-table">
-                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
-                </svg>
-                <div class="pl-2">Upload Excel</div>
-            </button>
-        </div>
-        <!-- button -->
-        <div class="items-center">
-            <button @click="addDisciplines()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
-                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                </svg>
-                <div class="pl-2">Add Discipline</div>
-            </button>
+        <div class="flex ">
+            <div class="h-fit items-center">
+                <button @click="excelDisciplines()" type="button" class="btn-table">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                    </svg>
+                    <div class="pl-2">Upload Excel</div>
+                </button>
+            </div>
+            <!-- button -->
+            <div class="items-center">
+                <button @click="addDisciplines()" type="button" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                    </svg>
+                    <div class="pl-2">Add Discipline</div>
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -92,9 +94,9 @@
                                 id: i.id,
                                 },
                             }">
-                                   <a  class="font-medium text-blue-600 hover:underline">Edit Disciplines</a>
-                                </router-link>
-                        
+                            <a class="font-medium text-blue-600 hover:underline">Edit Disciplines</a>
+                        </router-link>
+
                         <label for="deleteFunc" @click="selectedDisciplineDelete(i.id)" class="hover:text-brand-red/60">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -190,10 +192,9 @@
                     <div v-if="editDisciplineName === i.MajorDiscipline">
                         <div v-for="x in i.specificDiscipline" :key="x">
 
-                            
                             <div class="flex flex-row">
                                 <div>
-                                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Specific Discipline Name:</label> 
+                                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Specific Discipline Name:</label>
                                     <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
                                 </div>
                                 <div class="pl-4">
