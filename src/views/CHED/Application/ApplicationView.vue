@@ -872,13 +872,32 @@ export default {
                     var statDay = statDate.getDay();
                     var period = "AM";
 
+                    var statMinText = "";
+                    var statSecText = "";
+
                     if (statHour >= 12) {
                         statHour -= 12;
                         period = "PM";
                     }
 
+                    if(statHour == 0) {
+                        statHour = 12;
+                    }
+                    if(statMinutes < 10){
+                        statMinText = "0" + statMinutes;
+                    }
+                    else{
+                        statMinText = statMinutes.toString();
+                    }
+                    if(statSeconds < 10){
+                        statSecText = "0" + statSeconds;
+                    }
+                    else{
+                        statSecText = v.toString();
+                    }
+
                     var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                        statHour + ":" + statMinutes + ":" + statSeconds + " " + period;
+                        statHour + ":" + statMinText + ":" + statSecText + " " + period;
 
                     statTrack.push({
                         status: application.get("statusTracker")[s].status,
@@ -903,6 +922,31 @@ export default {
 
                 const program = await programQuery.first();
 
+                var MinText = "";
+                var SecText = "";
+
+                if (hour >= 12) {
+                    hour -= 12;
+                }
+
+                if(hour == 0) {
+                    hour = 12;
+                }
+                if(minutes < 10){
+                    MinText = "0" + minutes;
+                }
+                else{
+                    MinText = minutes.toString();
+                }
+                if(seconds < 10){
+                    SecText = "0" + seconds;
+                }
+                else{
+                    SecText = v.toString();
+                }
+
+
+
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -910,7 +954,7 @@ export default {
                     phoneNumber: application.get("phoneNumber"),
                     type: appType.get("applicationTypeName"),
                     requirements: application.get("requirements"),
-                    dateApplied: months[month] + " " + day + ", " + year + " " + hour + ":" + minutes + ":" + seconds,
+                    dateApplied: months[month] + " " + day + ", " + year + " " + hour + ":" + MinText + ":" + SecText,
                     status: application.get("applicationStatus"),
                     program: program.get("programName"),
                     HeiName: hei_name,
