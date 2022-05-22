@@ -190,7 +190,7 @@ export default {
 
                     const heiType = Parse.Object.extend("HEI_Types");
                     const queryHEIType = new Parse.Query(heiType);
-                    queryHEIType.equalTo("name", heiData[i].G.toUpperCase());
+                    queryHEIType.equalTo("name", heiData[i].K.toUpperCase());
 
                     const queryRes = await queryHEIType.first();
                     console.log(queryRes)
