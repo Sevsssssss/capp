@@ -286,7 +286,6 @@ import {
     required,
     email
 } from "@vuelidate/validators";
-import emailjs from "emailjs-com";
 
 const toast = useToast();
 
