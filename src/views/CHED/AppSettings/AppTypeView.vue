@@ -35,10 +35,8 @@
                             <td class="px-6 py-4">
                             <th class="text-left">{{ i.name}}</th>
                             </td>
-
                         </tr>
                     </tbody>
-
                 </table>
             </div>
         </div>

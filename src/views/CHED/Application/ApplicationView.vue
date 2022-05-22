@@ -123,10 +123,10 @@
                                 status: table.status,
                                 },
                             }">
-                                <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-600 hover:underline">View</a>
+                                <a href="#" v-if="supervisor && table.status != 'For Compliance' && table.status != 'Completed' && table.status != 'Non Compliant'" class="font-medium text-blue-400 hover:text-blue-700">View</a>
                             </router-link>
-                            <label v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " href="#" @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-600 hover:underline">Assign</label>
-                            <label for="tracking" @click="id(table.appID, index)" class="font-medium text-blue-600 hover:underline">Track</label>
+                            <a href="" v-if="table.status == 'For Approval' && (table.selectedSupervisor == null || table.selectedSupervisor == '') " @click="id(table.appID, index)" for="for-approval" class="font-medium text-blue-400 hover:text-blue-700">Assign</a>
+                            <label for="tracking" @click="id(table.appID, index)" class="font-medium text-blue-400 hover:text-blue-700 ">Track</label>
                         </td>
                     </tr>
                 </tbody>
@@ -275,7 +275,6 @@
                 </div>
                 <div class="modal-action">
                     <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
                 </div>
             </div>
         </div>
