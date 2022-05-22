@@ -1,18 +1,19 @@
 <template>
 <div class="my-3 mx-2">
-    <div class="overflow-x-auto shadow-lg rounded-lg">
-        <div class="py-5 h-full flex flex-col justify-center items-center bg-white">
-            <span class="text-2xl m-5">Upload File</span>
-            <div @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
+    <div class="overflow-x-auto flex flex-col items-center justify-center">
+        <span class="text-2xl m-5">Upload File</span>
+        <div @drop.prevent="drop" @change="selectedFile" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
+            <div v-if="!dropzoneFile.name" class="flex flex-col space-y-2">
                 <span>Drag or Drop File</span>
                 <span>OR</span>
-                <label for="dropzoneFile">Select File</label>
+                <label for="dropzoneFile" class="">Select File</label>
                 <input type="file" id="dropzoneFile" class="dropzoneFile" />
             </div>
-            <span class="m-3 font-semibold">File: <span class="text-brand-blue/50">{{ dropzoneFile.name }}</span></span>
-
+            <div v-else class="flex justify-center items-center space-x-2">
+                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/pdf.png" />
+                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            </div>
         </div>
-
     </div>
     <div class="flex flex-row center py-10">
         <div class="pr-5">
@@ -48,8 +49,8 @@ export default {
     components: {
         VueInstantLoadingSpinner,
     },
-    data(){
-        return{
+    data() {
+        return {
             statusTracker: [],
         }
     },

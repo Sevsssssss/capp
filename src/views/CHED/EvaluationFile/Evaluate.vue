@@ -79,9 +79,9 @@
                                     </div>
                                 </td>
                                 <td class="text-end">
-                                    <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
-                                    <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
-                                    <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                    <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                    <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea textarea-disabled p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -104,12 +104,8 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     <div class="flex flex-row justify-between">
                                         <p class="py-2 font-semibold">Summary</p>
-                                        <a @click="getSummary()">Generate Summary</a>
-                                        <!-- <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" @click="getSummary()">
-                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                                        </svg> -->
+                                        <label @click="getSummary()" class="hover:text-brand-darkblue">Generate Summary</label>
                                     </div>
-
                                     <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                                 </th>
 
