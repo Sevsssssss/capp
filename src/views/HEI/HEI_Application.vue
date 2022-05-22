@@ -86,7 +86,7 @@
                             {{ table.status }} 
                         </div>
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 text-end">
                         <router-link :to="{
                          name: 'EditHEIapplication',
                          params: {
@@ -119,6 +119,7 @@
                                 <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
                             </svg>
                         </a>
+                        <label for="tracking" @click="id(table.appID)" class="pl-2 font-medium text-blue-600 hover:underline">Track</label>
                     </td>
                 </tr>
             </tbody>
@@ -166,6 +167,75 @@
         </div>
     </div>
     <br />
+            <input type="checkbox" id="tracking" class="modal-toggle" />
+        <div class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box relative rounded-md text-left">
+                <div class="font-bold text-lg mb-2">TRACK APPLICATION</div>
+                <div class="space-y-1 mb-4">
+                    <div class="flex flex-row space-x-1 justify-between">
+                        <div class="flex flex-row space-x-2">
+                            <span class="font-semibold">ID:</span>
+                            <span class="">{{this.appID}}</span>
+                        </div>
+                        
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex flex-row space-x-1">
+                            <div class="font-semibold">Application Type: </div>
+                            <span class=""> {{stAppType}} </span>
+                        </div>
+                        <div class="flex flex-row space-x-1">
+                            <div class="font-semibold">HEI: </div>
+                            <span class="">{{stHEI}}</span>
+                        </div>
+                        <div class="flex flex-row space-x-1">
+                            <div class="font-semibold">Program:  </div>
+                            <span class="">{{stProgram}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
+                        <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div>
+                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-darkblue outline-brand-darkblue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
+                            </div>
+                            <div class="pb-4 flex flex-col">
+                                <span class="text-md font-semibold">{{track.detail}}</span>
+                                <span class="text-grey-300">{{track.dateTime}}</span>
+                            </div>
+                        </div>
+                        <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
+                            <div class="flex flex-col items-center mr-4">
+                                <div>
+                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500 outline-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pb-4 flex flex-col">
+                                <span class="text-md font-semibold">{{track.detail}}</span>
+                                <span class="text-grey-300">{{track.dateTime}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                </div>
+            </div>
+        </div>
 </div>
 </template>
 

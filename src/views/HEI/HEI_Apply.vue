@@ -70,7 +70,9 @@
                                 <span class="label-text">Program:</span>
                             </label>
                             <select v-model="programSelect" class="select select-bordered  w-fit ">
-                                <option v-for="program in programs" :key="program" :value="program.id">{{program.name}}</option>
+                                <option v-for="program in programs" :key="program" :value="program.id">
+                                    {{program.name}}
+                                </option>
                             </select>
                         </div>
                     </div>
