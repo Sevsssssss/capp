@@ -75,7 +75,7 @@
                         </div>
                         <div v-else-if="table.status === 'For Payment'" class="indicator w-fit">
                             <span v-if="table.paymentStatus != ''" class="indicator-item indicator-top indicator-end right-10 badge badge-accent text-sm text-brand-white">{{table.paymentStatus}}</span>
-                            <div  class="flex btn-sm1 rounded-md p-2 font-normal payment uppercase">
+                            <div class="flex btn-sm1 rounded-md p-2 font-normal payment uppercase">
                                 {{ table.status}}
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                             {{ table.status }}
                         </div>
                         <div v-else-if="table.status === 'Non Compliant'" class="btn-sm1 rounded-md p-2 font-normal noncompliant">
-                            {{ table.status }} 
+                            {{ table.status }}
                         </div>
                     </td>
                     <td class="px-6 py-4 text-end">
@@ -96,7 +96,7 @@
                         }">
                             <a v-if="statusChecker(table.status) &&table.status === 'For Revision'" href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                         </router-link>
-                         <router-link :to="{
+                        <router-link :to="{
                          name: 'PaymentApplication',
                          params: {
                          id: table.appID,
@@ -167,74 +167,74 @@
         </div>
     </div>
     <br />
-            <input type="checkbox" id="tracking" class="modal-toggle" />
-        <div class="modal modal-bottom sm:modal-middle">
-            <div class="modal-box relative rounded-md text-left">
-                <div class="font-bold text-lg mb-2">TRACK APPLICATION</div>
-                <div class="space-y-1 mb-4">
-                    <div class="flex flex-row space-x-1 justify-between">
-                        <div class="flex flex-row space-x-2">
-                            <span class="font-semibold">ID:</span>
-                            <span class="">{{this.appID}}</span>
-                        </div>
-                        
+    <input type="checkbox" id="tracking" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-bold text-lg mb-2">TRACK APPLICATION</div>
+            <div class="space-y-1 mb-4">
+                <div class="flex flex-row space-x-1 justify-between">
+                    <div class="flex flex-row space-x-2">
+                        <span class="font-semibold">ID:</span>
+                        <span class="">{{appID}}</span>
                     </div>
-                    <div class="space-y-1">
-                        <div class="flex flex-row space-x-1">
-                            <div class="font-semibold">Application Type: </div>
-                            <span class=""> {{stAppType}} </span>
-                        </div>
-                        <div class="flex flex-row space-x-1">
-                            <div class="font-semibold">HEI: </div>
-                            <span class="">{{stHEI}}</span>
-                        </div>
-                        <div class="flex flex-row space-x-1">
-                            <div class="font-semibold">Program:  </div>
-                            <span class="">{{stProgram}}</span>
-                        </div>
-                    </div>
+
                 </div>
-                <div>
-                    <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
-                        <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
-                            <div class="flex flex-col items-center mr-4">
-                                <div>
-                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-darkblue outline-brand-darkblue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
-                            </div>
-                            <div class="pb-4 flex flex-col">
-                                <span class="text-md font-semibold">{{track.detail}}</span>
-                                <span class="text-grey-300">{{track.dateTime}}</span>
-                            </div>
-                        </div>
-                        <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
-                            <div class="flex flex-col items-center mr-4">
-                                <div>
-                                    <div class="flex items-center justify-center w-10 h-10 border rounded-full">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500 outline-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pb-4 flex flex-col">
-                                <span class="text-md font-semibold">{{track.detail}}</span>
-                                <span class="text-grey-300">{{track.dateTime}}</span>
-                            </div>
-                        </div>
+                <div class="space-y-1">
+                    <div class="flex flex-row space-x-1">
+                        <div class="font-semibold">Application Type: </div>
+                        <span class=""> {{stAppType}} </span>
                     </div>
-                </div>
-                <div class="modal-action">
-                    <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                    <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                    <div class="flex flex-row space-x-1">
+                        <div class="font-semibold">HEI: </div>
+                        <span class="">{{stHEI}}</span>
+                    </div>
+                    <div class="flex flex-row space-x-1">
+                        <div class="font-semibold">Program: </div>
+                        <span class="">{{stProgram}}</span>
+                    </div>
                 </div>
             </div>
+            <div>
+                <div v-for="(track, index) in statusTracker[appIndex]" :key="(track, index)" class="flex flex-col">
+                    <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
+                        <div class="flex flex-col items-center mr-4">
+                            <div>
+                                <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-darkblue outline-brand-darkblue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
+                        </div>
+                        <div class="pb-4 flex flex-col">
+                            <span class="text-md font-semibold">{{track.detail}}</span>
+                            <span class="text-grey-300">{{track.dateTime}}</span>
+                        </div>
+                    </div>
+                    <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
+                        <div class="flex flex-col items-center mr-4">
+                            <div>
+                                <div class="flex items-center justify-center w-10 h-10 border rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-500 outline-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-4 flex flex-col">
+                            <span class="text-md font-semibold">{{track.detail}}</span>
+                            <span class="text-grey-300">{{track.dateTime}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-action">
+                <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+            </div>
         </div>
+    </div>
 </div>
 </template>
 
@@ -269,6 +269,7 @@ export default {
             ],
             tables: [],
             appID: "",
+            appIndex: null,
             statusTracker: [],
             stAppType: "",
             stHEI: "",
@@ -290,8 +291,9 @@ export default {
     },
 
     methods: {
-        async id(appid) {
+        async id(appid, index) {
             this.appID = appid;
+            this.appIndex = index;
 
             //For Tracking
 
@@ -365,14 +367,36 @@ export default {
                 "November",
                 "December",
             ];
+            var days = [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Satursday",
+                "Sunday",
+            ];
             var month;
             var day;
             var year;
-
-            
+            var statTrack = [];
+            var statDate;
+            var statMonth;
+            var statNumDate;
+            var statYear;
+            var statHour;
+            var statMinutes;
+            var statSeconds;
+            var statDay;
+            var period;
+            var statMinText;
+            var statSecText;
+            var statDateText;
+            var s;
 
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
+                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -382,6 +406,52 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
+
+                    statTrack = [];
+                    for (s = 0; s < application.get("statusTracker").length; s++) {
+                        statDate = new Date(application.get("statusTracker")[s].dateTime)
+                        statMonth = statDate.getMonth();
+                        statNumDate = statDate.getDate();
+                        statYear = statDate.getFullYear();
+                        statHour = statDate.getHours();
+                        statMinutes = statDate.getMinutes();
+                        statSeconds = statDate.getSeconds();
+                        statDay = statDate.getDay();
+                        period = "AM";
+
+                        statMinText = "";
+                        statSecText = "";
+
+                        if (statHour >= 12) {
+                            statHour -= 12;
+                            period = "PM";
+                        }
+
+                        if (statHour == 0) {
+                            statHour = 12;
+                        }
+                        if (statMinutes < 10) {
+                            statMinText = "0" + statMinutes;
+                        } else {
+                            statMinText = statMinutes.toString();
+                        }
+                        if (statSeconds < 10) {
+                            statSecText = "0" + statSeconds;
+                        } else {
+                            statSecText = statSeconds.toString();
+                        }
+
+                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
+
+                        statTrack.push({
+                            status: application.get("statusTracker")[s].status,
+                            detail: application.get("statusTracker")[s].detail,
+                            dateTime: statDateText,
+                        })
+                    }
+
+                    this.statusTracker.push(statTrack);
 
                     month = application.createdAt.getMonth();
                     day = application.createdAt.getDate();
@@ -407,6 +477,7 @@ export default {
 
             } else if (this.sort_type == "For Approval") {
                 var storedApplicationsFA = [];
+                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -417,6 +488,53 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
+
+                    statTrack = [];
+
+                    for (s = 0; s < application.get("statusTracker").length; s++) {
+                        statDate = new Date(application.get("statusTracker")[s].dateTime)
+                        statMonth = statDate.getMonth();
+                        statNumDate = statDate.getDate();
+                        statYear = statDate.getFullYear();
+                        statHour = statDate.getHours();
+                        statMinutes = statDate.getMinutes();
+                        statSeconds = statDate.getSeconds();
+                        statDay = statDate.getDay();
+                        period = "AM";
+
+                        statMinText = "";
+                        statSecText = "";
+
+                        if (statHour >= 12) {
+                            statHour -= 12;
+                            period = "PM";
+                        }
+
+                        if (statHour == 0) {
+                            statHour = 12;
+                        }
+                        if (statMinutes < 10) {
+                            statMinText = "0" + statMinutes;
+                        } else {
+                            statMinText = statMinutes.toString();
+                        }
+                        if (statSeconds < 10) {
+                            statSecText = "0" + statSeconds;
+                        } else {
+                            statSecText = statSeconds.toString();
+                        }
+
+                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
+
+                        statTrack.push({
+                            status: application.get("statusTracker")[s].status,
+                            detail: application.get("statusTracker")[s].detail,
+                            dateTime: statDateText,
+                        })
+                    }
+
+                    this.statusTracker.push(statTrack);
 
                     month = application.createdAt.getMonth();
                     day = application.createdAt.getDate();
@@ -441,6 +559,7 @@ export default {
                 }
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
+                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -451,6 +570,53 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
+
+                    statTrack = [];
+
+                    for (s = 0; s < application.get("statusTracker").length; s++) {
+                        statDate = new Date(application.get("statusTracker")[s].dateTime)
+                        statMonth = statDate.getMonth();
+                        statNumDate = statDate.getDate();
+                        statYear = statDate.getFullYear();
+                        statHour = statDate.getHours();
+                        statMinutes = statDate.getMinutes();
+                        statSeconds = statDate.getSeconds();
+                        statDay = statDate.getDay();
+                        period = "AM";
+
+                        statMinText = "";
+                        statSecText = "";
+
+                        if (statHour >= 12) {
+                            statHour -= 12;
+                            period = "PM";
+                        }
+
+                        if (statHour == 0) {
+                            statHour = 12;
+                        }
+                        if (statMinutes < 10) {
+                            statMinText = "0" + statMinutes;
+                        } else {
+                            statMinText = statMinutes.toString();
+                        }
+                        if (statSeconds < 10) {
+                            statSecText = "0" + statSeconds;
+                        } else {
+                            statSecText = statSeconds.toString();
+                        }
+
+                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
+
+                        statTrack.push({
+                            status: application.get("statusTracker")[s].status,
+                            detail: application.get("statusTracker")[s].detail,
+                            dateTime: statDateText,
+                        })
+                    }
+
+                    this.statusTracker.push(statTrack);
 
                     month = application.createdAt.getMonth();
                     day = application.createdAt.getDate();
@@ -482,9 +648,57 @@ export default {
                 query.equalTo("createdBy", Parse.User.current().id);
 
                 const querResult = await query.find();
+                this.statusTracker = [];
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
+
+                    statTrack = [];
+
+                    for (s = 0; s < application.get("statusTracker").length; s++) {
+                        statDate = new Date(application.get("statusTracker")[s].dateTime)
+                        statMonth = statDate.getMonth();
+                        statNumDate = statDate.getDate();
+                        statYear = statDate.getFullYear();
+                        statHour = statDate.getHours();
+                        statMinutes = statDate.getMinutes();
+                        statSeconds = statDate.getSeconds();
+                        statDay = statDate.getDay();
+                        period = "AM";
+
+                        statMinText = "";
+                        statSecText = "";
+
+                        if (statHour >= 12) {
+                            statHour -= 12;
+                            period = "PM";
+                        }
+
+                        if (statHour == 0) {
+                            statHour = 12;
+                        }
+                        if (statMinutes < 10) {
+                            statMinText = "0" + statMinutes;
+                        } else {
+                            statMinText = statMinutes.toString();
+                        }
+                        if (statSeconds < 10) {
+                            statSecText = "0" + statSeconds;
+                        } else {
+                            statSecText = statSeconds.toString();
+                        }
+
+                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
+
+                        statTrack.push({
+                            status: application.get("statusTracker")[s].status,
+                            detail: application.get("statusTracker")[s].detail,
+                            dateTime: statDateText,
+                        })
+                    }
+
+                    this.statusTracker.push(statTrack);
 
                     month = application.createdAt.getMonth();
                     day = application.createdAt.getDate();
@@ -593,19 +807,17 @@ export default {
                         period = "PM";
                     }
 
-                    if(statHour == 0) {
+                    if (statHour == 0) {
                         statHour = 12;
                     }
-                    if(statMinutes < 10){
+                    if (statMinutes < 10) {
                         statMinText = "0" + statMinutes;
-                    }
-                    else{
+                    } else {
                         statMinText = statMinutes.toString();
                     }
-                    if(statSeconds < 10){
+                    if (statSeconds < 10) {
                         statSecText = "0" + statSeconds;
-                    }
-                    else{
+                    } else {
                         statSecText = statSeconds.toString();
                     }
 
@@ -619,8 +831,7 @@ export default {
                     })
                 }
 
-                this.statusTracker = statTrack;
-
+                this.statusTracker.push(statTrack);
 
                 storedApplications.push({
                     appID: application.id,
