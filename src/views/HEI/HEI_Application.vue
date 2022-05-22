@@ -227,7 +227,6 @@
                                 <span class="text-grey-300">{{track.dateTime}}</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-action">
@@ -269,6 +268,11 @@ export default {
                 },
             ],
             tables: [],
+            appID: "",
+            statusTracker: [],
+            stAppType: "",
+            stHEI: "",
+            stProgram: "",
         };
     },
     computed: {
@@ -286,6 +290,40 @@ export default {
     },
 
     methods: {
+        async id(appid) {
+            this.appID = appid;
+
+            //For Tracking
+
+            //Query Application
+            const Applications = Parse.Object.extend("Applications");
+            const queryApp = new Parse.Query(Applications);
+            queryApp.equalTo("objectId", this.appID);
+            const querResultApp = await queryApp.first();
+
+            //Query Application Type
+            const AppTypes = Parse.Object.extend("ApplicationTypes");
+            const queryAppTypes = new Parse.Query(AppTypes);
+            queryAppTypes.equalTo("objectId", querResultApp.get("applicationType"));
+            const querResultAppType = await queryAppTypes.first();
+
+            //Query HEI
+            const heis = new Parse.Query(Parse.User);
+            heis.equalTo("objectId", querResultApp.get("createdBy"));
+            const querResultHEI = await heis.first({
+                useMasterKey: true,
+            });
+
+            //Query Program
+            const Programs = Parse.Object.extend("Programs");
+            const queryProgs = new Parse.Query(Programs);
+            queryProgs.equalTo("objectId", querResultApp.get("program"));
+            const querResultProgs = await queryProgs.first();
+
+            this.stAppType = querResultAppType.get("applicationTypeName");
+            this.stHEI = querResultHEI.get("hei_name");
+            this.stProgram = querResultProgs.get("programName");
+        },
         statusChecker(status) {
             if (
                 status != "COMPLETED" &&
@@ -330,6 +368,8 @@ export default {
             var month;
             var day;
             var year;
+
+            
 
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
@@ -513,6 +553,15 @@ export default {
                     "November",
                     "December",
                 ];
+                var days = [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Satursday",
+                    "Sunday",
+                ];
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
@@ -522,6 +571,55 @@ export default {
                 appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
                 const applicationType = await appTypeQuery.first();
+
+                var statTrack = [];
+
+                for (var s = 0; s < application.get("statusTracker").length; s++) {
+                    var statDate = new Date(application.get("statusTracker")[s].dateTime)
+                    var statMonth = statDate.getMonth();
+                    var statNumDate = statDate.getDate();
+                    var statYear = statDate.getFullYear();
+                    var statHour = statDate.getHours();
+                    var statMinutes = statDate.getMinutes();
+                    var statSeconds = statDate.getSeconds();
+                    var statDay = statDate.getDay();
+                    var period = "AM";
+
+                    var statMinText = "";
+                    var statSecText = "";
+
+                    if (statHour >= 12) {
+                        statHour -= 12;
+                        period = "PM";
+                    }
+
+                    if(statHour == 0) {
+                        statHour = 12;
+                    }
+                    if(statMinutes < 10){
+                        statMinText = "0" + statMinutes;
+                    }
+                    else{
+                        statMinText = statMinutes.toString();
+                    }
+                    if(statSeconds < 10){
+                        statSecText = "0" + statSeconds;
+                    }
+                    else{
+                        statSecText = statSeconds.toString();
+                    }
+
+                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                        statHour + ":" + statMinText + ":" + statSecText + " " + period;
+
+                    statTrack.push({
+                        status: application.get("statusTracker")[s].status,
+                        detail: application.get("statusTracker")[s].detail,
+                        dateTime: statDateText,
+                    })
+                }
+
+                this.statusTracker = statTrack;
 
 
                 storedApplications.push({

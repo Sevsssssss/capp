@@ -851,7 +851,7 @@ export default {
                     "Friday",
                     "Satursday",
                     "Sunday",
-                ]
+                ];
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
