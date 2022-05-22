@@ -521,7 +521,9 @@ export default {
             });
 
             this.instName = user.get("hei_name");
-            this.address = user.get("address");
+            const heiAddress = user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", "
+                                    + user.get("address").province + ", " + user.get("address").regionName;
+            this.address = heiAddress;
 
             console.log("Hello" + user.get("hei_name"));
 
