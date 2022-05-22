@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-row">
+            <div class="flex flex-row justify-center items-center">
                 <!-- button -->
                 <div class="pr-4">
                     <label class="hover:text-brand-lightblue hover:" @click="onUpdate()">

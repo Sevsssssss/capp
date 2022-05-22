@@ -80,10 +80,6 @@
                 <div class="form-control w-full pr-2">
                     <label class="label">
                         <span class="label-text">Designation:</span>
-                        <div class="text-sm font-medium text-gray-500">
-                            Add Designation?
-                            <label for="createEmType" href="#" class="text-blue-700 hover:underline">Create</label>
-                        </div>
                     </label>
                     <select class="select select-bordered w-full" v-model="v$.emp_designation.$model">
                         <option v-for="designation in designations" :key="designation" :value="designation.id">
@@ -127,25 +123,6 @@
                 </button>
             </div>
         </form>
-    </div>
-    <input type="checkbox" id="createEmType" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">ADD DESIGNATION</div>
-            <p class="py-2 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit lore
-            </p>
-            <form>
-                <div class="mb-6">
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter designation" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="createEmType" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none">Submit</label>
-            </div>
-        </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal">

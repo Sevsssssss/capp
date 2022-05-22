@@ -156,10 +156,16 @@ export default {
                 this.counter = this.counter + 1;
                 try {
                     const designation = Parse.Object.extend("Designations");
-                    const newDesignation = new designation();
-                    newDesignation.save({
-                        name: designationsData[i].A.toUpperCase(),
-                    })
+                    const queryDesignation = new Parse.Query(designation);
+                    queryDesignation.equalTo("name", queryDesignation[i].A.toUpperCase());
+
+                    const queryRes = await queryDesignation.first();
+                    if (queryRes === undefined) {
+                        const newDesignation = new designation();
+                        newDesignation.save({
+                            name: designationsData[i].A.toUpperCase(),
+                        })
+                    }
 
                 } catch (error) {
                     console.log(error.message);
