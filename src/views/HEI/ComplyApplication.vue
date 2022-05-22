@@ -1,20 +1,20 @@
 <template>
 <div>
     <div class="mx-3">
-        <div class="flex justify-between items-start">
+        <div class="flex justify-between items-start text-sm">
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
-                    <div class="font-normal text-md">
+                    <div class="font-normal">
                         Type: <span class="font-semibold">{{ type }}</span>
                     </div>
-                    <div class="font-normal text-md">
+                    <div class="font-normal">
                         Date Applied: <span class="font-semibold">{{ dateApplied }}</span>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col">
                 <div class="p-4 text-left space-y-3 uppercase">
-                    <div class="font-normal text-md">
+                    <div class="font-normal">
                         Status: <span class="font-semibold">{{ status }}</span>
                     </div>
 
@@ -128,7 +128,7 @@
                             <td v-if="table.comment !== ''" class="px-6 py-4">
                                 {{ table.comment }}
                             </td>
-                            <td v-if="table.comment !== ''" class="px-6 py-4 items-center">
+                            <td v-if="table.comment !== ''" class="px-6 py-4  flex justify-start items-center">
                                 <input v-if="table.comment != ''" accept=".pdf,.doc" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none focus:border-transparent" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                             </td>
                             <td v-if="table.comment !== ''" class="px-6 py-4 w-2/5">
