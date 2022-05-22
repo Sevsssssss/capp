@@ -181,6 +181,9 @@ export default {
 
                 const program = await programQuery.first();
 
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
+                                    + hei.get("address").province + ", " + hei.get("address").regionName
+
                 storedApplications.push({
                     id: i + 1,
                     rep: application.get("pointPerson"),
@@ -191,7 +194,7 @@ export default {
                     status: application.get("applicationStatus"),
                     program: program.get("programName"),
                     HeiName: hei.get("hei_name"),
-                    address: hei.get("address"),
+                    address: heiAddress,
                     appID: application.id,
                 });
             }
