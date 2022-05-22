@@ -255,7 +255,10 @@ export default {
                 position: POSITION.TOP_RIGHT,
             });
             this.$refs.Spinner.hide();
-            this.$router.push("/hei")
+            this.$router.push("/hei");
+             setTimeout(() => {
+                this.$router.go()
+            }, 2000);
             this.pending = false;
 
         },

@@ -41,35 +41,32 @@
             </div>
         </div>
         <div class="text-center p-5">
-            <div class="font-semibold">
-                REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
-            </div>
-            <div>{{ Name }}</div>
+            <div class="font-semibold">{{ Name }}</div>
 
             <div v-for="cmono in cmoNoYr" :key="cmono">
-                per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}}
+               <span class="font-normal"> per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}} </span>
             </div>
 
             <!-- <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div> -->
             <div>{{Program}}</div>
         </div>
         <div class="">
-            <div class="overflow-x-auto">
-                <table class="table eval-table w-full">
+            <div class="overflow-x-auto shadow-md sm:rounded-lg py-8">
+                <table class="w-full text-gray-500 text-left">
                     <tbody>
                         <!-- row 1 -->
-                        <div v-for="cat in cmos" :key="cat">
+                        <div class="bg-white border-b" v-for="cat in cmos" :key="cat">
                             <div v-for="category in cat.categories" :key="category">
-                                <td class="font-bold">{{ category.id }} {{ category.Category }}</td>
+                                <td class="px-6 py-4 font-semibold">{{ category.id }} {{ category.Category }}</td>
                                 <div v-for="subcat in category.subcategory" :key="subcat">
-                                    <td></td>
-                                    <th>{{ category.id }}.{{ subcat.id }}</th>
-                                    <td class="font-medium">{{ subcat.Subcategory }}</td>
+                                    <td class="px-6 py-4"></td>
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ category.id }}.{{ subcat.id }}</th>
+                                    <td class="px-6 py-4 font-semibold">{{ subcat.Subcategory }}</td>
                                     <div v-for="item in subcat.items" :key="item">
-                                        <td></td>
-                                        <td></td>
-                                        <th>{{ category.id }}.{{ subcat.id }}.{{ item.id }}</th>
-                                        <td class="font-thin">{{ item.Item }}</td>
+                                        <td  class="px-6 py-4"></td>
+                                        <td  class="px-6 py-4"></td>
+                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ category.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                                        <td class="px-6 py-4">{{ item.Item }}</td>
                                     </div>
                                 </div>
                             </div>

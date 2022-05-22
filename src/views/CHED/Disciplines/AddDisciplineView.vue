@@ -1,7 +1,7 @@
 <template>
 <!--Header-->
 <div class="m-3">
-    <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between">
+    <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg px-8 justify-between">
         <div class="flex flex-row mt-5 justify-between items-center">
             <div class="font-semibold">MAJOR DISCIPLINES</div>
             <div :class="{ hide: majorDisciplines.length > 0 }" class="">
@@ -58,7 +58,7 @@
                             <div v-if="viewSpecDisc()">
                                 <div class="">
 
-                                    <div class="form-control w-full flex flex-row space-x-4" style="justify-content: space-between">
+                                    <div class="form-control w-full flex flex-row  justify-center items-end space-x-4" style="justify-content: space-between">
                                         <div class="form-control w-50">
                                             <label class="label"><span class="label-text">Specific Discipline ID</span></label>
                                             <input v-model="specificDiscipline.SpecDiscCode" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
@@ -67,7 +67,7 @@
                                             <label class="label"><span class="label-text">Specific Discipline</span></label>
                                             <input v-model="specificDiscipline.SpecificDiscipline" type="text" placeholder="Enter Specific Discipline Name" class="input input-bordered w-full mr-4 flex" />
                                         </div>
-                                        <div class="flex flex-row justify-center items-center">
+                                        <div class="">
                                             <!-- Delete Sub-MajorDiscipline -->
                                             <button data-tip="Remove Specific Discipline" class="
                                                 btn btn-outline
@@ -88,29 +88,29 @@
                 </div>
             </div>
         </div>
-        <div :class="{ hide: majorDisciplines.length == 0 }" class="mt-5 flex flex-row justify-end">
+        <div :class="{ hide: majorDisciplines.length == 0 }" class="my-8 flex flex-row justify-end">
             <button class="btn bg-brand-darkblue hover:bg-brand-blue border-none" @click="addMajorDiscipline()">
                 Add Major Discipline
             </button>
         </div>
         <!-- Footer -->
-        <div class="table-footer flex flex-row justify-center">
-            <div class="flex flex-row pt-5">
-                <button class="btn btn-margin btn-outline" @click="$router.go(-1)">
-                    Cancel
-                </button>
-                <button for="my-modal-6" id="my-modal-6" type="submit" :class="{ hide: majorDisciplines.length == 0}" class="
+    </form>
+    <div class="flex flex-row justify-center">
+        <div class="flex flex-row py-8 space-x-4">
+            <button class="btn btn-margin btn-outline" @click="$router.go(-1)" :class="{ hide: majorDisciplines.length == 0}">
+                Cancel
+            </button>
+            <button for="my-modal-6" id="my-modal-6" type="submit" :class="{ hide: majorDisciplines.length == 0}" class="
               border-none
               btn btn-m
               submit
               bg-brand-darkblue
               hover:bg-brand-blue
             " @click="modal()">
-                    Create
-                </button>
-            </div>
+                Create
+            </button>
         </div>
-    </form>
+    </div>
     <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
