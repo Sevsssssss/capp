@@ -381,7 +381,6 @@ export default {
 
                 selectedRQAT.set("name", rqatName);
                 selectedRQAT.set("username", this.username);
-                selectedRQAT.set("password", "password");
                 selectedRQAT.set("contact_num", this.contactnum);
                 selectedRQAT.set("hei_affil", heiAffil);
                 selectedRQAT.set("past_affil", this.past_affil);
@@ -394,7 +393,6 @@ export default {
                             timeout: 3000,
                             position: POSITION.TOP_RIGHT,
                         }),
-                        // this.sendEmail()
                         setTimeout(
                             () =>
                             this.$router.push({

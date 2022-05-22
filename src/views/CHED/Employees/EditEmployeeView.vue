@@ -368,7 +368,6 @@ export default {
 
             selectedEMP.set("name", employeeName);
             selectedEMP.set("username", this.username);
-            selectedEMP.set("password", "password");
             selectedEMP.set("email", this.email);
             selectedEMP.set("contact_num", this.contactnum);
             selectedEMP.set("access_type", this.access_type);
