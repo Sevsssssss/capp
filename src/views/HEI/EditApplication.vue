@@ -40,7 +40,7 @@
                                 {{ table.credential }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ table.file }}
+                                <a :href="table.file" target="_blank" class="text-blue-400">view</a>
                             </td>
                             <td class="px-6 py-4">
                                 {{ table.comment }}
