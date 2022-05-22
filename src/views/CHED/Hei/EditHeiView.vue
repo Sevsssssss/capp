@@ -462,7 +462,6 @@ export default {
             try {
                 selectedHEI.set("hei_name", this.hei_name);
                 selectedHEI.set("username", this.username);
-                selectedHEI.set("password", "password");
                 selectedHEI.set("email", this.email);
                 selectedHEI.set("address", this.address);
                 selectedHEI.set("number", this.number);
