@@ -128,20 +128,39 @@
 
   
 
-//   //HEI Deletion Trigger
-//   Parse.Cloud.beforeDelete(Parse.User, async (request) => {
+  //Users Deletion Trigger
+  Parse.Cloud.beforeDelete(Parse.User, async (request) => {
     
-//     //RQAT query
-//     const rqatQuery = new Parse.Query(Parse.User);
-//     rqatQuery.equalTo("hei_affil", request.object.id);
-//     const rqatCount = await rqatQuery.count({useMasterKey:true})
+    //HEI Deletion Trigger
+      //RQAT query
+      const rqatQuery = new Parse.Query(Parse.User);
+      rqatQuery.equalTo("hei_affil", request.object.id);
+      const rqatCount = await rqatQuery.count({useMasterKey:true}) 
+      if (rqatCount > 0) {
+        throw "Can't Delete HEI, because it is currently an Affiliation of an RQAT.";
+      }
 
-//     // query
-//     const rqatQuery = new Parse.Query(Parse.User);
-//     rqatQuery.equalTo("hei_affil", request.object.id);
-//     const count = await rqatQuery.count({useMasterKey:true})
+      const Applications = Parse.Object.extend("Applications");
+      const appQuery = new Parse.Query(Applications)
+      var heiQuery = appQuery.equalTo("createdBy", request.object.id)
+      const appCount = await heiQuery.count({useMasterKey:true})
+      if (appCount > 0) {
+        throw "Can't Delete HEI, because it has records on application of programs";
+      }
 
-//     if (rqatCount > 0) {
-//       throw "Can't Delete HEI, because it is currently being used in an rqat.";
-//     }
-//   });
+    //RQAT Deletion Trigger
+    var rqatQuer = appQuery.equalTo("selectedRQAT", request.object.id);
+    const appRQATCount = await rqatQuer.count({useMasterKey:true})
+    if (appRQATCount > 0) {
+      throw "Can't Delete RQAT, because it is linked to an application";
+    }
+
+    //Employee Deletion Trigger
+      //Education Supervisor Deletion Trigger
+      var educSupervisorQuery = appQuery.equalTo("selectedSupervisor", request.object.id)
+      const appEducSupCount = await educSupervisorQuery.count({useMasterKey:true})
+      if (appEducSupCount > 0) {
+        throw "Can't Delete Education Supervisor, because it is linked to an application";
+      }
+
+  });
