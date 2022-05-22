@@ -1,5 +1,5 @@
 <template>
-<div class="bg-brand-lightblue/10 h-full">
+<div class="">
     <!-- <div class="p-4">
         <div class="flex flex-row text-left items-center  space-x-4">
             <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
@@ -181,11 +181,11 @@
             <div></div>
         </div>
     </div>
-    <div class="flex justify-start items-center ">
-         <div class="h-1/2 w-1/2 p-4 m-5 rounded-sm shadow-lg bg-brand-white">
-                <canvas id="myBarChart"></canvas>
-            </div>
-        <div class="h-1/2 w-1/4 ml-40">
+    <div class="flex justify-start items-start">
+        <div class="w-1/2 p-4 mx-5 my-3 rounded-sm shadow-lg bg-brand-white">
+            <canvas id="myBarChart"></canvas>
+        </div>
+        <div class="w-1/3 ml-20 mb-4">
             <canvas id="myPieChart"></canvas>
         </div>
     </div>
@@ -194,7 +194,7 @@
 
 <script>
 import Parse from "parse";
-import Chart from 'chart.js/auto';
+import Chart from "chart.js/auto";
 
 export default {
     name: "HomeView",
@@ -219,60 +219,81 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
         }
-        const ctx = document.getElementById('myBarChart');
-        const ctxPie = document.getElementById('myPieChart');
+        const ctx = document.getElementById("myBarChart");
+        const ctxPie = document.getElementById("myPieChart");
         const myBarChart = new Chart(ctx, {
-            type: 'bar',
+            type: "bar",
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ["Initial Permit", "Renewal", "Certificate of Compliance", "Government Recognition"],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: "# of Votes",
+                    data: [12, 19, 3, 10],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(255, 99, 132, 0.2)",
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(255, 99, 132, 1)",
                     ],
-                    borderWidth: 1
-                }]
+                    borderWidth: 1,
+                }, ],
             },
             options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
                 scales: {
                     y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+                        beginAtZero: true,
+                    },
+                },
+            },
         });
         const myPieChart = new Chart(ctxPie, {
-            type: 'pie',
+            type: "pie",
             data: {
                 labels: [
-                    'Red',
-                    'Blue',
-                    'Yellow'
+                    "Approval",
+                    "Revision",
+                    "Payment",
+                    "Inspection",
+                    "Compliance",
+                    "Verification",
+                    "Issuance",
+                    "Completed",
+                    "Compliant",
+                    
                 ],
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [300, 50, 100],
+                    label: "My First Dataset",
+                    data: [30, 50, 10, 20, 9, 10 ,13, 40, 3],
                     backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
+                        "rgb(255, 103, 0)",
+                        "rgb(0, 0, 255)",
+                        "rgb(59, 130, 246)",
+                        "rgb(241, 156, 187)",
+                        "rgb(255, 225, 53)",
+                        "rgb(138, 43, 226)",
+                        "rgb(178, 132, 190)",
+                        "rgb(141, 182, 0)",
+                        "rgb(211, 33, 45)",
                     ],
-                    hoverOffset: 4
-                }]
+                    hoverOffset: 4,
+                }, ],
+            },
+             options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                    },
+                },
             },
         });
         myBarChart;
