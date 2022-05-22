@@ -39,7 +39,7 @@
                 </tr>
             </thead>
             <tbody v-if="sort_type_var == false">
-                <tr v-for="table in searchApplication" :key="table" class="bg-white border-b hover:bg-gray-50">
+                <tr v-for="(table, index) in searchApplication" :key="(table, index)" class="bg-white border-b hover:bg-gray-50">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ table.dateApplied }}
                     </th>
@@ -119,7 +119,7 @@
                                 <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
                             </svg>
                         </a>
-                        <label for="tracking" @click="id(table.appID)" class="pl-2 font-medium text-blue-600 hover:underline">Track</label>
+                        <label for="tracking" @click="id(table.appID, index)" class="pl-2 font-medium text-blue-600 hover:underline">Track</label>
                     </td>
                 </tr>
             </tbody>
