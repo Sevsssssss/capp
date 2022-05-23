@@ -1,6 +1,5 @@
 <template>
 <div>
-    {{desc}}
     <div class="mx-3">
         <div class="flex justify-between items-start text-sm">
             <div class="flex flex-col">
@@ -69,7 +68,7 @@
         <form @submit.prevent="submitFiles" class="m-5">
 
             <div class="overflow-x-auto shadow-lg rounded-lg">
-                <div class="flex flex-row py-3 px-4 items-center justify-between">
+                <div class="flex flex-row py-3 px-4 text-sm items-center justify-between">
                     <div>
                         DOCUMENTS FOR COMPLIANCE
                     </div>
@@ -141,10 +140,10 @@
             </div>
             <!-- BUTTONS -->
             <div class="space-x-6 p-10">
-                <button type="button" class="w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
+                <label @click="$router.go(-1)"  class="btn w-40 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700">
                     Cancel
-                </button>
-                <button type="submit" class="submit w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                </label>
+                <button type="submit" class="btn w-40 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Submit
                 </button>
             </div>
@@ -201,10 +200,17 @@ export default {
     methods: {
         async submitFiles(values) {
             var blank_count = 0;
+            var blank_count2 = 0;
 
             for (var x = 0; x < this.desc.length; x++) {
                 if(this.desc[x].desc == null ||  this.desc[x].desc == ""){
                     blank_count++;
+                    
+                }
+            }
+             for (var a = 0; a < this.resubmittedDesc.length; a++) {
+                if(this.resubmittedDesc[a] == null ||  this.resubmittedDesc[a] == ""){
+                    blank_count2++;
                     
                 }
             }
@@ -286,10 +292,9 @@ export default {
                     });
                 }
             } else {
-                console.log(this.desc.length)
-                console.log(blank_count)
-                if (this.desc.length > 0 && blank_count <= 0) {
-                    
+                console.log(this.resubmittedDesc.length)
+                console.log(blank_count2)
+                if (this.resubmittedDesc.length > 0 && blank_count2 <= 0) {
                     try {
                         let resubmittedFile = null;
                         const applications = Parse.Object.extend("Applications");

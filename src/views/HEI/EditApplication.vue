@@ -37,11 +37,11 @@
                     <tbody>
                         <tr v-for="table in searchHEI" :key="table" class="bg-white border-b">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                                {{ table.credential }}
+                                <a :href="table.file" target="_blank" class="text-blue-400">{{ table.credential }}</a>
                             </th>
-                            <td class="px-6 py-4">
-                                <a :href="table.file" target="_blank" class="text-blue-400">view</a>
-                            </td>
+                            <!-- <td class="px-6 py-4">
+                                
+                            </td> -->
                             <td class="px-6 py-4">
                                 {{ table.comment }}
                             </td>
@@ -100,9 +100,9 @@ export default {
             headers: [{
                     title: "CREDENTIALS",
                 },
-                {
-                    title: "FILES",
-                },
+                // {
+                //     title: "FILES",
+                // },
                 {
                     title: "COMMENTS",
                 },

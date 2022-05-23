@@ -13,10 +13,10 @@
             </div>
         </div>
         <div class="text-center p-5 text-sm">
-            <div class="font-semibold">
+            <!-- <div class="font-semibold">
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
-            </div>
-            <div>{{ Name }}</div>
+            </div> -->
+            <div class="font-semibold">{{ Name }}</div>
             <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
         </div>
         <div class="flex flex-col text-sm w-full pl-10">

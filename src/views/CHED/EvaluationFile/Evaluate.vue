@@ -13,10 +13,10 @@
             </div>
         </div>
         <div class="text-center p-5 text-sm">
-            <div class="font-semibold">
+            <!-- <div class="font-semibold">
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
-            </div>
-            <div>{{ Name }}</div>
+            </div> -->
+            <div class="font-semibold">{{ Name }}</div>
             <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
         </div>
         <div class="flex flex-col text-sm w-full pl-10">
@@ -253,7 +253,7 @@ export default {
         validate() {
             return this.showModal1;
         },
-        modal(){
+        modal() {
             var has_error = 0;
             var missing_comment = 0;
             // var missing_comment1 = 0;
@@ -261,7 +261,7 @@ export default {
             console.log(this.comment1.length)
 
             for (var i = 0; i < this.comment1.length; i++) {
-                if(this.comment1[i] == null ||  this.comment1[i] == ''){
+                if (this.comment1[i] == null || this.comment1[i] == '') {
                     missing_comment++;
                     console.log(this.comment1[i])
                 }
@@ -273,8 +273,8 @@ export default {
             //     }
             // }
 
-            for (var j = 0; j < this.statusShow.length; j++ ){
-                if(this.statusShow[j] == 'NotComplied' && this.comment2[j] == ''){
+            for (var j = 0; j < this.statusShow.length; j++) {
+                if (this.statusShow[j] == 'NotComplied' && this.comment2[j] == '') {
                     missing_checkbox++;
                 }
             }
@@ -376,7 +376,6 @@ export default {
                 }
 
             }
-            
 
             if (this.statusShow.includes("NotComplied")) {
                 var today = new Date();
@@ -500,8 +499,10 @@ export default {
             });
 
             this.instName = user.get("hei_name");
-            this.address = user.get("address");
 
+            const heiAddress = user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", " +
+                user.get("address").province + ", " + user.get("address").regionName;
+            this.address = heiAddress;
             console.log("Hello" + user.get("hei_name"));
 
             //Query Evaluation Instrument
@@ -605,8 +606,8 @@ export default {
                     //console.log(i)
                     // console.log(this.categories[i].Category);
                     this.statusShow.push("");
-                        this.comment1.push("");
-                        this.comment2.push("");
+                    this.comment1.push("");
+                    this.comment2.push("");
                     this.eval.push({
                         id: this.categories[z].id,
                         Requirement: this.categories[z].Category,
@@ -632,8 +633,8 @@ export default {
                         ) {
                             //console.log(this.categories[i].subcategory[x].items[y].Item);
                             this.statusShow.push("");
-                        this.comment1.push("");
-                        this.comment2.push("");
+                            this.comment1.push("");
+                            this.comment2.push("");
                             this.eval.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,

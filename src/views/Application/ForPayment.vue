@@ -11,39 +11,51 @@
                 </div>
             </div>
         </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table v-if="fileCheck() == true" class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Proof of Payment for Application
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Proof of Payment For Inspection
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="bg-white border-b">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment for Application</a>
-                        </th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900">
-                            <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment For Inspection</a>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
-            <div v-else>
-                <div class="noDataAvail h-full p-20 text-center">
-                    No Data Available
-                    <!-- <button  type="button" class="btn-table">
-                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                        </svg>
-                        <div class="pl-2">Notify HEI</div>
-                    </button> -->
+        <div class="flex justify-between">
+            <div class="overflow-x-auto shadow-md sm:rounded-lg w-full">
+                <table v-if="fileCheck() == true" class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Proof of Payment for Application
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+                                <a :href="applicationPaymentURL" target="_blank" class="text-blue-400">Payment for Application</a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div v-else>
+                    <div class="noDataAvail h-full p-20 text-center">
+                        No Data Available
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto shadow-md sm:rounded-lg w-full ml-4">
+                <table v-if="fileCheck() == true" class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 text-left">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Proof of Payment For Inspection
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+                                <a :href="evaluationPaymentURL" target="_blank" class="text-blue-400">Payment For Inspection</a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div v-else>
+                    <div class="noDataAvail h-full p-20 text-center">
+                        No Data Available
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,7 +81,6 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">PROCEED WITH INSPECTION?</div>
 
-            
             <div class="modal-action">
                 <label for="for-approval" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label for="for-approval" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitChanges()">Continue</label>

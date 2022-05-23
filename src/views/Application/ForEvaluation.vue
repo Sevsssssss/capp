@@ -36,11 +36,11 @@
             <tbody>
                 <tr v-for="table in tables" :key="table" class="bg-white border-b">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 text-wrap break-words">
-                        {{ table.credential }}
+                       <a :href="table.file" target="_blank" class="text-blue-400"> {{ table.credential }}</a>
                     </th>
-                    <td class="px-6 py-4 text-blue-400">
-                        <a :href="table.file" target="_blank" class="text-blue-400">view</a>
-                    </td>
+                    <!-- <td class="px-6 py-4 text-blue-400">
+                        
+                    </td> -->
                 </tr>
             </tbody>
         </table>
@@ -150,9 +150,9 @@ export default {
             headers: [{
                     title: "CREDENTIALS",
                 },
-                {
-                    title: "FILES",
-                },
+                // {
+                //     title: "FILES",
+                // },
             ],
             tables: [],
             search: "",

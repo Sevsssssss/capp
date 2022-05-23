@@ -22,11 +22,11 @@
             <tbody>
                 <tr v-for="table in searchHEI" :key="table" class="bg-white border-b ">
                     <th scope="row" class=" px-6 py-4  font-medium text-gray-900  text-wrap break-words">
-                        {{table.credential}}
+                       <a :href="table.file" target="_blank" class="text-blue-400">{{table.credential}}</a> 
                     </th>
-                    <td class="px-6 py-4 text-blue-400">
+                    <!-- <td class="px-6 py-4 text-blue-400">
                         <a :href="table.file" target="_blank" class="text-blue-400">view</a>
-                    </td>
+                    </td> -->
                     <td class="px-6 py-4">
                         <svg v-if="table.status == 'Approved'" :name="table.id" :id="table.id" class="check" width="24" height="24" style="fill: green">
                             <path fill="none" d="M0 0h24v24H0z" />
@@ -74,11 +74,9 @@ export default {
             show: false,
             statusShow: [],
             comment: [],
-            headers: [{
-                    title: "CREDENTIALS",
-                },
+            headers: [
                 {
-                    title: "FILES",
+                    title: "CREDENTIALS",
                 },
                 {
                     title: "APPROVED",
