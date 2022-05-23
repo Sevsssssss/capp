@@ -248,14 +248,14 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <div v-if="index+1 < statusTracker[appIndex].length" class="w-1 h-full bg-brand-darkblue"></div>
+                                <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
                             </div>
                             <div class="pb-4 flex flex-col">
                                 <span class="text-md font-semibold">{{track.detail}}</span>
                                 <span class="text-grey-300">{{track.dateTime}}</span>
                             </div>
                         </div>
-                        <div v-if="index+1 == statusTracker[appIndex].length && track.status == 'Completed'" class="flex">
+                        <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
                             <div class="flex flex-col items-center mr-4">
                                 <div>
                                     <div class="flex items-center justify-center w-10 h-10 border rounded-full">
