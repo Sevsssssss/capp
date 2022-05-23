@@ -10,10 +10,10 @@
     </button>
     <div class="py-5 px-4">
         <div class="flex flex-col justify-start items-start space-y-4 font-body text-left">
-            <div class="">
-                01:40 PM {{date}} 2022
+            <div class="text-2xl font-extrabold">
+                {{date}}
             </div>
-            <div>
+            <div class="text-lg font-body">
                 {{item}},
             </div>
         </div>
@@ -30,6 +30,9 @@ export default {
 
         }
     },
+    methods: {
+        
+    }
 }
 </script>
 
