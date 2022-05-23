@@ -139,7 +139,7 @@ export default {
                         .then((application) => {
                             const params = {
                                 email: application.get("email"),
-                                status: "Your Application issuance is completed",
+                                status: "Your Application is Completed",
                                 type: "sendStatusUpdate",
                                 approved: true,
                             };
