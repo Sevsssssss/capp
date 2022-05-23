@@ -1044,6 +1044,13 @@ export default {
                 console.log(this.selectedSupervisor);
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
+                this.statusTracker.push({
+                    status: "For Approval",
+                    detail: "Your Application has been assigned to an Education Supervisor",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
                 application
                     .save()
                     .then((application) => {
@@ -1067,6 +1074,20 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "An Application has been assigned to you.");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.selectedSupervisor);
+                newNotification.set("isRead", false);
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.push({
