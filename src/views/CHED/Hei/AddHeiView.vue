@@ -154,7 +154,7 @@
             </div>
         </form>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold">ADD HEI ACCOUNT</div>
