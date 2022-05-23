@@ -29,7 +29,7 @@
             </button>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -87,7 +87,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("File not found. Check the file name and upload a .xlsx file!", {
+                toast("Please upload a .pdf or .jpg file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -111,7 +111,6 @@ export default {
             self.worker.postMessage({
                 d: data
             });
-
             self.worker.onmessage = function (event) {
                 console.log('onMessage')
                 if (event.data.complete) {
@@ -120,21 +119,7 @@ export default {
                         event.data.rows,
                     )
                 } else {
-                    toast(event.data.reason, {
-                        type: TYPE.ERROR,
-                        timeout: 2000,
-                        hideProgressBar: true,
-                        position: POSITION.TOP_RIGHT,
-                    });
-                    setTimeout(() => {
-                        //    event.data.reason
-                        toast("Please verify that the EXCEL file is for HEI Accounts.", {
-                            type: TYPE.WARNING,
-                            timeout: 3000,
-                            hideProgressBar: true,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    }, 3000);
+                    alert(event.data.reason);
                     self.closeSpinner();
                 }
             };
@@ -170,7 +155,6 @@ export default {
                 }
             }
         },
-
         async storeHEIs(heiData) {
             console.log("store")
             for (let i = 0; i < heiData.length; i++) {
@@ -179,20 +163,16 @@ export default {
                     const AccessType = Parse.Object.extend("AccessTypes");
                     const queryACC = new Parse.Query(AccessType);
                     queryACC.equalTo("name", "HEI");
-
                     const accQuerResult = await queryACC.first();
-
                     this.hei_acc_id = accQuerResult.id;
                     var password = Math.random().toString(36).slice(-12);
-
                     this.address = {
-                        regionName: heiData[i].D,
-                        province: heiData[i].E,
-                        city: heiData[i].F,
-                        barangay: heiData[i].G,
-                        street: heiData[i].H,
+                        regionName:  heiData[i].D,
+                        province:  heiData[i].E,
+                        city:  heiData[i].F,
+                        barangay:  heiData[i].G,
+                        street:  heiData[i].H,
                     }
-
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
                     newHEI.set("username", heiData[i].B);
@@ -201,83 +181,56 @@ export default {
                     newHEI.set("address", this.address);
                     newHEI.set("number", heiData[i].I.toString());
                     newHEI.set("inst_code", heiData[i].J.toString());
-
-                    const HeiTypes = Parse.Object.extend("HEI_Types");
-                    const query = new Parse.Query(HeiTypes);
-                    const querResult = await query.find();
-
-                    query.equalTo("name", heiData[i].K.toUpperCase());
-                    const queryRes = await query.first();
-
-                    var flag1 = 0;
-                    for (var j = 0; j < querResult.length; j++) {
-                        const ht = querResult[j];
-                        console.log(ht.get("name"), heiData[j].K.toUpperCase());
-                        if (ht.get("name") == heiData[i].K.toUpperCase()) {
-                            flag1 = flag1 + 1;
-                            //this.counter = this.counter -1;
-                            console.log("HEY")
-                        }
-                    }
+                    const heiType = Parse.Object.extend("HEI_Types");
+                    const queryHEIType = new Parse.Query(heiType);
+                    queryHEIType.equalTo("name", heiData[i].K.toUpperCase());
+                    const queryRes = await queryHEIType.first();
+                    console.log(queryRes)
                     var flag = 0;
-                    if (flag1 == 0) {
+                    if (queryRes === undefined) {
                         flag = 1;
-                        // const heiType = Parse.Object.extend("HEI_Types");
-                        const newHeiType = new HeiTypes();
-
+                        const heiType = Parse.Object.extend("HEI_Types");
+                        const newHeiType = new heiType();
                         await newHeiType.save({
                             name: heiData[i].K.toUpperCase(),
                         }).then(() => {
-
                             newHEI.set("hei_type", newHeiType.id);
                             newHEI.set("access_type", this.hei_acc_id);
                             newHEI.set("hasTransactions", false);
                             newHEI.save().then(() => {
-                                setTimeout(() => {
-                                    const params = {
-                                        name: heiData[i].A,
-                                        username: heiData[i].B,
-                                        email: heiData[i].C,
-                                        password: password,
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
-
-                                }, 1000);
+                                const params = {
+                                    name: heiData[i].A,
+                                    username: heiData[i].B,
+                                    email: heiData[i].C,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
                             })
-
                         })
-
                     } else {
                         newHEI.set("hei_type", queryRes.id);
                         newHEI.set("access_type", this.hei_acc_id);
                         newHEI.set("hasTransactions", false);
                         if (flag === 0) {
-
                             await newHEI.save().then(() => {
-                                setTimeout(() => {
-                                    const params = {
-                                        name: heiData[i].A,
-                                        username: heiData[i].B,
-                                        email: heiData[i].C,
-                                        password: password,
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                }, 1000);
-
+                                const params = {
+                                    name: heiData[i].A,
+                                    username: heiData[i].B,
+                                    email: heiData[i].C,
+                                    password: password,
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                Parse.Cloud.run("sendEmailNotification", params);
                             })
-
                         }
                     }
-
                 } catch (error) {
                     console.log(error.message)
                     this.counter = this.counter - 1;
                 }
-
             }
             toast(this.counter + " HEI Accounts Added!", {
                 type: TYPE.SUCCESS,
@@ -285,12 +238,8 @@ export default {
                 position: POSITION.TOP_RIGHT,
             });
             this.$refs.Spinner.hide();
-            this.$router.push("/hei");
-            setTimeout(() => {
-                this.$router.go()
-            }, 2000);
+            this.$router.push("/hei")
             this.pending = false;
-
         },
     },
 };
@@ -309,7 +258,6 @@ export default {
     background-color: #fff;
     transition: 0.3s ease all;
 }
-
 .dropzone label {
     padding: 8px 12px;
     color: #fff;
@@ -317,17 +265,14 @@ export default {
     transition: 0.3s ease all;
     border-radius: 5px;
 }
-
 .dropzone input {
     display: none;
 }
-
 .active-dropzone {
     color: #fff;
     border-color: #fff;
     background-color: #c4c4c4;
 }
-
 .active-dropzone label {
     background-color: #fff;
     color: #41b883;
