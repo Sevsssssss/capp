@@ -119,6 +119,7 @@ export default {
                     id: i + 1,
                     item: notification.get("message"),
                     date: notification.get("date_and_time"),
+                    isRead: notification.get("isRead"),
                 })
 
             }
