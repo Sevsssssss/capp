@@ -409,19 +409,19 @@ export default {
             this.updateList();
         }
         //Application Notifs
-        let applicationQuery = new Parse.Query('Applications')
+        let applicationQuery = new Parse.Query('Notifications')
         let applicationSub = await applicationQuery.subscribe();
 
         applicationSub.on('open', () => {
             console.log("Application Subscription Open");
         });
 
-        applicationSub.on('create', () => {
-            console.log("Application Created Notif");
+        applicationSub.on('create', (notif) => {
+            console.log(notif.get("message"));
         });
 
-        applicationSub.on('update', () => {
-            console.log("Application Updated");
+        applicationSub.on('update', (notif) => {
+            console.log(notif.get("message"));
         });
     },
 };
