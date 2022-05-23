@@ -1112,7 +1112,7 @@ export default {
 
             const user = new Parse.Query(Parse.User);
             user.equalTo("designation", designationQueryResult.id);
-            user.equalTo("disciplines", program.get("programMajorDisc"))
+            // user.equalTo("disciplines", program.get("programMajorDisc"))
             const supervisorResult = await user.find();
 
             var dbSupervisors = [];
