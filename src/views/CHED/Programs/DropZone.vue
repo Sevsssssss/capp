@@ -30,6 +30,7 @@
         </div>
     </div>
     <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+
 </div>
 </template>
 
@@ -37,8 +38,8 @@
 import {
     ref
 } from "vue";
-import Parse from "parse";
-import Worker from "@/js/disciplinesParse.worker.js";
+import Parse from 'parse';
+import Worker from "@/js/programsParse.worker.js";
 import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import {
     useToast,
@@ -53,7 +54,7 @@ export default {
         }
     },
     components: {
-        VueInstantLoadingSpinner,
+        VueInstantLoadingSpinner
     },
     setup() {
         const active = ref(false);
@@ -77,7 +78,7 @@ export default {
     },
     methods: {
         validate(filename) {
-            console.log("validate");
+            console.log("validate")
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
             if (filename === "") {
                 this.className = "alert-error";
@@ -85,7 +86,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("Please upload a .xlsx file!", {
+                toast("File not found. Check the file name and upload a .xlsx file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -98,29 +99,44 @@ export default {
             this.$refs.Spinner.hide();
         },
         createWorker(data, self) {
-            console.log("worker");
+            console.log("worker")
             // var worker1 = new Worker();
             // if (typeof Worker !== "undefined") {
-            console.log("in worker");
+            console.log("in worker")
             if (typeof self.worker == "undefined") {
-                console.log("setWorker");
+                console.log('setWorker')
                 self.worker = new Worker();
             }
             self.worker.postMessage({
-                d: data,
+                d: data
             });
 
             self.worker.onmessage = function (event) {
-                console.log("onMessage");
+                console.log('onMessage')
                 if (event.data.complete) {
                     console.log("Successfully parsed xlsx file!");
-                    self.storeDisciplines(event.data.rows);
+                    self.storePrograms(
+                        event.data.rows,
+                    )
                 } else {
-                    alert(event.data.reason);
+                    toast(event.data.reason, {
+                        type: TYPE.ERROR,
+                        timeout: 2000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        //    event.data.reason
+                        toast("Please verify that the EXCEL file is for designation.", {
+                            type: TYPE.WARNING,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                    }, 3000);
                     self.closeSpinner();
                 }
             };
-
             // }
         },
         upload() {
@@ -132,7 +148,7 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
             } else {
-                console.log("upload");
+                console.log("upload")
                 var validation = this.validate(this.dropzoneFile);
                 if (validation) {
                     this.pending = true;
@@ -154,87 +170,72 @@ export default {
             }
         },
 
-        async storeDisciplines(disciplinesData) {
-            console.log("store");
-            var specificDisc = [];
-            console.log(disciplinesData.length)
-            for (let i = 0; i < disciplinesData.length; i++) {
-                this.counter = this.counter + 1;
+        async storePrograms(programsData) {
+            console.log(programsData.length)
+            for (let i = 0; i < programsData.length; i++) {
+                console.log(programsData[i].A)
+
                 try {
-                    if ((disciplinesData[i].C !== disciplinesData[i + 1].C) || (i === disciplinesData.length - 2)) {
-                        specificDisc.push({
-                            id: disciplinesData[i].A,
-                            SpecDiscCode: disciplinesData[i].A,
-                            SpecificDiscipline: disciplinesData[i].B
-                        })
-                        if (i === disciplinesData.length - 2) {
-                            specificDisc.push({
-                                id: disciplinesData[i + 1].A,
-                                SpecDiscCode: disciplinesData[i + 1].A,
-                                SpecificDiscipline: disciplinesData[i + 1].B
-                            })
-                        }
-                        const Disciplines = Parse.Object.extend("Disciplines");
-                        const queryDisc = new Parse.Query(Disciplines);
-                        queryDisc.equalTo("MajDiscCode", disciplinesData[i].D);
 
-                        const queryRes = await queryDisc.first();
-
-                        if (queryRes === undefined) {
-                            const newDiscipline = new Disciplines();
-                            try {
-                                newDiscipline.save({
-                                    MajDiscCode: disciplinesData[i].D,
-                                    MajorDiscipline: disciplinesData[i].C.toUpperCase(),
-                                    specificDiscipline: specificDisc
-                                })
-                                specificDisc = [];
-                            } catch (error) {
-                                console.log(error.message);
+                    const programs = Parse.Object.extend("Programs");
+                    const query = new Parse.Query(programs);
+                    var flag = 0;
+                    const querResult = await query.find();
+                    if (querResult !== undefined) {
+                        for (var j = 0; j < querResult.length; j++) {
+                            const prog = querResult[j]
+                            if (prog.get("name") == programsData[i].A.toUpperCase()) {
+                                flag = flag + 1;
                             }
-                        } else {
-                            this.counter = this.counter - 1;
-                            var existingSpecificDisc = queryRes.get("specificDiscipline");
-                            for (let y = 0; y < specificDisc.length; y++) {
-                                var flag = 0;
-                                for (let z = 0; z < existingSpecificDisc.length; z++) {
-                                    if (specificDisc[y].id === existingSpecificDisc[z].id) {
-                                        flag = 1;
-                                    }
-                                }
-                                if (flag === 0) {
-                                    existingSpecificDisc.push(specificDisc[y])
-                                }
-
-                            }
-                            queryRes.set("specificDiscipline", existingSpecificDisc);
-                            queryRes.save();
-                            specificDisc = [];
                         }
-                    } else {
-                        specificDisc.push({
-                            id: disciplinesData[i].A,
-                            SpecDiscCode: disciplinesData[i].A,
-                            SpecificDiscipline: disciplinesData[i].B
-                        })
-                        this.counter = this.counter - 1;
+                    }
+
+                    if (flag == 0) {
+                        const disc = Parse.Object.extend("Disciplines");
+                        const query1 = new Parse.Query(disc);
+                        var flag1 = 0;
+                        const querResult1 = await query1.find();
+                        console.log(querResult1)
+
+                        for (var o = 0; o < querResult1.length; o++) {
+                            const specDisc = querResult1[o].get("specificDiscipline")
+                            for (var s = 0; s < specDisc.length; s++) {
+                                var specDiscCode = specDisc[s].id
+                                if (specDiscCode === programsData[i].B) {
+                                    flag1 = flag1 + 1;
+                                    console.log("YES:  " + specDiscCode + "," + programsData[i].B)
+                                } else {
+                                    console.log("NO:  " + specDiscCode + "," + programsData[i].B)
+
+                                }
+                            }
+                        }
+                        if (flag1 === 1) {
+                            const newProgram = new programs();
+                            newProgram.save({
+                                programName: programsData[i].A.toUpperCase(),
+                                programDiscipline: programsData[i].B.toString(),
+                            });
+                            this.counter = this.counter + 1;
+                        }
+
                     }
 
                 } catch (error) {
                     console.log(error.message);
-                    this.counter = this.counter - 1;
                 }
+
             }
-            toast(this.counter + " DISCIPLINES Added!", {
+            toast(this.counter + " PROGRAMS Added!", {
                 type: TYPE.SUCCESS,
                 timeout: 3000,
                 position: POSITION.TOP_RIGHT,
             });
             this.$refs.Spinner.hide();
-            this.$router.push("/disciplines");
-            setTimeout(() => {
-                this.$router.go()
-            }, 2000);
+            this.$router.push("/programs");
+            // setTimeout(() => {
+            //     this.$router.go()
+            // }, 2000);
             this.pending = false;
         },
     },

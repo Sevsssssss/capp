@@ -1,5 +1,6 @@
 <template>
 <div class="main-page flex justify-center items-center p-5">
+    {{selectedDiscipline}}
     <div class="p-4 w-fit bg-white rounded-lg border border-gray-200 shadow-md">
         <form v-on:submit.prevent="submit" class="card-body">
             <div class="flex flex-row space-x-4 text-left justify-start items-center">
@@ -106,12 +107,14 @@
                     <label class="label">
                         <span class="label-text">Assigned Discipline:</span>
                     </label>
-
-                    <select class="select select-bordered w-full" v-model="v$.discipline.$model">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
-                            <div class="discipline">{{ discipline.title }}</div>
-                        </option>
-                    </select>
+                    <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-2">
+                        <label v-for="discipline in disciplines" :key="discipline" :value="discipline.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
+                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id"  v-model="selectedDiscipline" />
+                            <div class="label-text viewSubCatbool" style="align-self: center">
+                                {{ discipline.title }}
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="flex justify-end pt-4 space-x-4">
@@ -172,6 +175,7 @@ export default {
             accessTypes: [],
             designations: [],
             disciplines: [],
+            selectedDiscipline: [],
             lastname: "",
             firstname: "",
             midinit: "",
@@ -256,7 +260,7 @@ export default {
             newEmployee.set("contact_num", this.contactnum);
             newEmployee.set("access_type", this.access_type);
             newEmployee.set("designation", this.emp_designation);
-            newEmployee.set("discipline", this.discipline);
+            newEmployee.set("disciplines", this.selectedDiscipline);
             try {
                 await newEmployee.save().then(() => {
                     toast("Employee Account Added!", {

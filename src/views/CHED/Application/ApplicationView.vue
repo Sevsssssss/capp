@@ -238,8 +238,8 @@
                     </div>
                 </div>
                 <div>
-                    <div v-for="(track, index) in statusTracker[appIndex]" :key="(track, index)" class="flex flex-col">
-                        <div v-if="index+1 <= statusTracker[appIndex].length && track.status != 'Completed'" class="flex">
+                    <div v-for="(track, index) in statusTracker" :key="(track, index)" class="flex flex-col">
+                        <div v-if="index+1 <= statusTracker.length && track.status != 'Completed'" class="flex">
                             <div class="flex flex-col items-center mr-4">
                                 <div>
                                     <div class="flex items-center justify-center w-10 h-10 border rounded-full">
@@ -248,14 +248,14 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <div v-if="index+1 < statusTracker[appIndex].length" class="w-1 h-full bg-brand-darkblue"></div>
+                                <div v-if="index+1 < statusTracker.length" class="w-1 h-full bg-brand-darkblue"></div>
                             </div>
                             <div class="pb-4 flex flex-col">
                                 <span class="text-md font-semibold">{{track.detail}}</span>
                                 <span class="text-grey-300">{{track.dateTime}}</span>
                             </div>
                         </div>
-                        <div v-if="index+1 == statusTracker[appIndex].length && track.status == 'Completed'" class="flex">
+                        <div v-if="index+1 == statusTracker.length && track.status == 'Completed'" class="flex">
                             <div class="flex flex-col items-center mr-4">
                                 <div>
                                     <div class="flex items-center justify-center w-10 h-10 border rounded-full">
@@ -390,6 +390,76 @@ export default {
             this.stAppType = querResultAppType.get("applicationTypeName");
             this.stHEI = querResultHEI.get("hei_name");
             this.stProgram = querResultProgs.get("programName");
+
+            var statTrack = [];
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var days = [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Satursday",
+                "Sunday",
+            ];
+
+            for (var s = 0; s < querResultApp.get("statusTracker").length; s++) {
+                var statDate = new Date(querResultApp.get("statusTracker")[s].dateTime)
+                var statMonth = statDate.getMonth();
+                var statNumDate = statDate.getDate();
+                var statYear = statDate.getFullYear();
+                var statHour = statDate.getHours();
+                var statMinutes = statDate.getMinutes();
+                var statSeconds = statDate.getSeconds();
+                var statDay = statDate.getDay();
+                var period = "AM";
+
+                var statMinText = "";
+                var statSecText = "";
+
+                if (statHour >= 12) {
+                    statHour -= 12;
+                    period = "PM";
+                }
+
+                if (statHour == 0) {
+                    statHour = 12;
+                }
+                if (statMinutes < 10) {
+                    statMinText = "0" + statMinutes;
+                } else {
+                    statMinText = statMinutes.toString();
+                }
+                if (statSeconds < 10) {
+                    statSecText = "0" + statSeconds;
+                } else {
+                    statSecText = statSeconds.toString();
+                }
+
+                var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                    statHour + ":" + statMinText + ":" + statSecText + " " + period;
+
+                statTrack.push({
+                    status: querResultApp.get("statusTracker")[s].status,
+                    detail: querResultApp.get("statusTracker")[s].detail,
+                    dateTime: statDateText,
+                })
+            }
+
+            this.statusTracker = statTrack;
         },
         modal() {
             var has_error = 0;
@@ -437,37 +507,15 @@ export default {
                 "November",
                 "December",
             ];
-            var days = [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Satursday",
-                "Sunday",
-            ];
+            
             var month;
             var day;
             var year;
             var hei_name = "";
-            var statTrack = [];
-            var statDate;
-            var statMonth;
-            var statNumDate;
-            var statYear;
-            var statHour;
-            var statMinutes;
-            var statSeconds;
-            var statDay;
-            var period;
-            var statMinText;
-            var statSecText;
-            var statDateText;
-            var s;
+            
             //If All is Selected
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
-                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -477,52 +525,6 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    statTrack = [];
-                    for (s = 0; s < application.get("statusTracker").length; s++) {
-                        statDate = new Date(application.get("statusTracker")[s].dateTime)
-                        statMonth = statDate.getMonth();
-                        statNumDate = statDate.getDate();
-                        statYear = statDate.getFullYear();
-                        statHour = statDate.getHours();
-                        statMinutes = statDate.getMinutes();
-                        statSeconds = statDate.getSeconds();
-                        statDay = statDate.getDay();
-                        period = "AM";
-
-                        statMinText = "";
-                        statSecText = "";
-
-                        if (statHour >= 12) {
-                            statHour -= 12;
-                            period = "PM";
-                        }
-
-                        if (statHour == 0) {
-                            statHour = 12;
-                        }
-                        if (statMinutes < 10) {
-                            statMinText = "0" + statMinutes;
-                        } else {
-                            statMinText = statMinutes.toString();
-                        }
-                        if (statSeconds < 10) {
-                            statSecText = "0" + statSeconds;
-                        } else {
-                            statSecText = statSeconds.toString();
-                        }
-
-                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                        statTrack.push({
-                            status: application.get("statusTracker")[s].status,
-                            detail: application.get("statusTracker")[s].detail,
-                            dateTime: statDateText,
-                        })
-                    }
-
-                    this.statusTracker.push(statTrack);
 
                     const user = new Parse.Query(Parse.User);
                     user.equalTo("objectId", application.get("createdBy"));
@@ -562,7 +564,6 @@ export default {
             //If Selected For Approval
             else if (this.sort_type == "For Approval") {
                 var storedApplicationsFA = [];
-                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -573,53 +574,6 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    statTrack = [];
-
-                    for (s = 0; s < application.get("statusTracker").length; s++) {
-                        statDate = new Date(application.get("statusTracker")[s].dateTime)
-                        statMonth = statDate.getMonth();
-                        statNumDate = statDate.getDate();
-                        statYear = statDate.getFullYear();
-                        statHour = statDate.getHours();
-                        statMinutes = statDate.getMinutes();
-                        statSeconds = statDate.getSeconds();
-                        statDay = statDate.getDay();
-                        period = "AM";
-
-                        statMinText = "";
-                        statSecText = "";
-
-                        if (statHour >= 12) {
-                            statHour -= 12;
-                            period = "PM";
-                        }
-
-                        if (statHour == 0) {
-                            statHour = 12;
-                        }
-                        if (statMinutes < 10) {
-                            statMinText = "0" + statMinutes;
-                        } else {
-                            statMinText = statMinutes.toString();
-                        }
-                        if (statSeconds < 10) {
-                            statSecText = "0" + statSeconds;
-                        } else {
-                            statSecText = statSeconds.toString();
-                        }
-
-                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                        statTrack.push({
-                            status: application.get("statusTracker")[s].status,
-                            detail: application.get("statusTracker")[s].detail,
-                            dateTime: statDateText,
-                        })
-                    }
-
-                    this.statusTracker.push(statTrack);
 
                     const user = new Parse.Query(Parse.User);
                     user.equalTo("objectId", application.get("createdBy"));
@@ -659,7 +613,6 @@ export default {
             //If selected For Issuance
             else if (this.sort_type == "For Issuance") {
                 var storedApplicationsFI = [];
-                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -670,53 +623,6 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    statTrack = [];
-
-                    for (s = 0; s < application.get("statusTracker").length; s++) {
-                        statDate = new Date(application.get("statusTracker")[s].dateTime)
-                        statMonth = statDate.getMonth();
-                        statNumDate = statDate.getDate();
-                        statYear = statDate.getFullYear();
-                        statHour = statDate.getHours();
-                        statMinutes = statDate.getMinutes();
-                        statSeconds = statDate.getSeconds();
-                        statDay = statDate.getDay();
-                        period = "AM";
-
-                        statMinText = "";
-                        statSecText = "";
-
-                        if (statHour >= 12) {
-                            statHour -= 12;
-                            period = "PM";
-                        }
-
-                        if (statHour == 0) {
-                            statHour = 12;
-                        }
-                        if (statMinutes < 10) {
-                            statMinText = "0" + statMinutes;
-                        } else {
-                            statMinText = statMinutes.toString();
-                        }
-                        if (statSeconds < 10) {
-                            statSecText = "0" + statSeconds;
-                        } else {
-                            statSecText = statSeconds.toString();
-                        }
-
-                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                        statTrack.push({
-                            status: application.get("statusTracker")[s].status,
-                            detail: application.get("statusTracker")[s].detail,
-                            dateTime: statDateText,
-                        })
-                    }
-
-                    this.statusTracker.push(statTrack);
 
                     const user = new Parse.Query(Parse.User);
                     user.equalTo("objectId", application.get("createdBy"));
@@ -757,8 +663,6 @@ export default {
             else if (this.sort_type == "For Inspection") {
                 var storedApplicationsFE = [];
 
-                this.statusTracker = [];
-
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -769,53 +673,6 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    statTrack = [];
-
-                    for (s = 0; s < application.get("statusTracker").length; s++) {
-                        statDate = new Date(application.get("statusTracker")[s].dateTime)
-                        statMonth = statDate.getMonth();
-                        statNumDate = statDate.getDate();
-                        statYear = statDate.getFullYear();
-                        statHour = statDate.getHours();
-                        statMinutes = statDate.getMinutes();
-                        statSeconds = statDate.getSeconds();
-                        statDay = statDate.getDay();
-                        period = "AM";
-
-                        statMinText = "";
-                        statSecText = "";
-
-                        if (statHour >= 12) {
-                            statHour -= 12;
-                            period = "PM";
-                        }
-
-                        if (statHour == 0) {
-                            statHour = 12;
-                        }
-                        if (statMinutes < 10) {
-                            statMinText = "0" + statMinutes;
-                        } else {
-                            statMinText = statMinutes.toString();
-                        }
-                        if (statSeconds < 10) {
-                            statSecText = "0" + statSeconds;
-                        } else {
-                            statSecText = statSeconds.toString();
-                        }
-
-                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                        statTrack.push({
-                            status: application.get("statusTracker")[s].status,
-                            detail: application.get("statusTracker")[s].detail,
-                            dateTime: statDateText,
-                        })
-                    }
-
-                    this.statusTracker.push(statTrack);
 
                     const user = new Parse.Query(Parse.User);
                     user.equalTo("objectId", application.get("createdBy"));
@@ -852,7 +709,6 @@ export default {
 
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
-                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -863,53 +719,6 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    statTrack = [];
-
-                    for (s = 0; s < application.get("statusTracker").length; s++) {
-                        statDate = new Date(application.get("statusTracker")[s].dateTime)
-                        statMonth = statDate.getMonth();
-                        statNumDate = statDate.getDate();
-                        statYear = statDate.getFullYear();
-                        statHour = statDate.getHours();
-                        statMinutes = statDate.getMinutes();
-                        statSeconds = statDate.getSeconds();
-                        statDay = statDate.getDay();
-                        period = "AM";
-
-                        statMinText = "";
-                        statSecText = "";
-
-                        if (statHour >= 12) {
-                            statHour -= 12;
-                            period = "PM";
-                        }
-
-                        if (statHour == 0) {
-                            statHour = 12;
-                        }
-                        if (statMinutes < 10) {
-                            statMinText = "0" + statMinutes;
-                        } else {
-                            statMinText = statMinutes.toString();
-                        }
-                        if (statSeconds < 10) {
-                            statSecText = "0" + statSeconds;
-                        } else {
-                            statSecText = statSeconds.toString();
-                        }
-
-                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                        statTrack.push({
-                            status: application.get("statusTracker")[s].status,
-                            detail: application.get("statusTracker")[s].detail,
-                            dateTime: statDateText,
-                        })
-                    }
-
-                    this.statusTracker.push(statTrack);
 
                     const user = new Parse.Query(Parse.User);
                     user.equalTo("objectId", application.get("createdBy"));
@@ -946,7 +755,6 @@ export default {
 
             } else if (this.sort_type == "Completed") {
                 var storedApplicationsC = [];
-                this.statusTracker = [];
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
@@ -957,53 +765,6 @@ export default {
 
                 for (i = 0; i < querResult.length; i++) {
                     const application = querResult[i];
-
-                    statTrack = [];
-
-                    for (s = 0; s < application.get("statusTracker").length; s++) {
-                        statDate = new Date(application.get("statusTracker")[s].dateTime)
-                        statMonth = statDate.getMonth();
-                        statNumDate = statDate.getDate();
-                        statYear = statDate.getFullYear();
-                        statHour = statDate.getHours();
-                        statMinutes = statDate.getMinutes();
-                        statSeconds = statDate.getSeconds();
-                        statDay = statDate.getDay();
-                        period = "AM";
-
-                        statMinText = "";
-                        statSecText = "";
-
-                        if (statHour >= 12) {
-                            statHour -= 12;
-                            period = "PM";
-                        }
-
-                        if (statHour == 0) {
-                            statHour = 12;
-                        }
-                        if (statMinutes < 10) {
-                            statMinText = "0" + statMinutes;
-                        } else {
-                            statMinText = statMinutes.toString();
-                        }
-                        if (statSeconds < 10) {
-                            statSecText = "0" + statSeconds;
-                        } else {
-                            statSecText = statSeconds.toString();
-                        }
-
-                        statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                            statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                        statTrack.push({
-                            status: application.get("statusTracker")[s].status,
-                            detail: application.get("statusTracker")[s].detail,
-                            dateTime: statDateText,
-                        })
-                    }
-
-                    this.statusTracker.push(statTrack);
 
                     const user = new Parse.Query(Parse.User);
                     user.equalTo("objectId", application.get("createdBy"));
@@ -1193,70 +954,13 @@ export default {
                     "November",
                     "December",
                 ];
-                var days = [
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Satursday",
-                    "Sunday",
-                ];
+                
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
                 var hour = application.createdAt.getHours();
                 var minutes = application.createdAt.getMinutes();
                 var seconds = application.createdAt.getSeconds();
-
-                var statTrack = [];
-
-                for (var s = 0; s < application.get("statusTracker").length; s++) {
-                    var statDate = new Date(application.get("statusTracker")[s].dateTime)
-                    var statMonth = statDate.getMonth();
-                    var statNumDate = statDate.getDate();
-                    var statYear = statDate.getFullYear();
-                    var statHour = statDate.getHours();
-                    var statMinutes = statDate.getMinutes();
-                    var statSeconds = statDate.getSeconds();
-                    var statDay = statDate.getDay();
-                    var period = "AM";
-
-                    var statMinText = "";
-                    var statSecText = "";
-
-                    if (statHour >= 12) {
-                        statHour -= 12;
-                        period = "PM";
-                    }
-
-                    if(statHour == 0) {
-                        statHour = 12;
-                    }
-                    if(statMinutes < 10){
-                        statMinText = "0" + statMinutes;
-                    }
-                    else{
-                        statMinText = statMinutes.toString();
-                    }
-                    if(statSeconds < 10){
-                        statSecText = "0" + statSeconds;
-                    }
-                    else{
-                        statSecText = statSeconds.toString();
-                    }
-
-                    var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
-                        statHour + ":" + statMinText + ":" + statSecText + " " + period;
-
-                    statTrack.push({
-                        status: application.get("statusTracker")[s].status,
-                        detail: application.get("statusTracker")[s].detail,
-                        dateTime: statDateText,
-                    })
-                }
-
-                this.statusTracker.push(statTrack);
 
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");
@@ -1408,6 +1112,7 @@ export default {
 
             const user = new Parse.Query(Parse.User);
             user.equalTo("designation", designationQueryResult.id);
+            user.equalTo("disciplines", program.get("programMajorDisc"))
             const supervisorResult = await user.find();
 
             var dbSupervisors = [];
