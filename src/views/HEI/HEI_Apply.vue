@@ -180,6 +180,7 @@ export default {
                 //   name: "Bachelor of Science in Information Technology",
                 // },
             ],
+            adminID: "",
         };
     },
     validations() {
@@ -301,6 +302,18 @@ export default {
                                 // alert("Access Type Adding Failed: " + error)
                             }
                         );
+                    const Notifications = Parse.Object.extend("Notifications");
+                    const newNotification = new Notifications();
+
+                    newNotification.set("message", "New Application Created");
+                    newNotification.set("date_and_time", new Date())
+                    newNotification.set("users", [this.adminID])
+
+                    newNotification.save().then((notif) => {
+                        console.log("Notification Saved: " + notif.id);
+                    }, (error) => {
+                        console.log("Error: " + error.message);
+                    });
                 } catch (error) {
                     toast("Please fill out the required information", {
                         type: TYPE.ERROR,
@@ -411,6 +424,19 @@ export default {
                 });
             }
             this.programs = programsMat;
+
+            //Query Admin ID for Notifications
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const ATquery = new Parse.Query(AccessType);
+            ATquery.equalTo("name", "SUPER ADMIN");
+
+            const admin = await ATquery.first();
+
+            const users = new Parse.Query(Parse.User);
+            users.equalTo("access_type", admin.id)
+            const userAdmin = await users.first();
+
+            this.adminID = userAdmin.id;
 
         }
     },

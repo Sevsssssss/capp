@@ -317,6 +317,19 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+                //Adding Notification
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", this.type.toLowerCase() + " has been moved for revision");
+                newNotification.set("users", )
+                newNotification.set("date_and_time", new Date())
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.replace({
@@ -391,6 +404,18 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", this.type.toLowerCase() + " has been accepted and moved for payment");
+                newNotification.set("date_and_time", new Date())
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.push({
