@@ -63,7 +63,7 @@
 </template>
 
 <script>
-// import Parse from "parse";
+import Parse from "parse";
 export default {
     data() {
         return {
@@ -84,6 +84,28 @@ export default {
                 },
             ]
         }
+    },
+    mounted: async function () {
+        
+            const Notifications = Parse.Object.extend("Notifications");
+            const query = new Parse.Query(Notifications);
+            query.equalTo("users", Parse.User.current().id);
+            const querResult = await query.find();
+
+            var notifs = [];
+
+            for (var i = 0; i < querResult.length; i++) {
+                const notification = querResult[i];
+
+                notifs.push({
+                    id: i + 1,
+                    item: notification.get("message"),
+                    date: notification.get("date_and_time"),
+                })
+
+            }
+            this.items = notifs;
+            
     },
 }
 </script>

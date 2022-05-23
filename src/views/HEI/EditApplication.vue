@@ -129,6 +129,8 @@ export default {
                 },
             ],
             search: "",
+            statusTracker: [],
+            adminID: "",
         };
     },
     methods: {
@@ -162,13 +164,34 @@ export default {
                     this.reqs[j].comment = "";
                 }
 
+                this.statusTracker.push({
+                    status: "For Payment",
+                    detail: "Your Application has been moved for payment",
+                    dateTime: new Date(),
+                });
+
                 application
                     .save({
                         requirements: this.reqs,
                         applicationStatus: "For Approval",
+                        statusTracker: this.statusTracker,
                     })
                     .then(
                         (application) => {
+
+                            const Notifications = Parse.Object.extend("Notifications");
+                            const newNotification = new Notifications();
+
+                            newNotification.set("message", this.type.toLowerCase() + " has been accepted and moved for payment");
+                            newNotification.set("date_and_time", new Date());
+                            newNotification.set("users", [this.adminID]);
+
+                            newNotification.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
+                            
                             this.$refs.Spinner.show();
 
                             toast("Application Updated: " + application.id, {
@@ -259,10 +282,14 @@ export default {
             const appTypeQuery = new Parse.Query(appTypes);
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
+
+
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");
             this.reqs = application.get("requirements");
+            this.statusTracker = application.get("statusTracker");
+
             var months = [
                 "January",
                 "February",
@@ -294,6 +321,19 @@ export default {
                 });
             }
             this.tables = storedReqs;
+
+            //Query Admin ID for Notifications
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const ATquery = new Parse.Query(AccessType);
+            ATquery.equalTo("name", "SUPER ADMIN");
+
+            const admin = await ATquery.first();
+
+            const users = new Parse.Query(Parse.User);
+            users.equalTo("access_type", admin.id)
+            const userAdmin = await users.first();
+
+            this.adminID = userAdmin.id;
         }
     },
 };
