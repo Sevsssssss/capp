@@ -204,23 +204,13 @@ export default {
 
                     const HeiTypes = Parse.Object.extend("HEI_Types");
                     const query = new Parse.Query(HeiTypes);
-                    const querResult = await query.find();
 
                     query.equalTo("name", heiData[i].K.toUpperCase());
                     const queryRes = await query.first();
 
-                    var flag1 = 0;
-                    for (var j = 0; j < querResult.length; j++) {
-                        const ht = querResult[j];
-                        console.log(ht.get("name"), heiData[j].K.toUpperCase());
-                        if (ht.get("name") == heiData[i].K.toUpperCase()) {
-                            flag1 = flag1 + 1;
-                            //this.counter = this.counter -1;
-                            console.log("HEY")
-                        }
-                    }
+                
                     var flag = 0;
-                    if (flag1 == 0) {
+                    if (queryRes === undefined) {
                         flag = 1;
                         // const heiType = Parse.Object.extend("HEI_Types");
                         const newHeiType = new HeiTypes();

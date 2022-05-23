@@ -180,15 +180,18 @@ export default {
                     const query = new Parse.Query(HeiTypes);
                     const querResult = await query.find();
                     var flag = 0;
-                    for (var j = 0; j < querResult.length; j++) {
-                        const ht = querResult[j];
-                        console.log(ht.get("name"), heiTypesData[j].A.toUpperCase());
-                        if (ht.get("name") == heiTypesData[i].A.toUpperCase()) {
-                            flag = flag + 1;
-                            this.counter = this.counter - 1;
-                            console.log("HEY")
+                    if (querResult !== undefined) {
+                        for (var j = 0; j < querResult.length; j++) {
+                            const ht = querResult[j];
+                            console.log(ht.get("name"), heiTypesData[j].A.toUpperCase());
+                            if (ht.get("name") == heiTypesData[i].A.toUpperCase()) {
+                                flag = flag + 1;
+                                this.counter = this.counter - 1;
+                                console.log("HEY")
+                            }
                         }
                     }
+
                     if (flag == 0) {
                         const newHeiType = new HeiTypes();
 
