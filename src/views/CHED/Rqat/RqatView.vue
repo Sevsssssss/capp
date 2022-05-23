@@ -74,9 +74,13 @@
                         <td class="px-6 py-4">
                             {{ table.contactNum }}
                         </td>
+                        
                         <td class="px-6 py-4">
                             {{ table.username }}
                         </td>
+                        <!-- <td class="px-6 py-4">
+                            {{ table.email }}
+                        </td> -->
                         <td class="px-6 py-4">
                             <div class="flex  space-x-2 items-end justify-end">
                                 <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
@@ -193,6 +197,9 @@ export default {
                 {
                     title: "USERNAME",
                 },
+                //  {
+                //     title: "EMAIL",
+                // },
             ],
 
             datas: [{
@@ -376,6 +383,7 @@ export default {
                     hei: heiAffil,
                     contactNum: rqat.get("contact_num"),
                     username: rqat.get("username"),
+                    email: rqat.get("email"),
                 });
             }
             this.totalEntries = querResult.length;

@@ -86,7 +86,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("Please upload a .xlsx file!", {
+                toast("File not found. Check the file name and upload a .xlsx file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -120,7 +120,21 @@ export default {
                     )
 
                 } else {
-                    alert(event.data.reason);
+                    toast(event.data.reason, {
+                        type: TYPE.ERROR,
+                        timeout: 2000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        //    event.data.reason
+                        toast("Please verify that the EXCEL file is for RQAT Accounts.", {
+                            type: TYPE.WARNING,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                    }, 3000);
                     self.closeSpinner();
                 }
             };
@@ -198,22 +212,22 @@ export default {
                     };
                     var heiAffil;
                     const query = new Parse.Query(Parse.User);
-                    if (rqatData[i].F.toLowerCase() == "none"){
+                    if (rqatData[i].F.toLowerCase() == "none") {
                         console.log("HElo")
                         heiAffil = {
-                            hei: rqatData[i].F,
-                            affilrecordDate: currentDay,
-                            affilendDate: "current",
-                        },
-                        console.log(heiAffil); 
-                    }else{
+                                hei: rqatData[i].F,
+                                affilrecordDate: currentDay,
+                                affilendDate: "current",
+                            },
+                            console.log(heiAffil);
+                    } else {
                         query.equalTo("hei_name", rqatData[i].F);
                         const querResult = await query.first();
                         heiAffil = {
                             hei: querResult.id,
                             affilrecordDate: currentDay,
                             affilendDate: "current",
-                        }                   
+                        }
                     }
                     var password = Math.random().toString(36).slice(-12);
                     newRQAT.set("name", rqatName);

@@ -86,7 +86,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("Please upload a .xlsx file!", {
+                toast("File not found. Check the file name and upload a .xlsx file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -119,7 +119,21 @@ export default {
                         event.data.rows,
                     )
                 } else {
-                    alert(event.data.reason);
+                    toast(event.data.reason, {
+                        type: TYPE.ERROR,
+                        timeout: 2000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        //    event.data.reason
+                        toast("Please verify that the EXCEL file is for HEI Types.", {
+                            type: TYPE.WARNING,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                    }, 3000);
                     self.closeSpinner();
                 }
             };
@@ -157,7 +171,7 @@ export default {
         },
 
         async storeHeiTypes(heiTypesData) {
-            console.log("store:"+ heiTypesData.length)
+            console.log("store:" + heiTypesData.length)
             for (let i = 0; i < heiTypesData.length; i++) {
                 console.log(heiTypesData[i].A)
                 this.counter = this.counter + 1;
@@ -169,9 +183,9 @@ export default {
                     for (var j = 0; j < querResult.length; j++) {
                         const ht = querResult[j];
                         console.log(ht.get("name"), heiTypesData[j].A.toUpperCase());
-                        if(ht.get("name") == heiTypesData[i].A.toUpperCase()){
+                        if (ht.get("name") == heiTypesData[i].A.toUpperCase()) {
                             flag = flag + 1;
-                            this.counter = this.counter -1;
+                            this.counter = this.counter - 1;
                             console.log("HEY")
                         }
                     }

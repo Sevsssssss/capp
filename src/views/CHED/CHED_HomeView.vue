@@ -19,7 +19,7 @@
                 </div>
                 <hr class="border border-light-400 w-full mx-4" />
             </div>
-            <div class="flex justify-evenly items-center pb-4">
+            <div class="flex xxl:flex-row xl:flex-row md:flex-col xxs:flex-col justify-evenly items-center pb-4">
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of HEI </span>
                     <hr class="border border-light-400 w-16 mx-4" />
@@ -41,7 +41,7 @@
                     <div class="text-lg font-extrabold">1120</div>
                 </div>
             </div>
-            <div class="flex justify-evenly items-center pb-2">
+            <div class="flex xxl:flex-row xl:flex-row md:flex-col xxs:flex-col justify-evenly items-center pb-2">
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of Applications </span>
                     <hr class="border border-light-400 w-16 mx-4" />
@@ -115,7 +115,7 @@
             </div>
         </div>
     </div> -->
-    <div class="flex justify-start items-start">
+    <div class="flex xxl:flex-row xl:flex-row md:flex-col xxs:flex-col justify-start items-start">
         <div class="w-1/2 p-4 mx-5 rounded-sm shadow-lg bg-brand-white flex flex-col justify-start items-start">
             <span class="text-lg font-extrabold py-4 px-4 text-grey-200"> Application Type </span>
             <canvas id="myBarChart"></canvas>

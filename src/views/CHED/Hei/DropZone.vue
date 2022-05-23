@@ -87,7 +87,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("Please upload a .pdf or .jpg file!", {
+                toast("File not found. Check the file name and upload a .xlsx file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -120,7 +120,21 @@ export default {
                         event.data.rows,
                     )
                 } else {
-                    alert(event.data.reason);
+                    toast(event.data.reason, {
+                        type: TYPE.ERROR,
+                        timeout: 2000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        //    event.data.reason
+                        toast("Please verify that the EXCEL file is for HEI Accounts.", {
+                            type: TYPE.WARNING,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                    }, 3000);
                     self.closeSpinner();
                 }
             };
@@ -172,11 +186,11 @@ export default {
                     var password = Math.random().toString(36).slice(-12);
 
                     this.address = {
-                        regionName:  heiData[i].D,
-                        province:  heiData[i].E,
-                        city:  heiData[i].F,
-                        barangay:  heiData[i].G,
-                        street:  heiData[i].H,
+                        regionName: heiData[i].D,
+                        province: heiData[i].E,
+                        city: heiData[i].F,
+                        barangay: heiData[i].G,
+                        street: heiData[i].H,
                     }
 
                     const newHEI = new Parse.User();
@@ -199,7 +213,7 @@ export default {
                     for (var j = 0; j < querResult.length; j++) {
                         const ht = querResult[j];
                         console.log(ht.get("name"), heiData[j].K.toUpperCase());
-                        if(ht.get("name") == heiData[i].K.toUpperCase()){
+                        if (ht.get("name") == heiData[i].K.toUpperCase()) {
                             flag1 = flag1 + 1;
                             //this.counter = this.counter -1;
                             console.log("HEY")
@@ -267,7 +281,7 @@ export default {
             });
             this.$refs.Spinner.hide();
             this.$router.push("/hei");
-             setTimeout(() => {
+            setTimeout(() => {
                 this.$router.go()
             }, 2000);
             this.pending = false;
