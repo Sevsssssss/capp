@@ -41,6 +41,8 @@ const config = {
   emailAdapter: {
     module: 'parse-smtp-template',
     options: {
+      template: true,
+      templatePath: "views/verifyEmail.html",
       secure: true,
       port: 465,
       host: 'smtp.gmail.com',

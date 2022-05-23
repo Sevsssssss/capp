@@ -16,6 +16,8 @@ Parse.Cloud.beforeSave('Test', () => {
 });
 
 const nodemailer = require("nodemailer");
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path');
 
 async function sendEmail(params = {}) {
   let transporter = nodemailer.createTransport({
@@ -30,30 +32,43 @@ async function sendEmail(params = {}) {
       rejectUnauthorized: false
     }
   });
+
+  const handlebarOptions = {
+    viewEngine: {
+        partialsDir: path.resolve('./views/'),
+        defaultLayout: false,
+    },
+    viewPath: path.resolve('./views/'),
+  };
+
+  transporter.use('compile', hbs(handlebarOptions))
+
   if (params.type == "sendStatusUpdate") {
     // send mail with defined transport object
     let info = await transporter.sendMail({
       from: '"CAPP" <chedcapp@gmail.com>', // sender address
       to: params.email, // list of receivers
-      subject: "CAPP Application Status", // Subject line
-      text: params.status, // plain text body
+      subject: "Application Status", // Subject line
+      template: 'status',
+      context:{
+        status: params.status,
+      },
     });
 
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   }
   if (params.type == "sendCredentials") {
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"CAPP Credentials ✔" <chedcapp@gmail.com>', // sender address
+      from: '"CAPP Credentials" <chedcapp@gmail.com>', // sender address
       to: params.email, // list of receivers
       subject: "Hello CAPP User!", // Subject line
-      text: "Username: " + params.username
-        + "\nPassword: " + params.password, // plain text body
+      template: 'credentials',
+      context:{
+        username: params.username,
+        password: params.password
+      }
     });
 
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   }
 
 }

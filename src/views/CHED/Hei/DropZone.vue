@@ -188,17 +188,28 @@ export default {
                     newHEI.set("number", heiData[i].I.toString());
                     newHEI.set("inst_code", heiData[i].J.toString());
 
-                    const heiType = Parse.Object.extend("HEI_Types");
-                    const queryHEIType = new Parse.Query(heiType);
-                    queryHEIType.equalTo("name", heiData[i].G.toUpperCase());
+                    const HeiTypes = Parse.Object.extend("HEI_Types");
+                    const query = new Parse.Query(HeiTypes);
+                    const querResult = await query.find();
 
-                    const queryRes = await queryHEIType.first();
-                    console.log(queryRes)
+                    query.equalTo("name", heiData[i].K.toUpperCase());
+                    const queryRes = await query.first();
+
+                    var flag1 = 0;
+                    for (var j = 0; j < querResult.length; j++) {
+                        const ht = querResult[j];
+                        console.log(ht.get("name"), heiData[j].K.toUpperCase());
+                        if(ht.get("name") == heiData[i].K.toUpperCase()){
+                            flag1 = flag1 + 1;
+                            //this.counter = this.counter -1;
+                            console.log("HEY")
+                        }
+                    }
                     var flag = 0;
-                    if (queryRes === undefined) {
+                    if (flag1 == 0) {
                         flag = 1;
-                        const heiType = Parse.Object.extend("HEI_Types");
-                        const newHeiType = new heiType();
+                        // const heiType = Parse.Object.extend("HEI_Types");
+                        const newHeiType = new HeiTypes();
 
                         await newHeiType.save({
                             name: heiData[i].K.toUpperCase(),

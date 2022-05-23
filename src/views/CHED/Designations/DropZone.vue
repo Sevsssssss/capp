@@ -8,9 +8,15 @@
             <input type="file" id="dropzoneFile" class="dropzoneFile" />
         </div>
         <!-- <span>OR</span> -->
-        <div v-else class="flex justify-center items-center space-x-2">
-            <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
-            <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+        <div v-else class="flex flex-col  space-y-8">
+            <div class="flex justify-center items-center space-x-2">
+                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/excel.png" />
+                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            </div>
+            <div>
+                <label for="dropzoneFile" class="">Select File</label>
+                <input type="file" id="dropzoneFile" class="dropzoneFile" />
+            </div>
         </div>
     </div>
     <div class="flex flex-col items-center">
@@ -151,15 +157,40 @@ export default {
         },
 
         async storeDesignations(designationsData) {
-            console.log("store")
+            console.log(designationsData.length)
             for (let i = 0; i < designationsData.length; i++) {
+                console.log(designationsData[i].A)
                 this.counter = this.counter + 1;
                 try {
-                    const designation = Parse.Object.extend("Designations");
-                    const newDesignation = new designation();
-                    newDesignation.save({
-                        name: designationsData[i].A.toUpperCase(),
-                    })
+                    // const designation = Parse.Object.extend("Designations");
+                    // const queryDesignation = new Parse.Query(designation);
+                    // queryDesignation.equalTo("name");
+                    // console.log(queryDesignation);
+
+                    // const queryRes = await queryDesignation.first();
+
+                    // console.log(queryRes);
+
+                    const Designations = Parse.Object.extend("Designations");
+                    const query = new Parse.Query(Designations);
+                    var flag = 0;
+                    const querResult = await query.find();
+                    
+                    for (var j = 0; j < querResult.length; j++) {
+                        const desig = querResult[j]
+                        if(desig.get("name") == designationsData[i].A.toUpperCase()){
+                            flag = flag + 1;
+                            this.counter = this.counter -1;
+                        }
+                    }
+
+                    if (flag == 0) {
+                        console.log("AS")
+                        const newDesignation = new Designations();
+                        newDesignation.save({
+                            name: designationsData[i].A.toUpperCase(),
+                        })
+                    }
 
                 } catch (error) {
                     console.log(error.message);

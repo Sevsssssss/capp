@@ -9,9 +9,15 @@
                 <label for="dropzoneFile" class="">Select File</label>
                 <input type="file" id="dropzoneFile" class="dropzoneFile" />
             </div>
-            <div v-else class="flex justify-center items-center space-x-2">
-                <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/pdf.png" />
-                <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+            <div v-else class="flex flex-col  space-y-8">
+                <div class="flex justify-center items-center space-x-2">
+                    <img v-if="dropzoneFile.name" style="height: 30px; width: 30px;" src="@/assets/img/pdf.png" />
+                    <span class="text-brand-blue font-body">{{ dropzoneFile.name }}</span>
+                </div>
+                <div>
+                    <label for="dropzoneFile" class="">Select File</label>
+                    <input type="file" id="dropzoneFile" class="dropzoneFile" />
+                </div>
             </div>
         </div>
     </div>
@@ -22,7 +28,7 @@
             </button>
         </div>
         <div>
-            <label for="" class="btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800" @click="submitFile()">
+            <label for="" class="btn border-none text-white bg-blue-700 hover:bg-blue-800" @click="submitFile()">
                 Complete</label>
         </div>
 

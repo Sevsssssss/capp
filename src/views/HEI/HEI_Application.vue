@@ -86,7 +86,7 @@
                             {{ table.status }}
                         </div>
                     </td>
-                    <td class="px-6 py-4 text-end">
+                    <td class="px-6 py-4 text-end flex items-center justify-center">
                         <router-link :to="{
                          name: 'EditHEIapplication',
                          params: {
@@ -115,11 +115,12 @@
                             <a v-if="statusChecker(table.status) &&table.status === 'For Compliance'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
                         <a v-if="statusChecker(table.status) &&table.status === 'Completed'" @click="download()" href="#" class="text-blue-400 hover:text-blue-700">
-                            <svg style="width:20px;height:20px" viewBox="0 0 24 24">
+                            <!-- <svg style="width:20px;height:20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
-                            </svg>
+                            </svg> -->
+                            <span>Download</span>
                         </a>
-                        <label for="tracking" @click="id(table.appID, index)" class="pl-2 font-medium text-blue-600 hover:underline">Track</label>
+                        <label for="tracking" @click="id(table.appID, index)" class="pl-2 font-medium text-blue-400 hover:text-blue-700">Track</label>
                     </td>
                 </tr>
             </tbody>
@@ -135,7 +136,7 @@
         </div>
         <!-- Table Footer -->
         <div class="table-footer flex flex-row justify-between">
-            <div class="flex flex-row pl-4 justify-center items-center">
+            <div class="flex flex-row pl-3 justify-center items-center">
                 <span class="text-sm text-gray-700">
                     Showing
                     <span class="font-semibold text-gray-900">{{
@@ -152,7 +153,7 @@
                     Entries
                 </span>
             </div>
-            <div class="p-2 pr-4">
+            <div class="p-3 pr-3">
                 <div class="btn-group">
                     <ul class="inline-flex -space-x-px">
                         <li>
@@ -230,8 +231,8 @@
                 </div>
             </div>
             <div class="modal-action">
-                <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label>
+                <label for="tracking" id="tracking" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Back</label>
+                <!-- <label :for="this.selectedSupervisor != 'Select A Supervisor' ? 'tracking' : '' " class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="this.selectedSupervisor != 'Select A Supervisor' ? submitChanges() : showToastSupervisor()">Continue</label> -->
             </div>
         </div>
     </div>

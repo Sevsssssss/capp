@@ -176,10 +176,11 @@ export default {
                         }
                         const Disciplines = Parse.Object.extend("Disciplines");
                         const queryDisc = new Parse.Query(Disciplines);
-                        queryDisc.equalTo("MajDiscCode", disciplinesData[i].D);
+                        queryDisc.equalTo("MajDiscCode", disciplinesData[i].D.toString());
 
                         const queryRes = await queryDisc.first();
 
+                        console.log(queryRes, disciplinesData[i].D);
                         if (queryRes === undefined) {
                             const newDiscipline = new Disciplines();
                             try {
@@ -192,6 +193,7 @@ export default {
                             } catch (error) {
                                 console.log(error.message);
                             }
+                            console.log("A");
                         } else {
                             this.counter = this.counter - 1;
                             var existingSpecificDisc = queryRes.get("specificDiscipline");
@@ -210,6 +212,7 @@ export default {
                             queryRes.set("specificDiscipline", existingSpecificDisc);
                             queryRes.save();
                             specificDisc = [];
+                            console.log("B");
                         }
                     } else {
                         specificDisc.push({
@@ -218,6 +221,7 @@ export default {
                             SpecificDiscipline: disciplinesData[i].B
                         })
                         this.counter = this.counter - 1;
+                        console.log("C");
                     }
 
                 } catch (error) {

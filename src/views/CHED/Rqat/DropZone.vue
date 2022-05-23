@@ -196,15 +196,25 @@ export default {
                         firstname: rqatData[i].B,
                         middleinitial: rqatData[i].C,
                     };
+                    var heiAffil;
                     const query = new Parse.Query(Parse.User);
-                    query.equalTo("hei_name", rqatData[i].F);
-                    const querResult = await query.first();
-                    var heiAffil = {
-                        hei: querResult.id,
-                        affilrecordDate: currentDay,
-                        affilendDate: "current",
+                    if (rqatData[i].F.toLowerCase() == "none"){
+                        console.log("HElo")
+                        heiAffil = {
+                            hei: rqatData[i].F,
+                            affilrecordDate: currentDay,
+                            affilendDate: "current",
+                        },
+                        console.log(heiAffil); 
+                    }else{
+                        query.equalTo("hei_name", rqatData[i].F);
+                        const querResult = await query.first();
+                        heiAffil = {
+                            hei: querResult.id,
+                            affilrecordDate: currentDay,
+                            affilendDate: "current",
+                        }                   
                     }
-
                     var password = Math.random().toString(36).slice(-12);
                     newRQAT.set("name", rqatName);
                     newRQAT.set("username", rqatData[i].D);
@@ -214,6 +224,7 @@ export default {
                     newRQAT.set("email", rqatData[i].G);
                     newRQAT.set("access_type", this.rqat_acc_id);
                     newRQAT.set("hasTransactions", false);
+                    newRQAT.set("past_affil", []);
                     await newRQAT.save().then(() => {
                         const params = {
                             name: this.rqatName,

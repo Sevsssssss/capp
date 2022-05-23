@@ -17,7 +17,8 @@ import EditHeiView from "../views/CHED/Hei/EditHeiView.vue"
 import RqatView from "../views/CHED/Rqat/RqatView.vue";
 import UploadExcelRqat from '../views/CHED/Rqat/UploadExcel.vue';
 import AddRQATView from "../views/CHED/Rqat/AddRQATView.vue";
-import EditRQATView from "../views/CHED/Rqat/EditRQATView.vue"
+import EditRQATView from "../views/CHED/Rqat/EditRQATView.vue";
+import RqatHistory from "../views/CHED/Rqat/RqatHistory.vue";
 
 import EmployeesView from "../views/CHED/Employees/EmployeesView.vue";
 import AddEmployeeView from "../views/CHED/Employees/AddEmployeeView.vue";
@@ -248,6 +249,17 @@ const routes = [
           breadcrumb: [
             { name: 'RQAT', link: '/rqat' },
             { name: 'ADD RQAT ACCOUNT' }
+          ]
+        }
+      },
+      {
+        path: "/rqat/AdminHistory",
+        name: "rqatHistory",
+        component: RqatHistory,
+        meta: {
+          breadcrumb: [
+            { name: 'RQAT', link: '/rqat' },
+            { name: 'RQAT HISTORY' }
           ]
         }
       },

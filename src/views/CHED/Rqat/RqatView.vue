@@ -79,6 +79,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex  space-x-2 items-end justify-end">
+                                <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+
                                 <router-link :to="{
                                 name: 'EditRQATView',
                                 params: {
@@ -88,7 +90,6 @@
                                     <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 </router-link>
 
-                                <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                 <div>
                                     <label for="deleteFunc" class="hover:text-brand-red/60">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectAcc(table.id)">
@@ -298,7 +299,7 @@ export default {
             );
         },
         viewAssignments() {
-            this.$router.push("/rqat-assignment");
+            this.$router.push("/rqat/AdminHistory");
         },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {

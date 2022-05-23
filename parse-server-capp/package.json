@@ -5,13 +5,14 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
+    "url": "git+https://github.com/ParsePlatform/parse-server-example.git"
   },
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
     "kerberos": "1.1.4",
     "nodemailer": "^6.7.5",
+    "nodemailer-express-handlebars": "^5.0.0",
     "parse": "2.19.0",
     "parse-server": "4.5.0",
     "parse-smtp-template": "^2.2.0"
@@ -40,5 +41,11 @@
     "mongodb-runner": "4.8.1",
     "nyc": "15.1.0",
     "prettier": "2.2.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/ParsePlatform/parse-server-example/issues"
+  },
+  "homepage": "https://github.com/ParsePlatform/parse-server-example#readme",
+  "keywords": [],
+  "author": ""
 }
