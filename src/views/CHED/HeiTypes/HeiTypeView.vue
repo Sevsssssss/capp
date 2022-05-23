@@ -41,6 +41,21 @@
             </div>
         </div>
     </label>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold">
+                Add Hei Type
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this heiType?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addHeiType()">Continue</label>
+            </div>
+        </div>
+    </div>
 </div>
 <div v-else class="px-3 py-2">
     <!-- Table -->
