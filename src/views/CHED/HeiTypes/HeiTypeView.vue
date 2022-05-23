@@ -1,15 +1,8 @@
 <template>
-<div v-if="!tables.length" class="flex flex-col center h-full p-5">
-    <div class="noDataAvail">No Data Available</div>
-    <div class="h-fit pr-5 pt-3 items-center">
-        <label type="button" for="createHei" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
-            <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-            </svg>
-            <div class="pl-2">Add Hei Type</div>
-        </label>
-        <div class="h-fit pt-3 items-center">
+<div v-if="!tables.length" style="height: 100%">
+    <div class="flex flex-col items-center justify-center h-full p-5">
+        <div class="noDataAvail">No Data Available</div>
+        <div class="flex ">
             <button @click="excelHeiTypes()" type="button" class="btn-table">
                 <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -17,8 +10,19 @@
                 </svg>
                 <div class="pl-2">Upload Excel</div>
             </button>
+            <!-- button -->
+            <div class="items-center">
+                <label type="button" for="createHei" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                    </svg>
+                    <div class="pl-2">Add Hei Type</div>
+                </label>
+            </div>
         </div>
     </div>
+
     <input type="checkbox" id="createHei" class="modal-toggle" />
     <label for="createHei" class="modal cursor-pointer">
         <div class="modal-box relative rounded-md text-left">
@@ -37,6 +41,21 @@
             </div>
         </div>
     </label>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+    <div :class="{ 'modal-open ': validate() }" class="modal">
+        <div class="modal-box relative rounded-md text-left">
+            <div class="font-semibold">
+                Add Hei Type
+            </div>
+            <p class="text-sm xxs:leading-tight text-grey-200">
+                Are you sure you want to add this heiType?
+            </p>
+            <div class="modal-action">
+                <label for="my-modal-6" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white" @click="modal()">Cancel</label>
+                <label for="my-modal-6" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="addHeiType()">Continue</label>
+            </div>
+        </div>
+    </div>
 </div>
 <div v-else class="px-3 py-2">
     <!-- Table -->

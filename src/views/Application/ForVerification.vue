@@ -251,7 +251,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved for compliance",
+                            status: "Your Application didn't Comply, updated to For Compliance status.",
                             type: "sendStatusUpdate",
                             approved: true,
                         };

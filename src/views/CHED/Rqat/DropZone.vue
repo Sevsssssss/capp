@@ -240,15 +240,18 @@ export default {
                     newRQAT.set("hasTransactions", false);
                     newRQAT.set("past_affil", []);
                     await newRQAT.save().then(() => {
-                        const params = {
-                            name: this.rqatName,
-                            username: rqatData[i].D,
-                            email: rqatData[i].G,
-                            password: password,
-                            type: "sendCredentials",
-                            approved: true,
-                        };
-                        Parse.Cloud.run("sendEmailNotification", params);
+                        setTimeout(() => {
+                            const params = {
+                                name: this.rqatName,
+                                username: rqatData[i].D,
+                                email: rqatData[i].G,
+                                password: password,
+                                type: "sendCredentials",
+                                approved: true,
+                            };
+                            Parse.Cloud.run("sendEmailNotification", params);
+                        }, 1000);
+
                     })
                 } catch (error) {
                     console.log(error.message);
