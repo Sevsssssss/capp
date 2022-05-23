@@ -181,10 +181,11 @@ export default {
                     const query = new Parse.Query(programs);
                     var flag = 0;
                     const querResult = await query.find();
+                    console.log(querResult)
                     if (querResult !== undefined) {
                         for (var j = 0; j < querResult.length; j++) {
                             const prog = querResult[j]
-                            if (prog.get("name") == programsData[i].A.toUpperCase()) {
+                            if (prog.get("programName") == programsData[i].A.toUpperCase()) {
                                 flag = flag + 1;
                             }
                         }
@@ -195,7 +196,6 @@ export default {
                         const query1 = new Parse.Query(disc);
                         var flag1 = 0;
                         const querResult1 = await query1.find();
-                        console.log(querResult1)
 
                         for (var o = 0; o < querResult1.length; o++) {
                             const specDisc = querResult1[o].get("specificDiscipline")
@@ -203,11 +203,7 @@ export default {
                                 var specDiscCode = specDisc[s].id
                                 if (specDiscCode === programsData[i].B) {
                                     flag1 = flag1 + 1;
-                                    console.log("YES:  " + specDiscCode + "," + programsData[i].B)
-                                } else {
-                                    console.log("NO:  " + specDiscCode + "," + programsData[i].B)
-
-                                }
+                                } 
                             }
                         }
                         if (flag1 === 1) {
