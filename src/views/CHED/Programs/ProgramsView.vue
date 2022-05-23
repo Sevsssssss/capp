@@ -59,7 +59,7 @@
                     <div>
                         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                         <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                            <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                            <option v-for="discipline in disciplines" :key="discipline" :value="{specDisc: discipline.SpecDiscCode, majorDisc: discipline.MajorDisc}">
                                 {{ discipline.name }}
                             </option>
                         </select>
@@ -223,7 +223,7 @@
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="{specDisc: discipline.SpecDiscCode, majorDisc: discipline.MajorDisc}">
                             {{ discipline.name }}
                         </option>
                     </select>
@@ -269,7 +269,7 @@
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="{specDisc: discipline.SpecDiscCode, majorDisc: discipline.MajorDisc}">
                             {{ discipline.name }}
                         </option>
                     </select>
@@ -536,7 +536,8 @@ export default {
                     const newProgram = new programs();
                     newProgram.save({
                         programName: this.programs[i].programName,
-                        programDiscipline: this.selectedDiscipline,
+                        programDiscipline: this.selectedDiscipline.specDisc,
+                        programMajorDisc: this.selectedDiscipline.majorDisc
                     });
                     toast("New Program Added: " + this.programs[i].programName, {
                             type: TYPE.SUCCESS,
@@ -576,7 +577,8 @@ export default {
                 const programToEdit = await queryProgUpdate.first();
                 programToEdit.save({
                     programName: this.editProgramName,
-                    programDiscipline: this.selectedDiscipline,
+                    programDiscipline: this.selectedDiscipline.specDisc,
+                    programMajorDisc: this.selectedDiscipline.majorDisc
                 });
                 toast("Programs Updated: " + this.editID, {
                         type: TYPE.SUCCESS,
@@ -683,6 +685,7 @@ export default {
                         });
                     }
                     disciplinesNames.push({
+                        MajorDisc: discipline.id,
                         id: discipline.get("specificDiscipline")[a].id,
                         SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
                         name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
@@ -692,7 +695,7 @@ export default {
             }
             this.tables = programsData;
             this.disciplines = disciplinesNames;
-            this.selectedDiscipline = disciplinesNames[0].SpecDiscCode;
+            this.selectedDiscipline = {specDisc: disciplinesNames[0].SpecDiscCode, majorDisc: disciplinesNames[0].MajorDisc};
             // console.log(this.tables);
         }
     },
