@@ -307,7 +307,8 @@ export default {
 
                     newNotification.set("message", "New Application Created");
                     newNotification.set("date_and_time", new Date())
-                    newNotification.set("users", [this.adminID])
+                    newNotification.set("user", this.adminID)
+                    newNotification.set("isRead", false);
 
                     newNotification.save().then((notif) => {
                         console.log("Notification Saved: " + notif.id);

@@ -231,7 +231,8 @@ export default {
 
                     newNotification.set("message", "Your Application has been assigned to an RQAT Member");
                     newNotification.set("date_and_time", new Date());
-                    newNotification.set("users", [this.hei]);
+                    newNotification.set("user", this.hei);
+                    newNotification.set("isRead", false);
 
                     newNotification.save().then((notif) => {
                         console.log("Notification Saved: " + notif.id);
@@ -309,17 +310,18 @@ export default {
                 });
 
                 const Notifications = Parse.Object.extend("Notifications");
-                    const newNotification = new Notifications();
+                const newNotification = new Notifications();
 
-                    newNotification.set("message", "Your Application's Evaluation has been scheduled on " + this.date + ".");
-                    newNotification.set("date_and_time", new Date());
-                    newNotification.set("users", [this.hei]);
+                newNotification.set("message", "Your Application's Evaluation has been scheduled on " + this.date + ".");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
 
-                    newNotification.save().then((notif) => {
-                        console.log("Notification Saved: " + notif.id);
-                    }, (error) => {
-                        console.log("Error: " + error.message);
-                    });
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.push({

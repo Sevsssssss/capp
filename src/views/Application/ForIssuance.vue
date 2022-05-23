@@ -58,6 +58,7 @@ export default {
     data() {
         return {
             statusTracker: [],
+            hei: "",
         }
     },
     setup() {
@@ -143,6 +144,21 @@ export default {
                                 approved: true,
                             };
                             Parse.Cloud.run("sendStatusUpdate", params);
+
+                            const Notifications = Parse.Object.extend("Notifications");
+                            const newNotification = new Notifications();
+
+                            newNotification.set("message", "Your Application is complete.");
+                            newNotification.set("date_and_time", new Date());
+                            newNotification.set("user", this.hei);
+                            newNotification.set("isRead", false);
+
+                            newNotification.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
+
                             toast("For Issuance Completed!", {
                                 type: TYPE.SUCCESS,
                                 timeout: 2000,
@@ -177,6 +193,7 @@ export default {
 
         const application = await query.first();
         this.statusTracker = application.get("statusTracker");
+        this.hei = application.get("createdBy");
     },
 }
 </script>
