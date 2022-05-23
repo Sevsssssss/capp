@@ -25,6 +25,7 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.23",
     "nodemailer": "^6.7.5",
+    "nodemailer-express-handlebars": "^5.0.0",
     "parse": "^3.4.1",
     "parse-smtp-template": "^2.2.0",
     "postcss": "^8",
