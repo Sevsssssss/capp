@@ -167,11 +167,11 @@ export default {
                     this.hei_acc_id = accQuerResult.id;
                     var password = Math.random().toString(36).slice(-12);
                     this.address = {
-                        regionName:  heiData[i].D,
-                        province:  heiData[i].E,
-                        city:  heiData[i].F,
-                        barangay:  heiData[i].G,
-                        street:  heiData[i].H,
+                        regionName: heiData[i].D,
+                        province: heiData[i].E,
+                        city: heiData[i].F,
+                        barangay: heiData[i].G,
+                        street: heiData[i].H,
                     }
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
@@ -188,7 +188,6 @@ export default {
                     query.equalTo("name", heiData[i].K.toUpperCase());
                     const queryRes = await query.first();
 
-                
                     var flag = 0;
                     if (queryRes === undefined) {
                         flag = 1;
@@ -201,15 +200,18 @@ export default {
                             newHEI.set("access_type", this.hei_acc_id);
                             newHEI.set("hasTransactions", false);
                             newHEI.save().then(() => {
-                                const params = {
-                                    name: heiData[i].A,
-                                    username: heiData[i].B,
-                                    email: heiData[i].C,
-                                    password: password,
-                                    type: "sendCredentials",
-                                    approved: true,
-                                };
-                                Parse.Cloud.run("sendEmailNotification", params);
+                                setTimeout(() => {
+                                    const params = {
+                                        name: heiData[i].A,
+                                        username: heiData[i].B,
+                                        email: heiData[i].C,
+                                        password: password,
+                                        type: "sendCredentials",
+                                        approved: true,
+                                    };
+                                    Parse.Cloud.run("sendEmailNotification", params);
+                                }, 1000);
+
                             })
                         })
                     } else {
@@ -218,15 +220,18 @@ export default {
                         newHEI.set("hasTransactions", false);
                         if (flag === 0) {
                             await newHEI.save().then(() => {
-                                const params = {
-                                    name: heiData[i].A,
-                                    username: heiData[i].B,
-                                    email: heiData[i].C,
-                                    password: password,
-                                    type: "sendCredentials",
-                                    approved: true,
-                                };
-                                Parse.Cloud.run("sendEmailNotification", params);
+                                setTimeout(() => {
+                                    const params = {
+                                        name: heiData[i].A,
+                                        username: heiData[i].B,
+                                        email: heiData[i].C,
+                                        password: password,
+                                        type: "sendCredentials",
+                                        approved: true,
+                                    };
+                                    Parse.Cloud.run("sendEmailNotification", params);
+                                }, 1000);
+
                             })
                         }
                     }
@@ -261,6 +266,7 @@ export default {
     background-color: #fff;
     transition: 0.3s ease all;
 }
+
 .dropzone label {
     padding: 8px 12px;
     color: #fff;
@@ -268,14 +274,17 @@ export default {
     transition: 0.3s ease all;
     border-radius: 5px;
 }
+
 .dropzone input {
     display: none;
 }
+
 .active-dropzone {
     color: #fff;
     border-color: #fff;
     background-color: #c4c4c4;
 }
+
 .active-dropzone label {
     background-color: #fff;
     color: #41b883;
