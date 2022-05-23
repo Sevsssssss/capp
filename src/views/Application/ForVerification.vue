@@ -27,13 +27,14 @@
                             <div class="flex flex-row justify-between">
                                 <p class="py-2 font-semibold">Summary</p>
                             </div>
-
-                            <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
+                            <span>{{summary}}</span>
+                            <!-- <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea> -->
                         </th>
 
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             <p class="py-2 font-semibold">Recommendation</p>
-                            <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
+                            <!-- <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea> -->
+                            <span>{{recommendation}}</span>
                         </th>
                     </tr>
                 </tbody>
@@ -177,6 +178,8 @@ export default {
             disapproved: '',
             approved: '',
             statusTracker: [],
+            summary: "",
+            recommendation: "",
         };
     },
     validations() {
@@ -431,6 +434,9 @@ export default {
 
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+
+        this.summary = application.get("summary");
+        this.recommendation = application.get("recommendation");
 
         //Query Supervisors
         const Designations = Parse.Object.extend("Designations");
