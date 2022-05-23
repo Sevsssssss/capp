@@ -101,6 +101,7 @@
     </div>
     <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </form>
+
 </template>
 
 <script>
