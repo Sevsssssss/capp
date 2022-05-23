@@ -403,6 +403,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("createdBy", Parse.User.current().id);
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -485,6 +486,7 @@ export default {
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Approval");
                 query.equalTo("createdBy", Parse.User.current().id);
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -567,6 +569,7 @@ export default {
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Revision");
                 query.equalTo("createdBy", Parse.User.current().id);
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -648,6 +651,7 @@ export default {
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "Completed");
                 query.equalTo("createdBy", Parse.User.current().id);
+                query.descending("createdAt")
 
                 const querResult = await query.find();
                 this.statusTracker = [];
@@ -750,6 +754,7 @@ export default {
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("createdBy", Parse.User.current().id);
+            query.descending("createdAt")
             const querResult = await query.find();
 
             for (var i = 0; i < querResult.length; i++) {
