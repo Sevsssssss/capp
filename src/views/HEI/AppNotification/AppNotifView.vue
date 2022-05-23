@@ -75,6 +75,7 @@ export default {
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
         query.equalTo("objectId", Parse.User.current().get("access_type"));
+        query.descending("createdAt")
 
         const querResult = await query.find();
         var accType = querResult[0].get("privileges");

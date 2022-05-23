@@ -471,6 +471,7 @@ export default {
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -566,6 +567,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Approval");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -662,6 +664,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Issuance");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -760,6 +763,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Inspection");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -853,6 +857,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Revision");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -946,6 +951,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "Completed");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -1146,6 +1152,7 @@ export default {
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
+            query.descending("createdAt")
 
             //Get to view applications to specific user (Education Supervisor)
             const Designations = Parse.Object.extend("Designations");
