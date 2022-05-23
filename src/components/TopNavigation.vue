@@ -3,14 +3,14 @@
     <div class="w-full bg-brand-darkblue flex shadow-sm text-brand-white px-3 lg:px-10 py-3 justify-between items-center fixed z-10">
         <div class="text-xl uppercase font-bold flex items-center gap-3 lg:order-first lg:mx-0">
             <img src="../assets/img/CHED_logo.png" class="h-8" alt="CHED Logo" />
-            CHEDRO V <span class="text-sm">SUPER ADMIN</span>
+            CHEDRO V <span class="text-sm">{{desig}}</span>
         </div>
         <div class="flex items-center lg:order-last lg:right-0 lg:absolute lg:pr-10">
             <div class="flex justify-evenly space-x-2">
                 <button @click="notifApp()" class="indicator">
                     <BellOutline class="h-6" />
-                    
-                    <span class="indicator-item indicator-top indicator-end  badge1 badge-accent text-xs">99+</span> 
+
+                    <span class="indicator-item indicator-top indicator-end  badge1 badge-accent text-xs">99+</span>
                 </button>
                 <button @click="accountDetails()" class="flex space-x-1 mr-3 justify-center items-center text-blue-500 ">
                     <svg style="fill: #FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -25,15 +25,16 @@
 
 <script>
 import BellOutline from "vue-material-design-icons/BellOutline.vue";
-
-
+import Parse from "parse";
 export default {
     name: "TopNavigation",
     components: {
         BellOutline,
     },
     data() {
-        return {}
+        return {
+            desig: "",
+        }
     },
     methods: {
         notifApp() {
@@ -42,6 +43,20 @@ export default {
         accountDetails() {
             this.$router.push("/ched/account");
         },
+
+    },
+    mounted: async function () {
+        //Get to view applications to specific user (Education Supervisor)
+        const Designations = Parse.Object.extend("Designations");
+        const queryDes = new Parse.Query(Designations);
+        queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+
+        const desigQueryResult = await queryDes.first();
+
+        if (Parse.User.current().get("designation") == desigQueryResult.id) {
+            this.desig = desigQueryResult.get("name");
+        }
+        
     }
 };
 </script>
@@ -54,9 +69,15 @@ export default {
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-duration: 200ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    height: 15px/* 20px */;
-    font-size: 0.875rem/* 14px */;
-    line-height: 1.25rem/* 20px */;
+    height: 15px
+        /* 20px */
+    ;
+    font-size: 0.875rem
+        /* 14px */
+    ;
+    line-height: 1.25rem
+        /* 20px */
+    ;
     width: fit-content;
     padding: 2px;
     border-width: 1px;
