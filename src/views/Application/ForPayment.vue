@@ -224,7 +224,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved For Inspection",
+                            status: "Your Application was changed For Inspection",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
@@ -312,7 +312,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved for revision",
+                            status: "Your Application was made For Revision",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
