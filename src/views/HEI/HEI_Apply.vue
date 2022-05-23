@@ -39,7 +39,6 @@
                             </div>
                         </div>
                         <!-- <hr /> -->
-
                         <div class="flex flex-row items-start px-2 pt-4">
                             <div class="form-control w-full max-w-xs mx-4">
                                 <label class="label">
@@ -89,7 +88,7 @@
                                 <tbody>
                                     <tr v-for="i in reqs" :key="i" class="bg-white border-b hover:bg-gray-50">
                                         <td class="px-6 py-4 w-2/4 overflow-x-auto">
-                                            <th class="">{{ i.req.applicationReq }}</th>
+                                        <th class="">{{ i.req.applicationReq }}</th>
                                         </td>
                                         <td class="px-6 py-4 flex justify-end">
                                             <input :id="i.id" ref="file" name="file" class="block w-full text-sm text-grey-200 bg-brand-white rounded-lg border border-grey-500 cursor-pointer focus:outline-none focus:border-transparent" type="file" accept=".pdf,.doc" />
@@ -99,7 +98,6 @@
                             </table>
                         </div>
                     </div>
-
                     <!-- BUTTONS -->
                     <div class="space-x-6 p-10">
                         <button type="button" class="
@@ -196,7 +194,7 @@ export default {
             phoneNumber: {
                 required,
             },
-            programSelect:{
+            programSelect: {
                 required,
             }
         };
@@ -206,12 +204,12 @@ export default {
             window.scrollTo(0, 0);
         },
         submitApplication(values) {
-            
+
             var has_error = 0;
 
             if (this.pointPerson == "" ||
                 this.email == "" ||
-                this.phoneNumber == "" || 
+                this.phoneNumber == "" ||
                 this.programSelect == ""
             ) {
                 toast("Please fill out the required information", {
@@ -273,13 +271,11 @@ export default {
                             recommendation: '',
                             paymentStatus: '',
                             complianceDueDate: new Date(yesterday),
-                            statusTracker: [
-                                {
-                                    status: "For Approval",
-                                    detail: "Application was submitted to CHED",
-                                    dateTime: new Date(),
-                                }
-                            ]
+                            statusTracker: [{
+                                status: "For Approval",
+                                detail: "Application was submitted to CHED",
+                                dateTime: new Date(),
+                            }]
                         })
                         .then(
                             (newApplication) => {
