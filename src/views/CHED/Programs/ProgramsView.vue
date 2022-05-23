@@ -4,24 +4,24 @@
         <div class="noDataAvail">No Data Available</div>
         <div>Please Upload Disciplines First!</div>
         <div v-if="disciplines.length > 0" class="flex justify-center items-center">
-                    <div class="h-fit pt-3 ">
-            <button @click="excelDisciplines()" type="button" class="btn-table">
-                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
-                </svg>
-                <div class="pl-2">Upload Excel</div>
-            </button>
-        </div>
-        <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3">
-            <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
-                <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
-                </svg>
-                <div class="pl-2">Add Program</div>
-            </label>
-        </div>
+            <div class="h-fit pt-3 ">
+                <button @click="excelDisciplines()" type="button" class="btn-table">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                    </svg>
+                    <div class="pl-2">Upload Excel</div>
+                </button>
+            </div>
+            <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3">
+                <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
+                    <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11H7v2h4v4h2v-4h4v-2h-4V7h-2v4z" />
+                    </svg>
+                    <div class="pl-2">Add Program</div>
+                </label>
+            </div>
         </div>
         <input type="checkbox" id="createPrograms" class="modal-toggle" />
         <div class="modal">
@@ -59,7 +59,7 @@
                     <div>
                         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                         <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                            <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                            <option v-for="discipline in disciplines" :key="discipline" :value="{specDisc: discipline.SpecDiscCode, majorDisc: discipline.MajorDisc}">
                                 {{ discipline.name }}
                             </option>
                         </select>
@@ -106,8 +106,17 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-row">
 
+            <div class="flex flex-row">
+                <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
+                    <button @click="excelDisciplines()" type="button" class="btn-table">
+                        <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z" />
+                        </svg>
+                        <div class="pl-2">Upload Excel</div>
+                    </button>
+                </div>
                 <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
                     <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -223,7 +232,7 @@
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="{specDisc: discipline.SpecDiscCode, majorDisc: discipline.MajorDisc}">
                             {{ discipline.name }}
                         </option>
                     </select>
@@ -269,7 +278,7 @@
                 <div>
                     <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Discipline Name:</label>
                     <select class="select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" v-model="selectedDiscipline">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.SpecDiscCode">
+                        <option v-for="discipline in disciplines" :key="discipline" :value="{specDisc: discipline.SpecDiscCode, majorDisc: discipline.MajorDisc}">
                             {{ discipline.name }}
                         </option>
                     </select>
@@ -535,7 +544,7 @@ export default {
                     const programs = Parse.Object.extend("Programs");
                     const newProgram = new programs();
                     newProgram.save({
-                        programName: this.programs[i].programName,
+                        programName: this.programs[i].programName.toUpperCase(),
                         programDiscipline: this.selectedDiscipline,
                     });
                     toast("New Program Added: " + this.programs[i].programName, {
@@ -544,11 +553,11 @@ export default {
                             position: POSITION.TOP_RIGHT,
                         }),
                         //this.$refs.Spinner.show();
-                    // window.location.reload()
-                    setTimeout(() => {
-                        document.location.reload();
-                        //this.$refs.Spinner.hide();
-                    }, 2000);
+                        // window.location.reload()
+                        setTimeout(() => {
+                            document.location.reload();
+                            //this.$refs.Spinner.hide();
+                        }, 2000);
                 }
                 //alert("New Discipline Added: " + this.atname);
 
@@ -576,7 +585,8 @@ export default {
                 const programToEdit = await queryProgUpdate.first();
                 programToEdit.save({
                     programName: this.editProgramName,
-                    programDiscipline: this.selectedDiscipline,
+                    programDiscipline: this.selectedDiscipline.specDisc,
+                    programMajorDisc: this.selectedDiscipline.majorDisc
                 });
                 toast("Programs Updated: " + this.editID, {
                         type: TYPE.SUCCESS,
@@ -683,6 +693,7 @@ export default {
                         });
                     }
                     disciplinesNames.push({
+                        MajorDisc: discipline.id,
                         id: discipline.get("specificDiscipline")[a].id,
                         SpecDiscCode: discipline.get("specificDiscipline")[a].SpecDiscCode,
                         name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
@@ -692,7 +703,7 @@ export default {
             }
             this.tables = programsData;
             this.disciplines = disciplinesNames;
-            this.selectedDiscipline = disciplinesNames[0].SpecDiscCode;
+            this.selectedDiscipline = {specDisc: disciplinesNames[0].SpecDiscCode, majorDisc: disciplinesNames[0].MajorDisc};
             // console.log(this.tables);
         }
     },

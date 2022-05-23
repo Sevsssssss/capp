@@ -264,9 +264,9 @@ export default {
             });
             this.$refs.Spinner.hide();
             this.$router.push("/employees");
-            setTimeout(() => {
-                this.$router.go()
-            }, 2000);
+            // setTimeout(() => {
+            //     this.$router.go()
+            // }, 2000);
             this.pending = false;
         },
     },

@@ -189,12 +189,13 @@ export default {
                     const query = new Parse.Query(Designations);
                     var flag = 0;
                     const querResult = await query.find();
-
-                    for (var j = 0; j < querResult.length; j++) {
-                        const desig = querResult[j]
-                        if (desig.get("name") == designationsData[i].A.toUpperCase()) {
-                            flag = flag + 1;
-                            this.counter = this.counter - 1;
+                    if (querResult !== undefined) {
+                        for (var j = 0; j < querResult.length; j++) {
+                            const desig = querResult[j]
+                            if (desig.get("name") == designationsData[i].A.toUpperCase()) {
+                                flag = flag + 1;
+                                this.counter = this.counter - 1;
+                            }
                         }
                     }
 
