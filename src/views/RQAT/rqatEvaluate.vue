@@ -223,6 +223,7 @@ export default {
             recommendation: "",
             cmoNoYr: [],
             statusTracker: [],
+            hei: "",
         };
     },
     validations() {
@@ -527,6 +528,7 @@ export default {
             });
 
             this.statusTracker = application.get("statusTracker")
+            this.hei = application.get("createdBy")
             
             var months = [
                 "January",
