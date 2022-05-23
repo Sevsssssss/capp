@@ -2,19 +2,19 @@
 <div v-if="nodata" style="height: 100%">
     <NoDataAvail />
 </div>
-<div v-else class="p-3">
+<div v-else class="m-3">
     <DataCards :datas="numberOfHEI" />
-    <div class="p-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="m-3 overflow-x-auto shadow-md rounded-sm">
         <div class="p-2 flex justify-between items-center">
-            <div class="text-lg font-semibold"> Number of Application Types </div>
+            <div class="text-lg font-semibold py-2 px-4 text-grey-200"> NUMBER OF APPLICATION TYPES </div>
             <button class="btn-table" id="exportToPdfCharts">Export PDF</button>
         </div>
-        <div>
+        <div class="">
             <canvas id="myChart"></canvas>
         </div>
     </div>
     <br>
-    <div v-for="(appType, index) in listofPrograms" :key="appType" class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div v-for="(appType, index) in listofPrograms" :key="appType" class="m-3 overflow-x-auto shadow-md rounded-sm">
         <div class="p-2  flex justify-between items-center">
             <div class="p-4 text-lg font-semibold"> {{appType.applicationType}} </div>
             <button v-if="appType.programList.length > 0" class="btn-table" @click="exportToPdfTables(appType.applicationType, index)">Export PDF</button>
@@ -35,12 +35,12 @@
                         {{ prog.count }}
                     </td>
                 </tr>
-                
+
             </tbody>
         </table>
         <div v-if="appType.programList.length == 0" class="p-5 font-medium">
-                   <div class="noDataAvail text-center">No Data Available</div>
-                </div>
+            <div class="noDataAvail text-center">No Data Available</div>
+        </div>
         <div class="table-footer flex flex-row justify-between">
             <div class="flex flex-row pl-4 justify-center items-center">
                 <span class="text-sm text-gray-700">
@@ -96,15 +96,6 @@ export default {
             numberOfHEI: [],
             listofPrograms: [],
             nodata: false,
-            moreText: [
-                "This is another few sentences of text to look at it.",
-                "Just testing the paragraphs to see how they format.",
-                "jsPDF likes arrays for sentences.",
-                "Do paragraphs wrap properly?",
-                "Yes, they do!",
-                "What does it look like?",
-                "Not bad at all.",
-            ],
             numdata: '',
             headers: [{
                     title: "PROGRAMS",
@@ -119,7 +110,16 @@ export default {
         };
     },
     methods: {
-        exportToPdfTables(appType,index) {
+        exportToPdfTables(appType, index) {
+            const date = new Date();
+            const filename =
+                "Status_" +
+                date.getFullYear() +
+                "-" +
+                ("0" + (date.getMonth() + 1)).slice(-2) +
+                "-" +
+                ("0" + date.getDate()).slice(-2) +
+                ".pdf";
             const columns = [{
                     title: "PROGRAMS",
                     dataKey: "program",
@@ -135,9 +135,14 @@ export default {
                 format: "letter",
             });
             // text is placed using x, y coordinates
-            doc.setFontSize(16).text(appType.toString(), 0.5, 1.0);
+            doc
+                .setFont('helvetica')
+                .setFontSize(16)
+                .text(appType.toString(), 0.5, 1.0);
             // create a line under heading
-            doc.setLineWidth(0.01).line(0.5, 1.1, 8.0, 1.1);
+            doc.
+            setLineWidth(0.01)
+                .line(0.5, 1.1, 8.0, 1.1);
             // Using autoTable plugin
             doc.autoTable({
                 columns,
@@ -147,7 +152,29 @@ export default {
                     top: 1.25,
                 },
             });
-            doc.save(`application.pdf`);
+
+            //  const addFooters = doc => {
+            //         const pageCount = doc.internal.getNumberOfPages()
+
+            //         doc.setFont('helvetica', 'italic')
+            //         doc.setFontSize(8)
+            //         for (var i = 1; i <= pageCount; i++) {
+            //             doc.setPage(i)
+            //             doc.text('Page ' + String(i) + ' of ' + String(pageCount), doc.internal.pageSize.width / 2, 287, {
+            //                 align: 'center'
+            //             })
+            //         }
+            //     }
+
+            // Using array of sentences
+            doc
+                .setFont("helvetica")
+                .setFontSize(11)
+                .text("This is another few sentences of text to look at it.", 0.5, doc.internal.pageSize.height - 0.5, {
+                    align: "left",
+                    maxWidth: "7.5"
+                });
+            doc.save(filename);
         },
     },
     mounted: async function () {
@@ -185,13 +212,11 @@ export default {
             for (var i = 0; i < appTypeResults.length; i++) {
                 var counter = 0;
 
-                const pipeline = [
-                    {
-                        group: {
-                            objectId: '$createdBy',
-                        }
+                const pipeline = [{
+                    group: {
+                        objectId: '$createdBy',
                     }
-                ];
+                }];
 
                 const applicationType = appTypeResults[i];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
@@ -315,47 +340,57 @@ export default {
         // document.getElementById('exportToPdfCharts')
 
         element.addEventListener("click", function () {
-            var dataURL = ctx.toDataURL();
+            try {
+                var dataURL = ctx.toDataURL();
 
-            var margin = 2;
-            var imgWidth = 210 - 2 * margin;
-            var pageHeight = 295;
-            var imgHeight = ctx.height * imgWidth / ctx.width;
-            var heightLeft = imgHeight;
+                var margin = 4;
+                var imgWidth = 210 - 2 * margin;
+                var pageHeight = 295;
+                var imgHeight = ctx.height * imgWidth / ctx.width;
+                var heightLeft = imgHeight;
 
-            // create new pdf and add our new canvas as an image
-            var pdf = new jsPDF('p', 'mm');
-            // var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
-            // const pageWidth = pdf.internal.pageSize.getWidth();
-            // const pageHeight = pdf.internal.pageSize.getHeight();
+                var pdf = new jsPDF('p', 'mm', 'a4');
 
-            // const widthRatio = pageWidth / ctx.width;
-            // const heightRatio = pageHeight / ctx.height;
-            // const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+                const addFooters = pdf => {
+                    const pageCount = pdf.internal.getNumberOfPages()
 
-            // const canvasWidth = ctx.width * ratio;
-            // const canvasHeight = ctx.height * ratio;
+                    pdf.setFont('helvetica', 'italic')
+                    pdf.setFontSize(8)
+                    for (var i = 1; i <= pageCount; i++) {
+                        pdf.setPage(i)
+                        pdf.text('Page ' + String(i) + ' of ' + String(pageCount), pdf.internal.pageSize.width / 2, 287, {
+                            align: 'center'
+                        })
+                    }
+                }
 
-            // const marginX = (pageWidth - canvasWidth) / 2;
-            // const marginY = (pageHeight - canvasHeight) / 2;
-            // create a line under heading
+                var position = 0;
 
-            // download the pdf
-            // pdf.addImage(dataURL, 'PNG', 4, marginY, canvasWidth, canvasHeight);
-
-            var position = 0;
-
-            pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
-
-            heightLeft -= pageHeight;
-
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
                 pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
+
                 heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                const date = new Date();
+                const filename =
+                    "Applications_" +
+                    date.getFullYear() +
+                    "-" +
+                    ("0" + (date.getMonth() + 1)).slice(-2) +
+                    "-" +
+                    ("0" + date.getDate()).slice(-2) +
+                    ".pdf";
+                addFooters(pdf);
+                pdf.save(filename);
+            } catch (error) {
+                console.error("oops, something went wrong!", error);
             }
-            pdf.save('filename.pdf');
+
         });
     },
 };
