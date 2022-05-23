@@ -333,6 +333,7 @@ export default {
             datas: [],
             tables: [],
             statusTracker: [],
+            statusTrackerDB: [],
             appID: "",
             appIndex: null,
             stAppType: "",
@@ -1044,12 +1045,14 @@ export default {
                 console.log(this.selectedSupervisor);
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
-                this.statusTracker.push({
+                this.statusTrackerDB = application.get("statusTracker");
+
+                this.statusTrackerDB.push({
                     status: "For Approval",
                     detail: "Your Application has been assigned to an Education Supervisor",
                     dateTime: new Date(),
                 });
-                application.set("statusTracker", this.statusTracker);
+                application.set("statusTracker", this.statusTrackerDB);
 
                 application
                     .save()
