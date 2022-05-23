@@ -333,6 +333,7 @@ export default {
             datas: [],
             tables: [],
             statusTracker: [],
+            statusTrackerDB: [],
             appID: "",
             appIndex: null,
             stAppType: "",
@@ -470,6 +471,7 @@ export default {
                 const applications = Parse.Object.extend("Applications");
 
                 const query = new Parse.Query(applications);
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -565,6 +567,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Approval");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -661,6 +664,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Issuance");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -759,6 +763,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Inspection");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -852,6 +857,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "For Revision");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -945,6 +951,7 @@ export default {
 
                 const query = new Parse.Query(applications);
                 query.equalTo("applicationStatus", "Completed");
+                query.descending("createdAt")
 
                 const querResult = await query.find();
 
@@ -1044,6 +1051,15 @@ export default {
                 console.log(this.selectedSupervisor);
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
+                this.statusTrackerDB = application.get("statusTracker");
+
+                this.statusTrackerDB.push({
+                    status: "For Approval",
+                    detail: "Your Application has been assigned to an Education Supervisor",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTrackerDB);
+
                 application
                     .save()
                     .then((application) => {
@@ -1067,6 +1083,20 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "An Application has been assigned to you.");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.selectedSupervisor);
+                newNotification.set("isRead", false);
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.push({
@@ -1122,6 +1152,7 @@ export default {
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
+            query.descending("createdAt")
 
             //Get to view applications to specific user (Education Supervisor)
             const Designations = Parse.Object.extend("Designations");

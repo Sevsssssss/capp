@@ -362,6 +362,33 @@ export default {
                             .save()
                             .then(
                                 (application) => {
+                                    const Notifications = Parse.Object.extend("Notifications");
+                                    const newNotification = new Notifications();
+
+                                    newNotification.set("message", "An Application is open for verification for compliance");
+                                    newNotification.set("date_and_time", new Date());
+                                    newNotification.set("user", this.educationSupervisor);
+                                    newNotification.set("isRead", false);
+
+                                    const newNotification2 = new Notifications();
+
+                                    newNotification2.set("message", "An Application is open for verification for compliance");
+                                    newNotification2.set("date_and_time", new Date());
+                                    newNotification2.set("user", this.adminID);
+                                    newNotification2.set("isRead", false);
+
+                                    newNotification.save().then((notif) => {
+                                        console.log("Notification Saved: " + notif.id);
+                                    }, (error) => {
+                                        console.log("Error: " + error.message);
+                                    });
+
+                                    newNotification2.save().then((notif) => {
+                                        console.log("Notification Saved: " + notif.id);
+                                    }, (error) => {
+                                        console.log("Error: " + error.message);
+                                    });
+
                                     toast("Application Updated: " + application.id, {
                                             type: TYPE.SUCCESS,
                                             timeout: 3000,
