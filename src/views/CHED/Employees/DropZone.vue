@@ -28,7 +28,7 @@
             </button>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -211,15 +211,17 @@ export default {
                             newEmployee.set("discipline", employeesData[i].I);
 
                             newEmployee.save().then(() => {
-                                const params = {
-                                    name: this.employeeName,
-                                    username: employeesData[i].D,
-                                    email: employeesData[i].E,
-                                    password: password,
-                                    type: "sendCredentials",
-                                    approved: true,
-                                };
-                                Parse.Cloud.run("sendEmailNotification", params);
+                                setTimeout(() => {
+                                    const params = {
+                                        name: this.employeeName,
+                                        username: employeesData[i].D,
+                                        email: employeesData[i].E,
+                                        password: password,
+                                        type: "sendCredentials",
+                                        approved: true,
+                                    };
+                                    Parse.Cloud.run("sendEmailNotification", params);
+                                }, 1000);
 
                             });
 
@@ -234,15 +236,17 @@ export default {
                         if (flag === 0) {
 
                             await newEmployee.save().then(() => {
-                                const params = {
-                                    name: this.employeeName,
-                                    username: employeesData[i].D,
-                                    email: employeesData[i].E,
-                                    password: password,
-                                    type: "sendCredentials",
-                                    approved: true,
-                                };
-                                Parse.Cloud.run("sendEmailNotification", params);
+                                setTimeout(() => {
+                                    const params = {
+                                        name: this.employeeName,
+                                        username: employeesData[i].D,
+                                        email: employeesData[i].E,
+                                        password: password,
+                                        type: "sendCredentials",
+                                        approved: true,
+                                    };
+                                    Parse.Cloud.run("sendEmailNotification", params);
+                                }, 1000);
 
                             });
                         }

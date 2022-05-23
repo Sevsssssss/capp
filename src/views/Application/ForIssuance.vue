@@ -33,7 +33,7 @@
         </div>
 
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -139,7 +139,7 @@ export default {
                         .then((application) => {
                             const params = {
                                 email: application.get("email"),
-                                status: "Your Application issuance is completed",
+                                status: "Your Application is Completed",
                                 type: "sendStatusUpdate",
                                 approved: true,
                             };

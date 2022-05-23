@@ -151,7 +151,7 @@
         </div>
     </label>
 
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold">
@@ -192,10 +192,10 @@
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Delete Discipline</div>
+            <div class="font-semibold text-md">Delete Designation</div>
             <p class="py-2 text-sm">
                 This action cannot be undone. Are you sure you want to delete this
-                discipline?
+                designation?
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>

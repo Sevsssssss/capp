@@ -184,7 +184,7 @@
             </div>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
@@ -214,6 +214,10 @@ import Parse from "parse";
 const toast = useToast();
 export default {
     name: "HeiView",
+    components: {
+        NoDataAvail,
+        VueInstantLoadingSpinner,
+    },
     data() {
         return {
             currentDelAcc: "",
@@ -330,10 +334,7 @@ export default {
             hei_Types: [],
         };
     },
-    components: {
-        NoDataAvail,
-        VueInstantLoadingSpinner,
-    },
+
     computed: {
         searchHEI() {
             this.newEntCount();
@@ -447,8 +448,8 @@ export default {
                     return object.id == hei.get("hei_type");
                 });
 
-                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
-                                    + hei.get("address").province + ", " + hei.get("address").regionName;
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                    hei.get("address").province + ", " + hei.get("address").regionName;
 
                 heisPriv.push({
                     id: hei.id,
@@ -534,8 +535,8 @@ export default {
 
                 hTypeCounter[index] += 1;
 
-                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
-                                    + hei.get("address").province + ", " + hei.get("address").regionName;
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                    hei.get("address").province + ", " + hei.get("address").regionName;
 
                 heis.push({
                     id: hei.id,

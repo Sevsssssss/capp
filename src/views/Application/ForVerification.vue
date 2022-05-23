@@ -121,7 +121,7 @@
             </div>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </form>
 </template>
 
@@ -251,7 +251,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved for compliance",
+                            status: "Your Application didn't Comply, updated to For Compliance status.",
                             type: "sendStatusUpdate",
                             approved: true,
                         };

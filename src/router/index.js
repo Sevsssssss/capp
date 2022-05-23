@@ -543,7 +543,7 @@ const routes = [
         component: AddDisciplineView,
         meta:{
           breadcrumb: [
-            { name: 'DISCIPLINES', link: "/disciplines/add" },
+            { name: 'DISCIPLINES', link: "/disciplines" },
             {name: 'ADD DISCIPLINES'},
           ]
         }
@@ -555,7 +555,7 @@ const routes = [
         props: true,
         meta:{
           breadcrumb: [
-            { name: 'DISCIPLINES', link: "/disciplines/add" },
+            { name: 'DISCIPLINES', link: "/disciplines" },
             {name: 'EDIT DISCIPLINES'},
           ]
         }
@@ -566,7 +566,7 @@ const routes = [
         component: UploadExcelDisciplines,
         meta: {
           breadcrumb: [
-            { name: 'DISCIPLNES', link: '/disciplines' },
+            { name: 'DISCIPLINES', link: '/disciplines' },
             { name: 'UPLOAD EXCEL' }
           ]
         }

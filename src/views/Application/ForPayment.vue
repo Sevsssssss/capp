@@ -99,8 +99,9 @@
             </div>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </form>
+
 </template>
 
 <script>
@@ -223,7 +224,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved For Inspection",
+                            status: "Your Application was changed For Inspection",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
@@ -311,7 +312,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application has been moved for revision",
+                            status: "Your Application was made For Revision",
                             type: "sendStatusUpdate",
                             approved: true,
                         };

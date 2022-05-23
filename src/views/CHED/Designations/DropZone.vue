@@ -29,7 +29,7 @@
             </button>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 
 </div>
 </template>
@@ -219,9 +219,9 @@ export default {
             });
             this.$refs.Spinner.hide();
             this.$router.push("/designations");
-            setTimeout(() => {
-                this.$router.go()
-            }, 2000);
+            // setTimeout(() => {
+            //     this.$router.go()
+            // }, 2000);
             this.pending = false;
         },
     },
