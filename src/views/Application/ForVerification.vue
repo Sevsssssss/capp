@@ -180,6 +180,7 @@ export default {
             statusTracker: [],
             summary: "",
             recommendation: "",
+            hei: "",
         };
     },
     validations() {
@@ -267,6 +268,19 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "Your Application has been moved for compliance");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.replace({
@@ -340,6 +354,20 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "Your Application has been processed. Please wait for Issuance");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.replace({
@@ -423,6 +451,7 @@ export default {
         const application = await query.first();
         this.type = application.get("applicationType");
         this.statusTracker = application.get("statusTracker");
+        this.hei = application.get("createdBy");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

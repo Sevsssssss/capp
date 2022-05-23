@@ -107,7 +107,7 @@ export default {
         
             const Notifications = Parse.Object.extend("Notifications");
             const query = new Parse.Query(Notifications);
-            query.equalTo("users", Parse.User.current().id);
+            query.equalTo("user", Parse.User.current().id);
             const querResult = await query.find();
 
             var notifs = [];
@@ -119,6 +119,7 @@ export default {
                     id: i + 1,
                     item: notification.get("message"),
                     date: notification.get("date_and_time"),
+                    isRead: notification.get("isRead"),
                 })
 
             }

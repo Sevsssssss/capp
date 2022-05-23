@@ -410,7 +410,7 @@ export default {
         }
         //Application Notifs
         let applicationQuery = new Parse.Query('Notifications');
-        applicationQuery.equalTo("users", Parse.User.current().id);
+        applicationQuery.equalTo("user", Parse.User.current().id);
         let applicationSub = await applicationQuery.subscribe();
 
         applicationSub.on('open', () => {
@@ -421,29 +421,16 @@ export default {
             //     position: POSITION.TOP_RIGHT,
             // });
             console.log("Application Subscription Open");
-            console.log(Parse.User.current().id)
         });
 
         applicationSub.on('create', (notif) => {
-            toast(notif.get("message") + "create", {
+            
+            toast(notif.get("message"), {
                 type: TYPE.INFO,
                 timeout: 5000,
                 hideProgressBar: false,
                 position: POSITION.TOP_RIGHT,
             });
-            console.log(notif.get("message") + "create");
-            console.log(notif.get("users"))
-        });
-
-        applicationSub.on('update', (notif) => {
-            toast(notif.get("message") + "upate", {
-                type: TYPE.INFO,
-                timeout: 5000,
-                hideProgressBar: false,
-                position: POSITION.TOP_RIGHT,
-            });
-            console.log(notif.get("message") + "upate");
-            console.log(notif.get("users"))
         });
     },
 };

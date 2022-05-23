@@ -101,6 +101,7 @@
     </div>
     <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </form>
+
 </template>
 
 <script>
@@ -247,7 +248,8 @@ export default {
 
                             newNotification.set("message", "Your Application has been moved For Inspection");
                             newNotification.set("date_and_time", new Date());
-                            newNotification.set("users", [this.hei]);
+                            newNotification.set("user", this.hei);
+                            newNotification.set("isRead", false);
 
                             newNotification.save().then((notif) => {
                                 console.log("Notification Saved: " + notif.id);
@@ -332,7 +334,8 @@ export default {
 
                     newNotification.set("message", "Your Application has been moved for revision please reupload Proof of Payment");
                     newNotification.set("date_and_time", new Date());
-                    newNotification.set("users", [this.hei]);
+                    newNotification.set("user", this.hei);
+                    newNotification.set("isRead", false);
 
                     newNotification.save().then((notif) => {
                         console.log("Notification Saved: " + notif.id);
