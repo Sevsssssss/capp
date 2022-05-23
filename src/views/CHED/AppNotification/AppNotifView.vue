@@ -70,22 +70,7 @@ import Parse from "parse";
 export default {
     data() {
         return {
-            items: [{
-                    id: 1,
-                    item: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                    date: "May 15",
-                },
-                {
-                    id: 2,
-                    item: "Ano na Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                    date: "May 22",
-                },
-                {
-                    id: 3,
-                    item: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                    date: "May 30",
-                },
-            ]
+            items: []
         }
     },
     components: {
@@ -116,11 +101,12 @@ export default {
                 const notification = querResult[i];
 
                 notifs.push({
+                    objectID: notification.id,
                     id: i + 1,
                     item: notification.get("message"),
                     date: notification.get("date_and_time"),
                     isRead: notification.get("isRead"),
-                })
+                });
 
             }
             this.items = notifs;
