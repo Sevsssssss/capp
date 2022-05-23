@@ -201,7 +201,7 @@
     
     
         <div v-else class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Archived Account</div>
+            <div class="font-semibold text-md">Archive Account</div>
             <p class="py-2 text-sm">
                 This action cannot be undone. Are you sure you want to archived this
                 account?
@@ -234,7 +234,6 @@ export default {
     data() {
         return {
             currentDelAcc: "",
-            showModal1: false,
             application_counter: 0,
             currentpage: 0,
             numPerPage: 5,
@@ -457,9 +456,6 @@ export default {
             if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
                 this.currentpage += 1;
             }
-        },
-        validate() {
-            return this.showModal1;
         },
         async filterHEI() {
             var heisPriv = [];
