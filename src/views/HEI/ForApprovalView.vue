@@ -116,6 +116,7 @@ export default {
             ],
             search: "",
             statusTracker: [],
+            adminID: "",
         };
     },
     methods: {
@@ -164,6 +165,19 @@ export default {
                     })
                     .then(
                         (application) => {
+
+                            const Notifications = Parse.Object.extend("Notifications");
+                            const newNotification = new Notifications();
+
+                            newNotification.set("message", "Application pending for approval by CHED has been accepted and moved for payment");
+                            newNotification.set("date_and_time", new Date());
+                            newNotification.set("users", [this.adminID]);
+
+                            newNotification.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
                             toast("Application Updated: " + application.id, {
                                     type: TYPE.SUCCESS,
                                     timeout: 3000,
@@ -284,6 +298,20 @@ export default {
                 });
             }
             this.tables = storedReqs;
+
+            
+            //Query Admin ID for Notifications
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const ATquery = new Parse.Query(AccessType);
+            ATquery.equalTo("name", "SUPER ADMIN");
+
+            const admin = await ATquery.first();
+
+            const users = new Parse.Query(Parse.User);
+            users.equalTo("access_type", admin.id)
+            const userAdmin = await users.first();
+
+            this.adminID = userAdmin.id;
         }
     },
 };

@@ -154,6 +154,7 @@ export default {
             disapproved: '',
             approved: '',
             statusTracker: [],
+            applicationHEI: "",
         };
     },
     validations() {
@@ -321,15 +322,16 @@ export default {
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
-                newNotification.set("message", this.type.toLowerCase() + " has been moved for revision");
-                newNotification.set("users", )
-                newNotification.set("date_and_time", new Date())
+                newNotification.set("message", "Application was made For Revision. Please Revise your application");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("users", [this.applicationHEI]);
 
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
                     console.log("Error: " + error.message);
                 });
+
 
                 setTimeout(() => {
                     this.$router.replace({
@@ -409,7 +411,8 @@ export default {
                 const newNotification = new Notifications();
 
                 newNotification.set("message", this.type.toLowerCase() + " has been accepted and moved for payment");
-                newNotification.set("date_and_time", new Date())
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("users", [this.applicationHEI]);
 
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
@@ -499,6 +502,7 @@ export default {
         const application = await query.first();
         this.type = application.get("applicationType");
         this.statusTracker = application.get("statusTracker");
+        this.applicationHEI = application.get("createdBy");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

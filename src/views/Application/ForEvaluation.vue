@@ -165,6 +165,7 @@ export default {
             apptypechecker: false,
             apptype: "",
             statusTracker: [],
+            hei: "",
         };
     },
     computed: {
@@ -206,7 +207,7 @@ export default {
                 application.save().then((application) => {
                     const params = {
                         email: application.get("email"),
-                        status: "Your Application has been assigned to RQAT Member",
+                        status: "Your Application has been assigned to an RQAT Member",
                         type: "sendStatusUpdate",
                         approved: true,
                     };
@@ -224,6 +225,21 @@ export default {
                         }),
                         console.log("Object Updated: " + application.id);
                 });
+
+                const Notifications = Parse.Object.extend("Notifications");
+                    const newNotification = new Notifications();
+
+                    newNotification.set("message", "Your Application has been assigned to an RQAT Member");
+                    newNotification.set("date_and_time", new Date());
+                    newNotification.set("users", [this.hei]);
+
+                    newNotification.save().then((notif) => {
+                        console.log("Notification Saved: " + notif.id);
+                    }, (error) => {
+                        console.log("Error: " + error.message);
+                    });
+                            
+
                 setTimeout(() => {
                     this.$router.push({
                         path: "/application/ " + this.appID.slice(0, 2).join(""),
@@ -291,6 +307,20 @@ export default {
                         }),
                         console.log("Object Updated: " + application1.id);
                 });
+
+                const Notifications = Parse.Object.extend("Notifications");
+                    const newNotification = new Notifications();
+
+                    newNotification.set("message", "Your Application's Evaluation has been scheduled on " + this.date + ".");
+                    newNotification.set("date_and_time", new Date());
+                    newNotification.set("users", [this.hei]);
+
+                    newNotification.save().then((notif) => {
+                        console.log("Notification Saved: " + notif.id);
+                    }, (error) => {
+                        console.log("Error: " + error.message);
+                    });
+
                 setTimeout(() => {
                     this.$router.push({
                         path: "/application/ " + this.appID.slice(0, 2).join(""),
@@ -329,6 +359,7 @@ export default {
 
         const application = await query.first();
         this.type = application.get("applicationType");
+        this.hei = application.get("createdBy");
 
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
         const appTypeQuery = new Parse.Query(applicationTypes);

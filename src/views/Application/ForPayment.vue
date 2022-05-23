@@ -149,6 +149,7 @@ export default {
             statusTracker: [],
             rep: "",
             email: "",
+            hei: "",
         };
     },
     validations() {
@@ -230,6 +231,19 @@ export default {
                             console.log("Object Updated: " + application.id);
                     })
 
+                    const Notifications = Parse.Object.extend("Notifications");
+                            const newNotification = new Notifications();
+
+                            newNotification.set("message", "Your Application has been moved For Inspection");
+                            newNotification.set("date_and_time", new Date());
+                            newNotification.set("users", [this.hei]);
+
+                            newNotification.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
+
                 setTimeout(() => {
                     this.$router.push({
                         path: "/application/ " + this.appID.slice(0, 2).join(""),
@@ -302,6 +316,18 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+                const Notifications = Parse.Object.extend("Notifications");
+                    const newNotification = new Notifications();
+
+                    newNotification.set("message", "Your Application has been moved for revision please reupload Proof of Payment");
+                    newNotification.set("date_and_time", new Date());
+                    newNotification.set("users", [this.hei]);
+
+                    newNotification.save().then((notif) => {
+                        console.log("Notification Saved: " + notif.id);
+                    }, (error) => {
+                        console.log("Error: " + error.message);
+                    });
 
                 setTimeout(() => {
                     this.$router.replace({
@@ -393,6 +419,7 @@ export default {
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
         this.statusTracker = application.get("statusTracker");
+        this.hei = application.get("createdBy")
 
         //Query Supervisors
         const Designations = Parse.Object.extend("Designations");
