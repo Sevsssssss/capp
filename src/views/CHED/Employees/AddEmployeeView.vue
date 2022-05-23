@@ -106,12 +106,14 @@
                     <label class="label">
                         <span class="label-text">Assigned Discipline:</span>
                     </label>
-
-                    <select class="select select-bordered w-full" v-model="v$.discipline.$model">
-                        <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
-                            <div class="discipline">{{ discipline.title }}</div>
-                        </option>
-                    </select>
+                    <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-2">
+                        <label v-for="discipline in disciplines" :key="discipline" :value="discipline.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
+                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id"  v-model="selecteddiscipline" />
+                            <div class="label-text viewSubCatbool" style="align-self: center">
+                                {{ discipline.title }}
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="flex justify-end pt-4 space-x-4">
