@@ -391,21 +391,44 @@ export default {
             this.stHEI = querResultHEI.get("hei_name");
             this.stProgram = querResultProgs.get("programName");
 
-            statTrack = [];
+            var statTrack = [];
+            var months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+            var days = [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Satursday",
+                "Sunday",
+            ];
 
-            for (s = 0; s < querResultApp.get("statusTracker").length; s++) {
-                statDate = new Date(querResultApp.get("statusTracker")[s].dateTime)
-                statMonth = statDate.getMonth();
-                statNumDate = statDate.getDate();
-                statYear = statDate.getFullYear();
-                statHour = statDate.getHours();
-                statMinutes = statDate.getMinutes();
-                statSeconds = statDate.getSeconds();
-                statDay = statDate.getDay();
-                period = "AM";
+            for (var s = 0; s < querResultApp.get("statusTracker").length; s++) {
+                var statDate = new Date(querResultApp.get("statusTracker")[s].dateTime)
+                var statMonth = statDate.getMonth();
+                var statNumDate = statDate.getDate();
+                var statYear = statDate.getFullYear();
+                var statHour = statDate.getHours();
+                var statMinutes = statDate.getMinutes();
+                var statSeconds = statDate.getSeconds();
+                var statDay = statDate.getDay();
+                var period = "AM";
 
-                statMinText = "";
-                statSecText = "";
+                var statMinText = "";
+                var statSecText = "";
 
                 if (statHour >= 12) {
                     statHour -= 12;
@@ -426,7 +449,7 @@ export default {
                     statSecText = statSeconds.toString();
                 }
 
-                statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
+                var statDateText = days[statDay] + ", " + months[statMonth] + " " + statNumDate + ", " + statYear + " - " +
                     statHour + ":" + statMinText + ":" + statSecText + " " + period;
 
                 statTrack.push({
@@ -484,33 +507,12 @@ export default {
                 "November",
                 "December",
             ];
-            var days = [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Satursday",
-                "Sunday",
-            ];
+            
             var month;
             var day;
             var year;
             var hei_name = "";
-            var statTrack = [];
-            var statDate;
-            var statMonth;
-            var statNumDate;
-            var statYear;
-            var statHour;
-            var statMinutes;
-            var statSeconds;
-            var statDay;
-            var period;
-            var statMinText;
-            var statSecText;
-            var statDateText;
-            var s;
+            
             //If All is Selected
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
@@ -952,15 +954,7 @@ export default {
                     "November",
                     "December",
                 ];
-                var days = [
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Satursday",
-                    "Sunday",
-                ];
+                
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
