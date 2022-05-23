@@ -108,7 +108,7 @@
                     </label>
                     <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-2">
                         <label v-for="discipline in disciplines" :key="discipline" :value="discipline.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
-                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id"  v-model="selecteddiscipline" />
+                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id" v-model="selecteddiscipline" />
                             <div class="label-text viewSubCatbool" style="align-self: center">
                                 {{ discipline.title }}
                             </div>
@@ -283,12 +283,7 @@ export default {
                         1000
                     );
                 });
-                setTimeout(
-                    function () {
-                        this.$refs.Spinner.hide();
-                    }.bind(this),
-                    2000
-                );
+
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -298,6 +293,12 @@ export default {
                 });
                 console.log(error.message);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         modal() {
             var has_error = 0;
