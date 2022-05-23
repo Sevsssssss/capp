@@ -13,7 +13,7 @@
     <div class="flex">
         <div class="flex flex-col w-full p-5 m-5 bg-brand-white rounded-md shadow-lg">
             <div class="flex items-center pb-4">
-                 <hr class="border border-light-400 w-full mx-4" />
+                <hr class="border border-light-400 w-full mx-4" />
                 <div class="text-lg items-start font-extrabold uppercase text-grey-200">
                     Statistics
                 </div>
@@ -23,44 +23,44 @@
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of HEI </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.heis}}</div>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of RQAT </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.rqat}}</div>
                 </div>
                 <div class="flex flex-col items-center ">
                     <span class="label-s uppercase text-grey-300"> Total Number of Employees </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.emp}}</div>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of Program </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.programs}}</div>
                 </div>
             </div>
             <div class="flex xxl:flex-row xl:flex-row md:flex-col xxs:flex-col justify-evenly items-center pb-2">
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of Applications </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.applications}}</div>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of CMO </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.cmo}}</div>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of Evaluation Ins </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.eval}}</div>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="label-s uppercase text-grey-300"> Total Number of Discipline </span>
                     <hr class="border border-light-400 w-16 mx-4" />
-                    <div class="text-lg font-extrabold">1120</div>
+                    <div class="text-lg font-extrabold">{{this.disc}}</div>
                 </div>
             </div>
         </div>
@@ -133,6 +133,18 @@ import Parse from "parse";
 import Chart from "chart.js/auto";
 
 export default {
+    data() {
+        return {
+            heis: 0,
+            rqat: 0,
+            emp: 0,
+            programs: 0,
+            applications: 0,
+            cmo: 0,
+            eval: 0,
+            disc: 0
+        }
+    },
     name: "HomeView",
     components: {},
     mounted: async function () {
@@ -155,6 +167,46 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
         }
+        const queryhei = new Parse.Query(Parse.User);
+        queryhei.notEqualTo("hei_type", null);
+        const count = await queryhei.count();
+        this.heis = count;
+
+        const queryrqat = new Parse.Query(Parse.User);
+        queryrqat.notEqualTo("hei_affil", null);
+        const count1 = await queryrqat.count();
+        this.rqat = count1;
+
+        const queryemp = new Parse.Query(Parse.User);
+        queryemp.notEqualTo("designation", null);
+        const count2 = await queryemp.count();
+        this.emp = count2;
+
+        const programs = Parse.Object.extend("Programs");
+        const queryprograms = new Parse.Query(programs);
+        const count3 = await queryprograms.count();
+        this.programs = count3;
+
+        const app = Parse.Object.extend("Applications");
+        const queryapp = new Parse.Query(app);
+        const count4 = await queryapp.count();
+        this.applications = count4;
+
+        const cmos = Parse.Object.extend("CHED_MEMO");
+        const querycmo = new Parse.Query(cmos);
+        const count5 = await querycmo.count();
+        this.cmo = count5;
+
+        const evals = Parse.Object.extend("EvaluationInstruments");
+        const queryeval = new Parse.Query(evals);
+        const count6 = await queryeval.count();
+        this.eval = count6;
+
+        const discs = Parse.Object.extend("Disciplines");
+        const querydiscs = new Parse.Query(discs);
+        const count7 = await querydiscs.count();
+        this.disc = count7;
+
         const ctx = document.getElementById("myBarChart");
         const ctxPie = document.getElementById("myPieChart");
         const myBarChart = new Chart(ctx, {
