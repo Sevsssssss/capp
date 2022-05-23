@@ -171,7 +171,8 @@ export default {
 
                             newNotification.set("message", "Application pending for approval by CHED has been accepted and moved for payment");
                             newNotification.set("date_and_time", new Date());
-                            newNotification.set("users", [this.adminID]);
+                            newNotification.set("user", this.adminID);
+                            newNotification.set("isRead", false);
 
                             newNotification.save().then((notif) => {
                                 console.log("Notification Saved: " + notif.id);

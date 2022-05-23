@@ -324,7 +324,8 @@ export default {
 
                 newNotification.set("message", "Application was made For Revision. Please Revise your application");
                 newNotification.set("date_and_time", new Date());
-                newNotification.set("users", [this.applicationHEI]);
+                newNotification.set("user", this.applicationHEI);
+                newNotification.set("isRead", false);
 
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
@@ -412,7 +413,8 @@ export default {
 
                 newNotification.set("message", this.type.toLowerCase() + " has been accepted and moved for payment");
                 newNotification.set("date_and_time", new Date());
-                newNotification.set("users", [this.applicationHEI]);
+                newNotification.set("user", this.applicationHEI);
+                newNotification.set("isRead", false)
 
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);

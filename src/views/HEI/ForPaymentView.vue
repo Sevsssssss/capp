@@ -129,6 +129,8 @@ export default {
             ],
             statusTracker: [],
             search: "",
+            educationSupervisor: "",
+            adminID: "",
         };
     },
     methods: {
@@ -173,6 +175,32 @@ export default {
                     .then(
                         (application) => {
                             this.$refs.Spinner.show();
+                            const Notifications = Parse.Object.extend("Notifications");
+                            const newNotification = new Notifications();
+
+                            newNotification.set("message", "An Application is open for verification for compliance");
+                            newNotification.set("date_and_time", new Date());
+                            newNotification.set("user", this.educationSupervisor);
+                            newNotification.set("isRead", false);
+
+                            const newNotification2 = new Notifications();
+
+                            newNotification2.set("message", "An Application is open for verification for compliance");
+                            newNotification2.set("date_and_time", new Date());
+                            newNotification2.set("user", this.adminID);
+                            newNotification2.set("isRead", false);
+
+                            newNotification.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
+
+                            newNotification2.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
                             toast("Application Updated: " + application.id, {
                                     type: TYPE.SUCCESS,
                                     timeout: 3000,
@@ -266,7 +294,8 @@ export default {
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");
             this.reqs = application.get("requirements");
-            this.statusTracker = application.get("statusTracker")
+            this.statusTracker = application.get("statusTracker");
+            this.educationSupervisor = application.get("selectedSupervisor");
 
 
             var months = [
@@ -300,6 +329,19 @@ export default {
                 });
             }
             this.tables = storedReqs;
+
+            //Query Admin ID for Notifications
+            const AccessType = Parse.Object.extend("AccessTypes");
+            const ATquery = new Parse.Query(AccessType);
+            ATquery.equalTo("name", "SUPER ADMIN");
+
+            const admin = await ATquery.first();
+
+            const users = new Parse.Query(Parse.User);
+            users.equalTo("access_type", admin.id)
+            const userAdmin = await users.first();
+
+            this.adminID = userAdmin.id;
         }
     },
 };
