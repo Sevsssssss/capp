@@ -13,7 +13,7 @@
             </div>
         </div>
         <div>
-            <span class="font-semibold text-brand-darkblue text-sm"><a href="#" @click="window.location.reload()">REFRESH</a></span>
+            <span class="font-semibold text-brand-darkblue text-sm"><a href="#" @click="onUpdate()">REFRESH</a></span>
         </div>
     </div>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -59,11 +59,14 @@
             </tr>
         </tbody>
     </table>
+    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
 </div>
 </template>
 
 <script>
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
+
 export default {
     data() {
         return {
@@ -84,6 +87,21 @@ export default {
                 },
             ]
         }
+    },
+    components: {
+        VueInstantLoadingSpinner,
+    },
+    methods: {
+        onUpdate() {
+            this.$refs.Spinner.show();
+            this.$router.go()
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
     },
     mounted: async function () {
         
