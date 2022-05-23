@@ -403,20 +403,21 @@ export default {
                 .save()
                 .then((application) => {
                     console.log("Object Updated: " + application.id);
-                    const Notifications = Parse.Object.extend("Notifications");
-                    const newNotification = new Notifications();
-
-                    newNotification.set("message", "Your Application has been moved for compliance");
-                    newNotification.set("date_and_time", new Date());
-                    newNotification.set("user", this.hei);
-                    newNotification.set("isRead", false);
-
-                    newNotification.save().then((notif) => {
-                        console.log("Notification Saved: " + notif.id);
-                    }, (error) => {
-                        console.log("Error: " + error.message);
-                    });
                 })
+
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "Your Application has been moved for compliance");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
             } else {
                 application.set("applicationStatus", "For Issuance");
@@ -437,20 +438,21 @@ export default {
                 .save()
                 .then((application) => {
                     console.log("Object Updated: " + application.id);
-                    const Notifications = Parse.Object.extend("Notifications");
-                    const newNotification = new Notifications();
-
-                    newNotification.set("message", "Your Application has been processed. Please wait for Issuance");
-                    newNotification.set("date_and_time", new Date());
-                    newNotification.set("user", this.hei);
-                    newNotification.set("isRead", false);
-
-                    newNotification.save().then((notif) => {
-                        console.log("Notification Saved: " + notif.id);
-                    }, (error) => {
-                        console.log("Error: " + error.message);
-                    });
                 })
+
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "Your Application has been processed. Please wait for Issuance");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
             }
 
             toast("Successfully Evaluated!", {
