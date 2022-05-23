@@ -93,6 +93,7 @@ export default {
             const Notifications = Parse.Object.extend("Notifications");
             const query = new Parse.Query(Notifications);
             query.equalTo("user", Parse.User.current().id);
+            query.descending("createdAt")
             const querResult = await query.find();
 
             var notifs = [];
