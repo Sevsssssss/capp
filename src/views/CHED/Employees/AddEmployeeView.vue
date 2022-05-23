@@ -285,12 +285,7 @@ export default {
                         1000
                     );
                 });
-                setTimeout(
-                    function () {
-                        this.$refs.Spinner.hide();
-                    }.bind(this),
-                    2000
-                );
+
             } catch (error) {
                 toast("Error:" + error.code + " " + error.message, {
                     type: TYPE.ERROR,
@@ -300,6 +295,12 @@ export default {
                 });
                 console.log(error.message);
             }
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                2000
+            );
         },
         modal() {
             var has_error = 0;
