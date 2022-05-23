@@ -79,12 +79,14 @@
             </thead>
             <tbody>
                 <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <td scope="row" class="px-6 py-4 font-medium flex justify-start items-start text-gray-900 whitespace-nowrap">
                         {{ i.MajorDiscipline }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         <div v-for="x in i.specificDiscipline" :key="x" class="flex flwx-row justify-between">
-                            {{x.SpecificDiscipline}}
+                            <ul class="list-disc">
+                                <li>{{x.SpecificDiscipline}}</li>
+                            </ul>
                         </div>
                     </td>
                     <td class="px-6 py-4  flex flex-row justify-end space-x-3">
