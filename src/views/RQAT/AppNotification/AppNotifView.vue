@@ -67,21 +67,7 @@ import Parse from "parse";
 export default {
     data() {
         return {
-            items: [{
-                    id: 1,
-                    item: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                    date: "May 15",
-                },
-                {
-                    id: 2,
-                    item: "Ano na Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                    date: "May 22",
-                },
-                {
-                    id: 3,
-                    item: "Get your friends a GOMO for just P269 only at Shopee's Payday Sale! You can Check out this and other exclusive deals on Shopee today.",
-                    date: "May 30",
-                },
+            items: [
             ]
         }
     },
@@ -104,21 +90,26 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-            //Application Notifs
-            let applicationQuery = new Parse.Query('Applications')
-            let applicationSub = await applicationQuery.subscribe();
+            const Notifications = Parse.Object.extend("Notifications");
+            const query = new Parse.Query(Notifications);
+            query.equalTo("user", Parse.User.current().id);
+            const querResult = await query.find();
 
-            applicationSub.on('open', () => {
-                console.log("Application Subscription Open");
-            });
+            var notifs = [];
 
-            applicationSub.on('create', () => {
-                console.log("Application Created");
-            });
+            for (var i = 0; i < querResult.length; i++) {
+                const notification = querResult[i];
 
-            applicationSub.on('update', () => {
-                console.log("Application Updated");
-            });
+                notifs.push({
+                    objectID: notification.id,
+                    id: i + 1,
+                    item: notification.get("message"),
+                    date: notification.get("date_and_time"),
+                    isRead: notification.get("isRead"),
+                });
+
+            }
+            this.items = notifs;
         }
     },
 }

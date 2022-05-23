@@ -247,7 +247,7 @@ export default {
         }
         //Application Notifs
         let applicationQuery = new Parse.Query('Notifications');
-        applicationQuery.equalTo("users", Parse.User.current().id);
+        applicationQuery.equalTo("user", Parse.User.current().id);
         let applicationSub = await applicationQuery.subscribe();
 
         applicationSub.on('open', () => {
