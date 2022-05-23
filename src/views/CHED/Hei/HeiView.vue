@@ -101,7 +101,7 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
                             {{ table.InstNo }}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4" >
                             <div class="flex flex-col">
                                 <div class="text-md font-semibold">{{ table.HeiName }}</div>
                                 <div>{{ table.address }}</div>
@@ -187,7 +187,7 @@
     <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
+        <div v-if="application_counter == 0" class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">Delete Account</div>
             <p class="py-2 text-sm">
                 This action cannot be undone. Are you sure you want to delete this
@@ -195,7 +195,20 @@
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteAccount()">Delete</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteAccount()">Delete</label>
+            </div>
+        </div>
+    
+    
+        <div v-else class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Archived Account</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to archived this
+                account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteAccount()">Archived</label>
             </div>
         </div>
     </div>
@@ -221,6 +234,8 @@ export default {
     data() {
         return {
             currentDelAcc: "",
+            showModal1: false,
+            application_counter: 0,
             currentpage: 0,
             numPerPage: 5,
             totalEntries: 0,
@@ -361,12 +376,9 @@ export default {
                 3000
             );
         },
-        selectAcc(instNum) {
+        async selectAcc(instNum) {
             this.currentDelAcc = instNum;
-        },
-        async deleteAccount() {
-            this.$refs.Spinner.show();
-
+            
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
             const querResult = await acc.first({
@@ -377,14 +389,34 @@ export default {
             const queryApp = new Parse.Query(applications);
             queryApp.equalTo("createdBy", querResult.id)
             const application = await queryApp.find();
+            
+            this.application_counter = application.length;
 
-            if (application.length > 0) {
-                if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
+        },
+        async deleteAccount() {
+            this.$refs.Spinner.show();
+
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("inst_code", this.currentDelAcc);
+            const querResult = await acc.first({
+                useMasterKey: true,
+            });
+
+            // const applications = Parse.Object.extend("Applications");
+            // const queryApp = new Parse.Query(applications);
+            // queryApp.equalTo("createdBy", querResult.id)
+            // const application = await queryApp.find();
+            
+            // this.application_counter = application.length;
+            
+            if (this.application_counter > 0 ) {
+                //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                     querResult.set("isArchived", true);
                     querResult.save({
                         useMasterKey: true,
                     });
-                }
+                    //console.log("archived")
+                //}
             } else {
                 querResult.destroy({
                     useMasterKey: true,
@@ -425,6 +457,9 @@ export default {
             if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
                 this.currentpage += 1;
             }
+        },
+        validate() {
+            return this.showModal1;
         },
         async filterHEI() {
             var heisPriv = [];
