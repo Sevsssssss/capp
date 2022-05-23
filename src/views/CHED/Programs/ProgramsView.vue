@@ -2,7 +2,8 @@
 <div v-if="!tables.length" style="height: 100%">
     <div class="flex flex-col justify-center items-center h-full p-5">
         <div class="noDataAvail">No Data Available</div>
-        <div class="flex justify-center items-center">
+        <div>Please Upload Disciplines First!</div>
+        <div v-if="disciplines.length > 0" class="flex justify-center items-center">
                     <div class="h-fit pt-3 ">
             <button @click="excelDisciplines()" type="button" class="btn-table">
                 <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
