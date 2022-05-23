@@ -496,7 +496,7 @@
                 </div>
             </div>
         </label>
-        <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+        <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
         <div :class="{ 'modal-open ': validate() }" class="modal">
             <div class="modal-box relative rounded-md text-left">
                 <div class="font-semibold text-md">Grant Access</div>
@@ -607,7 +607,7 @@ export default {
         },
     },
     methods: {
-        reset(){
+        reset() {
             this.checkedAccessTypes = [];
         },
         async editAccessType() {
@@ -669,29 +669,29 @@ export default {
             console.log(querResult.length)
 
             // if (querResult.length < 1) {
-                accessType.destroy().then(
-                    (accType) => {
-                        toast("Deleting...", {
-                            type: TYPE.WARNING,
-                            timeout: 3000,
-                            hideProgressBar: false,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                        setTimeout(() => {
-                            window.location.reload()
-                        }, 3000);
-                        console.log("Deleted object: " + accType.id);
-                    },
-                    (error) => {
-                        toast("Error:" + error.message, {
-                            type: TYPE.ERROR,
-                            timeout: 3000,
-                            hideProgressBar: true,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                        console.log("Error: " + error);
-                    }
-                );
+            accessType.destroy().then(
+                (accType) => {
+                    toast("Deleting...", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 3000);
+                    console.log("Deleted object: " + accType.id);
+                },
+                (error) => {
+                    toast("Error:" + error.message, {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    console.log("Error: " + error);
+                }
+            );
             // } else {
             //     toast("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed): " + querResult, {
             //         type: TYPE.INFO,

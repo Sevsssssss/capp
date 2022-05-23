@@ -79,12 +79,14 @@
             </thead>
             <tbody>
                 <tr v-for="i in searchDiscipline" :key="i" class="bg-white border-b">
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <td scope="row" class="px-6 py-4 font-medium flex justify-start items-start text-gray-900 whitespace-nowrap">
                         {{ i.MajorDiscipline }}
                     </td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         <div v-for="x in i.specificDiscipline" :key="x" class="flex flwx-row justify-between">
-                            {{x.SpecificDiscipline}}
+                            <ul class="list-disc">
+                                <li>{{x.SpecificDiscipline}}</li>
+                            </ul>
                         </div>
                     </td>
                     <td class="px-6 py-4  flex flex-row justify-end space-x-3">
@@ -161,7 +163,7 @@
             </div>
         </div>
     </label>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">Add Discipline</div>

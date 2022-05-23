@@ -172,7 +172,7 @@
             </form>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <div :class="{ 'modal-open ': validate() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box text-left">
             <div class="font-semibold">UPDATE HEI ACCOUNT</div>

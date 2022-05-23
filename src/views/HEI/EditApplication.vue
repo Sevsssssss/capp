@@ -64,7 +64,7 @@
             </div>
         </form>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </div>
 </template>
 
