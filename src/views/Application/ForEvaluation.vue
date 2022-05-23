@@ -227,18 +227,48 @@ export default {
                 });
 
                 const Notifications = Parse.Object.extend("Notifications");
-                    const newNotification = new Notifications();
+                const newNotification = new Notifications();
 
-                    newNotification.set("message", "Your Application has been assigned to an RQAT Member");
-                    newNotification.set("date_and_time", new Date());
-                    newNotification.set("user", this.hei);
-                    newNotification.set("isRead", false);
+                newNotification.set("message", "Your Application has been assigned to an RQAT Member");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
 
-                    newNotification.save().then((notif) => {
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
+
+                // const newNotification = new Notifications();
+
+                // newNotification.set("message", "An Application has been assigned to you. You are the HEAD RQAT");
+                // newNotification.set("date_and_time", new Date());
+                // newNotification.set("user", this.selectedHeadRQAT);
+                // newNotification.set("isRead", false);
+
+                // newNotification.save().then((notif) => {
+                //     console.log("Notification Saved: " + notif.id);
+                // }, (error) => {
+                //     console.log("Error: " + error.message);
+                // });
+
+                for(var r = 0; r < this.selectedRqat.length; r ++){
+
+                    const newNotification2 = new Notifications();
+
+                    newNotification2.set("message", "An Application has been assigned to you");
+                    newNotification2.set("date_and_time", new Date());
+                    newNotification2.set("user", this.selectedRqat[r]);
+                    newNotification2.set("isRead", false);
+
+                    newNotification2.save().then((notif) => {
                         console.log("Notification Saved: " + notif.id);
                     }, (error) => {
                         console.log("Error: " + error.message);
                     });
+
+                }
                             
 
                 setTimeout(() => {
