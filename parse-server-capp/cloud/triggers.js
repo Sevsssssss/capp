@@ -15,7 +15,7 @@
     //Check Applications
     const Applications = Parse.Object.extend("Applications");
     const appQuery = new Parse.Query(Applications)
-    appQuery.equalTo("applicationTypeName", request.object.id)
+    appQuery.equalTo("applicationType", request.object.id)
     const appCount = await appQuery.count({useMasterKey:true})
     if (appCount > 0) {
       throw "Can't Delete Application Type, because it is used by an Application";

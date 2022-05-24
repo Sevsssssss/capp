@@ -224,7 +224,7 @@ export default {
             const cmo = await cmoQueryDel.first();
 
             cmo.destroy().then((cmo_memo) => {
-                    toast("Deleting CHED MEMO: " + cmo_memo, {
+                    toast("Deleting CHED MEMO: " + cmo_memo.id, {
                         type: TYPE.WARNING,
                         timeout: 3000,
                         hideProgressBar: false,

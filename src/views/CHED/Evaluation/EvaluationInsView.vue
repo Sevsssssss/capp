@@ -72,7 +72,7 @@
                                 <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </router-link>
                              <div>
-                                    <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
+                                    <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectedEvalInst(table.id)">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                             <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                         </svg>
@@ -142,7 +142,14 @@
 </template>
 
 <script>
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+const toast = useToast();
 import NoDataAvail from "@/components//NoDataAvail.vue";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 
 export default {
@@ -161,10 +168,12 @@ export default {
             ],
 
             tables: [],
+            evalInsID: "",
         };
     },
     components: {
         NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchEval() {
@@ -185,9 +194,46 @@ export default {
         addEvalIns() {
             this.$router.push("/evaluationins/add");
         },
-        // viewEvalIns() {
-        //     this.$router.push("/evaluationins/view");
-        // },
+        selectedEvalInst(id) {
+            this.evalInsID = id;
+        },
+        async deleteEval() {
+            this.$refs.Spinner.show();
+
+            const EvalInstruments = Parse.Object.extend("EvaluationInstruments");
+            const evalQueryDel = new Parse.Query(EvalInstruments);
+            evalQueryDel.equalTo("objectId", this.evalInsID);
+            const evalDel = await evalQueryDel.first();
+
+            evalDel.destroy().then((eval_inst) => {
+                    toast("Deleting Evaluation Instrument: " + eval_inst.id, {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        document.location.reload()
+                    }, 3000);
+                }, (error) => {
+                toast("Error:" + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log("Error: " + error)
+                },
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    3000
+                ),
+                
+            );
+
+        },
         prevPage() {
             if (this.currentpage > 0) this.currentpage -= 1;
         },

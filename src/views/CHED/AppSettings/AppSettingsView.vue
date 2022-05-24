@@ -60,7 +60,7 @@
                                 </router-link>
                                 
                                 <div>
-                                    <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
+                                    <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAppSet(table.Id)">
                                         <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
                                             <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                                         </svg>
@@ -132,10 +132,17 @@
 
 <script>
 import Parse from "parse";
+import {
+    useToast,
+    TYPE,
+    POSITION
+} from "vue-toastification";
+const toast = useToast();
 
 // var dataNumber = 10;
 // var page = 0;
 import NoDataAvail from "@/components//NoDataAvail.vue";
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 export default {
     name: "AppSettingsView",
     data() {
@@ -153,12 +160,14 @@ export default {
             tables: [],
             search: "",
             sort_type: "Sort by Designation",
+            appSetID: "",
             // atname: "",
             // checkedAccessTypes: [],
         };
     },
     components: {
-        NoDataAvail
+        NoDataAvail,
+        VueInstantLoadingSpinner,
     },
     computed: {
         searchApplicationType() {
@@ -189,6 +198,46 @@ export default {
     methods: {
         addAppType() {
             this.$router.push("/app-settings/add");
+        },
+        selectAppSet(id) {
+            this.appSetID = id;
+        },
+        async deleteAppSet() {
+            this.$refs.Spinner.show();
+
+            const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+            const appTypeQueryDel = new Parse.Query(ApplicationTypes);
+            appTypeQueryDel.equalTo("objectId", this.appSetID);
+            const appTypeDel = await appTypeQueryDel.first();
+
+            appTypeDel.destroy().then((app_type) => {
+                    toast("Deleting Application Type: " + app_type.id, {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: false,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    setTimeout(() => {
+                        document.location.reload()
+                    }, 3000);
+                }, (error) => {
+                toast("Error:" + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log("Error: " + error)
+                },
+                setTimeout(
+                    function () {
+                        this.$refs.Spinner.hide();
+                    }.bind(this),
+                    3000
+                ),
+                
+            );
+
         },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
