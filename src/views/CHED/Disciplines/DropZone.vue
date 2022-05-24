@@ -116,7 +116,13 @@ export default {
                     console.log("Successfully parsed xlsx file!");
                     self.storeDisciplines(event.data.rows);
                 } else {
-                    alert(event.data.reason);
+                    toast("Please verify that the EXCEL file is for Disciplines.", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    // alert(event.data.reason);
                     self.closeSpinner();
                 }
             };

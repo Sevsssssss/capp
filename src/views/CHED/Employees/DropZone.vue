@@ -121,15 +121,12 @@ export default {
                         hideProgressBar: true,
                         position: POSITION.TOP_RIGHT,
                     });
-                    setTimeout(() => {
-                        //    event.data.reason
-                        toast("Please verify that the EXCEL file is for Employee Accounts.", {
-                            type: TYPE.WARNING,
-                            timeout: 3000,
-                            hideProgressBar: true,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    }, 3000);
+                    toast("Please verify that the EXCEL file is for Employee Accounts.", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
                     self.closeSpinner();
                 }
             };
@@ -204,16 +201,16 @@ export default {
                         await newDesignation.save({
                             name: employeesData[i].H.toUpperCase(),
                         }).then(() => {
-                            
+
                             newEmployee.set("designation", newDesignation.id);
 
                             newEmployee.set("access_type", accesstypeResult[0].id);
-                            
-                            if (employeesData[i].H == "EDUCATION SUPERVISOR"){
-                                
+
+                            if (employeesData[i].H == "EDUCATION SUPERVISOR") {
+
                                 var DisciplinesArray = employeesData[i].I.split(",");
                                 var DisciplinesIDArray = [];
-                                for (var a = 0; a < DisciplinesArray.length; a++){
+                                for (var a = 0; a < DisciplinesArray.length; a++) {
                                     const disciplines = Parse.Object.extend("Disciplines");
                                     const disciplinesQuery = new Parse.Query(disciplines);
                                     disciplinesQuery.equalTo("MajorDiscipline", DisciplinesArray[a]);
@@ -225,7 +222,6 @@ export default {
                                 }
                                 newEmployee.set("disciplines", DisciplinesIDArray);
                             }
-                            
 
                             newEmployee.save().then(() => {
                                 setTimeout(() => {
@@ -248,23 +244,23 @@ export default {
                         newEmployee.set("designation", designationResult.id);
 
                         newEmployee.set("access_type", accesstypeResult[0].id);
-                        
-                        if (employeesData[i].H == "EDUCATION SUPERVISOR"){
-                                
-                                var DisciplinesArray = employeesData[i].I.split(", ");
-                                var DisciplinesIDArray = [];
-                                for (var a = 0; a < DisciplinesArray.length; a++){
-                                    const disciplines = Parse.Object.extend("Disciplines");
-                                    const disciplinesQuery = new Parse.Query(disciplines);
-                                    disciplinesQuery.equalTo("MajorDiscipline", DisciplinesArray[a]);
 
-                                    const disciplinesResult = await disciplinesQuery.first();
+                        if (employeesData[i].H == "EDUCATION SUPERVISOR") {
 
-                                    DisciplinesIDArray.push(disciplinesResult.id);
+                            var DisciplinesArray = employeesData[i].I.split(", ");
+                            var DisciplinesIDArray = [];
+                            for (var a = 0; a < DisciplinesArray.length; a++) {
+                                const disciplines = Parse.Object.extend("Disciplines");
+                                const disciplinesQuery = new Parse.Query(disciplines);
+                                disciplinesQuery.equalTo("MajorDiscipline", DisciplinesArray[a]);
 
-                                }
-                                newEmployee.set("disciplines", DisciplinesIDArray);
+                                const disciplinesResult = await disciplinesQuery.first();
+
+                                DisciplinesIDArray.push(disciplinesResult.id);
+
                             }
+                            newEmployee.set("disciplines", DisciplinesIDArray);
+                        }
                         if (flag === 0) {
 
                             await newEmployee.save().then(() => {
