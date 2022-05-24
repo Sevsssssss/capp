@@ -245,7 +245,7 @@ export default {
             var password = Math.random().toString(36).slice(-12);
 
             ////////////////////////////////////
-            //console.log(password); ///////////
+            console.log(password); ///////////
             ////////////////////////////////////
 
             var employeeName = {

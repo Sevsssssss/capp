@@ -169,10 +169,11 @@ export default {
 
         async storeEmployees(employeesData) {
             console.log("store");
+            var password = [];
             for (let i = 0; i < employeesData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
-                    var password = Math.random().toString(36).slice(-12);
+                    password.push(Math.random().toString(36).slice(-12));
                     const newEmployee = new Parse.User();
                     var employeeName = {
                         lastname: employeesData[i].A,
@@ -181,7 +182,7 @@ export default {
                     };
                     newEmployee.set("name", employeeName);
                     newEmployee.set("username", employeesData[i].D);
-                    newEmployee.set("password", password);
+                    newEmployee.set("password", password[i]);
                     newEmployee.set("email", employeesData[i].E);
                     newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
 
@@ -232,7 +233,7 @@ export default {
                                         name: this.employeeName,
                                         username: employeesData[i].D,
                                         email: employeesData[i].E,
-                                        password: password,
+                                        password: password[i],
                                         type: "sendCredentials",
                                         approved: true,
                                     };
@@ -272,7 +273,7 @@ export default {
                                         name: this.employeeName,
                                         username: employeesData[i].D,
                                         email: employeesData[i].E,
-                                        password: password,
+                                        password: password[i],
                                         type: "sendCredentials",
                                         approved: true,
                                     };
