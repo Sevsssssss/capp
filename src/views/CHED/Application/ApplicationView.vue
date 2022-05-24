@@ -466,28 +466,32 @@ export default {
 
             this.statusTracker = statTrack;
 
-            // //QUERY MAJOR DISCIPLINE CODE WHERE THE SPECIFIC DISCIPLINE BELONGS WHERE THE PROGRAM BELONGS
-            // const disciplines = Parse.Object.extend("Disciplines");
-            // const queryDisc = new Parse.Query(disciplines);
-            // const querDiscResult = await queryDisc.find();
+            //QUERY MAJOR DISCIPLINE CODE WHERE THE SPECIFIC DISCIPLINE BELONGS WHERE THE PROGRAM BELONGS
+            const disciplines = Parse.Object.extend("Disciplines");
+            const queryDisc = new Parse.Query(disciplines);
+            const querDiscResult = await queryDisc.find();
             
-            // for (var x = 0; x < querDiscResult.length; x++) {
-            //     const discipline = querDiscResult[x];
-            //     console.log(discipline.id);
-            //     const sDiscipline = discipline.get("specificDiscipline");
-            //     //console.log(sDiscipline);
+            for (var x = 0; x < querDiscResult.length; x++) {
+                const discipline = querDiscResult[x];
+                const sDiscipline = discipline.get("specificDiscipline");
+               
                  
-            //     for (var z = 0; z < sDiscipline.length; z++){
-            //             console.log(sDiscipline[z].SpecDiscCode);
-            //         if (progSpecID == sDiscipline[z].SpecDiscCode){
-            //             console.log("TRUE");
-            //             var MajDiscID = discipline.id;
-            //             //var MajDisc = discipline.get("MajorDiscipline");
-            //         }
-            //     }
+                for (var z = 0; z < sDiscipline.length; z++){
+                        
+                    if (progSpecID == sDiscipline[z].SpecDiscCode){
+                        console.log("TRUE");
+                        var MajDiscID = discipline.id;
+                        //var MajDisc = discipline.get("MajorDiscipline");
+                    }
+                }
 
-            //     //console.log("DISC:" + MajDiscCode);
-            // }
+                // if (sDiscipline.includes(progSpecID.toString())){
+                //     console.log("TRUE22");
+                //     var MajDiscID = discipline.id;
+                // }
+
+                //console.log("DISC:" + MajDiscCode);
+            }
             
             //Query Supervisors
             const Designations1 = Parse.Object.extend("Designations");
@@ -498,8 +502,7 @@ export default {
 
             const user = new Parse.Query(Parse.User);
             user.equalTo("designation", designationQueryResult.id);
-            user.equalTo("disciplines", querResultProgs.get("programMajorDisc"))
-            console.log(querResultProgs.get("programMajorDisc"))
+            user.equalTo("disciplines", MajDiscID)
 
             
             const supervisorResult = await user.find();

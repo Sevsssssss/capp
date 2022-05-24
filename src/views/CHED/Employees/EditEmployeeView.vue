@@ -109,18 +109,20 @@
                     </div>
                 </div>
                 <div v-if="v$.emp_designation.$model == this.educSupId">
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="label-text">Assigned Discipline:</span>
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">Assigned Discipline:</span>
+                    </label>
+                    <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-2">
+                        <label v-for="discipline in disciplines" :key="discipline" :value="discipline.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
+                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id"  v-model="selectedDiscipline" />
+                            <div class="label-text viewSubCatbool" style="align-self: center">
+                                {{ discipline.title }}
+                            </div>
                         </label>
-
-                        <select class="select select-bordered w-full" v-model="v$.discipline.$model">
-                            <option v-for="discipline in disciplines" :key="discipline" :value="discipline.id">
-                                <div class="discipline">{{ discipline.title }}</div>
-                            </option>
-                        </select>
                     </div>
                 </div>
+            </div>
                 <div class="flex justify-end pt-8 space-x-4">
                     <button class="btn btn-m btn-outline" @click="$router.go(-1)">
                         Cancel
@@ -259,6 +261,7 @@ export default {
             accessTypes: [],
             designations: [],
             disciplines: [],
+            selectedDiscipline: [],
             lastname: "",
             firstname: "",
             midinit: "",
@@ -373,7 +376,7 @@ export default {
             selectedEMP.set("contact_num", this.contactnum);
             selectedEMP.set("access_type", this.access_type);
             selectedEMP.set("designation", this.emp_designation);
-            selectedEMP.set("discipline", this.discipline);
+            selectedEMP.set("disciplines", this.selectedDiscipline);
 
             console.log(this.email, this.oldEmail);
             try {
