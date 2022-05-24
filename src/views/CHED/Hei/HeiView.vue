@@ -566,8 +566,11 @@ export default {
 
                 hTypeCounter[index] += 1;
 
-                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
-                    hei.get("address").province + ", " + hei.get("address").regionName;
+                const heiAddress = hei.get("address").street == undefined || hei.get("address").street == "" ?
+                hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                hei.get("address").province + ", " + hei.get("address").regionName :
+                hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                hei.get("address").province + ", " + hei.get("address").regionName;
 
                 heis.push({
                     id: hei.id,
