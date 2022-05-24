@@ -1,6 +1,7 @@
 <template>
   <!--Header-->
   <div class="m-3">
+    {{ categoryId }}{{ subcategoryId }}
     <form
       v-on:submit.prevent="submit"
       class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between"
@@ -59,11 +60,11 @@
         <div class="font-semibold">CATEGORY</div>
         <div :class="{ hide: categories.length > 0 }" class="">
           <button
-          class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
-          @click="addCategory()"
-        >
-          Add Category
-        </button>
+            class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
+            @click="addCategory()"
+          >
+            Add Category
+          </button>
         </div>
       </div>
       <!-- Body -->
@@ -290,7 +291,10 @@
           </div>
         </div>
       </div>
-      <div :class="{ hide: categories.length == 0 }" class="mt-5 flex flex-row justify-end">
+      <div
+        :class="{ hide: categories.length == 0 }"
+        class="mt-5 flex flex-row justify-end"
+      >
         <button
           class="btn bg-brand-darkblue hover:bg-brand-blue border-none"
           @click="addCategory()"
@@ -322,7 +326,13 @@
         </div>
       </div>
     </form>
-    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+    <VueInstantLoadingSpinner
+      ref="Spinner"
+      color="#0E3385"
+      spinnerStyle="pulse-loader"
+      margin="4px"
+      size="20px"
+    ></VueInstantLoadingSpinner>
     <div
       :class="{ 'modal-open ': validate() }"
       class="modal modal-bottom sm:modal-middle"
@@ -520,12 +530,12 @@ export default {
           }
         }
       }
-      console.log(this.cmoNo)
-      console.log(this.seriesYear)
-      console.log(this.evalDesc)
-      console.log(subcat)
-      console.log(items)
-      console.log(errCat)
+      console.log(this.cmoNo);
+      console.log(this.seriesYear);
+      console.log(this.evalDesc);
+      console.log(subcat);
+      console.log(items);
+      console.log(errCat);
       if (
         this.cmoNo == "" ||
         this.seriesYear == "" ||
@@ -565,17 +575,11 @@ export default {
         const cmoUpdateQuery = new Parse.Query(CMOsUpdate);
         cmoUpdateQuery.equalTo("objectId", this.id);
         const CMOUpdate = await cmoUpdateQuery.first({
-            useMasterKey: true,
+          useMasterKey: true,
         });
         CMOUpdate.set("CMO_No", this.cmoNo.toUpperCase());
-        CMOUpdate.set(
-          "Series_Year",
-          this.seriesYear.toUpperCase()
-        );
-        CMOUpdate.set(
-          "CMOName",
-          this.evalDesc.toUpperCase()
-        );
+        CMOUpdate.set("Series_Year", this.seriesYear.toUpperCase());
+        CMOUpdate.set("CMOName", this.evalDesc.toUpperCase());
         CMOUpdate.set("evaluationFormReqs", this.categories);
 
         // await newEvaluationForm.save();
@@ -745,13 +749,19 @@ export default {
       const cmoQuery = new Parse.Query(CMOs);
       cmoQuery.equalTo("objectId", this.id);
       const CMO = await cmoQuery.first({
-          useMasterKey: true,
+        useMasterKey: true,
       });
 
       this.cmoNo = CMO.get("CMO_No");
       this.seriesYear = CMO.get("Series_Year");
       this.evalDesc = CMO.get("CMOName");
       this.categories = CMO.get("evaluationFormReqs");
+
+      this.categoryId = this.categories.length;
+
+      for (var category = 0; category < this.categories.length; category++) {
+        this.subcategoryId = this.categories[category].subcategory.length;
+      }
     }
   },
 };
