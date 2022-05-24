@@ -4,6 +4,8 @@
 </div>
 <div v-else class="m-3">
     <DataCards :datas="numberOfHEI" />
+    {{totalEntries}}
+    {{currentpage}}
     <div class="m-3 overflow-x-auto shadow-md rounded-sm">
         <div class="p-2 flex justify-between items-center">
             <div class="text-lg font-semibold py-2 px-4 text-grey-200"> NUMBER OF APPLICATION TYPES </div>
@@ -46,16 +48,16 @@
                 <span class="text-sm text-gray-700">
                     Showing
                     <span class="font-semibold text-gray-900">{{
-              totalEntries > 0 ? 1 + numPerPage * currentpage : 0
+              totalEntries[index] > 0 ? 1 + numPerPage * currentpage[index] : 0
             }}</span>
                     to
                     <span class="font-semibold text-gray-900">{{
-              (currentpage + 1) * numPerPage > totalEntries
-                ? totalEntries
-                : (currentpage + 1) * numPerPage
+              (currentpage[index] + 1) * numPerPage > totalEntries[index]
+                ? totalEntries[index]
+                : (currentpage[index] + 1) * numPerPage
             }}</span>
                     of
-                    <span class="font-semibold text-gray-900">{{ totalEntries }}</span>
+                    <span class="font-semibold text-gray-900">{{ totalEntries[index] }}</span>
                     Entries
                 </span>
             </div>
@@ -63,10 +65,10 @@
                 <div class="btn-group">
                     <ul class="inline-flex -space-x-px">
                         <li>
-                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
+                            <a href="#" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage(index)">Previous</a>
                         </li>
                         <li>
-                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
+                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage(index)">Next</a>
                         </li>
                     </ul>
                 </div>
@@ -95,6 +97,9 @@ export default {
         return {
             numberOfHEI: [],
             listofPrograms: [],
+            currentpage: [],
+            numPerPage: 10,
+            totalEntries: [],
             nodata: false,
             numdata: '',
             headers: [{
@@ -110,6 +115,14 @@ export default {
         };
     },
     methods: {
+        prevPage(index) {
+            if (this.currentpage[index] > 0) this.currentpage[index] -= 1;
+        },
+        nextPage(index) {
+            if ((this.currentpage[index] + 1) * this.numPerPage < this.totalEntries[index]) {
+                this.currentpage[index] += 1;
+            }
+        },
         exportToPdfTables(appType, index) {
             const date = new Date();
             const filename =
@@ -285,6 +298,8 @@ export default {
                     applicationType: applicationType.get("applicationTypeName"),
                     programList: progNum,
                 });
+                this.totalEntries.push(programList.length);
+                this.currentpage.push(0);
             }
         }
         this.numdata = {

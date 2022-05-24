@@ -545,7 +545,8 @@ export default {
                     const newProgram = new programs();
                     newProgram.save({
                         programName: this.programs[i].programName.toUpperCase(),
-                        programDiscipline: this.selectedDiscipline,
+                        programDiscipline: this.selectedDiscipline.specDisc,
+                        programMajorDisc: this.selectedDiscipline.majorDisc
                     });
                     toast("New Program Added: " + this.programs[i].programName, {
                             type: TYPE.SUCCESS,
@@ -691,6 +692,7 @@ export default {
                             specificDiscipline: prog.get("programDiscipline"),
                             specificDisciplineName: discipline.get("specificDiscipline")[a].SpecificDiscipline,
                         });
+                         this.totalEntries += 1;
                     }
                     disciplinesNames.push({
                         MajorDisc: discipline.id,
@@ -699,7 +701,6 @@ export default {
                         name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
                     })
                 }
-
             }
             this.tables = programsData;
             this.disciplines = disciplinesNames;

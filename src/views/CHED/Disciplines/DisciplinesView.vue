@@ -651,6 +651,7 @@ export default {
                     name: discipline.get("MajorDiscipline"),
                 });
             }
+            this.totalEntries = querResult.length;
             this.disciplines = disciplinesNames;
             this.tables = disciplineTable;
             console.log(this.tables);
