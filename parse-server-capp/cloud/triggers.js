@@ -15,7 +15,7 @@
     //Check Applications
     const Applications = Parse.Object.extend("Applications");
     const appQuery = new Parse.Query(Applications)
-    appQuery.equalTo("applicationTypeName", request.object.id)
+    appQuery.equalTo("applicationType", request.object.id)
     const appCount = await appQuery.count({useMasterKey:true})
     if (appCount > 0) {
       throw "Can't Delete Application Type, because it is used by an Application";
@@ -96,18 +96,26 @@
   //CHED MEMO Deletion Trigger
   Parse.Cloud.beforeDelete("CHED_MEMO", async (request) => {
 
-    //Check Evaluation Instruments
-    const EvalInsts = Parse.Object.extend("EvaluationInstruments");
-    const evalInstQuery = new Parse.Query(EvalInsts)
-    evalInstQuery.equalTo("evalInstReqs", request.object.id)
-    const evalInstCount = await evalInstQuery.count({useMasterKey:true})
-    if (evalInstCount > 0) {
+    //Check Evaluation Instruments\
+    const instruments = Parse.Object.extend("EvaluationInstruments");
+    const evalInsQuery = new Parse.Query(instruments);
+    const evalInsResult = await evalInsQuery.find();
+
+    var usedCMOs = [];
+
+    for (var i = 0; i < evalInsResult.length; i++) {
+      const evalInst = evalInsResult[i];
+      for(var j = 0; j < evalInst.get("evalInstReqs").length; j++) {
+        usedCMOs.push(evalInst.get("evalInstReqs")[j].cmoID)
+      }
+    }
+    if (usedCMOs.includes(request.object.id)) {
       throw "Can't Delete CHED MEMORANDUM, because it is used in an Evaluation Instrument";
     }
   });
 
   //Evaluation Instruments Deletion Trigger
-  Parse.Cloud.beforeDelete("CHED_MEMO", async (request) => {
+  Parse.Cloud.beforeDelete("EvaluationInstruments", async (request) => {
 
     //Check Evaluation Instruments
     const EvalInsts = Parse.Object.extend("EvaluationInstruments");
