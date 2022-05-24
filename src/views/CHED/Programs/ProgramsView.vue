@@ -1,10 +1,10 @@
 <template>
 <div v-if="!tables.length" style="height: 100%">
-    <div class="flex flex-col justify-center items-center h-full p-5">
-        <div class="noDataAvail">No Data Available</div>
-        <div>Please Upload Disciplines First!</div>
+    <div class="flex flex-col justify-center items-center h-full">
+        <div class="noDataAvail">No Data Available </div>
+        <div class="noDataAvail text-lg pb-4">(Upload Discipline First)</div>
         <div v-if="disciplines.length > 0" class="flex justify-center items-center">
-            <div class="h-fit pt-3 ">
+            <div class="h-fit items-center">
                 <button @click="excelDisciplines()" type="button" class="btn-table">
                     <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -13,7 +13,7 @@
                     <div class="pl-2">Upload Excel</div>
                 </button>
             </div>
-            <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3">
+            <div v-if="disciplines.length > 0" class="items-center">
                 <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                     <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -108,7 +108,7 @@
             </div>
 
             <div class="flex flex-row">
-                <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
+                <div v-if="disciplines.length > 0" class="h-fit pt-3 items-center">
                     <button @click="excelDisciplines()" type="button" class="btn-table">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
@@ -117,7 +117,7 @@
                         <div class="pl-2">Upload Excel</div>
                     </button>
                 </div>
-                <div v-if="disciplines.length > 0" class="h-fit pr-5 pt-3 items-center">
+                <div v-if="disciplines.length > 0" class="h-fit pr-2 pt-3 items-center">
                     <label @click="addProgramName()" type="button" for="createPrograms" class="flex items-center text-white bg-brand-darkblue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 focus:outline-none">
                         <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
