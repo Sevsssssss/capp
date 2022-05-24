@@ -157,6 +157,7 @@ export default {
         },
         async storeHEIs(heiData) {
             console.log("store")
+            var password = [];
             for (let i = 0; i < heiData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
@@ -165,7 +166,9 @@ export default {
                     queryACC.equalTo("name", "HEI");
                     const accQuerResult = await queryACC.first();
                     this.hei_acc_id = accQuerResult.id;
-                    var password = Math.random().toString(36).slice(-12);
+                    password.push(Math.random().toString(36).slice(-12));
+
+                    console.log(heiData[i].B, password[i]);
                     this.address = {
                         regionName: heiData[i].D,
                         province: heiData[i].E,
@@ -176,7 +179,7 @@ export default {
                     const newHEI = new Parse.User();
                     newHEI.set("hei_name", heiData[i].A);
                     newHEI.set("username", heiData[i].B);
-                    newHEI.set("password", password);
+                    newHEI.set("password", password[i]);
                     newHEI.set("email", heiData[i].C);
                     newHEI.set("address", this.address);
                     newHEI.set("number", heiData[i].I.toString());
@@ -205,10 +208,11 @@ export default {
                                         name: heiData[i].A,
                                         username: heiData[i].B,
                                         email: heiData[i].C,
-                                        password: password,
+                                        password: password[i],
                                         type: "sendCredentials",
                                         approved: true,
                                     };
+                                    console.log("params: "+heiData[i].B, password[i]);
                                     Parse.Cloud.run("sendEmailNotification", params);
                                 }, 1000);
 
@@ -225,10 +229,11 @@ export default {
                                         name: heiData[i].A,
                                         username: heiData[i].B,
                                         email: heiData[i].C,
-                                        password: password,
+                                        password: password[i],
                                         type: "sendCredentials",
                                         approved: true,
                                     };
+                                    console.log("params1: "+heiData[i].B, password[i]);
                                     Parse.Cloud.run("sendEmailNotification", params);
                                 }, 1000);
 

@@ -174,6 +174,7 @@ export default {
 
         async storeRqat(rqatData) {
             console.log("store")
+            
             for (let i = 0; i < rqatData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
@@ -232,7 +233,7 @@ export default {
                     var password = Math.random().toString(36).slice(-12);
                     newRQAT.set("name", rqatName);
                     newRQAT.set("username", rqatData[i].D);
-                    newRQAT.set("password", "password");
+                    newRQAT.set("password", password);
                     newRQAT.set("contact_num", "0" + rqatData[i].E.toString());
                     newRQAT.set("hei_affil", heiAffil);
                     newRQAT.set("email", rqatData[i].G);
