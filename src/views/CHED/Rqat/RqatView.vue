@@ -149,7 +149,7 @@
     <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
+        <div v-if="application_counter == 0" class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">Delete Account</div>
             <p class="py-2 text-sm">
                 This action cannot be undone. Are you sure you want to delete this
@@ -158,6 +158,18 @@
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label @click="deleteRQAT" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
+            </div>
+        </div>
+
+        <div v-else class="modal-box relative rounded-md text-left">
+            <div class="font-semibold text-md">Archived Account</div>
+            <p class="py-2 text-sm">
+                This action cannot be undone. Are you sure you want to archived this
+                account?
+            </p>
+            <div class="modal-action">
+                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label @click="deleteRQAT" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Archived</label>
             </div>
         </div>
     </div>
@@ -182,6 +194,7 @@ export default {
     data() {
         return {
             currentpage: 0,
+            application_counter: 0,
             numPerPage: 8,
             totalEntries: 0,
             currentDelAcc: "",
@@ -260,11 +273,8 @@ export default {
         addRQAT() {
             this.$router.push("/rqat/add");
         },
-        selectAcc(id) {
+        async selectAcc(id) {
             this.currentDelAcc = id;
-        },
-        async deleteRQAT() {
-            this.$refs.Spinner.show();
 
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("objectId", this.currentDelAcc);
@@ -277,13 +287,30 @@ export default {
             queryApp.equalTo("selectedRQAT", querResult.id)
             const application = await queryApp.find();
 
-            if (application.length > 0) {
-                if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
+            this.application_counter = application.length;
+
+        },
+        async deleteRQAT() {
+            this.$refs.Spinner.show();
+
+            const acc = new Parse.Query(Parse.User);
+            acc.equalTo("objectId", this.currentDelAcc);
+            const querResult = await acc.first({
+                useMasterKey: true,
+            });
+
+            // const applications = Parse.Object.extend("Applications");
+            // const queryApp = new Parse.Query(applications);
+            // queryApp.equalTo("selectedRQAT", querResult.id)
+            // const application = await queryApp.find();
+            
+            if (this.application_counter > 0) {
+                //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                     querResult.set("isArchived", true);
                     querResult.save({
                         useMasterKey: true,
                     });
-                }
+                //}
             } else {
                 querResult.destroy({
                     useMasterKey: true,

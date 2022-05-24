@@ -360,6 +360,8 @@ export default {
             this.appID = appid;
             this.appIndex = index; 
 
+
+
             //For Tracking
 
             //Query Application
@@ -390,6 +392,9 @@ export default {
             this.stAppType = querResultAppType.get("applicationTypeName");
             this.stHEI = querResultHEI.get("hei_name");
             this.stProgram = querResultProgs.get("programName");
+            var progSpecID = querResultProgs.get("programDiscipline");
+
+            console.log("Prog SPEC ID:" + progSpecID);
 
             var statTrack = [];
             var months = [
@@ -460,6 +465,66 @@ export default {
             }
 
             this.statusTracker = statTrack;
+
+            //QUERY MAJOR DISCIPLINE CODE WHERE THE SPECIFIC DISCIPLINE BELONGS WHERE THE PROGRAM BELONGS
+            const disciplines = Parse.Object.extend("Disciplines");
+            const queryDisc = new Parse.Query(disciplines);
+            const querDiscResult = await queryDisc.find();
+            
+            for (var x = 0; x < querDiscResult.length; x++) {
+                const discipline = querDiscResult[x];
+                const sDiscipline = discipline.get("specificDiscipline");
+               
+                 
+                for (var z = 0; z < sDiscipline.length; z++){
+                        
+                    if (progSpecID == sDiscipline[z].SpecDiscCode){
+                        console.log("TRUE");
+                        var MajDiscID = discipline.id;
+                        //var MajDisc = discipline.get("MajorDiscipline");
+                    }
+                }
+
+                // if (sDiscipline.includes(progSpecID.toString())){
+                //     console.log("TRUE22");
+                //     var MajDiscID = discipline.id;
+                // }
+
+                //console.log("DISC:" + MajDiscCode);
+            }
+            
+            //Query Supervisors
+            const Designations1 = Parse.Object.extend("Designations");
+            const queryDesig = new Parse.Query(Designations1);
+            queryDesig.equalTo("name", "EDUCATION SUPERVISOR");
+
+            const designationQueryResult = await queryDesig.first();
+
+            const user = new Parse.Query(Parse.User);
+            user.equalTo("designation", designationQueryResult.id);
+            user.equalTo("disciplines", MajDiscID)
+
+            
+            const supervisorResult = await user.find();
+
+            var dbSupervisors = [];
+
+            for (var j = 0; j < supervisorResult.length; j++) {
+                const sup = supervisorResult[j];
+
+                dbSupervisors.push({
+                    id: sup.id,
+                    name: sup.get("name")["lastname"] +
+                        ", " +
+                        sup.get("name")["firstname"] +
+                        " " +
+                        sup.get("name")["middleinitial"] +
+                        ".",
+                })
+            }
+
+            this.supervisors = dbSupervisors;
+            
         },
         modal() {
             var has_error = 0;
@@ -1103,35 +1168,6 @@ export default {
                 },
             ];
 
-            //Query Supervisors
-
-            const queryDesig = new Parse.Query(Designations);
-            queryDesig.equalTo("name", "EDUCATION SUPERVISOR");
-
-            const designationQueryResult = await queryDesig.first();
-
-            const user = new Parse.Query(Parse.User);
-            user.equalTo("designation", designationQueryResult.id);
-            // user.equalTo("disciplines", program.get("programMajorDisc"))
-            const supervisorResult = await user.find();
-
-            var dbSupervisors = [];
-
-            for (var j = 0; j < supervisorResult.length; j++) {
-                const sup = supervisorResult[j];
-
-                dbSupervisors.push({
-                    id: sup.id,
-                    name: sup.get("name")["lastname"] +
-                        ", " +
-                        sup.get("name")["firstname"] +
-                        " " +
-                        sup.get("name")["middleinitial"] +
-                        ".",
-                })
-            }
-
-            this.supervisors = dbSupervisors;
         }
 
     },
