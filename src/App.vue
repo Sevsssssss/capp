@@ -33,6 +33,7 @@ Parse.masterKey = "master"
     //             "/rqat-assignment",
     //             "/evaluationins",
     //             "/evaluationins/add",
+    //             "/evaluationins/edit",
     //             "/app-settings/view",
     //             "/app-settings",
     //             "/designations",
@@ -58,6 +59,7 @@ Parse.masterKey = "master"
     //             "/ched/account",
     //             "/programs",
     //             "/ched/account"
+    //             "/notif"
     //         ],
     //     }).then((accesstype) => {
     //         const Designations = Parse.Object.extend("Designations");
