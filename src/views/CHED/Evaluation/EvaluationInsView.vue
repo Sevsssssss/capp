@@ -52,8 +52,8 @@
                         <td class="px-6 py-4">
                             {{ table.description }}
                         </td>
-                        <td class="px-6 py-4 text-right flex-row space-x-2">
-                            <!-- {{table.id}} -->
+                        <td class="px-6 py-4 text-right ">
+                           <div class="flex space-x-4 items-end justify-end">
                             <router-link v-if="table && table.id" :to="{
                                 name: 'EvalFileView',
                                 params: {
@@ -71,7 +71,14 @@
                             }">
                                 <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
                             </router-link>
-
+                             <div>
+                                    <label for="deleteFunc" class="hover:text-brand-red/60" @click="selectAcc(table.InstNo)">
+                                        <svg style="width: 20px; height: 20px" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                        </svg>
+                                    </label>
+                                </div>
+                           </div>
                         </td>
                     </tr>
                 </tbody>
@@ -111,6 +118,21 @@
                                 <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+            <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+            <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+            <div class="modal">
+                <div class="modal-box relative rounded-md text-left">
+                    <div class="font-semibold text-md">Delete Document</div>
+                    <p class="py-2 text-sm">
+                        This action cannot be undone. Are you sure you want to delete this
+                        document?
+                    </p>
+                    <div class="modal-action">
+                        <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                        <label for="deleteFunc" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteEval()">Delete</label>
                     </div>
                 </div>
             </div>
