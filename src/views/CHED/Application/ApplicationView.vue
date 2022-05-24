@@ -498,7 +498,7 @@ export default {
 
             const user = new Parse.Query(Parse.User);
             user.equalTo("designation", designationQueryResult.id);
-            user.equalTo("discipline", MajDiscID)
+            user.equalTo("disciplines", MajDiscID)
 
             
             const supervisorResult = await user.find();
