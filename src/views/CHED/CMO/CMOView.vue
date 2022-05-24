@@ -218,13 +218,13 @@ export default {
             this.$refs.Spinner.show();
 
             const CMO = Parse.Object.extend("CHED_MEMO");
-            const cmoQuery = new Parse.Query(CMO);
-            cmoQuery.equalTo("objectId", this.cmoId);
+            const cmoQueryDel = new Parse.Query(CMO);
+            cmoQueryDel.equalTo("objectId", this.cmoId);
+            console.log(this.cmoId)
+            const cmo = await cmoQueryDel.first();
 
-            const cmo = await cmoQuery.first();
-
-            cmo.destroy().then(() => {
-                    toast("Deleting...", {
+            cmo.destroy().then((cmo_memo) => {
+                    toast("Deleting CHED MEMO: " + cmo_memo, {
                         type: TYPE.WARNING,
                         timeout: 3000,
                         hideProgressBar: false,
@@ -233,6 +233,14 @@ export default {
                     setTimeout(() => {
                         document.location.reload()
                     }, 3000);
+                }, (error) => {
+                toast("Error:" + error.message, {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                console.log("Error: " + error)
                 },
                 setTimeout(
                     function () {
