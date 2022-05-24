@@ -24,12 +24,106 @@
             <button class="btn-small btn-outline border text-black" @click="$router.go(-1)">
                 Cancel
             </button>
-            <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue hover:bg-brand-lightblue" type="submit">
+            <!-- @click="upload()" -->
+            <label @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue hover:bg-brand-lightblue" type="submit">
                 Submit
-            </button>
+            </label>
         </div>
     </div>
-    <VueInstantLoadingSpinner ref="Spinner"></VueInstantLoadingSpinner>
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="showModal" class="modal-toggle" />
+    <div :class="{ 'modal-open ': showMOdal() }" class="modal">
+        <div class="modal-box rounded-md w-11/12 max-w-6xl">
+            <div class="flex text-lg font-semibold uppercase pb-4">
+                Are you sure you want to upload this HEI TABLE?
+            </div>
+            <div class="relative overflow-x-auto shadow-md">
+                <div>
+                    <div class="flex p-4">
+                        <label for="table-search" class="sr-only">Search</label>
+                        <div class="relative mt-1">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input v-model="search" type="text" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5" placeholder="Search for items" />
+                        </div>
+                    </div>
+                </div>
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th v-for="head in headers" :key="head.title" scope="col" class="px-6 py-3">
+                                {{head.title}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="table in tables" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{table.ins}}
+                            </th>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-col">
+                                    <div class="text-md font-semibold">{{ table.heiName }}</div>
+                                    <div>{{ table.address }}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.type}}
+                            </td>
+                            <td class="px-6 py-4">
+                                ${{table.username}}
+                            </td>
+                            <td class="px-6 py-4">
+                                ${{table.email}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Table Footer -->
+                <div class="table-footer flex flex-row justify-between">
+                    <div class="flex flex-row pl-3 justify-center items-center">
+                        <span class="text-sm text-gray-700">
+                            Showing
+                            <span class="font-semibold text-gray-900">{{
+                1 + numPerPage * currentpage
+              }}</span>
+                            to
+                            <span class="font-semibold text-gray-900">{{
+                (currentpage + 1) * numPerPage > totalEntries
+                  ? totalEntries
+                  : (currentpage + 1) * numPerPage
+              }}</span>
+                            of
+                            <span class="font-semibold text-gray-900">{{
+                totalEntries
+              }}</span>
+                            Entries
+                        </span>
+                    </div>
+                    <div class="p-3 pr-3">
+                        <div class="btn-group">
+                            <ul class="inline-flex -space-x-px">
+                                <li>
+                                    <a href="javascript:void(0)" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="prevPage()">Previous</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700" @click="nextPage()">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-action">
+                <label @click="showValidate = false" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                <label @click="uploadtable()" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none">Submit</label>
+            </div>
+        </div>
+    </div>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </div>
 </template>
 
@@ -52,6 +146,64 @@ export default {
             counter: 0,
             pending: false,
             address: {},
+            headers: [{
+                    title: "INSTITUTIONAL CODE",
+                },
+                {
+                    title: "HEI NAME",
+                },
+                {
+                    title: "TYPE",
+                },
+                {
+                    title: "USERNAME",
+                },
+                {
+                    title: "EMAIL",
+                },
+            ],
+            tables: [{
+                    ins: "5009",
+                    heiName: "Ateneo De Naga University",
+                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                    type: "PRIVATE COLLEGES",
+                    username: "ADNU",
+                    email: "adnu@adnu.com",
+                },
+                {
+                    ins: "5009",
+                    heiName: "Ateneo De Naga University",
+                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                    type: "PRIVATE COLLEGES",
+                    username: "ADNU",
+                    email: "adnu@adnu.com",
+                },
+                {
+                    ins: "5009",
+                    heiName: "Ateneo De Naga University",
+                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                    type: "PRIVATE COLLEGES",
+                    username: "ADNU",
+                    email: "adnu@adnu.com",
+                },
+                {
+                    ins: "5009",
+                    heiName: "Ateneo De Naga University",
+                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                    type: "PRIVATE COLLEGES",
+                    username: "ADNU",
+                    email: "adnu@adnu.com",
+                },
+                {
+                    ins: "5009",
+                    heiName: "Ateneo De Naga University",
+                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                    type: "PRIVATE COLLEGES",
+                    username: "ADNU",
+                    email: "adnu@adnu.com",
+                }
+            ],
+            showValidate: false,
         }
     },
     components: {
@@ -78,6 +230,9 @@ export default {
         };
     },
     methods: {
+        showMOdal() {
+            return this.showValidate;
+        },
         validate(filename) {
             console.log("validate")
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
@@ -119,13 +274,25 @@ export default {
                         event.data.rows,
                     )
                 } else {
-                    alert(event.data.reason);
+                    toast(event.data.reason, {
+                        type: TYPE.ERROR,
+                        timeout: 2000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    toast("Please verify that the EXCEL file is for HEI Account.", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
                     self.closeSpinner();
                 }
             };
             // }
         },
         upload() {
+            var has_error = 0;
             if (this.dropzoneFile === "") {
                 toast("Please select a file", {
                     type: TYPE.ERROR,
@@ -133,10 +300,17 @@ export default {
                     hideProgressBar: true,
                     position: POSITION.TOP_RIGHT,
                 });
-            } else {
-                console.log("upload")
-                var validation = this.validate(this.dropzoneFile);
-                if (validation) {
+                has_error = 1;
+            }
+            if (has_error < 1) {
+                this.showValidate = !this.showValidate;
+            }
+        },
+        uploadtable() {
+            console.log("upload")
+            var validation = this.validate(this.dropzoneFile);
+            if (validation) {
+                try {
                     this.pending = true;
                     this.$refs.Spinner.show();
                     const self = this;
@@ -152,6 +326,8 @@ export default {
                         }
                     };
                     reader.readAsArrayBuffer(this.dropzoneFile);
+                } catch (error) {
+                    console.log(error)
                 }
             }
         },
@@ -212,7 +388,7 @@ export default {
                                         type: "sendCredentials",
                                         approved: true,
                                     };
-                                    console.log("params: "+heiData[i].B, password[i]);
+                                    console.log("params: " + heiData[i].B, password[i]);
                                     Parse.Cloud.run("sendEmailNotification", params);
                                 }, 1000);
 
@@ -233,7 +409,7 @@ export default {
                                         type: "sendCredentials",
                                         approved: true,
                                     };
-                                    console.log("params1: "+heiData[i].B, password[i]);
+                                    console.log("params1: " + heiData[i].B, password[i]);
                                     Parse.Cloud.run("sendEmailNotification", params);
                                 }, 1000);
 
@@ -241,6 +417,12 @@ export default {
                         }
                     }
                 } catch (error) {
+                    toast(error.message, {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
                     console.log(error.message)
                     this.counter = this.counter - 1;
                 }

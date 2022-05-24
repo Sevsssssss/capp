@@ -125,15 +125,12 @@ export default {
                         hideProgressBar: true,
                         position: POSITION.TOP_RIGHT,
                     });
-                    setTimeout(() => {
-                        //    event.data.reason
-                        toast("Please verify that the EXCEL file is for designation.", {
-                            type: TYPE.WARNING,
-                            timeout: 3000,
-                            hideProgressBar: true,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    }, 3000);
+                    toast("Please verify that the EXCEL file is for designation.", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
                     self.closeSpinner();
                 }
             };

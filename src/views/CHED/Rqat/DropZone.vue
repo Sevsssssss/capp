@@ -126,15 +126,12 @@ export default {
                         hideProgressBar: true,
                         position: POSITION.TOP_RIGHT,
                     });
-                    setTimeout(() => {
-                        //    event.data.reason
-                        toast("Please verify that the EXCEL file is for RQAT Accounts.", {
-                            type: TYPE.WARNING,
-                            timeout: 3000,
-                            hideProgressBar: true,
-                            position: POSITION.TOP_RIGHT,
-                        });
-                    }, 3000);
+                    toast("Please verify that the EXCEL file is for RQAT Accounts.", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
                     self.closeSpinner();
                 }
             };
@@ -174,7 +171,7 @@ export default {
 
         async storeRqat(rqatData) {
             console.log("store")
-            
+
             for (let i = 0; i < rqatData.length; i++) {
                 this.counter = this.counter + 1;
                 try {
