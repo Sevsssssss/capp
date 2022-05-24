@@ -121,6 +121,21 @@
                     </div>
                 </div>
             </div>
+            <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
+            <input type="checkbox" id="deleteFunc" class="modal-toggle" />
+            <div class="modal">
+                <div class="modal-box relative rounded-md text-left">
+                    <div class="font-semibold text-md">Delete Document</div>
+                    <p class="py-2 text-sm">
+                        This action cannot be undone. Are you sure you want to delete this
+                        document?
+                    </p>
+                    <div class="modal-action">
+                        <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
+                        <label for="deleteFunc" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteEval()">Delete</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
