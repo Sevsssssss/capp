@@ -207,15 +207,90 @@ export default {
         const count7 = await querydiscs.count();
         this.disc = count7;
 
+        //Pie Graph Data Query
+        const applications = Parse.Object.extend("Applications");
+        const queryFA = new Parse.Query(applications);
+        queryFA.equalTo("applicationStatus", "For Approval");
+        var faCount = await queryFA.count();
+
+        const queryFR = new Parse.Query(applications);
+        queryFR.equalTo("applicationStatus", "For Revision");
+        var frCount = await queryFR.count();
+
+        const queryFP = new Parse.Query(applications);
+        queryFP.equalTo("applicationStatus", "For Payment");
+        var fpCount = await queryFP.count();
+
+        const queryFE = new Parse.Query(applications);
+        queryFE.equalTo("applicationStatus", "For Inspection");
+        var feCount = await queryFE.count();
+
+        const queryFC = new Parse.Query(applications);
+        queryFC.equalTo("applicationStatus", "For Compliance");
+        var fcCount = await queryFC.count();
+
+        const queryFV = new Parse.Query(applications);
+        queryFV.equalTo("applicationStatus", "For Verification");
+        var fvCount = await queryFV.count();
+
+        const queryFI = new Parse.Query(applications);
+        queryFI.equalTo("applicationStatus", "For Issuance");
+        var fiCount = await queryFI.count();
+
+        const queryC = new Parse.Query(applications);
+        queryC.equalTo("applicationStatus", "Completed");
+        var cCount = await queryC.count();
+
+        const queryNC = new Parse.Query(applications);
+        queryNC.equalTo("applicationStatus", "Non Compliant");
+        var ncCount = await queryNC.count();
+
+        //Bar Graph Data Query
+        const queryApp = new Parse.Query(applications);
+
+        const ApplType = Parse.Object.extend("ApplicationTypes");
+        const appTypeQuery = new Parse.Query(ApplType);
+        const appTypeResults = await appTypeQuery.find();
+
+        //For Number of HEIs
+        var totalApplication = 0;
+        var applicationTypes = [];
+        var appTypeCount = [];
+        for (var i = 0; i < appTypeResults.length; i++) {
+            var counter = 0;
+
+            const pipeline = [{
+                group: {
+                    objectId: '$createdBy',
+                }
+            }];
+
+            const applicationType = appTypeResults[i];
+            const newQuery = queryApp.equalTo("applicationType", applicationType.id);
+            newQuery.aggregate(pipeline)
+
+            counter = await newQuery.count();
+            totalApplication += counter;
+            console.log(totalApplication)
+
+            applicationTypes.push(applicationType.get("applicationTypeName"));
+            appTypeCount.push(counter);
+        }
+        if (totalApplication == 0) {
+            this.nodata = true;
+        }
+
+        
+
         const ctx = document.getElementById("myBarChart");
         const ctxPie = document.getElementById("myPieChart");
         const myBarChart = new Chart(ctx, {
             type: "bar",
             data: {
-                labels: ["Initial Permit", "Renewal", "Certificate of Compliance", "Government Recognition"],
+                labels: applicationTypes,
                 datasets: [{
-                    label: "# of Votes",
-                    data: [12, 19, 3, 10],
+                    label: "# of Applications",
+                    data: appTypeCount,
                     backgroundColor: [
                         "rgba(255, 99, 132, 0.2)",
                         "rgba(255, 99, 132, 0.2)",
@@ -256,12 +331,12 @@ export default {
                     "Verification",
                     "Issuance",
                     "Completed",
-                    "Compliant",
+                    "Non-Compliant",
 
                 ],
                 datasets: [{
                     label: "My First Dataset",
-                    data: [30, 50, 10, 20, 9, 10, 13, 40, 3],
+                    data: [faCount, frCount, fpCount, feCount, fcCount, fvCount, fiCount, cCount, ncCount],
                     backgroundColor: [
                         "rgb(255, 103, 0)",
                         "rgb(0, 0, 255)",
