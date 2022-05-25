@@ -523,7 +523,7 @@ export default {
                             };
                             Parse.Cloud.run("sendEmailNotification", params);
                         }, 1000);
-
+                    console.log(rqatData[i].D, password);
                     })
                 } catch (error) {
                     console.log(error.message);

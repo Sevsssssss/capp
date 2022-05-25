@@ -521,7 +521,7 @@ export default {
                                     };
                                     Parse.Cloud.run("sendEmailNotification", params);
                                 }, 1000);
-
+                                console.log(employeesData[i].D, password);
                             });
 
                         })
@@ -561,7 +561,7 @@ export default {
                                     };
                                     Parse.Cloud.run("sendEmailNotification", params);
                                 }, 1000);
-
+                                console.log(employeesData[i].D, password[i]);
                             });
                             this.counter = this.counter + 1;
                         }
