@@ -296,6 +296,7 @@ export default {
             this.reqs = application.get("requirements");
             this.statusTracker = application.get("statusTracker");
             this.educationSupervisor = application.get("selectedSupervisor");
+            this.paymentStatus = application.get("paymentStatus");
 
 
             var months = [
