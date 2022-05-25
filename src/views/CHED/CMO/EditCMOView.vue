@@ -1,7 +1,6 @@
 <template>
   <!--Header-->
   <div class="m-3">
-    {{ categoryId }}{{ subcategoryId }}
     <form
       v-on:submit.prevent="submit"
       class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between"

@@ -4,8 +4,6 @@
 </div>
 <div v-else class="m-3">
     <DataCards :datas="numberOfHEI" />
-    {{totalEntries}}
-    {{currentpage}}
     <div class="m-3 overflow-x-auto shadow-md rounded-sm">
         <div class="p-2 flex justify-between items-center">
             <div class="text-lg font-semibold py-2 px-4 text-grey-200"> NUMBER OF APPLICATION TYPES </div>
