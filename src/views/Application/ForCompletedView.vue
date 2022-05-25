@@ -64,13 +64,6 @@ export default {
             search: '',
         }
     },
-    computed: {
-        searchHEI() {
-            return this.tables.filter(p => {
-                return p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
-            });
-        }
-    },
 }
 </script>
 

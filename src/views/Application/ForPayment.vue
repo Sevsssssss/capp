@@ -268,7 +268,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
             }
             setTimeout(
                 function () {
@@ -354,7 +353,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
             }
             setTimeout(
                 function () {
@@ -412,7 +410,13 @@ export default {
         query.equalTo("objectId", this.appID);
 
         const application = await query.first();
+
+        //Get Application Data
         this.type = application.get("applicationType");
+        this.email = application.get("email");
+        this.rep = application.get("pointPerson");
+        this.statusTracker = application.get("statusTracker");
+        this.hei = application.get("createdBy")
         if (application.get("payment") != undefined && application.get("payment").length == 2) {
             this.applicationPaymentURL = application.get("payment")[0].file.url()
             this.evaluationPaymentURL = application.get("payment")[1].file.url()
@@ -430,10 +434,6 @@ export default {
         );
 
         const applicationType = await appTypeQuery.first();
-        this.email = application.get("email");
-        this.rep = application.get("pointPerson");
-        this.statusTracker = application.get("statusTracker");
-        this.hei = application.get("createdBy")
 
         //Query Supervisors
         const Designations = Parse.Object.extend("Designations");
@@ -446,6 +446,7 @@ export default {
         user.equalTo("designation", desigQueryResult.id);
         const supervisorResult = await user.find();
 
+        //Store Supervisors
         var dbSupervisors = [];
 
         for (var j = 0; j < supervisorResult.length; j++) {
@@ -464,6 +465,7 @@ export default {
 
         this.supervisors = dbSupervisors;
 
+        //Store Application Requirements
         for (var i = 0; i < application.get("requirements").length; i++) {
             this.statusShow.push("");
             this.comment.push("");

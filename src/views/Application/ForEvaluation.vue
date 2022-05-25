@@ -188,15 +188,19 @@ export default {
         },
         async assignRQAT() {
             try {
-                console.log("Hellos");
+                
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-
+                
+                //Store selected RQAT and date of Evaluation
                 application.set("selectedRQAT", this.selectedRqat);
                 application.set("dateOfEval", this.date);
+
+                //Add New Status to the Status Tracker
                 this.statusTracker.push({
                     status: "For Evaluation",
                     detail: "Application was assigned to an RQAT",
@@ -204,6 +208,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save Application
                 application.save().then((application) => {
                     const params = {
                         email: application.get("email"),
@@ -226,6 +231,7 @@ export default {
                         console.log("Object Updated: " + application.id);
                 });
 
+                //Add new Notification for HEI
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -234,19 +240,21 @@ export default {
                 newNotification.set("user", this.hei);
                 newNotification.set("isRead", false);
 
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
                     console.log("Error: " + error.message);
                 });
 
+                // //Add new Notification for Head RQAT
                 // const newNotification = new Notifications();
 
                 // newNotification.set("message", "An Application has been assigned to you. You are the HEAD RQAT");
                 // newNotification.set("date_and_time", new Date());
                 // newNotification.set("user", this.selectedHeadRQAT);
                 // newNotification.set("isRead", false);
-
+                // //Save Notification
                 // newNotification.save().then((notif) => {
                 //     console.log("Notification Saved: " + notif.id);
                 // }, (error) => {
@@ -255,6 +263,7 @@ export default {
 
                 for(var r = 0; r < this.selectedRqat.length; r ++){
 
+                    //Add new Notification for RQAT Members
                     const newNotification2 = new Notifications();
 
                     newNotification2.set("message", "An Application has been assigned to you");
@@ -262,6 +271,7 @@ export default {
                     newNotification2.set("user", this.selectedRqat[r]);
                     newNotification2.set("isRead", false);
 
+                    //Save Notification
                     newNotification2.save().then((notif) => {
                         console.log("Notification Saved: " + notif.id);
                     }, (error) => {
@@ -301,15 +311,18 @@ export default {
 
         async schedEval() {
             try {
-                console.log("Hellos");
+
+                //Query Application
                 const applications1 = Parse.Object.extend("Applications");
                 const query1 = new Parse.Query(applications1);
                 query1.equalTo("objectId", this.appID);
 
                 const application1 = await query1.first();
 
+                //Set date of Evaluation
                 application1.set("dateOfEval", this.date);
 
+                //Add New Status to the Status Tracker
                 this.statusTracker.push({
                     status: "For Evaluation",
                     detail: "Your Application's Evaluation has been scheduled.",
@@ -317,6 +330,7 @@ export default {
                 });
                 application1.set("statusTracker", this.statusTracker);
 
+                //Save Application
                 application1.save().then((application1) => {
                     const params = {
                         email: application1.get("email"),
@@ -339,6 +353,7 @@ export default {
                         console.log("Object Updated: " + application1.id);
                 });
 
+                //Add new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -347,6 +362,7 @@ export default {
                 newNotification.set("user", this.hei);
                 newNotification.set("isRead", false);
 
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
@@ -385,19 +401,24 @@ export default {
 
     mounted: async function () {
         var storedApplications = [];
+
+        //Query Applications
         const applications = Parse.Object.extend("Applications");
         const query = new Parse.Query(applications);
         query.equalTo("objectId", this.appID);
 
         const application = await query.first();
+
+        //Get Application Data
         this.type = application.get("applicationType");
         this.hei = application.get("createdBy");
-
-        const applicationTypes = Parse.Object.extend("ApplicationTypes");
-        const appTypeQuery = new Parse.Query(applicationTypes);
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
         this.statusTracker = application.get("statusTracker");
+
+        //Query Application Type
+        const applicationTypes = Parse.Object.extend("ApplicationTypes");
+        const appTypeQuery = new Parse.Query(applicationTypes);
 
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
@@ -409,6 +430,8 @@ export default {
         appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
         const applicationType = await appTypeQuery.first();
+
+        //Store Applications
         for (var i = 0; i < application.get("requirements").length; i++) {
             this.statusShow.push("");
             this.comment.push("");
@@ -431,13 +454,12 @@ export default {
         const user = new Parse.Query(Parse.User);
         user.equalTo("access_type", accQuerResultRQAT.id);
         const rqatResult = await user.find();
-        console.log(accQuerResultRQAT.id);
-        console.log(rqatResult);
 
         if (application.get("selectedRQAT").length > 0) {
             const selectRqatQuery = user.containedIn("objectId", application.get("selectedRQAT"))
             const selRQATResult = await selectRqatQuery.find();
 
+            //Store Selected RQATs
             var selRQATS = [];
 
             for (var k = 0; k < selRQATResult.length; k++) {
@@ -451,7 +473,8 @@ export default {
                     ".");
             }
 
-            console.log("HELLO!")
+
+            //Store Evaluation Date
             var months = [
                 "January",
                 "February",
@@ -475,6 +498,7 @@ export default {
             this.storedRqats = selRQATS;
         }
 
+        //Store RQATS
         var dbRqat = [];
 
         dbRqat.push({
@@ -501,20 +525,20 @@ export default {
         }
         this.Rqat = dbRqat;
 
+        //Query Application Types
         const AppTypes = Parse.Object.extend("ApplicationTypes");
         const AppTypeQuery = new Parse.Query(AppTypes);
         AppTypeQuery.equalTo("applicationTypeName", "RENEWAL")
 
         const appTypeQuerResult = await AppTypeQuery.first();
 
-        console.log(appTypeQuerResult.id);
-        console.log(this.type);
 
         if (this.type == appTypeQuerResult.id) {
             this.apptypechecker = true;
 
         }
-        console.log(this.apptypechecker);
+
+        //Store Date of Evaluation
         if (this.apptypechecker == true && application.get("dateOfEval") != null) {
             var months1 = [
                 "January",
