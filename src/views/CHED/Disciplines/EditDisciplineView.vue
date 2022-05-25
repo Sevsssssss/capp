@@ -52,7 +52,7 @@
                                                 btn btn-outline
                                                 tooltip tooltip-left
                                                 hover:bg-brand-red/60
-                                              " @click="removeSpecificDiscipline(specificDiscipline.id)">
+                                              " @click="removeSpecificDiscipline(specificDiscipline.id, specificDiscipline.SpecDiscCode)">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                                 <path fill="none" d="M0 0h24v24H0z" />
                                                 <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
@@ -296,15 +296,29 @@ export default {
             });
         },
         //This removes a specificDiscipline inside of a majDiscipline
-        removeSpecificDiscipline(id) {
-            for (
-                var specDisc = 0; specDisc < this.majorDiscipline.specificDiscipline.length; specDisc++
-            ) {
-                console.log(this.majorDiscipline.specificDiscipline[specDisc].id);
-                if (this.majorDiscipline.specificDiscipline[specDisc].id === id) {
-                    this.majorDiscipline.specificDiscipline.splice(specDisc, 1);
-                    specDisc--;
+        removeSpecificDiscipline(id, code) {
+            var progSpecDiscs = [];
+            for(var p = 0; p < this.programs.length; p++){
+                progSpecDiscs.push(this.programs[p].discipline)
+            }
+
+            if(!progSpecDiscs.includes(code)){
+                for (
+                    var specDisc = 0; specDisc < this.majorDiscipline.specificDiscipline.length; specDisc++
+                ) {
+                    console.log(this.majorDiscipline.specificDiscipline[specDisc].id);
+                    if (this.majorDiscipline.specificDiscipline[specDisc].id === id) {
+                        this.majorDiscipline.specificDiscipline.splice(specDisc, 1);
+                        specDisc--;
+                    }
                 }
+            } else {
+                toast("Cannot Remove Specific Discipline, because it has an existing program linked to it.", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
             }
         },
 
@@ -352,6 +366,7 @@ export default {
                 programsMat.push({
                     id: prog.id,
                     name: prog.get("programName"),
+                    discipline: prog.get("programDiscipline"),
                 });
             }
             this.programs = programsMat;
