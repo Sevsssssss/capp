@@ -608,22 +608,18 @@ export default {
                 console.log("object updated" + object);
                 // this.count();
 
-                var index = this.tables.findIndex((e) => e.id == object.id);
+                var index = this.tables.findIndex((emp) => emp.id == object.id);
 
                 const AccessTypeLQ = Parse.Object.extend("AccessTypes");
                 const queryACCLQ = new Parse.Query(AccessTypeLQ);
                 queryACCLQ.equalTo("objectId", object.get("access_type"));
 
-                const accQuerResultLQ = await queryACC.first({
-                    useMasterKey: true,
-                });
+                const accQuerResultLQ = await queryACCLQ.first();
 
                 const DesignationLQ = Parse.Object.extend("Designations");
                 const queryDesLQ = new Parse.Query(DesignationLQ);
                 queryDesLQ.equalTo("objectId", object.get("designation"));
-                const desigResultLQ = await queryDesLQ.first({
-                    useMasterKey: true,
-                });
+                const desigResultLQ = await queryDesLQ.first();
 
                 this.tables[index] = {
                     ...this.tables[index],

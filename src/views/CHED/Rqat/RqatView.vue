@@ -449,7 +449,7 @@ export default {
                 console.log("object updated" + object);
                 // this.count();
 
-                var index = this.tables.findIndex((r) => r.id == object.id);
+                var index = this.tables.findIndex((rqat) => rqat.id == object.id);
 
                 var heiAff = "";
                 if (object.get("hei_affil").hei != "None") {
