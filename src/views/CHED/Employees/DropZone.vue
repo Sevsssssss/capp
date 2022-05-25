@@ -28,7 +28,7 @@
             </button>
         </div>
     </div>
-     <!-- Put this part before </body> tag -->
+    <!-- Put this part before </body> tag -->
     <input type="checkbox" id="showModal" class="modal-toggle" />
     <div :class="{ 'modal-open ': showMOdal() }" class="modal">
         <div class="modal-box rounded-md w-11/12 max-w-max">
@@ -155,10 +155,9 @@ export default {
     data() {
         return {
             counter: 0,
-                        pending: false,
+            pending: false,
             address: {},
-            headers: [
-                {
+            headers: [{
                     title: "LASTNAME",
                 },
                 {
@@ -569,11 +568,13 @@ export default {
 
                 } catch (error) {
                     console.log(error.message);
-                    this.counter = this.counter - 1;
+                    if (this.counter > 0) {
+                        this.counter = this.counter - 1;
+                    }
                 }
             }
             if (this.counter === 0) {
-                toast(this.counter + " HEI Accounts Added, data already exists.", {
+                toast(this.counter + " Employee Accounts Added, data already exists.", {
                     type: TYPE.WARNING,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -581,7 +582,7 @@ export default {
                 });
 
             } else {
-                toast(this.counter + " HEI Accounts Added!", {
+                toast(this.counter + " Employee Accounts Added!", {
                     type: TYPE.SUCCESS,
                     timeout: 3000,
                     position: POSITION.TOP_RIGHT,
