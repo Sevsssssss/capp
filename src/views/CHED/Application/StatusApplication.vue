@@ -120,7 +120,6 @@ export default {
         var accType = querResult[0].get("privileges");
         var flag = 0;
         for (var i = 0; i < accType.length; i++) {
-            //console.log(accType[i])
             if (accType[i] === "/application") {
                 console.log(accType[i])
                 flag = 1;
@@ -156,6 +155,7 @@ export default {
 
             const appType = await appTypeQuery.first();
 
+            //Store Application Data
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
 

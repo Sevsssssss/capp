@@ -253,6 +253,7 @@ export default {
         };
     },
     computed: {
+        //For Search Function
         searchDesignation() {
             return this.tables
                 .filter((p) => {
@@ -290,8 +291,8 @@ export default {
             this.designationName = designation.get("name")
         },
         async modal() {
+            //For Error Checking
             var has_error = 0;
-            console.log(this.designationName);
             if (this.designationName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -303,7 +304,8 @@ export default {
             }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
-                console.log(this.designationSelected)
+
+                //Query Designation
                 const designations = Parse.Object.extend("Designations");
                 const desigQuery = new Parse.Query(designations);
                 desigQuery.equalTo("objectId", this.designationSelected);
@@ -312,6 +314,7 @@ export default {
 
                 designation.set("name", this.designationName)
 
+                //Save Designation Updates
                 designation.save({
                         name: this.designationName.toUpperCase(),
                     }).then(() =>
@@ -333,12 +336,14 @@ export default {
         },
         async deleteDesignation() {
             this.$refs.Spinner.show();
+            //Query Designation
             const designations = Parse.Object.extend("Designations");
             const desigQuery = new Parse.Query(designations);
             desigQuery.equalTo("objectId", this.deleteDis);
 
             const designation = await desigQuery.first();
 
+            //Delete Designation
             designation.destroy().then((disc) => {
                 console.log("Deleted object: " + disc.id);
                 toast("Deleting...", {
@@ -368,9 +373,12 @@ export default {
         },
         addDesignation() {
             this.$refs.Spinner.show();
+
+            //Get Designation Class
             const designation = Parse.Object.extend("Designations");
             const newDesignation = new designation();
             try {
+                //Save new Designation
                 newDesignation.save({
                         name: this.designationName.toUpperCase(),
                     }).then(() =>
@@ -440,11 +448,13 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var designationsTable = [];
-
+            //Query Designations
             const Designations = Parse.Object.extend("Designations");
             const query = new Parse.Query(Designations);
 
             const querResult = await query.find();
+
+            //Store Designations
             for (var i = 0; i < querResult.length; i++) {
                 const desig = querResult[i];
 
@@ -455,8 +465,6 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = designationsTable;
-
-            // console.log(this.tables);
         }
     },
 };

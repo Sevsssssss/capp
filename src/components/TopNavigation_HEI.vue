@@ -10,7 +10,7 @@
                 <button @click="notifApp()" class="indicator">
                     <BellOutline class="h-6" />
                     
-                    <span class="indicator-item indicator-top indicator-end  badge1 badge-accent text-xs">99+</span> 
+                    <span class="indicator-item indicator-top indicator-end  badge1 badge-accent text-xs"> {{unreadNotifsText}} </span> 
                 </button>
                 
             </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import Parse from "parse";
 import BellOutline from "vue-material-design-icons/BellOutline.vue";
 
 
@@ -29,7 +30,10 @@ export default {
         BellOutline,
     },
     data() {
-        return {}
+        return {
+            unreadNotifs: 0,
+            unreadNotifsText: "",
+        }
     },
     methods: {
         notifApp() {
@@ -38,6 +42,38 @@ export default {
         // accountDetails() {
         //     this.$router.push("/ched/account");
         // },
+    },
+    mounted: async function() {
+        //Application Notifs
+        const applicationQuery = new Parse.Query('Notifications');
+        applicationQuery.equalTo("user", Parse.User.current().id);
+        const applicationSub = await applicationQuery.subscribe();
+        const appQueryUnread = applicationQuery.equalTo("isRead", false);
+        const appQueryUnreadCount = await appQueryUnread.count();
+
+        //Open Subscription to Notifications
+        applicationSub.on('open', () => {
+            console.log("Application Subscription Open");
+        });
+
+        //Display a Toast(Banner) when a Notification is created
+        applicationSub.on('create', () => {
+            this.unreadNotifs += 1;
+            if(this.unreadNotifs > 99){
+                this.unreadNotifsText = "99+";
+            } else{
+                this.unreadNotifsText = this.unreadNotifs.toString();
+            }
+        });
+    
+
+        this.unreadNotifs = appQueryUnreadCount;
+
+        if(this.unreadNotifs > 99){
+            this.unreadNotifsText = "99+";
+        } else{
+            this.unreadNotifsText = this.unreadNotifs.toString();
+        }
     }
 };
 </script>

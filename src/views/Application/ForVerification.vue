@@ -148,7 +148,6 @@ export default {
     },
     data() {
         return {
-            // id: this.$route.params.id,
             show: false,
             showModal1: false,
             showModal2: false,
@@ -212,12 +211,15 @@ export default {
         },
         async submitRevision() {
             try {
+
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
 
+                //Store Files to be Resubmitted
                 var filesToResubmit = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
@@ -231,14 +233,17 @@ export default {
                 }
 
                 application.set("resubmittedFiles", filesToResubmit);
-                // application.set("requirements", requirements);
                 application.set("applicationStatus", "For Compliance");
+
+                //If the application is not in Compliance (first time rejection) add a new compliance Due Date
                 if (application.get("complianceDueDate") == undefined) {
                     var currentDate = new Date();
                     var complianceDueDate = currentDate.setDate(currentDate.getDate() + 45);
 
                     application.set("complianceDueDate", new Date(complianceDueDate));
                 }
+
+                //Add New Status to the Status Tracker
                 this.statusTracker.push({
                     status: "For Compliance",
                     detail: "Application didn't Comply, updated to For Compliance status.",
@@ -246,6 +251,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save Application
                 application
                     .save()
                     .then((application) => {
@@ -268,6 +274,8 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
+                //Add new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -276,6 +284,7 @@ export default {
                 newNotification.set("user", this.hei);
                 newNotification.set("isRead", false);
 
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
@@ -293,7 +302,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                // console.log(error);
             }
             setTimeout(
                 function () {
@@ -304,12 +312,15 @@ export default {
         },
         async submitEvaluation() {
             try {
+
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
 
+                //Store Files to be Resubmitted
                 var filesToResubmit = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
@@ -325,6 +336,7 @@ export default {
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Issuance");
 
+                //Add New Status to the Status Tracker
                 this.statusTracker.push({
                     status: "For Issuance",
                     detail: "Your Application has been moved for issuance",
@@ -332,6 +344,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save Application
                 application
                     .save()
                     .then((application) => {
@@ -355,6 +368,7 @@ export default {
                             console.log("Object Updated: " + application.id);
                     })
 
+                //Add new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -363,6 +377,7 @@ export default {
                 newNotification.set("user", this.hei);
                 newNotification.set("isRead", false);
 
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
@@ -380,7 +395,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                // console.log(error);
             }
             setTimeout(
                 function () {
@@ -478,6 +492,7 @@ export default {
         user.equalTo("designation", desigQueryResult.id);
         const supervisorResult = await user.find();
 
+        //Store Supervisors
         var dbSupervisors = [];
 
         for (var j = 0; j < supervisorResult.length; j++) {
@@ -496,6 +511,7 @@ export default {
 
         this.supervisors = dbSupervisors;
 
+        //Check if there are existing Resubmitted Files already
         for (var i = 0; i < application.get("resubmittedFiles").length; i++) {
             this.statusShow.push("");
             this.comment.push("");

@@ -69,6 +69,7 @@ export default {
         };
     },
     computed: {
+        //For Search Function
         searchHEI() {
             return this.tables.filter((p) => {
                 return (
@@ -82,17 +83,22 @@ export default {
 
     mounted: async function () {
         var storedApplications = [];
+
+        //Query Applications
         const applications = Parse.Object.extend("Applications");
         const query = new Parse.Query(applications);
         query.equalTo("objectId", this.appID);
 
         const application = await query.first();
-        this.type = application.get("applicationType");
 
-        const applicationTypes = Parse.Object.extend("ApplicationTypes");
-        const appTypeQuery = new Parse.Query(applicationTypes);
+        //Get Application Data
+        this.type = application.get("applicationType");
         this.email = application.get("email");
         this.rep = application.get("pointPerson");
+
+        //Query Application Type
+        const applicationTypes = Parse.Object.extend("ApplicationTypes");
+        const appTypeQuery = new Parse.Query(applicationTypes);
 
         //Get to view applications to specific user (Education Supervisor)
         if (Parse.User.current().get("designation") == "EDUCATION SUPERVISOR") {
@@ -104,6 +110,8 @@ export default {
         appTypeQuery.equalTo("objectId", application.get("applicationType"));
 
         const applicationType = await appTypeQuery.first();
+
+        //Store Applications
         for (var i = 0; i < application.get("requirements").length; i++) {
             this.statusShow.push("");
             this.comment.push("");
@@ -121,6 +129,7 @@ export default {
         user.equalTo("access_type", "RQAT");
         const rqatResult = await user.find();
 
+        //Store RQATs
         var dbRqat = [];
 
         for (var j = 0; j < rqatResult.length; j++) {

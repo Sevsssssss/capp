@@ -611,12 +611,14 @@ export default {
             this.checkedAccessTypes = [];
         },
         async editAccessType() {
+            //Query Access Type
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const atQuery = new Parse.Query(AccessTypes);
             atQuery.equalTo("objectId", this.selectedAT);
 
             const accessType = await atQuery.first();
 
+            //Save Changes to Access Type
             try {
                 accessType.save({
                     name: this.atname.toUpperCase(),
@@ -633,15 +635,6 @@ export default {
                     setTimeout(() => {
                         document.location.reload();
                     }, 2000);
-                // if (
-                //     confirm(
-                //         "Application Type added. Would you like to add another Application Type?"
-                //     )
-                // ) {
-                //     document.location.reload();
-                // } else {
-                //     document.location.reload();
-                // }
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -656,19 +649,14 @@ export default {
             this.deleteAccess = id;
         },
         async deleteAT() {
+            //Query Access Type
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const atQuery = new Parse.Query(AccessTypes);
             atQuery.equalTo("objectId", this.deleteAccess);
 
             const accessType = await atQuery.first();
-            const query = new Parse.Query(Parse.User);
-            query.equalTo("access_type", this.deleteAccess);
 
-            const querResult = await query.find();
-
-            console.log(querResult.length)
-
-            // if (querResult.length < 1) {
+            //Delete Access Type
             accessType.destroy().then(
                 (accType) => {
                     toast("Deleting...", {
@@ -692,26 +680,6 @@ export default {
                     console.log("Error: " + error);
                 }
             );
-            // } else {
-            //     toast("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed): " + querResult, {
-            //         type: TYPE.INFO,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     toast("Is Archived", {
-            //         type: TYPE.INFO,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     setTimeout(() => {
-            //         window.location.reload()
-            //     }, 3000);
-            //     console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
-            //     accessType.set("isArchived", true);
-            //     accessType.save();
-            // }
         },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
@@ -727,6 +695,7 @@ export default {
             return this.showModal2;
         },
         async changeSelectedAT(atID, atName) {
+            //For Selecting Access Type to delete or edit
             this.selectedAT = atID;
             this.atname = atName;
 
@@ -737,14 +706,6 @@ export default {
             const accesstype = await accQuery.first();
 
             this.checkedAccessTypes = accesstype.get("privileges");
-        },
-        heiPriv() {
-            // this.checkedAccessTypes.push({
-
-            // })
-        },
-        rqatPriv() {
-
         },
         modal1() {
             var has_error = 0;
@@ -778,9 +739,11 @@ export default {
         },
         addAccessType() {
             this.$refs.Spinner.show();
+            //Get Access Type Class
             const accessType = Parse.Object.extend("AccessTypes");
             const newAccessType = new accessType();
 
+            //Save new Access Type
             try {
                 newAccessType.save({
                     name: this.atname.toUpperCase(),
@@ -816,9 +779,6 @@ export default {
                 console.log(error.message)
             }
         },
-        addAppType() {
-            this.$router.push("/settings/add");
-        },
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -852,10 +812,14 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Access Types
             var accessTypesTable = [];
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const query = new Parse.Query(AccessTypes);
             const querResult = await query.find();
+
+            //Store Access Types Data
             for (var i = 0; i < querResult.length; i++) {
                 const accessType = querResult[i];
                 var accessPriv = "";
@@ -875,7 +839,6 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = accessTypesTable;
-            // console.log(this.tables);
         }
     },
 };

@@ -171,6 +171,7 @@ export default {
         }
     },
     computed: {
+        //For Search Function
         searchHEI() {
             return this.tables.filter((p) => {
                 return (
@@ -193,91 +194,21 @@ export default {
         validate2() {
             return this.showModal2;
         },
-        // //Move application to For Evaluation
-        // async submitChanges() {
-            
-        //     try {
-        //         const applications = Parse.Object.extend("Applications");
-        //         const query = new Parse.Query(applications);
-        //         query.equalTo("objectId", this.appID);
-
-        //         const application = await query.first();
-
-        //         var requirements = [];
-
-        //         for (var i = 0; i < this.statusShow.length; i++) {
-        //             requirements.push({
-        //                 id: application.get("requirements")[i].id,
-        //                 file: application.get("requirements")[i].file,
-        //                 status: this.statusShow[i],
-        //                 comment: this.comment[i],
-        //             });
-        //         }
-        //         application.set("requirements", requirements);
-        //         application.set("applicationStatus", "For Evaluation");
-        //         this.statusTracker.push({
-        //             status: "For Evaluation",
-        //             detail: "Your Application has been moved for evaluation",
-        //             dateTime: new Date(),
-        //         });
-        //         application.set("statusTracker", this.statusTracker);
-
-        //         application
-        //             .save()
-        //             .then((application) => {
-        //                 const params = {
-        //                     email: application.get("email"),
-        //                     status: "Your Application has been moved for evaluation",
-        //                     type: "sendStatusUpdate",
-        //                     approved: true,
-        //                 };
-        //                 Parse.Cloud.run("sendStatusUpdate", params);
-                        
-        //                 this.$refs.Spinner.show();
-
-        //                 toast(this.type.toLowerCase() + " has been moved for evalutaion", {
-        //                         type: TYPE.INFO,
-        //                         timeout: 2000,
-        //                         position: POSITION.TOP_RIGHT,
-        //                         hideProgressBar: false,
-        //                         closeButton: false,
-
-        //                     }),
-        //                     console.log("Object Updated: " + application.id);
-        //             })
-
-        //         setTimeout(() => {
-        //             this.$router.push({
-        //                 path: "/application/ " + this.appID.slice(0, 2).join(""),
-        //             })
-        //         }, 2000);
-        //         setTimeout(() => {
-        //             window.location.reload();
-        //         }, 2000);
-
-        //     } catch (error) {
-        //         alert("Error" + error.message);
-        //         console.log(error);
-        //     }
-        //     setTimeout(
-        //         function () {
-        //             this.$refs.Spinner.hide();
-        //         }.bind(this),
-        //         2000
-        //     );
-        // },
         //Move application to For Revision
         async submitRevision() {
             
             try {
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
 
+
                 var requirements = [];
 
+                //Get Requirements of the Application
                 for (var i = 0; i < this.statusShow.length; i++) {
                     requirements.push({
                         id: application.get("requirements")[i].id,
@@ -287,8 +218,12 @@ export default {
                     });
                 }
                 application.set("requirements", requirements);
+
+                //Change Application Status to For Revision
                 application.set("applicationStatus", "For Revision");
 
+
+                //Add New Status to the Status Tracker
                 this.statusTracker.push({
                     status: "For Revision",
                     detail: "Application was made For Revision",
@@ -296,6 +231,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save changes to the application
                 application
                     .save()
                     .then((application) => {
@@ -318,6 +254,7 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
                 //Adding Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
@@ -327,6 +264,7 @@ export default {
                 newNotification.set("user", this.applicationHEI);
                 newNotification.set("isRead", false);
 
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
@@ -345,7 +283,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
             }
             setTimeout(
                 function () {
@@ -359,12 +296,14 @@ export default {
         async submitApproval() {
             
             try {
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
 
+                //Get Requirements of the Application
                 var requirements = [];
 
                 for (var i = 0; i < this.statusShow.length; i++) {
@@ -376,7 +315,11 @@ export default {
                     });
                 }
                 application.set("requirements", requirements);
+
+                //Change Application status to For Payment
                 application.set("applicationStatus", "For Payment");
+
+                //Add New Status to the Status Tracker
                 this.statusTracker.push({
                     status: "For Payment",
                     detail: "Your Application has been moved for payment",
@@ -384,6 +327,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save changes to the application
                 application
                     .save()
                     .then((application) => {
@@ -408,6 +352,7 @@ export default {
                             console.log("Object Updated: " + application.id);
                     })
 
+                //Add new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -416,6 +361,7 @@ export default {
                 newNotification.set("user", this.applicationHEI);
                 newNotification.set("isRead", false)
 
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
@@ -439,7 +385,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
             }
         },
         modal() {
@@ -502,9 +447,13 @@ export default {
         query.equalTo("objectId", this.appID);
 
         const application = await query.first();
+
+        //Get Application Data
         this.type = application.get("applicationType");
         this.statusTracker = application.get("statusTracker");
         this.applicationHEI = application.get("createdBy");
+        this.email = application.get("email");
+        this.rep = application.get("pointPerson");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
@@ -515,8 +464,7 @@ export default {
         );
 
         const applicationType = await appTypeQuery.first();
-        this.email = application.get("email");
-        this.rep = application.get("pointPerson");
+
 
         //Query Supervisors
         const Designations = Parse.Object.extend("Designations");
@@ -530,6 +478,7 @@ export default {
         user.equalTo("designation", desigQueryResult.id);
         const supervisorResult = await user.find();
 
+        //Store Supervisors
         var dbSupervisors = [];
 
         for (var j = 0; j < supervisorResult.length; j++) {

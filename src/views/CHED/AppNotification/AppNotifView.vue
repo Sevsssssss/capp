@@ -89,13 +89,15 @@ export default {
         },
     },
     mounted: async function () {
-        
+
+            //Query User's Notifications
             const Notifications = Parse.Object.extend("Notifications");
             const query = new Parse.Query(Notifications);
             query.equalTo("user", Parse.User.current().id);
             query.descending("createdAt")
             const querResult = await query.find();
 
+            //Store User's Notifications
             var notifs = [];
 
             for (var i = 0; i < querResult.length; i++) {

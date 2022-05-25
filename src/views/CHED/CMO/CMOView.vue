@@ -181,6 +181,7 @@ export default {
         VueInstantLoadingSpinner,
     },
     computed: {
+        //For Search Function
         searchEval() {
             if (this.search) {
                 return this.tables.filter((item) => {
@@ -199,9 +200,6 @@ export default {
         addCMO() {
             this.$router.push("/cmo/add");
         },
-        // viewEvalIns() {
-        //     this.$router.push("/evaluationins/view");
-        // },
         prevPage() {
             if (this.currentpage > 0) this.currentpage -= 1;
         },
@@ -217,12 +215,13 @@ export default {
         async deleteCMO() {
             this.$refs.Spinner.show();
 
+            //Query CMO
             const CMO = Parse.Object.extend("CHED_MEMO");
             const cmoQueryDel = new Parse.Query(CMO);
             cmoQueryDel.equalTo("objectId", this.cmoId);
-            console.log(this.cmoId)
             const cmo = await cmoQueryDel.first();
 
+            //Delete CMO
             cmo.destroy().then((cmo_memo) => {
                     toast("Deleting CHED MEMO: " + cmo_memo.id, {
                         type: TYPE.WARNING,
@@ -274,10 +273,13 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedCMO = [];
+
+            //Query CMO
             const CMOs = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMOs);
             const cmoResult = await cmoQuery.find();
 
+            //Store CMO Data
             for (var i = 0; i < cmoResult.length; i++) {
                 const cmo = cmoResult[i];
 

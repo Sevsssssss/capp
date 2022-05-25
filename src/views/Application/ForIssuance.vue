@@ -61,6 +61,7 @@ export default {
             hei: "",
         }
     },
+    //Setup data and methods needed for dropZone
     setup() {
         const active = ref(false);
         let dropzoneFile = ref("");
@@ -111,12 +112,15 @@ export default {
             } else {
                 var validation = this.validate(this.dropzoneFile);
                 if (validation) {
+
+                    //Query Application
                     const applications = Parse.Object.extend("Applications");
                     const query = new Parse.Query(applications);
                     query.equalTo("objectId", this.appID);
 
                     const application = await query.first();
 
+                    //Certificate File to be Issued
                     let certification = null;
                     certification = new Parse.File(
                         this.dropzoneFile.name.replace(/[^a-zA-Z]/g, ""),
@@ -127,6 +131,7 @@ export default {
                     application.set("certificate", certification);
                     application.set("applicationStatus", "Completed");
 
+                    //Add New Status to the Status Tracker
                     this.statusTracker.push({
                         status: "Completed",
                         detail: "Application Complete!",
@@ -134,6 +139,7 @@ export default {
                     });
                     application.set("statusTracker", this.statusTracker);
 
+                    //Save changes to the application
                     application
                         .save()
                         .then((application) => {
@@ -145,6 +151,7 @@ export default {
                             };
                             Parse.Cloud.run("sendStatusUpdate", params);
 
+                            //Add new Notification
                             const Notifications = Parse.Object.extend("Notifications");
                             const newNotification = new Notifications();
 
@@ -153,6 +160,7 @@ export default {
                             newNotification.set("user", this.hei);
                             newNotification.set("isRead", false);
 
+                            //Save new Notification
                             newNotification.save().then((notif) => {
                                 console.log("Notification Saved: " + notif.id);
                             }, (error) => {
@@ -192,6 +200,8 @@ export default {
         query.equalTo("objectId", this.appID);
 
         const application = await query.first();
+
+        //Get Application Data
         this.statusTracker = application.get("statusTracker");
         this.hei = application.get("createdBy");
     },
