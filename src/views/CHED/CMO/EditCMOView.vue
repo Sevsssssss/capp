@@ -652,6 +652,7 @@ export default {
         console.log(true);
         this.subcategoryId = 0;
       }
+      this.subcategoryId = thisCategory.length;
       this.subcategoryId = this.subcategoryId + 1;
       thisCategory.push({
         id: this.subcategoryId,
@@ -759,9 +760,7 @@ export default {
 
       this.categoryId = this.categories.length;
 
-      for (var category = 0; category < this.categories.length; category++) {
-        this.subcategoryId = this.categories[category].subcategory.length;
-      }
+      
     }
   },
 };

@@ -62,22 +62,37 @@
                     <tbody>
                         <tr v-for="table in tables" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{table.ins}}
+                                {{table.A}}
                             </th>
                             <td class="px-6 py-4">
-                                <div class="flex flex-col">
-                                    <div class="text-md font-semibold">{{ table.heiName }}</div>
-                                    <div>{{ table.address }}</div>
-                                </div>
+                                {{table.B}}
                             </td>
                             <td class="px-6 py-4">
-                                {{table.type}}
+                                {{table.C}}
                             </td>
                             <td class="px-6 py-4">
-                                ${{table.username}}
+                                {{table.D}}
                             </td>
                             <td class="px-6 py-4">
-                                ${{table.email}}
+                                {{table.E}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.F}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.G}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.H}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.I}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.J}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{table.K}}
                             </td>
                         </tr>
                     </tbody>
@@ -146,14 +161,9 @@ export default {
             counter: 0,
             pending: false,
             address: {},
-            headers: [{
-                    title: "INSTITUTIONAL CODE",
-                },
+            headers: [
                 {
-                    title: "HEI NAME",
-                },
-                {
-                    title: "TYPE",
+                    title: "HEI_NAME",
                 },
                 {
                     title: "USERNAME",
@@ -161,47 +171,72 @@ export default {
                 {
                     title: "EMAIL",
                 },
+                {
+                    title: "REGION",
+                },
+                {
+                    title: "PROVINCE",
+                },
+                {
+                    title: "CITY",
+                },
+                {
+                    title: "BARANGAY",
+                },
+                {
+                    title: "STREET",
+                },
+                {
+                    title: "NUMBER",
+                },
+                {
+                    title: "INST_CODE",
+                },
+                {
+                    title: "HEI_TYPE",
+                },
             ],
-            tables: [{
-                    ins: "5009",
-                    heiName: "Ateneo De Naga University",
-                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                    type: "PRIVATE COLLEGES",
-                    username: "ADNU",
-                    email: "adnu@adnu.com",
-                },
-                {
-                    ins: "5009",
-                    heiName: "Ateneo De Naga University",
-                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                    type: "PRIVATE COLLEGES",
-                    username: "ADNU",
-                    email: "adnu@adnu.com",
-                },
-                {
-                    ins: "5009",
-                    heiName: "Ateneo De Naga University",
-                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                    type: "PRIVATE COLLEGES",
-                    username: "ADNU",
-                    email: "adnu@adnu.com",
-                },
-                {
-                    ins: "5009",
-                    heiName: "Ateneo De Naga University",
-                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                    type: "PRIVATE COLLEGES",
-                    username: "ADNU",
-                    email: "adnu@adnu.com",
-                },
-                {
-                    ins: "5009",
-                    heiName: "Ateneo De Naga University",
-                    address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                    type: "PRIVATE COLLEGES",
-                    username: "ADNU",
-                    email: "adnu@adnu.com",
-                }
+            tables: [
+                // {
+                //     ins: "5009",
+                //     heiName: "Ateneo De Naga University",
+                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                //     type: "PRIVATE COLLEGES",
+                //     username: "ADNU",
+                //     email: "adnu@adnu.com",
+                // },
+                // {
+                //     ins: "5009",
+                //     heiName: "Ateneo De Naga University",
+                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                //     type: "PRIVATE COLLEGES",
+                //     username: "ADNU",
+                //     email: "adnu@adnu.com",
+                // },
+                // {
+                //     ins: "5009",
+                //     heiName: "Ateneo De Naga University",
+                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                //     type: "PRIVATE COLLEGES",
+                //     username: "ADNU",
+                //     email: "adnu@adnu.com",
+                // },
+                // {
+                //     ins: "5009",
+                //     heiName: "Ateneo De Naga University",
+                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                //     type: "PRIVATE COLLEGES",
+                //     username: "ADNU",
+                //     email: "adnu@adnu.com",
+                // },
+                // {
+                //     ins: "5009",
+                //     heiName: "Ateneo De Naga University",
+                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
+                //     type: "PRIVATE COLLEGES",
+                //     username: "ADNU",
+                //     email: "adnu@adnu.com",
+                // }
             ],
             showValidate: false,
         }
@@ -242,7 +277,7 @@ export default {
             } else if (regex.test(filename.name)) {
                 return true;
             } else {
-                toast("Please upload a .pdf or .jpg file!", {
+                toast("Please upload a .xlsx file!", {
                     type: TYPE.ERROR,
                     timeout: 3000,
                     hideProgressBar: true,
@@ -291,6 +326,51 @@ export default {
             };
             // }
         },
+        createTableWorker(data, self) {
+            console.log("worker")
+            // var worker1 = new Worker();
+            // if (typeof Worker !== "undefined") {
+            console.log("in worker")
+            if (typeof self.worker == "undefined") {
+                console.log('setWorker')
+                self.worker = new Worker();
+            }
+            self.worker.postMessage({
+                d: data
+            });
+            self.worker.onmessage = function (event) {
+                console.log('onMessage')
+                if (event.data.complete) {
+                    self.tables = [];
+                    console.log("Successfully parsed xlsx file!");
+                    for (let i = 0; i <  event.data.rows.length; i++) {
+                    self.tables.push(event.data.rows[i])
+                    }
+                    toast("Successfully parsed xlsx file!", {
+                        type: TYPE.SUCCESS,
+                        timeout: 3000,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    self.closeSpinner();
+                     console.log(self.tables)
+                } else {
+                    toast(event.data.reason, {
+                        type: TYPE.ERROR,
+                        timeout: 2000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    toast("Please verify that the EXCEL file is for HEI Account.", {
+                        type: TYPE.WARNING,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                    self.closeSpinner();
+                }
+            };
+            // }
+        },
         upload() {
             var has_error = 0;
             if (this.dropzoneFile === "") {
@@ -301,6 +381,31 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
                 has_error = 1;
+            } else if (this.dropzoneFile !== "") {
+                var validation = this.validate(this.dropzoneFile);
+                if (!validation) {
+                    has_error = 1;
+                } else if (validation) {
+                    try {
+                        this.pending = true;
+                        this.$refs.Spinner.show();
+                        const self = this;
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var data = e.target.result;
+                            try {
+                                self.createTableWorker(data, self);
+                            } catch (e) {
+                                console.log(e);
+                                this.pending = false;
+                                this.$refs.Spinner.hide();
+                            }
+                        };
+                        reader.readAsArrayBuffer(this.dropzoneFile);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
             }
             if (has_error < 1) {
                 this.showValidate = !this.showValidate;
