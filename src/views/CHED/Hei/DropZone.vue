@@ -463,6 +463,7 @@ export default {
                     newHEI.set("address", this.address);
                     newHEI.set("number", heiData[i].I.toString());
                     newHEI.set("inst_code", heiData[i].J.toString());
+                    newHEI.set("receivedCredentials", false);
 
                     const HeiTypes = Parse.Object.extend("HEI_Types");
                     const query = new Parse.Query(HeiTypes);

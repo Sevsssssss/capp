@@ -58,7 +58,7 @@ Parse.masterKey = "master"
     //             "/cmo/view",
     //             "/ched/account",
     //             "/programs",
-    //             "/ched/account"
+    //             "/ched/account",
     //             "/notif"
     //         ],
     //     }).then((accesstype) => {
@@ -81,6 +81,7 @@ Parse.masterKey = "master"
     //             user.set("email", "chedcapp@gmail.com");
     //             user.set("access_type", accesstype.id);
     //             user.set("designation", designation.id);
+    //             user.set("receivedCredentials", false);
     //             try {
     //                 user.save().then(() => {
     //                     const params = {

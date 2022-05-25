@@ -316,6 +316,7 @@ export default {
                 newRQAT.set("hei_affil", heiAffil);
                 newRQAT.set("past_affil", []);
                 newRQAT.set("access_type", this.rqat_acc_id);
+                newRQAT.set("receivedCredentials", false);
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
                         type: TYPE.SUCCESS,

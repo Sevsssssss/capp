@@ -467,6 +467,7 @@ export default {
                     newEmployee.set("password", password[i]);
                     newEmployee.set("email", employeesData[i].E);
                     newEmployee.set("contact_num", "0" + employeesData[i].F.toString());
+                    newEmployee.set("receivedCredentials", false);
 
                     const accesstype = Parse.Object.extend("AccessTypes");
                     const accesstypeQuery = new Parse.Query(accesstype);

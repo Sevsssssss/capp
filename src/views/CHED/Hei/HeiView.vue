@@ -101,7 +101,7 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900">
                             {{ table.InstNo }}
                         </th>
-                        <td class="px-6 py-4" >
+                        <td class="px-6 py-4">
                             <div class="flex flex-col">
                                 <div class="text-md font-semibold">{{ table.HeiName }}</div>
                                 <div>{{ table.address }}</div>
@@ -115,6 +115,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ table.email }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ table.emailVerified }}
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-4 items-end justify-end">
@@ -198,8 +201,7 @@
                 <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none" @click="deleteAccount()">Delete</label>
             </div>
         </div>
-    
-    
+
         <div v-else class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">Archive Account</div>
             <p class="py-2 text-sm">
@@ -319,6 +321,9 @@ export default {
                 {
                     title: "EMAIL",
                 },
+                {
+                    title: "EMAIL_VERIFIED",
+                },
             ],
             datas: [{
                     title: "STATE UNIVERSITIES AND COLLEGES",
@@ -377,7 +382,7 @@ export default {
         },
         async selectAcc(instNum) {
             this.currentDelAcc = instNum;
-            
+
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
             const querResult = await acc.first({
@@ -388,7 +393,7 @@ export default {
             const queryApp = new Parse.Query(applications);
             queryApp.equalTo("createdBy", querResult.id)
             const application = await queryApp.find();
-            
+
             this.application_counter = application.length;
 
         },
@@ -405,16 +410,16 @@ export default {
             // const queryApp = new Parse.Query(applications);
             // queryApp.equalTo("createdBy", querResult.id)
             // const application = await queryApp.find();
-            
+
             // this.application_counter = application.length;
-            
-            if (this.application_counter > 0 ) {
+
+            if (this.application_counter > 0) {
                 //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
-                    querResult.set("isArchived", true);
-                    querResult.save({
-                        useMasterKey: true,
-                    });
-                    //console.log("archived")
+                querResult.set("isArchived", true);
+                querResult.save({
+                    useMasterKey: true,
+                });
+                //console.log("archived")
                 //}
             } else {
                 querResult.destroy({
@@ -567,10 +572,10 @@ export default {
                 hTypeCounter[index] += 1;
 
                 const heiAddress = hei.get("address").street == undefined || hei.get("address").street == "" ?
-                hei.get("address").barangay + ", " + hei.get("address").city + ", " +
-                hei.get("address").province + ", " + hei.get("address").regionName :
-                hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
-                hei.get("address").province + ", " + hei.get("address").regionName;
+                    hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                    hei.get("address").province + ", " + hei.get("address").regionName :
+                    hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                    hei.get("address").province + ", " + hei.get("address").regionName;
 
                 heis.push({
                     id: hei.id,
@@ -580,6 +585,7 @@ export default {
                     address: heiAddress,
                     type: htypeName,
                     email: hei.get("email"),
+                    emailVerified: hei.get("emailVerified"),
                 });
             }
             this.totalEntries = querResult.length;
@@ -596,6 +602,71 @@ export default {
             }
 
             this.datas = dataCol;
+            /////////////////////////////////////////////////////////////////////////////// Live Queries
+            var password;
+            const subscription = await query.subscribe();
+
+            subscription.on("update", async (object) => {
+                console.log("object updated" + object);
+                // this.count();
+
+                var index = this.tables.findIndex((hei) => hei.id == object.id);
+                const heiAddress = object.get("address").street == undefined || object.get("address").street == "" ?
+                    object.get("address").barangay + ", " + object.get("address").city + ", " +
+                    object.get("address").province + ", " + object.get("address").regionName :
+                    object.get("address").street + ", " + object.get("address").barangay + ", " + object.get("address").city + ", " +
+                    object.get("address").province + ", " + object.get("address").regionName;
+
+                // const HEITypes1 = Parse.Object.extend("HEI_Types");
+                const hTypeQuery1 = hTypeQuery.equalTo("objectId", object.get("hei_type"))
+
+                // 
+                const htype = await hTypeQuery1.first();
+
+                this.tables[index] = {
+                    ...this.tables[index],
+                    InstNo: object.get("inst_code"),
+                    HeiName: object.get("hei_name"),
+                    userName: object.get("username"),
+                    address: heiAddress,
+                    type: htype.get("name"),
+                    email: object.get("email"),
+                    emailVerified: object.get("emailVerified"),
+                };
+
+                const emailQuery = new Parse.Query(Parse.User);
+                emailQuery.equalTo("objectId", object.id);
+                await emailQuery.first({
+                    useMasterKey: true
+                }).then((objectEmail) => {
+                    if (
+                        objectEmail.get("emailVerified") == true &&
+                        objectEmail.get("receivedCredentials") == false
+                    ) {
+
+                        password = Math.random().toString(36).slice(-12);
+                        console.log("first: " + password)
+                        const params = {
+                            name: objectEmail.get("hei_name"),
+                            username: objectEmail.get("username"),
+                            email: objectEmail.get("email"),
+                            password: password,
+                            type: "sendCredentials",
+                            approved: true,
+                        };
+                        console.log(objectEmail.id);
+                        Parse.Cloud.run("sendEmailNotification", params);
+
+                        objectEmail.setPassword(password);
+                        console.log("second: " + password)
+                        objectEmail.set("receivedCredentials", true);
+                        objectEmail.save(null, {
+                            useMasterKey: true,
+                        });
+                    }
+                });
+
+            });
         }
     },
 };

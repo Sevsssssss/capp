@@ -260,6 +260,7 @@ export default {
             newEmployee.set("access_type", this.access_type);
             newEmployee.set("designation", this.emp_designation);
             newEmployee.set("disciplines", this.selectedDiscipline);
+            newEmployee.set("receivedCredentials", false);
             try {
                 await newEmployee.save().then(() => {
                     toast("Employee Account Added!", {

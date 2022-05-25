@@ -363,21 +363,14 @@ export default {
                 newHEI.set("inst_code", this.inst_code);
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
+                newHEI.set("receivedCredentials", false);
                 await newHEI.save().then(() => {
                     toast("HEI Account Added!", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     });
-                    const params = {
-                        name: this.hei_name,
-                        username: this.username,
-                        email: this.email,
-                        password: password,
-                        type: "sendCredentials",
-                        approved: true,
-                    };
-                    Parse.Cloud.run("sendEmailNotification", params);
+                    
                     setTimeout(
                         () =>
                         this.$router.push({
