@@ -476,12 +476,10 @@ export default {
                
                  
                 for (var z = 0; z < sDiscipline.length; z++){
-                        
                     if (progSpecID == sDiscipline[z].SpecDiscCode){
                         var MajDiscID = discipline.id;
                     }
                 }
-
             }
             
             //Query Supervisors

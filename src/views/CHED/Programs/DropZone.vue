@@ -441,17 +441,22 @@ export default {
                         for (var o = 0; o < querResult1.length; o++) {
                             const specDisc = querResult1[o].get("specificDiscipline")
                             for (var s = 0; s < specDisc.length; s++) {
-                                var specDiscCode = specDisc[s].id
-                                if (specDiscCode === programsData[i].B) {
+                                var specDiscCode = specDisc[s].SpecDiscCode.toString()
+                                console.log(specDiscCode, programsData[i].B.toString());
+                                if (specDiscCode === programsData[i].B.toString()) {
                                     flag1 = flag1 + 1;
                                 }
                             }
                         }
-                        if (flag1 === 1) {
+                        if (flag1 == 1) {
                             const newProgram = new programs();
                             newProgram.save({
                                 programName: programsData[i].A.toUpperCase(),
                                 programDiscipline: programsData[i].B.toString(),
+                            }).then((gameScore) => {
+                                console.log('New object created with objectId: ' + gameScore.id);
+                            }, (error) => {
+                                console.log('Failed to create new object, with error code: ' + error.message);
                             });
                             this.counter = this.counter + 1;
                         }
