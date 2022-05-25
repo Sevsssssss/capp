@@ -119,7 +119,7 @@
             <div class="">
                 <label class="label"><span class="label-text">Sub Category</span></label>
                 <div class="form-control w-full flex flex-row" style="justify-content: space-between">
-                    <input v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="input input-bordered w-full mr-4 flex" />
+                    <textarea  v-model="subcategory.Subcategory" type="text" placeholder="Enter Sub Category Name" class="textarea textarea-bordered w-full mr-4 flex"></textarea>
                     <div class="flex flex-row justify-center items-center">
                         <!-- Delete Sub-Category -->
                         <button data-tip="Remove Sub-Category" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeSubCategory(subcategory.id)">

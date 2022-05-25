@@ -25,7 +25,7 @@
                 Cancel
             </button>
             <button @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue hover:bg-brand-lightblue" type="submit">
-                Submit
+                Upload
             </button>
         </div>
     </div>

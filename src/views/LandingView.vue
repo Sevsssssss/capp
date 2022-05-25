@@ -4,7 +4,7 @@
     <InstructionSection />
     <LearnMore />
     <MapSection />
-    <SendMessageForm />
+    <!-- <SendMessageForm /> -->
     <FooterLP />
 </div>
 </template>
@@ -14,7 +14,7 @@ import HeroSection from "@/components//HeroSection.vue";
 import InstructionSection from "@/components/InstructionSection.vue";
 import LearnMore from "@/components/LearnMore.vue";
 import MapSection from "@/components/MapSection.vue";
-import SendMessageForm from "@/components/SendMessageForm.vue";
+// import SendMessageForm from "@/components/SendMessageForm.vue";
 import FooterLP from "@/components/FooterLP.vue";
 
 export default {
@@ -24,7 +24,7 @@ export default {
         InstructionSection,
         LearnMore,
         MapSection,
-        SendMessageForm,
+        // SendMessageForm,
         FooterLP,
     },
     methods: {},
