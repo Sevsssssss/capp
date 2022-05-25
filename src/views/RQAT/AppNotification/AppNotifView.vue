@@ -45,7 +45,7 @@
                     <router-link :to="{
                                 name: 'appNotifItem',
                                 params: {
-                                    id: item.id,
+                                    id: item.objectID,
                                     item: item.item,
                                     date: item.date,
                                 },
