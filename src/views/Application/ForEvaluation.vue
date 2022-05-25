@@ -1,6 +1,5 @@
 <template>
 <div class="mx-3">
-
     <div class="flex justify-between mt-2">
         <div class="flex space-x-4">
             <div class="font-normal text-sm">
@@ -36,10 +35,10 @@
             <tbody>
                 <tr v-for="table in tables" :key="table" class="bg-white border-b">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 text-wrap break-words">
-                       <a :href="table.file" target="_blank" class="text-blue-400"> {{ table.credential }}</a>
+                        <a :href="table.file" target="_blank" class="text-blue-400"> {{ table.credential }}</a>
                     </th>
                     <!-- <td class="px-6 py-4 text-blue-400">
-                        
+
                     </td> -->
                 </tr>
             </tbody>
@@ -78,6 +77,7 @@
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT EVALUATION DATE:</div>
+            {{date}}
             <Datepicker v-model="date" class="my-2"></Datepicker>
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
@@ -100,7 +100,7 @@
             </div>
             <div class="modal-action">
                 <label for="for-evaluation" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label @click="this.selectedRqat.length > 0 ? assignRQAT() : showToastRqat()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
+                <label @click="this.selectedRqat.length > 0 ? date != null ? assignRQAT() : showToastSched() : showToastRqat()" class="btn btn-sm rounded-md bg-blue-700 hover:bg-blue-800 border-none">Assign</label>
             </div>
         </div>
     </div>
@@ -188,14 +188,14 @@ export default {
         },
         async assignRQAT() {
             try {
-                
+
                 //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-                
+
                 //Store selected RQAT and date of Evaluation
                 application.set("selectedRQAT", this.selectedRqat);
                 application.set("dateOfEval", this.date);
@@ -261,7 +261,7 @@ export default {
                 //     console.log("Error: " + error.message);
                 // });
 
-                for(var r = 0; r < this.selectedRqat.length; r ++){
+                for (var r = 0; r < this.selectedRqat.length; r++) {
 
                     //Add new Notification for RQAT Members
                     const newNotification2 = new Notifications();
@@ -279,7 +279,6 @@ export default {
                     });
 
                 }
-                            
 
                 setTimeout(() => {
                     this.$router.push({
@@ -473,7 +472,6 @@ export default {
                     ".");
             }
 
-
             //Store Evaluation Date
             var months = [
                 "January",
@@ -531,7 +529,6 @@ export default {
         AppTypeQuery.equalTo("applicationTypeName", "RENEWAL")
 
         const appTypeQuerResult = await AppTypeQuery.first();
-
 
         if (this.type == appTypeQuerResult.id) {
             this.apptypechecker = true;
