@@ -250,10 +250,12 @@ export default {
         applicationQuery.equalTo("user", Parse.User.current().id);
         let applicationSub = await applicationQuery.subscribe();
 
+        //Open Subscription to Notifications
         applicationSub.on('open', () => {
             console.log("Application Subscription Open");
         });
 
+        //Display a Toast(Banner) when a Notification is created
         applicationSub.on('create', (notif) => {
             toast(notif.get("message"), {
                 type: TYPE.INFO,
