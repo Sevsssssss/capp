@@ -154,7 +154,7 @@ export default {
             doc.setFont("", "", "normal");
             doc.text("Regional Office V", 4.24, 1.6, "center");
             doc.text(date, 7.5, 2.5, "right");
-            doc.setFont("helvetica", "", "bold");
+            doc.setFont("", "", "bold");
             doc.text(appType.toString(), 0.5, 3);
             doc.setFont("", "", "normal");
             // text is placed using x, y coordinates
@@ -370,15 +370,17 @@ export default {
                 pdf.setFont("", "", "normal");
                 pdf.text("Regional Office V", 4.24, 1.6, "center");
                 pdf.text(date, 7.5, 2.5, "right");
-                pdf.setFont("helvetica", "", "bold");
+                pdf.setFont("", "", "bold");
                 pdf.text("NUMBER OF APPLICATION TYPES", 1, 3);
                 pdf.setFont("", "", "normal");
-                pdf.addImage(dataURL, 'JPEG', 1, 3.5, 6.5, 4);
 
                 const text =
                     "*This is a system generated report from the CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM.";
+                    
+                pdf.addImage(dataURL, 'JPEG', 1, 3.5, 6.5, 4);
                 pdf.setFontSize(9);
                 pdf.text(text, 1, 10.2);
+
                 window.open(pdf.output("bloburl"), "_blank");
                 // pdf.save(filename);
             } catch (error) {
