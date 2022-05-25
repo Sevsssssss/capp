@@ -476,12 +476,10 @@ export default {
                
                  
                 for (var z = 0; z < sDiscipline.length; z++){
-                        
                     if (progSpecID == sDiscipline[z].SpecDiscCode){
                         var MajDiscID = discipline.id;
                     }
                 }
-
             }
             
             //Query Supervisors
@@ -894,12 +892,12 @@ export default {
 
                         this.$refs.Spinner.show();
 
-                        toast(this.type.toLowerCase() + " has been assigned to an Education Supervisor", {
+                        toast("Application has been assigned to an Education Supervisor", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
-                                hideProgressBar: false,
-                                closeButton: false,
+                                hideProgressBar: true,
+                                closeButton: true,
 
                             }),
                             console.log("Object Updated: " + application.id);
@@ -927,7 +925,7 @@ export default {
                     })
                 }, 2000);
                 setTimeout(() => {
-                    window.location.reload();
+                    document.location.reload();
                 }, 2000);
 
             } catch (error) {

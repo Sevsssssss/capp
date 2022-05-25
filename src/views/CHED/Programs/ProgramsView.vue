@@ -546,7 +546,6 @@ export default {
                     newProgram.save({
                         programName: this.programs[i].programName.toUpperCase(),
                         programDiscipline: this.selectedDiscipline.specDisc,
-                        programMajorDisc: this.selectedDiscipline.majorDisc
                     });
                     toast("New Program Added: " + this.programs[i].programName, {
                             type: TYPE.SUCCESS,

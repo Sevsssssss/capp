@@ -4,8 +4,6 @@
 </div>
 <div v-else class="m-3">
     <DataCards :datas="numberOfHEI" />
-    {{totalEntries}}
-    {{currentpage}}
     <div class="m-3 overflow-x-auto shadow-md rounded-sm">
         <div class="p-2 flex justify-between items-center">
             <div class="text-lg font-semibold py-2 px-4 text-grey-200"> NUMBER OF APPLICATION TYPES </div>
@@ -83,6 +81,7 @@
 import NoDataAvail from "@/components//NoDataAvail.vue";
 import DataCards from "@/components//DataCards.vue";
 import Chart from 'chart.js/auto';
+import image from '@/assets/img/CHED_logo.png';
 import Parse from "parse";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -124,15 +123,11 @@ export default {
             }
         },
         exportToPdfTables(appType, index) {
-            const date = new Date();
-            const filename =
-                "Status_" +
-                date.getFullYear() +
-                "-" +
-                ("0" + (date.getMonth() + 1)).slice(-2) +
-                "-" +
-                ("0" + date.getDate()).slice(-2) +
-                ".pdf";
+            const date = new Date().toLocaleDateString("en", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+            });
             const columns = [{
                     title: "PROGRAMS",
                     dataKey: "program",
@@ -147,47 +142,46 @@ export default {
                 unit: "in",
                 format: "letter",
             });
+            var logo = new Image();
+            logo.src = image;
+            doc.addImage(logo, "png", 1.8, 0.85, 0.75, 0.75);
+            doc.setFontSize(11);
+            doc.setFont("times");
+            doc.text("Republic of the Philippines", 4.24, 1, "center");
+            doc.text("Office of the President", 4.24, 1.2, "center");
+            doc.setFont("", "", "bold");
+            doc.text("COMMISSION ON HIGHER EDUCATION", 4.24, 1.4, "center");
+            doc.setFont("", "", "normal");
+            doc.text("Regional Office V", 4.24, 1.6, "center");
+            doc.text(date, 7.5, 2.5, "right");
+            doc.setFont("", "", "bold");
+            doc.text(appType.toString(), 0.5, 3);
+            doc.setFont("", "", "normal");
             // text is placed using x, y coordinates
-            doc
-                .setFont('helvetica')
-                .setFontSize(16)
-                .text(appType.toString(), 0.5, 1.0);
+            // doc
+            //     .setFont('helvetica')
+            //     .setFontSize(16)
+            //     .text(appType.toString(), 1, 5.0);
             // create a line under heading
-            doc.
-            setLineWidth(0.01)
-                .line(0.5, 1.1, 8.0, 1.1);
+            // doc.
+            // setLineWidth(0.01)
+            //     .line(4.5, 1.1, 8.0, 5.1);
             // Using autoTable plugin
             doc.autoTable({
                 columns,
                 body: this.listofPrograms[index].programList,
                 margin: {
                     left: 0.5,
-                    top: 1.25,
+                    top: 3.2,
                 },
             });
 
-            //  const addFooters = doc => {
-            //         const pageCount = doc.internal.getNumberOfPages()
-
-            //         doc.setFont('helvetica', 'italic')
-            //         doc.setFontSize(8)
-            //         for (var i = 1; i <= pageCount; i++) {
-            //             doc.setPage(i)
-            //             doc.text('Page ' + String(i) + ' of ' + String(pageCount), doc.internal.pageSize.width / 2, 287, {
-            //                 align: 'center'
-            //             })
-            //         }
-            //     }
-
-            // Using array of sentences
-            doc
-                .setFont("helvetica")
-                .setFontSize(11)
-                .text("This is another few sentences of text to look at it.", 0.5, doc.internal.pageSize.height - 0.5, {
-                    align: "left",
-                    maxWidth: "7.5"
-                });
-            doc.save(filename);
+            const text =
+                "*This is a system generated report from the CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM.";
+            doc.setFontSize(9);
+            doc.text(text, 1, 10.2);
+            window.open(doc.output("bloburl"), "_blank");
+            // doc.save(filename);
         },
     },
     mounted: async function () {
@@ -356,52 +350,39 @@ export default {
 
         element.addEventListener("click", function () {
             try {
+                const date = new Date().toLocaleDateString("en", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                });
                 var dataURL = ctx.toDataURL();
+                var pdf = new jsPDF("p", "in", "letter");
+                var logo = new Image();
+                logo.src = image;
+                // pdf.addImage(logo, "png", 1, 1, 0.75, 0.75);
+                pdf.addImage(logo, "png", 1.8, 0.85, 0.75, 0.75);
+                pdf.setFontSize(11);
+                pdf.setFont("times");
+                pdf.text("Republic of the Philippines", 4.24, 1, "center");
+                pdf.text("Office of the President", 4.24, 1.2, "center");
+                pdf.setFont("", "", "bold");
+                pdf.text("COMMISSION ON HIGHER EDUCATION", 4.24, 1.4, "center");
+                pdf.setFont("", "", "normal");
+                pdf.text("Regional Office V", 4.24, 1.6, "center");
+                pdf.text(date, 7.5, 2.5, "right");
+                pdf.setFont("", "", "bold");
+                pdf.text("NUMBER OF APPLICATION TYPES", 1, 3);
+                pdf.setFont("", "", "normal");
 
-                var margin = 4;
-                var imgWidth = 210 - 2 * margin;
-                var pageHeight = 295;
-                var imgHeight = ctx.height * imgWidth / ctx.width;
-                var heightLeft = imgHeight;
+                const text =
+                    "*This is a system generated report from the CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM.";
+                    
+                pdf.addImage(dataURL, 'JPEG', 1, 3.5, 6.5, 4);
+                pdf.setFontSize(9);
+                pdf.text(text, 1, 10.2);
 
-                var pdf = new jsPDF('p', 'mm', 'a4');
-
-                const addFooters = pdf => {
-                    const pageCount = pdf.internal.getNumberOfPages()
-
-                    pdf.setFont('helvetica', 'italic')
-                    pdf.setFontSize(8)
-                    for (var i = 1; i <= pageCount; i++) {
-                        pdf.setPage(i)
-                        pdf.text('Page ' + String(i) + ' of ' + String(pageCount), pdf.internal.pageSize.width / 2, 287, {
-                            align: 'center'
-                        })
-                    }
-                }
-
-                var position = 0;
-
-                pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
-
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(dataURL, 'PNG', margin, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                const date = new Date();
-                const filename =
-                    "Applications_" +
-                    date.getFullYear() +
-                    "-" +
-                    ("0" + (date.getMonth() + 1)).slice(-2) +
-                    "-" +
-                    ("0" + date.getDate()).slice(-2) +
-                    ".pdf";
-                addFooters(pdf);
-                pdf.save(filename);
+                window.open(pdf.output("bloburl"), "_blank");
+                // pdf.save(filename);
             } catch (error) {
                 console.error("oops, something went wrong!", error);
             }

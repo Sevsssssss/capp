@@ -114,11 +114,11 @@
                         }">
                             <a v-if="statusChecker(table.status) &&table.status === 'For Compliance'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
-                        <a v-if="statusChecker(table.status) &&table.status === 'Completed'" @click="download()" href="#" class="text-blue-400 hover:text-blue-700">
+                        <a v-if="statusChecker(table.status) &&table.status === 'Completed'" :href="certificate"  class="text-blue-400 hover:text-blue-700">
                             <!-- <svg style="width:20px;height:20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
                             </svg> -->
-                            <span>Download</span>
+                            Download
                         </a>
                         <label for="tracking" @click="id(table.appID, index)" class="pl-2 font-medium text-blue-400 hover:text-blue-700">Track</label>
                     </td>
