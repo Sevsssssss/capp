@@ -165,7 +165,8 @@ export default {
             counter: 0,
             pending: false,
             address: {},
-            headers: [{
+            headers: [
+                {
                     title: "HEI_NAME",
                 },
                 {
@@ -199,48 +200,7 @@ export default {
                     title: "HEI_TYPE",
                 },
             ],
-            tables: [
-                // {
-                //     ins: "5009",
-                //     heiName: "Ateneo De Naga University",
-                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                //     type: "PRIVATE COLLEGES",
-                //     username: "ADNU",
-                //     email: "adnu@adnu.com",
-                // },
-                // {
-                //     ins: "5009",
-                //     heiName: "Ateneo De Naga University",
-                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                //     type: "PRIVATE COLLEGES",
-                //     username: "ADNU",
-                //     email: "adnu@adnu.com",
-                // },
-                // {
-                //     ins: "5009",
-                //     heiName: "Ateneo De Naga University",
-                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                //     type: "PRIVATE COLLEGES",
-                //     username: "ADNU",
-                //     email: "adnu@adnu.com",
-                // },
-                // {
-                //     ins: "5009",
-                //     heiName: "Ateneo De Naga University",
-                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                //     type: "PRIVATE COLLEGES",
-                //     username: "ADNU",
-                //     email: "adnu@adnu.com",
-                // },
-                // {
-                //     ins: "5009",
-                //     heiName: "Ateneo De Naga University",
-                //     address: "MAIN, BAGUMBAYAN, NAGA, CAMARINES SUR, V",
-                //     type: "PRIVATE COLLEGES",
-                //     username: "ADNU",
-                //     email: "adnu@adnu.com",
-                // }
-            ],
+            tables: [],
             showValidate: false,
             currentpage: 0,
             numPerPage: 4,
@@ -378,7 +338,7 @@ export default {
                     self.totalEntries = 0;
                     console.log("Successfully parsed xlsx file!");
                     for (let i = 0; i < event.data.rows.length; i++) {
-                        self.totalEntries = event.data[i];
+                        self.totalEntries = event.data.rows.length;
                         self.tables.push(event.data.rows[i]);
                     }
                     toast("Successfully parsed xlsx file", {
@@ -390,6 +350,7 @@ export default {
                     self.closeSpinner();
                     console.log(self.tables)
                 } else {
+                    self.showValidate = !self.showValidate;
                     toast(event.data.reason, {
                         type: TYPE.ERROR,
                         timeout: 2000,
@@ -435,6 +396,7 @@ export default {
                                 console.log(e);
                                 this.pending = false;
                                 this.$refs.Spinner.hide();
+                                has_error = 1;
                             }
                         };
                         reader.readAsArrayBuffer(this.dropzoneFile);
@@ -558,21 +520,31 @@ export default {
                         }
                     }
                 } catch (error) {
-                    toast(error.message, {
-                        type: TYPE.WARNING,
-                        timeout: 3000,
-                        hideProgressBar: true,
-                        position: POSITION.TOP_RIGHT,
-                    });
+                    // toast(error.message, {
+                    //     type: TYPE.WARNING,
+                    //     timeout: 3000,
+                    //     hideProgressBar: true,
+                    //     position: POSITION.TOP_RIGHT,
+                    // });
                     console.log(error.message)
                     this.counter = this.counter - 1;
                 }
             }
-            toast(this.counter + " HEI Accounts Added!", {
-                type: TYPE.SUCCESS,
-                timeout: 3000,
-                position: POSITION.TOP_RIGHT,
-            });
+            if (this.counter === 0) {
+                toast(this.counter + " HEI Accounts Added, data already exists.", {
+                    type: TYPE.WARNING,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+
+            } else {
+                toast(this.counter + " HEI Accounts Added!", {
+                    type: TYPE.SUCCESS,
+                    timeout: 3000,
+                    position: POSITION.TOP_RIGHT,
+                });
+            }
             this.$refs.Spinner.hide();
             this.$router.push("/hei")
             this.pending = false;
