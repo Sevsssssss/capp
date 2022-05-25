@@ -342,6 +342,7 @@ export default {
         };
     },
     computed: {
+        //For Search Function
         searchApplication() {
             this.newEntCount();
             return this.tables
@@ -359,8 +360,6 @@ export default {
         async id(appid, index) {
             this.appID = appid;
             this.appIndex = index; 
-
-
 
             //For Tracking
 
@@ -394,7 +393,6 @@ export default {
             this.stProgram = querResultProgs.get("programName");
             var progSpecID = querResultProgs.get("programDiscipline");
 
-            console.log("Prog SPEC ID:" + progSpecID);
 
             var statTrack = [];
             var months = [
@@ -421,6 +419,7 @@ export default {
                 "Sunday",
             ];
 
+            //Store Status Details
             for (var s = 0; s < querResultApp.get("statusTracker").length; s++) {
                 var statDate = new Date(querResultApp.get("statusTracker")[s].dateTime)
                 var statMonth = statDate.getMonth();
@@ -479,18 +478,10 @@ export default {
                 for (var z = 0; z < sDiscipline.length; z++){
                         
                     if (progSpecID == sDiscipline[z].SpecDiscCode){
-                        console.log("TRUE");
                         var MajDiscID = discipline.id;
-                        //var MajDisc = discipline.get("MajorDiscipline");
                     }
                 }
 
-                // if (sDiscipline.includes(progSpecID.toString())){
-                //     console.log("TRUE22");
-                //     var MajDiscID = discipline.id;
-                // }
-
-                //console.log("DISC:" + MajDiscCode);
             }
             
             //Query Supervisors
@@ -557,6 +548,7 @@ export default {
             }
         },
         async filterApplications() {
+            //For Application Status Filter
             var i = 0;
             var months = [
                 "January",
@@ -771,7 +763,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-
+            //If For Revision
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
                 const applications = Parse.Object.extend("Applications");
@@ -868,15 +860,17 @@ export default {
         },
         async submitChanges() {
             try {
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
-                // application.set("applicationStatus", "For Approval");
-                console.log(this.selectedSupervisor);
+
+                //Set assigned Supervisor
                 application.set("selectedSupervisor", this.selectedSupervisor);
 
+                //Add new Status in Tracker
                 this.statusTrackerDB = application.get("statusTracker");
 
                 this.statusTrackerDB.push({
@@ -886,6 +880,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTrackerDB);
 
+                //Save Application Changes
                 application
                     .save()
                     .then((application) => {
@@ -910,6 +905,7 @@ export default {
                             console.log("Object Updated: " + application.id);
                     })
 
+                //Add new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -917,7 +913,8 @@ export default {
                 newNotification.set("date_and_time", new Date());
                 newNotification.set("user", this.selectedSupervisor);
                 newNotification.set("isRead", false);
-
+                
+                //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
@@ -935,7 +932,6 @@ export default {
 
             } catch (error) {
                 alert("Error" + error.message);
-                console.log(error);
             }
             setTimeout(
                 function () {
@@ -987,10 +983,8 @@ export default {
 
             const desigQueryResult = await queryDes.first();
 
-            console.log(Parse.User.current().get("designation"));
             if (Parse.User.current().get("designation") == desigQueryResult.id) {
                 query.equalTo("selectedSupervisor", Parse.User.current().id);
-                // query.equalTo("applicationStatus", "For Approval");
                 this.supervisor = true;
             }
 
@@ -1002,7 +996,6 @@ export default {
                 const application = querResult[i];
                 const user = new Parse.Query(Parse.User);
                 user.equalTo("objectId", application.get("createdBy"));
-                // console.log(application.get("createdBy"));
                 const hei = await user.first();
                 hei_name = hei.get("hei_name");
                 var months = [
@@ -1085,6 +1078,7 @@ export default {
             this.totalEntries = querResult.length;
             this.tables = storedApplications;
 
+            //Query and Store Count of Applications per Application Status
             const applicationsFA = Parse.Object.extend("Applications");
             const queryFA = new Parse.Query(applicationsFA);
             queryFA.equalTo("applicationStatus", "For Approval");

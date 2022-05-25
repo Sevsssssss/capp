@@ -180,36 +180,25 @@ export default {
                     (this.currentpage + 1) * this.numPerPage
                 );
         },
-        // goToAppTypeView2() {
-        //   var requirements = [];
-        //   for (let y in this.tblReqs) {
-        //     requirements.push({
-        //       id: this.tblReqs[y].id,
-        //       name: this.tblReqs[y].name,
-        //     });
-        //   }
-        //   //   for (var i = 0; i < table.appReqs; i++) {
-        //   //     var y = table.appReqs[i];
-
-        //   //   }
-
-        // },
     },
     methods: {
         addAppType() {
             this.$router.push("/app-settings/add");
         },
         selectAppSet(id) {
+            //Selected Application Type for Editing or Deletion
             this.appSetID = id;
         },
         async deleteAppSet() {
             this.$refs.Spinner.show();
 
+            //Query Application Type Selected
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const appTypeQueryDel = new Parse.Query(ApplicationTypes);
             appTypeQueryDel.equalTo("objectId", this.appSetID);
             const appTypeDel = await appTypeQueryDel.first();
 
+            //Delete Application Type
             appTypeDel.destroy().then((app_type) => {
                     toast("Deleting Application Type: " + app_type.id, {
                         type: TYPE.WARNING,
@@ -286,10 +275,13 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var applicationTypesTable = [];
 
+            //Query Application Types
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const query = new Parse.Query(ApplicationTypes);
 
             const querResult = await query.find();
+
+            //Store Application Types
             for (var i = 0; i < querResult.length; i++) {
                 const appType = querResult[i];
                 var appReqs = [];
@@ -303,7 +295,6 @@ export default {
                         name: appType.get("applicationReqs")[x].applicationReq,
                     });
                 }
-                //   console.log(appReqsIndex)
                 applicationTypesTable.push({
                     Id: appType.id,
                     Name: appType.get("applicationTypeName"),
@@ -313,7 +304,6 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = applicationTypesTable;
-            // console.log(this.tables);
         }
     },
 };

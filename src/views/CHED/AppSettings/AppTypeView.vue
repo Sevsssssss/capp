@@ -76,16 +76,20 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Application Type
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const query = new Parse.Query(ApplicationTypes);
             query.equalTo("applicationTypeName", this.$route.query.appTypeName);
 
-            const querResult = await query.find();
+            const querResult = await query.first();
+
+            //Store Application Requirements
             var appReqs = [];
-            for (var x = 0; x < querResult[0].get("applicationReqs").length; x++) {
+            for (var x = 0; x < querResult.get("applicationReqs").length; x++) {
                 appReqs.push({
-                    id: querResult[0].get("applicationReqs")[x].id,
-                    name: querResult[0].get("applicationReqs")[x].applicationReq,
+                    id: querResult.get("applicationReqs")[x].id,
+                    name: querResult.get("applicationReqs")[x].applicationReq,
                 });
             }
             this.appicationReqs = appReqs;

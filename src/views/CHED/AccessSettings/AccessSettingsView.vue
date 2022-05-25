@@ -666,7 +666,6 @@ export default {
 
             const querResult = await query.find();
 
-            console.log(querResult.length)
 
             // if (querResult.length < 1) {
             accessType.destroy().then(
@@ -692,26 +691,6 @@ export default {
                     console.log("Error: " + error);
                 }
             );
-            // } else {
-            //     toast("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed): " + querResult, {
-            //         type: TYPE.INFO,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     toast("Is Archived", {
-            //         type: TYPE.INFO,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     setTimeout(() => {
-            //         window.location.reload()
-            //     }, 3000);
-            //     console.log("The following accounts still uses the selected access type (The Access Type would then be archived unless the Access Type of the listed users are changed):\n" + querResult)
-            //     accessType.set("isArchived", true);
-            //     accessType.save();
-            // }
         },
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
@@ -852,10 +831,14 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Access Types
             var accessTypesTable = [];
             const AccessTypes = Parse.Object.extend("AccessTypes");
             const query = new Parse.Query(AccessTypes);
             const querResult = await query.find();
+
+            //Store Access Types Data
             for (var i = 0; i < querResult.length; i++) {
                 const accessType = querResult[i];
                 var accessPriv = "";
@@ -875,7 +858,6 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = accessTypesTable;
-            // console.log(this.tables);
         }
     },
 };

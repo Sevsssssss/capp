@@ -144,7 +144,6 @@ export default {
         modal() {
             var errChecker = 0;
             for (var i = 0; i < this.appReqs.length; i++){
-                console.log(this.appReqs.length);
                 if (this.appReqs[i].applicationReq == ""){
                     errChecker = errChecker + 1;
                 }else{
@@ -168,6 +167,8 @@ export default {
         },
         async saveAppType() {
             this.$refs.Spinner.show();
+            
+            //Save new Application Type
             const ApplicationType = Parse.Object.extend("ApplicationTypes");
             const newApplicationType = new ApplicationType();
             newApplicationType.set(
@@ -186,15 +187,6 @@ export default {
                     setTimeout(() => {
                         this.$router.push("/app-settings")
                     }, 2000);
-                //if (
-                //    confirm(
-                //        "Application Type added. Would you like to add another Application Type?"
-                //    )
-                //) {
-                //    document.location.reload();
-                //} else {
-                //    this.$router.push("/app-settings");
-                //}
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,

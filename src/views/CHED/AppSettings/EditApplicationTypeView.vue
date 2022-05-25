@@ -161,16 +161,21 @@ export default {
         },
         async editAppType() {
             this.$refs.Spinner.show();
+
+            //Query Application Type
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const atQuery = new Parse.Query(ApplicationTypes);
             atQuery.equalTo("objectId", this.appID);
             const applicationType = await atQuery.first();
+
+            //Set Application Type Data Updates
             applicationType.set(
                 "applicationTypeName",
                 this.applicationTypeName.toUpperCase()
             );
             applicationType.set("applicationReqs", this.appReqs);
             try {
+                //Save Application Type
                 await applicationType.save();
                 toast("Application Type Edited", {
                         type: TYPE.SUCCESS,
@@ -207,6 +212,7 @@ export default {
             );
         },
         addRequirement() {
+            //Add Application Type Requirement
             this.counter++;
             console.log(this.counter)
             this.appReqs.push({
@@ -215,6 +221,7 @@ export default {
             });
         },
         removeRequirement(id) {
+            //Remove Application Type Requirement
             if(id < this.counter){
                 var tick = id;
                 console.log(tick + " " + (this.counter - 1))
@@ -259,12 +266,15 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Application Type
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const query = new Parse.Query(ApplicationTypes);
             query.equalTo("objectId", this.appID);
 
             const querResult = await query.first();
-
+            
+            //Store Application Type Data
             this.applicationTypeName = querResult.get("applicationTypeName");
             this.appReqs = querResult.get("applicationReqs");
             this.counter = querResult.get("applicationReqs").length;
