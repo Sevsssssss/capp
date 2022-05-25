@@ -301,12 +301,7 @@ export default {
                 1000
             );
             this.$refs.Spinner.show();
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
+            
         },
 
         //This add a majDiscipline
