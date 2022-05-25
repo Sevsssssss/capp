@@ -392,6 +392,9 @@ export default {
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
                 application.set("complianceDueDate", new Date(complianceDueDate));
+                if(application.get("inCompliance") == false){
+                    application.set("inCompliance", true)
+                }
                 
                 this.statusTracker.push({
                     status: "For Compliance",

@@ -236,12 +236,13 @@ export default {
                 application.set("applicationStatus", "For Compliance");
 
                 //If the application is not in Compliance (first time rejection) add a new compliance Due Date
-                if (application.get("complianceDueDate") == undefined) {
+                if(application.get("inCompliance") == false){
+                    application.set("inCompliance", true)
                     var currentDate = new Date();
                     var complianceDueDate = currentDate.setDate(currentDate.getDate() + 45);
 
                     application.set("complianceDueDate", new Date(complianceDueDate));
-                }
+                }            
 
                 //Add New Status to the Status Tracker
                 this.statusTracker.push({

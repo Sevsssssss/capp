@@ -276,7 +276,8 @@ export default {
                                 status: "For Approval",
                                 detail: "Application was submitted to CHED",
                                 dateTime: new Date(),
-                            }]
+                            }],
+                            inCompliance: false,
                         })
                         .then(
                             (newApplication) => {
