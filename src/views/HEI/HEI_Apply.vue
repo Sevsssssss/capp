@@ -276,7 +276,8 @@ export default {
                                 status: "For Approval",
                                 detail: "Application was submitted to CHED",
                                 dateTime: new Date(),
-                            }]
+                            }],
+                            inCompliance: false,
                         })
                         .then(
                             (newApplication) => {
@@ -305,7 +306,7 @@ export default {
                     const Notifications = Parse.Object.extend("Notifications");
                     const newNotification = new Notifications();
 
-                    newNotification.set("message", "New Application Created");
+                    newNotification.set("message", "New Application Created by " + Parse.User.current().get("hei_name"));
                     newNotification.set("date_and_time", new Date())
                     newNotification.set("user", this.adminID)
                     newNotification.set("isRead", false);

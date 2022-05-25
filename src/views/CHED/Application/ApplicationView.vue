@@ -1020,6 +1020,29 @@ export default {
                 var minutes = application.createdAt.getMinutes();
                 var seconds = application.createdAt.getSeconds();
 
+                if(application.get("inCompliance") && application.get("applicationStatus") == "For Compliance"){
+                    if(application.get("complianceDueDate") < new Date()){
+                        application.set("applicationStatus", "Non Compliant")
+                        application.save()
+
+                        //Add new Notification
+                        const Notifications = Parse.Object.extend("Notifications");
+                        const newNotification = new Notifications();
+
+                        newNotification.set("message", "Your Application did not Comply within the Given Due Date and thus was set to Non Compliant");
+                        newNotification.set("date_and_time", new Date());
+                        newNotification.set("user", this.hei);
+                        newNotification.set("isRead", false);
+                        
+                        //Save new Notification
+                        newNotification.save().then((notif) => {
+                            console.log("Notification Saved: " + notif.id);
+                        }, (error) => {
+                            console.log("Error: " + error.message);
+                        });
+                    }
+                }
+
                 //Query the applicationType of the application
                 const appTypes = Parse.Object.extend("ApplicationTypes");
                 const appTypeQuery = new Parse.Query(appTypes);
