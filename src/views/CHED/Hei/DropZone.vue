@@ -26,7 +26,7 @@
             </button>
             <!-- @click="upload()" -->
             <label @click="upload()" class="btn-small mt-4 font-normal bg-brand-darkblue hover:bg-brand-lightblue" type="submit">
-                Submit
+                Upload
             </label>
         </div>
     </div>
