@@ -165,8 +165,8 @@ export default {
                 }
 
                 this.statusTracker.push({
-                    status: "For Payment",
-                    detail: "Your Application has been moved for payment",
+                    status: "For Approval",
+                    detail: "The Application has been Revised and ready For Approval.",
                     dateTime: new Date(),
                 });
 
@@ -182,7 +182,7 @@ export default {
                             const Notifications = Parse.Object.extend("Notifications");
                             const newNotification = new Notifications();
 
-                            newNotification.set("message", this.type.toLowerCase() + " has been accepted and moved for payment");
+                            newNotification.set("message", "An Application has been Revised and ready For Approval.");
                             newNotification.set("date_and_time", new Date());
                             newNotification.set("user", this.adminID);
                             newNotification.set("isRead", false);
