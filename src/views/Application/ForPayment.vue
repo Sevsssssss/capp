@@ -65,12 +65,12 @@
                     <div>Dismiss</div>
                 </button>
             </div>
-            <div v-if="statusShow.includes('Disapproved')">
-                <button @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            <div>
+                <button v-if="fileCheck() == true && this.paymentStatus != 'Rejected'" @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Revise
                 </button>
             </div>
-            <div v-if="fileCheck() == true">
+            <div v-if="fileCheck() == true && this.paymentStatus != 'Rejected'">
                 <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
                 </button>
@@ -91,8 +91,11 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">REVISE {{ type }}</div>
             <p class="py-2 text-sm">
-                Are you sure??
+                Please provide reason:
             </p>
+            <div>
+                <textarea v-model="rejectionReason" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Reason"></textarea>
+            </div>
             <div class="modal-action">
                 <label for="for-revision" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label for="for-revision" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitRevision()">Continue</label>
@@ -162,6 +165,7 @@ export default {
             rep: "",
             email: "",
             hei: "",
+            rejectionReason: "",
         };
     },
     validations() {
@@ -297,6 +301,7 @@ export default {
                 }
                 application.set("requirements", requirements);
                 application.set("paymentStatus", "Rejected");
+                application.set("rejectionReason", this.rejectionReason);
 
                 this.statusTracker.push({
                     status: "For Payment",
@@ -403,6 +408,7 @@ export default {
         } else {
             this.fileCheker = false;
         }
+        this.paymentStatus  = application.get("paymentStatus");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

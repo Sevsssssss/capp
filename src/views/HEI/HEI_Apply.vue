@@ -270,7 +270,7 @@ export default {
                             actualSituations: [],
                             remarks: [],
                             recommendation: '',
-                            paymentStatus: 'For Verification',
+                            paymentStatus: '',
                             complianceDueDate: new Date(yesterday),
                             statusTracker: [{
                                 status: "For Approval",

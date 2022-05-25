@@ -129,6 +129,7 @@ export default {
                     );
 
                     application.set("certificate", certification);
+                    console.log(certification);
                     application.set("applicationStatus", "Completed");
 
                     //Add New Status to the Status Tracker
