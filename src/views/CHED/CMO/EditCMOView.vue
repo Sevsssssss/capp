@@ -448,6 +448,7 @@ export default {
     },
 
     modal() {
+      //For Error Checking
       var has_error = 0;
       var errCat = 0;
       var subcat = 0;
@@ -460,24 +461,12 @@ export default {
         } else {
           errCat = errCat + 1;
         }
-        console.log(errCat);
-        console.log(this.categories[i].id);
-        console.log("SUBCAT:" + this.categories[i].subcategory.length);
         if (this.categories[i].subcategory.length == 0) {
-          console.log("ANO NI?: " + this.categories[i].subcategory.length);
           subcat = 0;
         } else {
           for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-            console.log(
-              "ITEMS:" + this.categories[i].subcategory[x].items.length
-            );
-            console.log(
-              "name:" + this.categories[i].subcategory[x].Subcategory
-            );
             if (this.categories[i].subcategory[x].Subcategory != null) {
               subcat = subcat - 0;
-              console.log("EYY");
-              console.log(this.categories[i].subcategory[x].Subcategory.length);
               if (this.categories[i].subcategory[x].items.length == 0) {
                 items = 0;
               } else {
@@ -486,56 +475,28 @@ export default {
                   y < this.categories[i].subcategory[x].items.length;
                   y++
                 ) {
-                  console.log(
-                    "name1:" + this.categories[i].subcategory[x].items[y].Item
-                  );
                   if (this.categories[i].subcategory[x].items[y].Item != null) {
-                    console.log("EYYS");
                     items = items - 0;
                   } else {
-                    console.log("EdsYY");
                     items = items + 1;
                   }
                   if (
                     this.categories[i].subcategory[x].items[y].Item.length == 0
                   ) {
-                    console.log("EYdasdasY");
                     items = 1;
                   }
                 }
-                // items = 1;
-                // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
               }
             } else {
               subcat = subcat + 1;
-              console.log("HELL");
             }
             if (this.categories[i].subcategory[x].Subcategory.length == 0) {
               subcat = 1;
-              console.log("dEYY");
             }
 
-            // if (this.categories[i].subcategory[x].items.length == 0) {
-            //     items = 0;
-            // } else {
-            // for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
-            //     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
-            //     if (this.categories[i].subcategory[x].Subcategory != null) {
-            //         items = 0;
-            //     } else {
-            //         items = 1;
-            //     }
-            // }
-            // }
           }
         }
       }
-      console.log(this.cmoNo);
-      console.log(this.seriesYear);
-      console.log(this.evalDesc);
-      console.log(subcat);
-      console.log(items);
-      console.log(errCat);
       if (
         this.cmoNo == "" ||
         this.seriesYear == "" ||
@@ -554,54 +515,37 @@ export default {
       }
 
       if (has_error < 1) {
-        // var password = "";
-        // var characters =
-        //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        // var charactersLength = characters.length;
-        // for (var i = 0; i < 8; i++) {
-        //   password += characters.charAt(
-        //     Math.floor(Math.random() * charactersLength)
-        //   );
-        // }
         this.showModal1 = !this.showModal1;
       }
     },
     async editEvalForm() {
       this.$refs.Spinner.show();
       try {
-        console.log("save");
-
+        //Query CMO
         const CMOsUpdate = Parse.Object.extend("CHED_MEMO");
         const cmoUpdateQuery = new Parse.Query(CMOsUpdate);
         cmoUpdateQuery.equalTo("objectId", this.id);
         const CMOUpdate = await cmoUpdateQuery.first({
           useMasterKey: true,
         });
+
+        //Set CMO Updated Data
         CMOUpdate.set("CMO_No", this.cmoNo.toUpperCase());
         CMOUpdate.set("Series_Year", this.seriesYear.toUpperCase());
         CMOUpdate.set("CMOName", this.evalDesc.toUpperCase());
         CMOUpdate.set("evaluationFormReqs", this.categories);
 
-        // await newEvaluationForm.save();
-        // console.log(newEvaluationForm.save())
-
+        //Save Updates
         await CMOUpdate.save();
         toast("Evaluation Updated", {
           type: TYPE.SUCCESS,
           timeout: 3000,
           position: POSITION.TOP_RIGHT,
         }),
-          // window.location.reload()
           setTimeout(() => {
             this.$router.push("/cmo");
           }, 2000);
-        // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
-        //     document.location.reload();
-        // } else {
-        //     this.$router.push("/evaluationins");
-        // }
       } catch (error) {
-        // "Please fill out the required information"
         toast("Please fill out the required information", {
           type: TYPE.ERROR,
           timeout: 3000,
@@ -620,8 +564,7 @@ export default {
     //This add a category
     addCategory() {
       if (this.categories.length === 0) {
-        this.categoryId = 0; // Should we overide id if all items in array is deleted?
-        //Also should we adjust ids of items in array if some items are deleted?
+        this.categoryId = 0;
       }
       this.categoryId = this.categoryId + 1;
       this.categories.push({
@@ -633,13 +576,8 @@ export default {
     },
     //This removes a category
     removeCategory(id) {
-      console.log(this.categories.length);
       for (var i = 0; i < this.categories.length; i++) {
-        console.log(i, id);
-        console.log(this.categories[i]);
         if (this.categories[i].id === id) {
-          console.log("true");
-          console.log(id, this.categories[i].id);
           this.categories.splice(i, 1);
           i--;
         }
@@ -647,9 +585,7 @@ export default {
     },
     //This adds a subcategory inside of a category
     addSubCategory(thisCategory) {
-      console.log(thisCategory);
       if (thisCategory.length === 0) {
-        console.log(true);
         this.subcategoryId = 0;
       }
       this.subcategoryId = thisCategory.length;
@@ -668,7 +604,6 @@ export default {
           subCat < this.categories[i].subcategory.length;
           subCat++
         ) {
-          console.log(this.categories[i].subcategory[subCat].id);
           if (this.categories[i].subcategory[subCat].id === id) {
             this.categories[i].subcategory.splice(subCat, 1);
             subCat--;
@@ -678,12 +613,10 @@ export default {
     },
     //This adds an Item from the Items Array of a Subcategory
     addItem(thisCategory) {
-      console.log(thisCategory);
       var itemId = thisCategory.length + 1;
       thisCategory.push({
         id: itemId,
         Item: "",
-        //Add Item Here
       });
     },
     //This removes an Item from the Items Array of a Subcategory
@@ -692,7 +625,6 @@ export default {
       if (itemId > 0) {
         itemId--;
       }
-      //var cat = 'cat' + this.cat1;
       thisCategory.pop({
         id: itemId,
         name: "",
@@ -746,6 +678,7 @@ export default {
       }
       this.programs = programsMat;
 
+      //Query CMO
       const CMOs = Parse.Object.extend("CHED_MEMO");
       const cmoQuery = new Parse.Query(CMOs);
       cmoQuery.equalTo("objectId", this.id);
@@ -753,6 +686,7 @@ export default {
         useMasterKey: true,
       });
 
+      //Store CMO Data
       this.cmoNo = CMO.get("CMO_No");
       this.seriesYear = CMO.get("Series_Year");
       this.evalDesc = CMO.get("CMOName");

@@ -95,12 +95,14 @@ export default {
         async deleteCMO() {
             this.$refs.Spinner.show();
 
+            //Query CMO
             const CMO = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMO);
             cmoQuery.equalTo("objectId", this.id);
 
             const cmo = await cmoQuery.first();
 
+            //Delete CMO
             cmo.destroy().then(
                 () => toast("Deleting...", {
                     type: TYPE.WARNING,
@@ -142,6 +144,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query CMO
             const CMOs = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMOs);
             cmoQuery.equalTo("objectId", this.id);
@@ -149,6 +153,7 @@ export default {
                 useMasterKey: true,
             });
 
+            //Store CMO Data
             var categories = [];
 
             for (var i = 0; i < CMO.get("evaluationFormReqs").length; i++) {
