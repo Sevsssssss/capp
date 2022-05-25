@@ -426,9 +426,8 @@ export default {
                 this.categoryId = 0; // Should we overide id if all items in array is deleted?
                 //Also should we adjust ids of items in array if some items are deleted?
             }
-            this.categoryId = this.categoryId + 1;
             this.categories.push({
-                id: this.categoryId,
+                id: this.categories.length + 1,
                 subcategory: [],
                 Category: "",
                 Desc: "",
@@ -436,11 +435,17 @@ export default {
         },
         //This removes a category
         removeCategory(id) {
+            var isRemoved = false;
             for (var i = 0; i < this.categories.length; i++) {
-                if (this.categories[i].id === id) {
+                if (this.categories[i].id === id && isRemoved == false) {
                     this.categories.splice(i, 1);
                     i--;
+                    isRemoved = true;
                 }
+                if(isRemoved == true){
+                    this.categories[i].id = i + 1;
+                }
+
             }
         },
         //This adds a subcategory inside of a category
@@ -450,23 +455,28 @@ export default {
             }
             this.subcategoryId = this.subcategoryId + 1;
             thisCategory.push({
-                id: this.subcategoryId,
+                id: thisCategory.length + 1,
                 items: [],
                 Subcategory: "",
             });
         },
         //This removes a subcategory inside of a category
         removeSubCategory(id) {
-            for (var i = 0; i < this.categories.length; i++) {
-                for (
-                    var subCat = 0; subCat < this.categories[i].subcategory.length; subCat++
-                ) {
-                    if (this.categories[i].subcategory[subCat].id === id) {
-                        this.categories[i].subcategory.splice(subCat, 1);
+            var isSubCatRemoved = false;
+            for (var j = 0; j < this.categories.length; j++) {
+                for (var subCat = 0; subCat < this.categories[j].subcategory.length; subCat++) 
+                {
+                    if (this.categories[j].subcategory[subCat].id === id && isSubCatRemoved == false) {
+                        this.categories[j].subcategory.splice(subCat, 1);
                         subCat--;
+                        isSubCatRemoved = true;
+                    }
+                    if(isSubCatRemoved == true){
+                        this.categories[j].subcategory[subCat].id = subCat + 1
                     }
                 }
             }
+
         },
         //This adds an Item from the Items Array of a Subcategory
         addItem(thisCategory) {
@@ -483,7 +493,6 @@ export default {
             if (itemId > 0) {
                 itemId--;
             }
-            //var cat = 'cat' + this.cat1;
             thisCategory.pop({
                 id: itemId,
                 name: "",
