@@ -33,8 +33,8 @@
     <!-- Put this part before </body> tag -->
     <input type="checkbox" id="showModal" class="modal-toggle" />
     <div :class="{ 'modal-open ': showMOdal() }" class="modal">
-        <div class="modal-box rounded-md w-11/12 max-w-max">
-            <div class="flex text-lg font-semibold uppercase pb-4">
+        <div class="modal-box rounded-md w-full max-w-max m-4 p-2">
+            <div class="flex text-lg font-semibold uppercase p-4">
                 Are you sure you want to upload this HEI TABLE?
             </div>
             <div class="relative overflow-x-auto shadow-md">
@@ -61,7 +61,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="table in searchTable" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 {{table.A}}
                             </th>
                             <td class="px-6 py-4">
@@ -136,7 +136,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-action">
+            <div class="modal-action p-4">
                 <label @click="showValidate = false" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label @click="uploadtable()" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none">Submit</label>
             </div>
