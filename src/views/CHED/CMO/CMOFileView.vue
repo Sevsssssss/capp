@@ -14,11 +14,9 @@
         </div>
         <div class="text-center p-5">
             <div class="font-semibold">
-                REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
+                {{ Name }}
             </div>
-            <div>{{ Name }}</div>
             <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
-            <div>{{Program}}</div>
         </div>
         <div class="">
             <div class="overflow-x-auto shadow-md sm:rounded-lg py-8 ">
@@ -178,7 +176,7 @@ export default {
                     })
 
                 }
-                this.Name = CMO.get("evaluationFormName");
+                this.Name = CMO.get("CMOName");
 
                 this.cmoNo = CMO.get("CMO_No");
                 this.seriesYear = CMO.get("Series_Year");
