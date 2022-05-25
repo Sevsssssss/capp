@@ -33,7 +33,7 @@
     <!-- Put this part before </body> tag -->
     <input type="checkbox" id="showModal" class="modal-toggle" />
     <div :class="{ 'modal-open ': showMOdal() }" class="modal">
-        <div class="modal-box rounded-md w-11/12 max-w-6xl">
+        <div class="modal-box rounded-md w-11/12 max-w-max">
             <div class="flex text-lg font-semibold uppercase pb-4">
                 Are you sure you want to upload this HEI TABLE?
             </div>
@@ -60,7 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="table in tables" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <tr v-for="table in searchTable" :key="table" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{table.A}}
                             </th>
@@ -97,6 +97,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <div v-if="searchTable.length == 0" class="p-5 font-medium">
+                    <!-- NO DATA FOUND {{search}} -->
+                    Sorry, the keyword "{{ search }}" cannot be found in the database.
+                </div>
                 <!-- Table Footer -->
                 <div class="table-footer flex flex-row justify-between">
                     <div class="flex flex-row pl-3 justify-center items-center">
@@ -118,7 +122,7 @@
                             Entries
                         </span>
                     </div>
-                    <div class="p-3 pr-3">
+                    <div class="p-3">
                         <div class="btn-group">
                             <ul class="inline-flex -space-x-px">
                                 <li>
@@ -161,8 +165,7 @@ export default {
             counter: 0,
             pending: false,
             address: {},
-            headers: [
-                {
+            headers: [{
                     title: "HEI_NAME",
                 },
                 {
@@ -239,6 +242,10 @@ export default {
                 // }
             ],
             showValidate: false,
+            currentpage: 0,
+            numPerPage: 4,
+            totalEntries: 0,
+            search: "",
         }
     },
     components: {
@@ -264,7 +271,33 @@ export default {
             selectedFile,
         };
     },
+    computed: {
+        searchTable() {
+            // this.newEntCount();
+            return this.tables
+                .filter((p) => {
+                    return p.A.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+                })
+                .slice(
+                    this.numPerPage * this.currentpage,
+                    (this.currentpage + 1) * this.numPerPage
+                );
+        },
+    },
     methods: {
+        newEntCount() {
+            this.totalEntries = this.tables.filter((p) => {
+                return p.A.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
+            }).length;
+        },
+        prevPage() {
+            if (this.currentpage > 0) this.currentpage -= 1;
+        },
+        nextPage() {
+            if ((this.currentpage + 1) * this.numPerPage < this.totalEntries) {
+                this.currentpage += 1;
+            }
+        },
         showMOdal() {
             return this.showValidate;
         },
@@ -342,17 +375,20 @@ export default {
                 console.log('onMessage')
                 if (event.data.complete) {
                     self.tables = [];
+                    self.totalEntries = 0;
                     console.log("Successfully parsed xlsx file!");
-                    for (let i = 0; i <  event.data.rows.length; i++) {
-                    self.tables.push(event.data.rows[i])
+                    for (let i = 0; i < event.data.rows.length; i++) {
+                        self.totalEntries = event.data[i];
+                        self.tables.push(event.data.rows[i]);
                     }
-                    toast("Successfully parsed xlsx file!", {
-                        type: TYPE.SUCCESS,
+                    toast("Successfully parsed xlsx file", {
+                        type: TYPE.INFO,
                         timeout: 3000,
+                        hideProgressBar: true,
                         position: POSITION.TOP_RIGHT,
                     });
                     self.closeSpinner();
-                     console.log(self.tables)
+                    console.log(self.tables)
                 } else {
                     toast(event.data.reason, {
                         type: TYPE.ERROR,
