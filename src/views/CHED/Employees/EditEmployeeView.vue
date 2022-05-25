@@ -540,7 +540,7 @@ export default {
 
             this.access_type = emp.get("access_type");
             this.emp_designation = emp.get("designation");
-            this.discipline = emp.get("discipline");
+            this.selectedDiscipline = emp.get("disciplines");
 
         }
     },
