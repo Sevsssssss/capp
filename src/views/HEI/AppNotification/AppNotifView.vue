@@ -45,7 +45,7 @@
                     <router-link :to="{
                                 name: 'appHEINotifItem',
                                 params: {
-                                    id: item.id,
+                                    id: item.objectID,
                                     item: item.item,
                                     date: item.date,
                                 },

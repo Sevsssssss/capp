@@ -66,6 +66,15 @@ export default {
             }
         });
     
+        //Display a Toast(Banner) when a Notification is created
+        applicationSub.on('update', () => {
+            this.unreadNotifs -= 1;
+            if(this.unreadNotifs > 99){
+                this.unreadNotifsText = "99+";
+            } else{
+                this.unreadNotifsText = this.unreadNotifs.toString();
+            }
+        });
 
         this.unreadNotifs = appQueryUnreadCount;
 

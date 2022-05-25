@@ -501,15 +501,7 @@ export default {
         //Store RQATS
         var dbRqat = [];
 
-        dbRqat.push({
-            id: Parse.User.current().id,
-            name: Parse.User.current().get("name")["lastname"] +
-                ", " +
-                Parse.User.current().get("name")["firstname"] +
-                " " +
-                Parse.User.current().get("name")["middleinitial"] +
-                ".",
-        });
+        
 
         for (var j = 0; j < rqatResult.length; j++) {
             const rqat = rqatResult[j];

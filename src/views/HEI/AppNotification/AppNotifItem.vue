@@ -22,13 +22,19 @@
 </template>
 
 <script>
+import Parse from "parse";
 export default {
     props: ['id', 'item', 'date'],
-    data() {
-        return {
+    mounted: async function () {
+        const Notifications = Parse.Object.extend("Notifications");
+        const query = new Parse.Query(Notifications);
+        query.equalTo("objectId", this.id);
 
-        }
-    },
+        const notif = await query.first();
+
+        notif.set("isRead", true);
+        notif.save();
+    }
 }
 </script>
 
