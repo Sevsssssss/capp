@@ -261,7 +261,7 @@ export default {
         validate() {
             return this.showModal1;
         },
-        modal(){
+        modal() {
             var has_error = 0;
             var missing_comment = 0;
             // var missing_comment1 = 0;
@@ -269,9 +269,9 @@ export default {
             console.log(this.comment1.length)
 
             for (var i = 0; i < this.comment1.length; i++) {
-                if(this.comment1[i] == null ||  this.comment1[i] == ''){
+                if (this.comment1[i] == null || this.comment1[i] == '') {
                     missing_comment++;
-                    
+
                 }
             }
             // for (var x = 0; x < this.comment2.length; x++) {
@@ -281,12 +281,12 @@ export default {
             //     }
             // }
 
-            for (var j = 0; j < this.statusShow.length; j++ ){
-                if(this.statusShow[j] == 'NotComplied' && this.comment2[j] == ''){
+            for (var j = 0; j < this.statusShow.length; j++) {
+                if (this.statusShow[j] == 'NotComplied' && this.comment2[j] == '') {
                     missing_checkbox++;
                 }
             }
-          
+
             if (
                 this.summary == "" || this.recommendation == "" || missing_comment > 0 || this.statusShow.length == 0 || missing_checkbox > 0
             ) {
@@ -382,7 +382,6 @@ export default {
                 }
 
             }
-            
 
             if (this.statusShow.includes("NotComplied")) {
                 var today = new Date();
@@ -394,10 +393,10 @@ export default {
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
                 application.set("complianceDueDate", new Date(complianceDueDate));
-                if(application.get("inCompliance") == false){
+                if (application.get("inCompliance") == false) {
                     application.set("inCompliance", true)
                 }
-                
+
                 this.statusTracker.push({
                     status: "For Compliance",
                     detail: "Application didn't comply.",
@@ -406,10 +405,17 @@ export default {
                 application.set("statusTracker", this.statusTracker);
 
                 application
-                .save()
-                .then((application) => {
-                    console.log("Object Updated: " + application.id);
-                })
+                    .save()
+                    .then((application) => {
+                        const params = {
+                            email: application.get("email"),
+                            status: "Your Application didn't comply.",
+                            type: "sendStatusUpdate",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendStatusUpdate", params);
+                        console.log("Object Updated: " + application.id);
+                    })
 
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
@@ -431,7 +437,7 @@ export default {
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
-                
+
                 this.statusTracker.push({
                     status: "For Issuance",
                     detail: "Application Approved, waiting for Issuance.",
@@ -439,12 +445,11 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
-
                 application
-                .save()
-                .then((application) => {
-                    console.log("Object Updated: " + application.id);
-                })
+                    .save()
+                    .then((application) => {
+                        console.log("Object Updated: " + application.id);
+                    })
 
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
@@ -534,7 +539,7 @@ export default {
 
             this.statusTracker = application.get("statusTracker")
             this.hei = application.get("createdBy")
-            
+
             var months = [
                 "January",
                 "February",
@@ -563,8 +568,8 @@ export default {
             });
 
             this.instName = user.get("hei_name");
-            const heiAddress = user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", "
-                                    + user.get("address").province + ", " + user.get("address").regionName;
+            const heiAddress = user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", " +
+                user.get("address").province + ", " + user.get("address").regionName;
             this.address = heiAddress;
 
             console.log("Hello" + user.get("hei_name"));
@@ -670,8 +675,8 @@ export default {
                     //console.log(i)
                     // console.log(this.categories[i].Category);
                     this.statusShow.push("");
-                        this.comment1.push("");
-                        this.comment2.push("");
+                    this.comment1.push("");
+                    this.comment2.push("");
                     this.eval.push({
                         id: this.categories[z].id,
                         Requirement: this.categories[z].Category,
@@ -697,8 +702,8 @@ export default {
                         ) {
                             //console.log(this.categories[i].subcategory[x].items[y].Item);
                             this.statusShow.push("");
-                        this.comment1.push("");
-                        this.comment2.push("");
+                            this.comment1.push("");
+                            this.comment2.push("");
                             this.eval.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,
