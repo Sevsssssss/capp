@@ -518,7 +518,8 @@ export default {
         //Query Application Types
         const AppTypes = Parse.Object.extend("ApplicationTypes");
         const AppTypeQuery = new Parse.Query(AppTypes);
-        AppTypeQuery.equalTo("applicationTypeName", "RENEWAL")
+        AppTypeQuery.equalTo("applicationTypeName", "SAMPLE RENEWAL")
+        //AppTypeQuery.equalTo("applicationTypeName", "RENEWAL") //Pabalik once tapos na mag demo TY
 
         const appTypeQuerResult = await AppTypeQuery.first();
 
