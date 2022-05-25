@@ -1,6 +1,7 @@
 <template>
 <!--Header-->
 <div class="m-3">
+    {{eval}}
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between">
         <div class="form-control w-full pt-2">
             <label class="label">
@@ -265,7 +266,7 @@ export default {
             this.checkedPrograms = [];
         },
         addCMO() {
-          console.log("HI");
+            console.log("HI");
             this.eval.push({
                 cmoID: '',
                 checkedRequirements: [],
@@ -286,118 +287,42 @@ export default {
         },
 
         modal() {
-            // var has_error = 0;
+            var has_error = 0;
+            var cmo_checker = 0;
+            var requirements_checker = 0;
             // var errCat = 0;
             // var subcat = 0;
             // var items = 0;
+            for (var i = 0; i < this.eval.length; i++) {
+                if (this.eval[i].cmoID == "") {
+                    cmo_checker++;
+                }
+            }
 
-            // for (var i = 0; i < this.categories.length; i++) {
-            //     console.log(this.categories[i].Category);
-            //     if (this.categories[i].Category != "") {
-            //         errCat = errCat - 0;
-            //     } else {
-            //         errCat = errCat + 1;
-            //     }
-            //     console.log(errCat);
-            //     console.log(this.categories[i].id);
-            //     console.log("SUBCAT:" + this.categories[i].subcategory.length);
-            //     if (this.categories[i].subcategory.length == 0) {
-            //         console.log("ANO NI?: " + this.categories[i].subcategory.length);
-            //         subcat = 0;
-            //     } else {
-            //         for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-            //             console.log(
-            //                 "ITEMS:" + this.categories[i].subcategory[x].items.length
-            //             );
-            //             console.log(
-            //                 "name:" + this.categories[i].subcategory[x].Subcategory
-            //             );
-            //             if (this.categories[i].subcategory[x].Subcategory != null) {
-            //                 subcat = subcat - 0;
-            //                 console.log("EYY");
-            //                 console.log(this.categories[i].subcategory[x].Subcategory.length);
-            //                 if (this.categories[i].subcategory[x].items.length == 0) {
-            //                     items = 0;
-            //                 } else {
-            //                     for (
-            //                         var y = 0; y < this.categories[i].subcategory[x].items.length; y++
-            //                     ) {
-            //                         console.log(
-            //                             "name1:" + this.categories[i].subcategory[x].items[y].Item
-            //                         );
-            //                         if (this.categories[i].subcategory[x].items[y].Item != null) {
-            //                             console.log("EYYS");
-            //                             items = items - 0;
-            //                         } else {
-            //                             console.log("EdsYY");
-            //                             items = items + 1;
-            //                         }
-            //                         if (
-            //                             this.categories[i].subcategory[x].items[y].Item.length == 0
-            //                         ) {
-            //                             console.log("EYdasdasY");
-            //                             items = 1;
-            //                         }
-            //                     }
-            //                     // items = 1;
-            //                     // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
-            //                 }
-            //             } else {
-            //                 subcat = subcat + 1;
-            //                 console.log("HELL");
-            //             }
-            //             if (this.categories[i].subcategory[x].Subcategory.length == 0) {
-            //                 subcat = 1;
-            //                 console.log("dEYY");
-            //             }
+            for (var x = 0; x < this.eval.length; x++) {
+                if (this.eval[x].checkedRequirements == 0) {
+                    requirements_checker++;
+                }
+            }
 
-            //             // if (this.categories[i].subcategory[x].items.length == 0) {
-            //             //     items = 0;
-            //             // } else {
-            //             // for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
-            //             //     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
-            //             //     if (this.categories[i].subcategory[x].Subcategory != null) {
-            //             //         items = 0;
-            //             //     } else {
-            //             //         items = 1;
-            //             //     }
-            //             // }
-            //             // }
-            //         }
-            //     }
-            // }
+            if (
 
-            // if (
-            //     this.cmoID == "" ||
-            //     this.cmoNo == "" ||
-            //     this.seriesYear == "" ||
-            //     this.evalDesc == "" ||
-            //     subcat == 1 ||
-            //     items == 1 ||
-            //     errCat >= 1
-            // ) {
-            //     toast("Please fill out the required information", {
-            //         type: TYPE.ERROR,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     has_error = 1;
-            // }
+                this.evalDesc == "" || this.programName == "" || cmo_checker > 0 || this.eval.length == 0 || requirements_checker > 0
 
-            // if (has_error < 1) {
-            //     // var password = "";
-            //     // var characters =
-            //     //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            //     // var charactersLength = characters.length;
-            //     // for (var i = 0; i < 8; i++) {
-            //     //   password += characters.charAt(
-            //     //     Math.floor(Math.random() * charactersLength)
-            //     //   );
-            //     // }
+            ) {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+                has_error = 1;
+            }
+
+            if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
-            // }
-            
+            }
+
         },
         async saveEvalForm() {
             this.$refs.Spinner.show();
