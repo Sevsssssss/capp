@@ -13,7 +13,7 @@
             </div>
         </div>
         <div>
-            <span class="font-semibold text-brand-darkblue text-sm"><a href="#" @click="window.location.reload()">REFRESH</a></span>
+            <span class="font-semibold text-brand-darkblue text-sm"><a href="#" @click="onUpdate()">REFRESH</a></span>
         </div>
     </div>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -43,7 +43,7 @@
                 </td>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                     <router-link :to="{
-                                name: 'appNotifItem',
+                                name: 'appHEINotifItem',
                                 params: {
                                     id: item.id,
                                     item: item.item,
@@ -59,17 +59,33 @@
             </tr>
         </tbody>
     </table>
+    <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </div>
 </template>
 
 <script>
+import VueInstantLoadingSpinner from "vue-instant-loading-spinner";
 import Parse from "parse";
 export default {
     data() {
         return {
-            items: [
-            ]
+            items: []
         }
+    },
+    components: {
+        VueInstantLoadingSpinner,
+    },
+    methods: {
+        onUpdate() {
+            this.$refs.Spinner.show();
+            this.$router.go()
+            setTimeout(
+                function () {
+                    this.$refs.Spinner.hide();
+                }.bind(this),
+                3000
+            );
+        },
     },
     mounted: async function () {
         const AccessTypes = Parse.Object.extend("AccessTypes");
