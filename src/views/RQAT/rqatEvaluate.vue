@@ -17,7 +17,9 @@
                 REVISED PROCESSING FORM FOR MONITORING AND EVALUATION
             </div> -->
             <div class="font-semibold">{{ Name }}</div>
-            <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
+            <div v-for="cmono in cmoNoYr" :key="cmono">
+               <span class="font-normal"> per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}} </span>
+            </div>
         </div>
         <div class="flex flex-col text-sm w-full pl-10">
             <div class="flex space-x-8">
