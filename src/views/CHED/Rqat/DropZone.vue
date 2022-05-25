@@ -237,6 +237,7 @@ export default {
                     newRQAT.set("access_type", this.rqat_acc_id);
                     newRQAT.set("hasTransactions", false);
                     newRQAT.set("past_affil", []);
+                    newRQAT.set("receivedCredentials", false);
                     await newRQAT.save().then(() => {
                         setTimeout(() => {
                             const params = {

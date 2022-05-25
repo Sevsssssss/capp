@@ -21,6 +21,9 @@ const config = {
   liveQuery: {
     classNames: ['Posts', 'Comments', 'Notifications'], // List of classes to support for query subscriptions
   },
+  liveQuery: {
+    classNames: ['_User'], // List of classes to support for query subscriptions
+  },
   javascriptKey : ';9*$KS97:Ru]</umSs5t>^qW9>e)Rf5+0lhx}B20ys0lS?JnFGWCa!a7k=_8M.o',
 
   accountLockout: {
