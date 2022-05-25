@@ -135,6 +135,9 @@
                             {{ table.AccessType }}
                         </td>
                         <td class="px-6 py-4">
+                            {{ table.emailVerified }}
+                        </td>
+                        <td class="px-6 py-4">
                             <div class="flex space-x-2 items-end justify-end">
                                 <router-link :to="{
                                 name: 'EditEmployeeView',
@@ -287,6 +290,9 @@ export default {
                 },
                 {
                     title: "ACCESS TYPE",
+                },
+                {
+                    title: "EMAIL VERIFIED",
                 },
             ],
             tables: [],
@@ -551,6 +557,7 @@ export default {
                     Username: emp.get("username"),
                     Designation: desigResult.get("name"),
                     AccessType: accQuerResult.get("name"),
+                    emailVerified: emp.get("emailVerified"),
                 });
             }
             this.totalEntries = querResult.length;
@@ -575,6 +582,99 @@ export default {
             }
 
             this.designations = storedDesignations;
+            /////////////////////////////////////////////////////////////////////////////// Live Queries
+            var password;
+            const queryEmployees = new Parse.Query(Parse.User);
+            const subscription = await queryEmployees.subscribe();
+            // subscription.on('open', () => {
+            //     console.log('subscription opened');
+            // });
+            // subscription.on('create', (object) => {
+            //     console.log('object created' + object);
+            // });
+            // subscription.on('enter', (object) => {
+            //     console.log('object entered' + object);
+            // });
+            // subscription.on('leave', (object) => {
+            //     console.log('object left' + object);
+            // });
+            // subscription.on('delete', (object) => {
+            //     console.log('object deleted' + object);
+            // });
+            // subscription.on('close', () => {
+            //     console.log('subscription closed');
+            // });
+            subscription.on("update", async (object) => {
+                console.log("object updated" + object);
+                // this.count();
+
+                var index = this.tables.findIndex((e) => e.id == object.id);
+
+                const AccessTypeLQ = Parse.Object.extend("AccessTypes");
+                const queryACCLQ = new Parse.Query(AccessTypeLQ);
+                queryACCLQ.equalTo("objectId", object.get("access_type"));
+
+                const accQuerResultLQ = await queryACC.first({
+                    useMasterKey: true,
+                });
+
+                const DesignationLQ = Parse.Object.extend("Designations");
+                const queryDesLQ = new Parse.Query(DesignationLQ);
+                queryDesLQ.equalTo("objectId", object.get("designation"));
+                const desigResultLQ = await queryDesLQ.first({
+                    useMasterKey: true,
+                });
+
+                this.tables[index] = {
+                    ...this.tables[index],
+                    id: object.id,
+                    Name: object.get("name")["lastname"] +
+                        ", " +
+                        object.get("name")["firstname"] +
+                        " " +
+                        object.get("name")["middleinitial"] +
+                        ".",
+                    Email: object.get("email"),
+                    ContactNo: object.get("contact_num"),
+                    Username: object.get("username"),
+                    Designation: desigResultLQ.get("name"),
+                    AccessType: accQuerResultLQ.get("name"),
+                    emailVerified: object.get("emailVerified"),
+                };
+
+                const emailQuery = new Parse.Query(Parse.User);
+                emailQuery.equalTo("objectId", object.id);
+                await emailQuery.first({
+                    useMasterKey: true
+                }).then((objectEmail) => {
+                    if (
+                        objectEmail.get("emailVerified") == true &&
+                        objectEmail.get("receivedCredentials") == false
+                    ) {
+
+                        password = Math.random().toString(36).slice(-12);
+                        console.log("first: " + password)
+
+                        const params = {
+                            name: objectEmail.get("name"),
+                            username: objectEmail.get("username"),
+                            email: objectEmail.get("email"),
+                            password: password,
+                            type: "sendCredentials",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+
+                        objectEmail.setPassword(password);
+                        console.log("second: " + password)
+                        objectEmail.set("receivedCredentials", true);
+                        objectEmail.save(null, {
+                            useMasterKey: true,
+                        });
+                    }
+                });
+
+            });
         }
     },
 };

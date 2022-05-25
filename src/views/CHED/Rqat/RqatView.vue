@@ -74,9 +74,12 @@
                         <td class="px-6 py-4">
                             {{ table.contactNum }}
                         </td>
-                        
+
                         <td class="px-6 py-4">
                             {{ table.username }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ table.emailVerified }}
                         </td>
                         <!-- <td class="px-6 py-4">
                             {{ table.email }}
@@ -210,6 +213,9 @@ export default {
                 {
                     title: "USERNAME",
                 },
+                {
+                    title: "EMAIL VERIFIED",
+                },
                 //  {
                 //     title: "EMAIL",
                 // },
@@ -303,13 +309,13 @@ export default {
             // const queryApp = new Parse.Query(applications);
             // queryApp.equalTo("selectedRQAT", querResult.id)
             // const application = await queryApp.find();
-            
+
             if (this.application_counter > 0) {
                 //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
-                    querResult.set("isArchived", true);
-                    querResult.save({
-                        useMasterKey: true,
-                    });
+                querResult.set("isArchived", true);
+                querResult.save({
+                    useMasterKey: true,
+                });
                 //}
             } else {
                 querResult.destroy({
@@ -411,10 +417,97 @@ export default {
                     contactNum: rqat.get("contact_num"),
                     username: rqat.get("username"),
                     email: rqat.get("email"),
+                    emailVerified: rqat.get("emailVerified")
                 });
             }
             this.totalEntries = querResult.length;
             this.tables = rqats;
+
+            /////////////////////////////////////////////////////////////////////////////// Live Queries
+            var password;
+            const queryRQAT = new Parse.Query(Parse.User);
+            const subscription = await queryRQAT.subscribe();
+            // subscription.on('open', () => {
+            //     console.log('subscription opened');
+            // });
+            // subscription.on('create', (object) => {
+            //     console.log('object created' + object);
+            // });
+            // subscription.on('enter', (object) => {
+            //     console.log('object entered' + object);
+            // });
+            // subscription.on('leave', (object) => {
+            //     console.log('object left' + object);
+            // });
+            // subscription.on('delete', (object) => {
+            //     console.log('object deleted' + object);
+            // });
+            // subscription.on('close', () => {
+            //     console.log('subscription closed');
+            // });
+            subscription.on("update", async (object) => {
+                console.log("object updated" + object);
+                // this.count();
+
+                var index = this.tables.findIndex((r) => r.id == object.id);
+
+                var heiAff = "";
+                if (object.get("hei_affil").hei != "None") {
+                    const heisQ = new Parse.Query(Parse.User);
+                    heisQ.equalTo("objectId", object.get("hei_affil").hei);
+                    const heiQ = await heisQ.first();
+                    heiAff = heiQ.get("hei_name");
+                } else {
+                    heiAff = object.get("hei_affil").hei;
+                }
+
+                this.tables[index] = {
+                    ...this.tables[index],
+                    rqatName: object.get("name")["lastname"] +
+                        ", " +
+                        object.get("name")["firstname"] +
+                        " " +
+                        object.get("name")["middleinitial"] +
+                        ".",
+                    hei: heiAff,
+                    contactNum: object.get("contact_num"),
+                    username: object.get("username"),
+                    email: object.get("email"),
+                    emailVerified: object.get("emailVerified"),
+                };
+
+                const emailQuery = new Parse.Query(Parse.User);
+                emailQuery.equalTo("objectId", object.id);
+                await emailQuery.first({
+                    useMasterKey: true
+                }).then((objectEmail) => {
+                    if (
+                        objectEmail.get("emailVerified") == true &&
+                        objectEmail.get("receivedCredentials") == false
+                    ) {
+
+                        password = Math.random().toString(36).slice(-12);
+                        console.log("first: " + password)
+
+                        const params = {
+                            username: objectEmail.get("username"),
+                            email: objectEmail.get("email"),
+                            password: password,
+                            type: "sendCredentials",
+                            approved: true,
+                        };
+                        Parse.Cloud.run("sendEmailNotification", params);
+                        console.log(objectEmail.id);
+                        objectEmail.setPassword(password);
+                        console.log("second: " + password)
+                        objectEmail.set("receivedCredentials", true);
+                        objectEmail.save(null, {
+                            useMasterKey: true,
+                        });
+                    }
+                });
+
+            });
         }
     },
 };

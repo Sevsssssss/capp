@@ -108,7 +108,7 @@
                     </label>
                     <div class="grid xxl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 xxs:grid-cols-1 text-left pt-2">
                         <label v-for="discipline in disciplines" :key="discipline" :value="discipline.id" class="flex flex-row cursor-pointer p-1" style="align-items: center">
-                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id"  v-model="selectedDiscipline" />
+                            <input type="checkbox" class="checkbox mr-1" :value="discipline.id" v-model="selectedDiscipline" />
                             <div class="label-text viewSubCatbool" style="align-self: center">
                                 {{ discipline.title }}
                             </div>
@@ -238,51 +238,43 @@ export default {
         },
         async addEmployee() {
             this.$refs.Spinner.show();
-
-            const newEmployee = new Parse.User();
-
-            var password = Math.random().toString(36).slice(-12);
-
-            ////////////////////////////////////
-            console.log(password); ///////////
-            ////////////////////////////////////
-
-            var employeeName = {
-                lastname: this.lastname,
-                firstname: this.firstname,
-                middleinitial: this.midinit,
-            };
-            newEmployee.set("name", employeeName);
-            newEmployee.set("username", this.username);
-            newEmployee.set("password", password);
-            newEmployee.set("email", this.email);
-            newEmployee.set("contact_num", this.contactnum);
-            newEmployee.set("access_type", this.access_type);
-            newEmployee.set("designation", this.emp_designation);
-            newEmployee.set("disciplines", this.selectedDiscipline);
-            newEmployee.set("receivedCredentials", false);
             try {
+                const newEmployee = new Parse.User();
+
+                var password = Math.random().toString(36).slice(-12);
+
+                ////////////////////////////////////
+                console.log(password); ///////////
+                ////////////////////////////////////
+
+                var employeeName = {
+                    lastname: this.lastname,
+                    firstname: this.firstname,
+                    middleinitial: this.midinit,
+                };
+                newEmployee.set("name", employeeName);
+                newEmployee.set("username", this.username);
+                newEmployee.set("password", password);
+                newEmployee.set("email", this.email);
+                newEmployee.set("contact_num", this.contactnum);
+                newEmployee.set("access_type", this.access_type);
+                newEmployee.set("designation", this.emp_designation);
+                newEmployee.set("disciplines", this.selectedDiscipline);
+                newEmployee.set("receivedCredentials", false);
+
                 await newEmployee.save().then(() => {
                     toast("Employee Account Added!", {
                         type: TYPE.SUCCESS,
-                        timeout: 2000,
+                        timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     });
-                    const params = {
-                        name: this.employeeName,
-                        username: this.username,
-                        email: this.email,
-                        password: password,
-                        type: "sendCredentials",
-                        approved: true,
-                    };
-                    Parse.Cloud.run("sendEmailNotification", params);
+
                     setTimeout(
                         () =>
                         this.$router.push({
                             path: "/employees",
                         }),
-                        1000
+                        2000
                     );
                 });
 
@@ -295,12 +287,12 @@ export default {
                 });
                 console.log(error.message);
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
+            // setTimeout(
+            //     function () {
+            //         this.$refs.Spinner.hide();
+            //     }.bind(this),
+            //     2000
+            // );
         },
         modal() {
             var has_error = 0;

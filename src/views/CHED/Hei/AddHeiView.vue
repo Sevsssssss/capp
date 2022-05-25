@@ -390,12 +390,12 @@ export default {
                 // alert("Error: " + error.code + " " + error.message);
                 //document.location.reload();
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                3000
-            );
+            // setTimeout(
+            //     function () {
+            //         this.$refs.Spinner.hide();
+            //     }.bind(this),
+            //     3000
+            // );
         },
         modal() {
             // this.v$.$validate();
