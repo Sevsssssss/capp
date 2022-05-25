@@ -323,15 +323,7 @@ export default {
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     })
-                    const params = {
-                        name: rqatName,
-                        username: this.username,
-                        email: this.email,
-                        password: password,
-                        type: "sendCredentials",
-                        approved: true,
-                    };
-                    Parse.Cloud.run("sendEmailNotification", params);
+                    
                     setTimeout(
                         () =>
                         this.$router.push({
@@ -349,12 +341,12 @@ export default {
                 });
                 console.log(error.message);
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
+            // setTimeout(
+            //     function () {
+            //         this.$refs.Spinner.hide();
+            //     }.bind(this),
+            //     2000
+            // );
         },
         modal() {
             var has_error = 0;

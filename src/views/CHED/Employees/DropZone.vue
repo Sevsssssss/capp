@@ -508,20 +508,7 @@ export default {
                                 newEmployee.set("disciplines", DisciplinesIDArray);
                             }
 
-                            newEmployee.save().then(() => {
-                                setTimeout(() => {
-                                    const params = {
-                                        name: this.employeeName,
-                                        username: employeesData[i].D,
-                                        email: employeesData[i].E,
-                                        password: password[i],
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                }, 1000);
-                                console.log(employeesData[i].D, password);
-                            });
+                            newEmployee.save()
 
                         })
 
@@ -548,20 +535,7 @@ export default {
                         }
                         if (flag === 0) {
 
-                            await newEmployee.save().then(() => {
-                                setTimeout(() => {
-                                    const params = {
-                                        name: this.employeeName,
-                                        username: employeesData[i].D,
-                                        email: employeesData[i].E,
-                                        password: password[i],
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                }, 1000);
-                                console.log(employeesData[i].D, password[i]);
-                            });
+                            await newEmployee.save()
                             this.counter = this.counter + 1;
                         }
                     }

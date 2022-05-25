@@ -16,6 +16,7 @@ Parse.initialize(
 );
 Parse.masterKey = "master"
 
+
 // RUN THIS CODE TO HAVE SUPER ADMIN ACCESS TYPE (Edited - Jeff)
 
 
