@@ -482,42 +482,14 @@ export default {
                             newHEI.set("hei_type", newHeiType.id);
                             newHEI.set("access_type", this.hei_acc_id);
                             newHEI.set("hasTransactions", false);
-                            newHEI.save().then(() => {
-                                setTimeout(() => {
-                                    const params = {
-                                        name: heiData[i].A,
-                                        username: heiData[i].B,
-                                        email: heiData[i].C,
-                                        password: password[i],
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    console.log("params: " + heiData[i].B, password[i]);
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                }, 1000);
-
-                            })
+                            newHEI.save()
                         })
                     } else {
                         newHEI.set("hei_type", queryRes.id);
                         newHEI.set("access_type", this.hei_acc_id);
                         newHEI.set("hasTransactions", false);
                         if (flag === 0) {
-                            await newHEI.save().then(() => {
-                                setTimeout(() => {
-                                    const params = {
-                                        name: heiData[i].A,
-                                        username: heiData[i].B,
-                                        email: heiData[i].C,
-                                        password: password[i],
-                                        type: "sendCredentials",
-                                        approved: true,
-                                    };
-                                    console.log("params1: " + heiData[i].B, password[i]);
-                                    Parse.Cloud.run("sendEmailNotification", params);
-                                }, 1000);
-
-                            })
+                            await newHEI.save()
                         }
                     }
                 } catch (error) {
