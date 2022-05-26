@@ -143,10 +143,10 @@ export default {
         },
         modal() {
             var errChecker = 0;
-            for (var i = 0; i < this.appReqs.length; i++){
-                if (this.appReqs[i].applicationReq == ""){
+            for (var i = 0; i < this.appReqs.length; i++) {
+                if (this.appReqs[i].applicationReq == "") {
                     errChecker = errChecker + 1;
-                }else{
+                } else {
                     errChecker = errChecker - 0;
                 }
             }
@@ -167,7 +167,7 @@ export default {
         },
         async saveAppType() {
             this.$refs.Spinner.show();
-            
+
             //Save new Application Type
             const ApplicationType = Parse.Object.extend("ApplicationTypes");
             const newApplicationType = new ApplicationType();
@@ -184,9 +184,9 @@ export default {
                         position: POSITION.TOP_RIGHT,
                     }),
                     // window.location.reload()
-                    setTimeout(() => {
-                        this.$router.push("/app-settings")
-                    }, 2000);
+                setTimeout(() => {
+                    this.$router.push("/app-settings")
+                }, 2000);
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -196,12 +196,7 @@ export default {
                 });
                 console.log(error.message)
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                2000
-            );
+
         },
         addRequirement() {
             this.counter++;
