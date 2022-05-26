@@ -220,6 +220,7 @@ export default {
             summary: "",
             recommendation: "",
             cmoNoYr: [],
+            statusTracker: [],
         };
     },
     validations() {
@@ -389,13 +390,60 @@ export default {
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
                 application.set("complianceDueDate", new Date(complianceDueDate));
-                application.set("inCompliance", true)
+                application.set("inCompliance", true);
+
+                this.statusTracker.push({
+                    status: "For Compliance",
+                    detail: "Application didn't Comply, updated to For Compliance status.",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
+                 //Add new Notification
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "Your Application has been moved for compliance");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                //Save new Notification
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
+
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
+
+                this.statusTracker.push({
+                    status: "For Issuance",
+                    detail: "Your Application has been moved for issuance",
+                    dateTime: new Date(),
+                });
+                application.set("statusTracker", this.statusTracker);
+
+                //Add new Notification
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
+
+                newNotification.set("message", "Your Application has been processed. Please wait for Issuance");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                //Save new Notification
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
             }
 
             application
@@ -491,6 +539,9 @@ export default {
             var month = application.createdAt.getMonth();
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
+
+            this.statusTracker = application.get("statusTracker");
+            this.hei = application.get("createdBy");
 
             this.dateApplied = months[month] + " " + day + ", " + year;
 
