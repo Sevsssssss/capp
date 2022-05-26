@@ -605,7 +605,24 @@ export default {
             /////////////////////////////////////////////////////////////////////////////// Live Queries
             var password;
             const subscription = await query.subscribe();
-
+            // subscription.on('open', () => {
+            //     console.log('subscription opened');
+            // });
+            // subscription.on('create', (object) => {
+            //     console.log('object created' + object);
+            // });
+            // subscription.on('enter', (object) => {
+            //     console.log('object entered' + object);
+            // });
+            // subscription.on('leave', (object) => {
+            //     console.log('object left' + object);
+            // });
+            // subscription.on('delete', (object) => {
+            //     console.log('object deleted' + object);
+            // });
+            // subscription.on('close', () => {
+            //     console.log('subscription closed');
+            // });
             subscription.on("update", async (object) => {
                 console.log("object updated" + object);
                 // this.count();

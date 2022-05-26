@@ -48,7 +48,7 @@
             <ForVerification :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'FOR ISSUANCE'">
-            <ForIssuance :appID="appID"/>>
+            <ForIssuance :appID="appID"/>
         </div>
         <div v-else-if="status.toUpperCase() === 'COMPLETED'">
             <ForCompleted></ForCompleted>

@@ -65,12 +65,12 @@
                     <div>Dismiss</div>
                 </button>
             </div>
-            <!-- <div v-if="statusShow.includes('Disapproved')">
-                <button @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+            <div>
+                <button v-if="fileCheck() == true && this.paymentStatus != 'Rejected'" @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Revise
                 </button>
-            </div> -->
-            <div v-if="fileCheck() == true">
+            </div>
+            <div v-if="fileCheck() == true && this.paymentStatus != 'Rejected'">
                 <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
                 </button>
@@ -91,8 +91,11 @@
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">REVISE {{ type }}</div>
             <p class="py-2 text-sm">
-                Are you sure??
+                Please provide reason:
             </p>
+            <div>
+                <textarea v-model="rejectionReason" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Reason"></textarea>
+            </div>
             <div class="modal-action">
                 <label for="for-revision" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
                 <label for="for-revision" class="btn btn-sm bg-blue-700 hover:bg-blue-800 rounded-md border-none" @click="submitRevision()">Continue</label>
@@ -162,6 +165,7 @@ export default {
             rep: "",
             email: "",
             hei: "",
+            rejectionReason: "",
         };
     },
     validations() {
@@ -296,12 +300,12 @@ export default {
                     });
                 }
                 application.set("requirements", requirements);
-                application.set("applicationStatus", "For Revision");
-                application.set("paymentStatus", "Verified");
+                application.set("paymentStatus", "Rejected");
+                application.set("rejectionReason", this.rejectionReason);
 
                 this.statusTracker.push({
-                    status: "For Revision",
-                    detail: "Application was made For Revision",
+                    status: "For Payment",
+                    detail: "Payment File Rejected, Payment File needs to be revised and reuploaded.",
                     dateTime: new Date(),
                 });
                 application.set("statusTracker", this.statusTracker);
@@ -311,7 +315,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application was made For Revision",
+                            status: "Your Application Payment was Rejected, please revise and reupload file",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
@@ -319,7 +323,7 @@ export default {
 
                         this.$refs.Spinner.show();
 
-                        toast(this.type.toLowerCase() + " has been moved for revision", {
+                        toast(this.type.toLowerCase() + " has been rejected", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
@@ -331,7 +335,7 @@ export default {
                 const Notifications = Parse.Object.extend("Notifications");
                     const newNotification = new Notifications();
 
-                    newNotification.set("message", "Your Application has been moved for revision please reupload Proof of Payment");
+                    newNotification.set("message", "Your Application Payment was Rejected, revision and reuploading required");
                     newNotification.set("date_and_time", new Date());
                     newNotification.set("user", this.hei);
                     newNotification.set("isRead", false);
@@ -369,27 +373,7 @@ export default {
             }
         },
         modalRevise() {
-            var has_error = 0;
-            var missing_comment = 0;
-            //var error_text = "Account not created due to the following reasons:\n";
-            for (var i = 0; i < this.statusShow.length; i++) {
-                if (this.statusShow[i] == 'Disapproved' && this.comment[i] == '')
-                    missing_comment++;
-            }
-            if (
-                missing_comment > 0
-            ) {
-                toast("Please fill out the comment for disapproving the file", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                has_error = 1;
-            }
-            if (has_error < 1) {
-                this.showModal2 = !this.showModal2;
-            }
+            this.showModal2 = !this.showModal2;
         },
         showToastSupervisor() {
             toast("Please select the required supervisor", {
@@ -424,6 +408,7 @@ export default {
         } else {
             this.fileCheker = false;
         }
+        this.paymentStatus  = application.get("paymentStatus");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");

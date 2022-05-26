@@ -871,9 +871,18 @@ export default {
                 //Add new Status in Tracker
                 this.statusTrackerDB = application.get("statusTracker");
 
+                const supervisor = new Parse.Query(Parse.User);
+                supervisor.equalTo("objectId", this.selectedSupervisor);
+                const educSup = await supervisor.first();
+
                 this.statusTrackerDB.push({
                     status: "For Approval",
-                    detail: "Your Application has been assigned to an Education Supervisor",
+                    detail: "The Application has been assigned to an Education Supervisor: " + educSup.get("name")["lastname"] +
+                        ", " +
+                        educSup.get("name")["firstname"] +
+                        " " +
+                        educSup.get("name")["middleinitial"] +
+                        ".",
                     dateTime: new Date(),
                 });
                 application.set("statusTracker", this.statusTrackerDB);
