@@ -389,6 +389,7 @@ export default {
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
                 application.set("complianceDueDate", new Date(complianceDueDate));
+                application.set("inCompliance", true)
             } else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
