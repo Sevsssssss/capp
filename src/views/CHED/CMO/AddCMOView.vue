@@ -395,7 +395,7 @@ export default {
 
                 //Save CMO
                 await newCMO.save();
-                toast("Evaluation Added", {
+                toast("CMO Added", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
