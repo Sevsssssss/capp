@@ -940,12 +940,6 @@ export default {
             } catch (error) {
                 alert("Error" + error.message);
             }
-            setTimeout(
-                function () {
-                    this.$refs.Spinner.hide();
-                }.bind(this),
-                3000
-            );
         },
         showToastSupervisor() {
             toast("Please select the required supervisor", {

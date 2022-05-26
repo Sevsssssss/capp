@@ -77,7 +77,6 @@
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
             <div class="font-semibold text-md">SELECT EVALUATION DATE:</div>
-            {{date}}
             <Datepicker v-model="date" class="my-2"></Datepicker>
             <div class="font-semibold text-md">ASSIGN RQAT MEMBER</div>
             <label for="table-search" class="sr-only">Search</label>
