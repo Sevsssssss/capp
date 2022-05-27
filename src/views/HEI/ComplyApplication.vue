@@ -301,7 +301,6 @@ export default {
                                             path: "/hei/application"
                                         });
                                     }, 3000);
-                                // console.log("New Access Type Added:" + newApplication.id)
                             },
                             (e) => {
                                 toast("Application Update Failed: " + e.message, {
@@ -310,11 +309,9 @@ export default {
                                     hideProgressBar: true,
                                     position: POSITION.TOP_RIGHT,
                                 });
-                                // alert("Access Type Adding Failed: " + error)
                             }
                         );
                 } catch (error) {
-                    console.log("hello1");
                     toast("Please fill out the required information", {
                         type: TYPE.ERROR,
                         timeout: 3000,
@@ -323,8 +320,6 @@ export default {
                     });
                 }
             } else {
-                console.log(this.resubmittedDesc.length)
-                console.log(blank_count2)
                 if (this.resubmittedDesc.length > 0 && blank_count2 <= 0) {
                     try {
                         let resubmittedFile = null;
@@ -337,9 +332,6 @@ export default {
                         var count = 0;
                         for (i = 0; i < this.disapprovedCount; i++) {
                             const file = values.target[i + count].files[0];
-                            console.log(file);
-                            console.log(file.name);
-                            console.log(file.type);
                             resubmittedFile = new Parse.File(
                                 file.name.replace(/[^a-zA-Z]/g, ""),
                                 file,
@@ -399,7 +391,6 @@ export default {
                                                 path: "/hei/application"
                                             });
                                         }, 3000);
-                                    // console.log("New Access Type Added:" + newApplication.id)
                                 },
                                 (e) => {
                                     toast("Application Update Failed: " + e.message, {
@@ -408,11 +399,9 @@ export default {
                                         hideProgressBar: true,
                                         position: POSITION.TOP_RIGHT,
                                     });
-                                    // alert("Access Type Adding Failed: " + error)
                                 }
                             );
                     } catch (error) {
-                        console.log("hello");
                         toast("Please fill out the required information", {
                             type: TYPE.ERROR,
                             timeout: 3000,
@@ -422,7 +411,6 @@ export default {
                     }
 
                 } else {
-                    console.log("hi");
                     toast("Please fill out the required information", {
                         type: TYPE.ERROR,
                         timeout: 3000,
@@ -442,7 +430,6 @@ export default {
 
     },
     mounted: async function () {
-        console.log("hi");
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
