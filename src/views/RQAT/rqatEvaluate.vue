@@ -116,7 +116,14 @@
                                 </th>
 
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    <p class="py-2 font-semibold">Recommendation</p>
+                                    <div class="flex flex-row justify-between">
+                                        <p class="py-2 font-semibold">Recommendations</p>
+                                        <a @click="getSummary()">Generate Recommendations</a>
+                                        <!-- <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" @click="getSummary()">
+                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                                        </svg> -->
+                                    </div>
+
                                     <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
                                 </th>
                             </tr>
@@ -226,6 +233,8 @@ export default {
             cmoNoYr: [],
             statusTracker: [],
             hei: "",
+            appliType: "",
+            initPermit: "",
         };
     },
     validations() {
@@ -300,15 +309,6 @@ export default {
             }
 
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -385,7 +385,7 @@ export default {
 
             if (this.statusShow.includes("NotComplied")) {
                 var today = new Date();
-                var complianceDueDate = today.setDate(today.getDate() + 45);
+                var complianceDueDate = this.appliType == this.initPermit ? today.setDate(today.getDate() + 45): today.setDate(today.getDate() + 30);
                 console.log(complianceDueDate)
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
@@ -714,6 +714,14 @@ export default {
                     }
                 }
             }
+            //Get Application Type of Application and id of Initial Permit Application Type for compliance due date
+            this.appliType = application.get("applicationType");
+
+            const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+            const appTypeQuery = new Parse.Query(ApplicationTypes);
+            appTypeQuery.equalTo("applicationTypeName", "INITIAL PERMIT")
+            const appType = await appTypeQuery.first();
+            this.initPermit = appType.id
 
         }
     },
