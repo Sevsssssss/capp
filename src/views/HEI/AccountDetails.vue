@@ -547,7 +547,7 @@ export default {
             });
 
             const query = new Parse.Query(Parse.User);
-            query.equalTo("objectId", this.heiID);
+            query.equalTo("objectId", Parse.User.current().id);
             const hei = await query.first({
                 useMasterKey: true,
             });
