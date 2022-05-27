@@ -639,6 +639,7 @@ export default {
 
                 // 
                 const htype = await hTypeQuery1.first();
+                // console.log("THISSSSS" + index)
 
                 this.tables[index] = {
                     ...this.tables[index],
