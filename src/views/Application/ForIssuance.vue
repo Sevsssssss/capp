@@ -20,7 +20,14 @@
                 </div>
             </div>
         </div>
+        <div class="form-control w-full max-w-xs items-center justify-center">
+            <label class="label">
+                <span class="label-text">Enter Authority/Permit No.:</span>
+            </label>
+            <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" v-model="permitNo" />
+        </div>
     </div>
+
     <div class="flex flex-row center py-10">
         <div class="pr-5">
             <button @click="$router.go(-1)" type="button" class="btn text-blue-700 bg-transparent border border-blue-700 hover:bg-white" data-dismiss-target="#alert-additional-content-1" aria-label="Close">
@@ -59,6 +66,7 @@ export default {
         return {
             statusTracker: [],
             hei: "",
+            permitNo: "",
         }
     },
     //Setup data and methods needed for dropZone
@@ -102,7 +110,7 @@ export default {
             }
         },
         async submitFile() {
-            if (this.dropzoneFile === "") {
+            if (this.dropzoneFile === "" || this.permitNo === "") {
                 toast("Error", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -129,6 +137,8 @@ export default {
                     );
 
                     application.set("certificate", certification);
+                    application.set("PermitNo", this.permitNo);
+                    application.set("DateIssued", new Date());
                     console.log(certification);
                     application.set("applicationStatus", "Completed");
 

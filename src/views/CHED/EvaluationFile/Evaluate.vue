@@ -144,7 +144,10 @@
                                 </th>
 
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    <p class="py-2 font-semibold">Recommendation</p>
+                                   <div class="flex flex-row justify-between">
+                                        <p class="py-2 font-semibold">Recommendations</p>
+                                        <label @click="getSummary()" class="hover:text-brand-darkblue">Generate Recommendations</label>
+                                    </div>
                                     <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
                                 </th>
                             </tr>
