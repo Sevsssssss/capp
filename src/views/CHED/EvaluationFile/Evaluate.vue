@@ -1,5 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
+    {{statusShow}} {{comment1}} {{comment2}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -322,11 +323,11 @@ export default {
 
             //ACTUAL SITUATIONS
             for (var i = 0; i < this.categories.length; i++) {
-                actualSituations.push({
-                    id: counter,
-                    content: this.comment1[counter],
-                    type: "Category",
-                });
+                // actualSituations.push({
+                //     id: counter,
+                //     content: this.comment1[counter],
+                //     type: "Category",
+                // });
                 counter++;
                 for (var j = 0; j < this.categories[i].subcategory.length; j++) {
                     actualSituations.push({
@@ -353,11 +354,11 @@ export default {
             var remarks = [];
             counter = 0;
             for (i = 0; i < this.categories.length; i++) {
-                remarks.push({
-                    id: counter,
-                    content: this.comment1[counter],
-                    type: "Category",
-                });
+                // remarks.push({
+                //     id: counter,
+                //     content: this.comment1[counter],
+                //     type: "Category",
+                // });
                 counter++;
                 for (j = 0; j < this.categories[i].subcategory.length; j++) {
                     remarks.push({
@@ -637,7 +638,7 @@ export default {
                             }
                         }
 
-                        this.Name = chedMemo.get("evaluationFormName");
+                        this.Name = evalInstrument.get("evaluationFormName");
 
                         if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
                             this.cmoNoYr.push({
@@ -659,9 +660,9 @@ export default {
                 for (var z = 0; z < this.categories.length; z++) {
                     //console.log(i)
                     // console.log(this.categories[i].Category);
-                    this.statusShow.push("");
-                    this.comment1.push("");
-                    this.comment2.push("");
+                    // this.statusShow.push("");
+                    // this.comment1.push("");
+                    // this.comment2.push("");
                     this.eval.push({
                         id: this.categories[z].id,
                         Requirement: this.categories[z].Category,
