@@ -437,7 +437,7 @@ export default {
             this.heis = heis;
 
             const queryRQAT = new Parse.Query(Parse.User);
-            queryRQAT.equalTo("objectId", this.rqatID);
+            queryRQAT.equalTo("objectId", Parse.User.current().id);
             const rqat = await queryRQAT.first({
                 useMasterKey: true,
             });

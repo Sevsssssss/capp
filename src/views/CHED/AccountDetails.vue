@@ -353,7 +353,8 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             const queryEmp = new Parse.Query(Parse.User);
-            queryEmp.equalTo("objectId", this.empID);
+            queryEmp.equalTo("objectId", Parse.User.current().id);
+            console.log()
             const emp = await queryEmp.first({
                 useMasterKey: true,
             });
