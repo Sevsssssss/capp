@@ -226,6 +226,8 @@ export default {
             cmoNoYr: [],
             statusTracker: [],
             hei: "",
+            appliType: "",
+            initPermit: "",
         };
     },
     validations() {
@@ -300,15 +302,6 @@ export default {
             }
 
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -385,7 +378,7 @@ export default {
 
             if (this.statusShow.includes("NotComplied")) {
                 var today = new Date();
-                var complianceDueDate = today.setDate(today.getDate() + 45);
+                var complianceDueDate = this.appliType == this.initPermit ? today.setDate(today.getDate() + 45): today.setDate(today.getDate() + 30);
                 console.log(complianceDueDate)
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
@@ -714,6 +707,14 @@ export default {
                     }
                 }
             }
+            //Get Application Type of Application and id of Initial Permit Application Type for compliance due date
+            this.appliType = application.get("applicationType");
+
+            const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
+            const appTypeQuery = new Parse.Query(ApplicationTypes);
+            appTypeQuery.equalTo("applicationTypeName", "INITIAL PERMIT")
+            const appType = await appTypeQuery.first();
+            this.initPermit = appType.id
 
         }
     },
