@@ -539,6 +539,8 @@ export default {
             this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
+            this.$refs.Spinner.show();
+            
             try {
                 for (var i = 0; i < this.programs.length; i++) {
                     const programs = Parse.Object.extend("Programs");
@@ -552,7 +554,7 @@ export default {
                             timeout: 2000,
                             position: POSITION.TOP_RIGHT,
                         }),
-                        //this.$refs.Spinner.show();
+                        
                         // window.location.reload()
                         setTimeout(() => {
                             document.location.reload();
