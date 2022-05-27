@@ -1,7 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{statusShow}} {{comment1}} {{comment2}} <br>
-    {{eval}}
+{{comment1}} <br>
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -50,22 +49,16 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody v-for="(cat, index) in eval" :key="(req, index)">
-                            <tr scope="row" v-for="(req, index) in cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                        <tbody v-for="(cat, catIndex) in eval" :key="(cat, catIndex)">
+                            <tr scope="row" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                                 <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    {{ req.id }}
+                                    {{ cat.id }}
                                 </td>
-                                <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
-                                    {{ req.Requirement }}
-                                </td>
-                                <td v-else-if="req.type == 'SubCategory'" class="aoe p-5 ml-5">
-                                    {{ req.Requirement }}
-                                </td>
-                                <td v-else-if="req.type == 'Item'" class="aoe p-10 ml-12">
-                                    {{ req.Requirement }}
+                                <td  class="aoe font-bold p-2">
+                                    {{ cat.name }}
                                 </td>
                                 <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
-                                <td v-if="req.type != 'Category'" class="">
+                                <!-- <td v-if="req.type != 'Category'" class="">
                                     <div class="flex justify-start items-start">
                                         <textarea v-model="comment1[index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                     </div>
@@ -86,6 +79,43 @@
                                     <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                     <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
                                     <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea textarea-disabled p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                </td> -->
+                            </tr>
+                            <tr scope="row" v-for="(req, index) in cat.cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {{ req.id }} 
+                                </td>
+                                <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
+                                    {{ req.Requirement }}
+                                </td>
+                                <td v-else-if="req.type == 'SubCategory'" class="aoe p-5 ml-5">
+                                    {{ req.Requirement }}
+                                </td>
+                                <td v-else-if="req.type == 'Item'" class="aoe p-10 ml-12">
+                                    {{ req.Requirement }}
+                                </td>
+                                <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
+                                <td  class="">
+                                    <div class="flex justify-start items-start">
+                                        <textarea v-model="comment1[catIndex][index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    </div>
+                                </td>
+                                <td  class="px-6 py-4">
+                                    <div class="text-center">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[catIndex][index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]">
+                                        <label class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td  class="px-6 py-4">
+                                    <div class="text-center">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[catIndex][index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]" />
+                                        <label class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td v-if="req.type != 'Category'" class="text-end">
+                                    <textarea v-if=" statusShow[catIndex][index] === 'NotComplied' " v-model="comment2[catIndex][index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-else-if="statusShow[catIndex][index] === 'Complied' || statusShow[catIndex][index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                    <textarea v-else disabled v-model="comment2[catIndex][index]" rows="3" id="message2" class="object-fill textarea textarea-disabled p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -264,11 +294,14 @@ export default {
             // var missing_comment1 = 0;
             var missing_checkbox = 0;
             console.log(this.comment1.length)
+            console.log(this.comment1)
 
             for (var i = 0; i < this.comment1.length; i++) {
-                if (this.comment1[i] == null || this.comment1[i] == '') {
+                for(var c = 0; c < this.comment1[i].length; c++){
+                    if (this.comment1[i][c] == null || this.comment1[i][c] == '') {
                     missing_comment++;
-                    console.log(this.comment1[i])
+                    console.log(this.comment1[i][c])
+                }
                 }
             }
             // for (var x = 0; x < this.comment2.length; x++) {
@@ -279,8 +312,10 @@ export default {
             // }
 
             for (var j = 0; j < this.statusShow.length; j++) {
-                if (this.statusShow[j] == 'NotComplied' && this.comment2[j] == '') {
-                    missing_checkbox++;
+                for (var k = 0; k < this.statusShow[j].length; k++) {
+                    if (this.statusShow[j][k] == 'NotComplied' && this.comment2[j][k] == '') {
+                        missing_checkbox++;
+                    }
                 }
             }
 
@@ -324,16 +359,11 @@ export default {
 
             //ACTUAL SITUATIONS
             for (var i = 0; i < this.categories.length; i++) {
-                // actualSituations.push({
-                //     id: counter,
-                //     content: this.comment1[counter],
-                //     type: "Category",
-                // });
                 counter++;
                 for (var j = 0; j < this.categories[i].subcategory.length; j++) {
                     actualSituations.push({
                         id: counter,
-                        content: this.comment1[counter],
+                        content: this.comment1[i][j],
                         type: "SubCategory",
                     });
                     counter++;
@@ -341,7 +371,7 @@ export default {
                     for (var k = 0; k < this.categories[i].subcategory[j].items.length; k++) {
                         actualSituations.push({
                             id: counter,
-                            content: this.comment1[counter],
+                            content: this.comment1[i][j + k],
                             type: "Item",
                         });
                         counter++;
@@ -355,16 +385,11 @@ export default {
             var remarks = [];
             counter = 0;
             for (i = 0; i < this.categories.length; i++) {
-                // remarks.push({
-                //     id: counter,
-                //     content: this.comment1[counter],
-                //     type: "Category",
-                // });
                 counter++;
                 for (j = 0; j < this.categories[i].subcategory.length; j++) {
                     remarks.push({
                         id: counter,
-                        content: this.comment1[counter],
+                        content: this.comment1[i][j],
                         type: "SubCategory",
                     });
                     counter++;
@@ -372,7 +397,7 @@ export default {
                     for (k = 0; k < this.categories[i].subcategory[j].items.length; k++) {
                         remarks.push({
                             id: counter,
-                            content: this.comment1[counter],
+                            content: this.comment1[i][j + k],
                             type: "Item",
                         });
                         counter++;
@@ -382,7 +407,16 @@ export default {
 
             }
 
-            if (this.statusShow.includes("NotComplied")) {
+            var complying = true;
+            for(var statArr = 0; statArr < this.statusShow.length; statArr++){
+                for(var status = 0; status < this.statusShow[statArr].length; status++){
+                    if(this.statusShow[statArr][status] == "NotComplied"){
+                        complying = false;
+                    }
+                }
+            }
+
+            if (complying == false) {
                 var today = new Date();
                 var complianceDueDate = today.setDate(today.getDate() + 45);
                 console.log(complianceDueDate)
@@ -478,8 +512,10 @@ export default {
         getSummary() {
             this.summary = "";
             for (var i = 0; i < this.comment1.length; i++) {
-                if (this.comment1[i] != undefined && this.comment1[i] != "")
-                    this.summary = this.summary + " " + this.comment1[i];
+                for(var j = 0; j < this.comment1[i].length; j++){
+                    if (this.comment1[i][j] != undefined && this.comment1[i][j] != "")
+                        this.summary = this.summary + " " + this.comment1[i][j];
+                }
             }
         },
         scrollToTop() {
@@ -607,22 +643,15 @@ export default {
 
                 var categories = [];
 
+                console.log(catIndexes)
+
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
-                        // this.statusShow.push("");
-                        // this.comment1.push("");
-                        // this.comment2.push("");
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
                             if (subcatIndexes[i].includes(j + 1)) {
                                 var items = [];
-                                // this.statusShow.push("");
-                                // this.comment1.push("");
-                                // this.comment2.push("");
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                                    // this.statusShow.push("");
-                                    // this.comment1.push("");
-                                    // this.comment2.push("");
                                     items.push({
                                         id: k + 1,
                                         Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
@@ -659,46 +688,39 @@ export default {
                 this.categories = categories;
 
                 for (var z = 0; z < this.categories.length; z++) {
-                    //console.log(i)
-                    // console.log(this.categories[i].Category);
-                    // this.statusShow.push("");
-                    // this.comment1.push("");
-                    // this.comment2.push("");
-                    this.eval.push({
-                        id: this.categories[z].id,
-                        Requirement: this.categories[z].Category,
-                        type: "Category",
-                    });
-                    //this.catCounter++;
-                    //this.subcatCounter = this.categories[i].subcategory.length;
+                    var categoryReqs = []
+                    this.statusShow.push([]);
+                        this.comment1.push([]);
+                        this.comment2.push([]);
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                        // console.log(this.categories[i].subcategory[x].Subcategory);
-                        this.statusShow.push("");
-                        this.comment1.push("");
-                        this.comment2.push("");
-                        this.eval.push({
+                        this.statusShow[z].push("");
+                        this.comment1[z].push("");
+                        this.comment2[z].push("");
+                        categoryReqs.push({
                             id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             Requirement: this.categories[z].subcategory[x].Subcategory,
                             type: "SubCategory",
                         });
-                        //var itemLen = this.categories[i].subcategory[x].items.length;
-                        //this.subcatCounter++;
-                        //this.itemCounter =this.categories[i].subcategory[x].items.length;
+                        console.log(this.categories[z].subcategory[x].items.length)
                         for (
                             var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                         ) {
-                            //console.log(this.categories[i].subcategory[x].items[y].Item);
-                            this.statusShow.push("");
-                            this.comment1.push("");
-                            this.comment2.push("");
-                            this.eval.push({
+                            this.statusShow[z].push("");
+                            this.comment1[z].push("");
+                            this.comment2[z].push("");
+                            categoryReqs.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,
                                 type: "Item",
                             });
-                            //this.itemCounter++;
                         }
                     }
+
+                    this.eval.push({
+                        id: this.categories[z].id,
+                        name: this.categories[z].Category,
+                        cat: categoryReqs,
+                    });
                 }
             }
 
