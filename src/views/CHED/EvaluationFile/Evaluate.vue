@@ -1,6 +1,7 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{statusShow}} {{comment1}} {{comment2}}
+    {{statusShow}} {{comment1}} {{comment2}} <br>
+    {{eval}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -49,8 +50,8 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr scope="row" v-for="(req, index) in eval" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                        <tbody v-for="(cat, index) in eval" :key="(req, index)">
+                            <tr scope="row" v-for="(req, index) in cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                                 <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     {{ req.id }}
                                 </td>
