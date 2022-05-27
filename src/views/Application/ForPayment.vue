@@ -66,11 +66,11 @@
                 </button>
             </div>
             <div>
-                <button v-if="fileCheck() == true && this.paymentStatus != 'Rejected'" @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
+                <button v-if="fileCheck() == true && this.paymentStatus != 'For Revision'" @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Revise
                 </button>
             </div>
-            <div v-if="fileCheck() == true && this.paymentStatus != 'Rejected'">
+            <div v-if="fileCheck() == true && this.paymentStatus != 'For Revision'">
                 <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
                 </button>
@@ -94,7 +94,7 @@
                 Please provide reason:
             </p>
             <div>
-                <textarea v-model="rejectionReason" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Reason"></textarea>
+                <textarea v-model="revisionReason" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Reason"></textarea>
             </div>
             <div class="modal-action">
                 <label for="for-revision" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
@@ -165,7 +165,7 @@ export default {
             rep: "",
             email: "",
             hei: "",
-            rejectionReason: "",
+            revisionReason: "",
         };
     },
     validations() {
@@ -300,12 +300,12 @@ export default {
                     });
                 }
                 application.set("requirements", requirements);
-                application.set("paymentStatus", "Rejected");
-                application.set("rejectionReason", this.rejectionReason);
+                application.set("paymentStatus", "For Revision");
+                application.set("revisionReason", this.revisionReason);
 
                 this.statusTracker.push({
                     status: "For Payment",
-                    detail: "Payment File Rejected, Payment File needs to be revised and reuploaded.",
+                    detail: "Payment File For Revision, Payment File needs to be revised and reuploaded.",
                     dateTime: new Date(),
                 });
                 application.set("statusTracker", this.statusTracker);
@@ -315,7 +315,7 @@ export default {
                     .then((application) => {
                         const params = {
                             email: application.get("email"),
-                            status: "Your Application Payment was Rejected, please revise and reupload file",
+                            status: "Your Application Payment is in need of Revision, please revise and reupload file",
                             type: "sendStatusUpdate",
                             approved: true,
                         };
@@ -323,7 +323,7 @@ export default {
 
                         this.$refs.Spinner.show();
 
-                        toast(this.type.toLowerCase() + " has been rejected", {
+                        toast(this.type.toLowerCase() + " has been marked for revision", {
                                 type: TYPE.INFO,
                                 timeout: 2000,
                                 position: POSITION.TOP_RIGHT,
@@ -335,7 +335,7 @@ export default {
                 const Notifications = Parse.Object.extend("Notifications");
                     const newNotification = new Notifications();
 
-                    newNotification.set("message", "Your Application Payment was Rejected, revision and reuploading required");
+                    newNotification.set("message", "Your Application Payment is in need of Revision, revision and reuploading required");
                     newNotification.set("date_and_time", new Date());
                     newNotification.set("user", this.hei);
                     newNotification.set("isRead", false);

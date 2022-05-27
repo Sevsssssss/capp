@@ -1,7 +1,6 @@
 <template>
 <!--Header-->
 <div class="m-3">
-    <!-- {{eval}} -->
     <form v-on:submit.prevent="submit" class="overflow-x-auto shadow-lg rounded-lg p-8 w-full justify-between">
         <div class="form-control w-full pt-2">
             <label class="label">

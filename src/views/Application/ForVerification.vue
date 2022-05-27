@@ -235,7 +235,7 @@ export default {
                 application.set("resubmittedFiles", filesToResubmit);
                 application.set("applicationStatus", "For Compliance");
 
-                //If the application is not in Compliance (first time rejection) add a new compliance Due Date
+                //If the application is not in Compliance (first time compliance) add a new compliance Due Date
                 if(application.get("inCompliance") == false){
                     application.set("inCompliance", true)
                     var currentDate = new Date();
