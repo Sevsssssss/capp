@@ -22,17 +22,25 @@
         <table v-if="appType.programList.length > 0" class=" w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
+                    <th scope="col" class="px-6 py-3">HEIs APPLIED</th>
                     <th scope="col" class="px-6 py-3">PROGRAMS</th>
-                    <th scope="col" class="px-6 py-3">NUMBER OF HEIs APPLIED</th>
+                    <th scope="col" class="px-6 py-3">PERMIT NUMBER</th>
+                    <th scope="col" class="px-6 py-3">DATE ISSUED</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="bg-white border-b" v-for="prog in appType.programList" :key="prog">
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ prog.program }}
+                        {{ prog.hei }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ prog.count }}
+                        {{ prog.programName }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ prog.permitNo }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ prog.dateIssued }}
                     </td>
                 </tr>
 
@@ -95,6 +103,7 @@ export default {
     data() {
         return {
             numberOfHEI: [],
+            appList: [],
             listofPrograms: [],
             currentpage: [],
             numPerPage: 10,
@@ -122,6 +131,7 @@ export default {
                 this.currentpage[index] += 1;
             }
         },
+
         exportToPdfTables(appType, index) {
             const date = new Date().toLocaleDateString("en", {
                 month: "long",
@@ -129,12 +139,20 @@ export default {
                 year: "numeric",
             });
             const columns = [{
-                    title: "PROGRAMS",
-                    dataKey: "program",
+                    title: "HEIs APPLIED",
+                    dataKey: "hei",
                 },
                 {
-                    title: "Number of HEIs Applied",
-                    dataKey: "count",
+                    title: "PROGRAMS",
+                    dataKey: "programName",
+                },
+                {
+                    title: "PERMIT NUMBER",
+                    dataKey: "permitNo",
+                },
+                {
+                    title: "DATE ISSUED",
+                    dataKey: "dateIssued",
                 },
             ];
             const doc = new jsPDF({
@@ -249,6 +267,7 @@ export default {
             //For List of Programs
             for (var k = 0; k < appTypeResults.length; k++) {
                 var programList = [];
+                var heiList = [];
                 var programInstance = [];
                 // var progCounter = 0;
                 const applicationType = appTypeResults[k];
@@ -257,25 +276,64 @@ export default {
                 for (var l = 0; l < querResult.length; l++) {
                     const application = querResult[l];
 
-                    const Programs = Parse.Object.extend("Programs");
-                    const progQuery = new Parse.Query(Programs);
-                    progQuery.equalTo("objectId", application.get("program"));
-                    const progResults = await progQuery.first();
+                    if (application.get("applicationStatus") == "Completed") {
+                        const Programs = Parse.Object.extend("Programs");
+                        const progQuery = new Parse.Query(Programs);
+                        progQuery.equalTo("objectId", application.get("program"));
+                        const progResults = await progQuery.first();
 
-                    // const users = new Parse.Query(Parse.User);
-                    // users.equalTo("objectId", application.get("createdBy"));
-                    // const hei = await users.first({
-                    //     useMasterKey: true,
-                    // });
-                    if (programList.includes(progResults.get("programName"))) {
-                        var index = programList.indexOf(progResults.get("programName"))
-                        programInstance[index] += 1;
-                    } else {
-                        programList.push(
-                            progResults.get("programName")
-                        );
-                        programInstance.push(1);
+                        const users = new Parse.Query(Parse.User);
+                        users.equalTo("objectId", application.get("createdBy"));
+                        const hei = await users.first({
+                            useMasterKey: true,
+                        });
+
+                        //Store Evaluation Date
+                        var months = [
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December",
+                        ];
+                        var month1 = application.get("DateIssued").getMonth();
+                        var day = application.get("DateIssued").getDate();
+                        var year = application.get("DateIssued").getFullYear();
+
+                        var dateOfIssuance = months[month1] + " " + day + ", " + year;
+                        console.log(dateOfIssuance);
+
+                        heiList.push({
+                            hei: hei.get("hei_name"),
+                            programName: progResults.get("programName"),
+                            permitNo: application.get("PermitNo"),
+                            dateIssued: dateOfIssuance
+                        })
                     }
+
+                    // programlist.push({
+                    //     hei:
+                    //     program:
+                    //     permitId: 
+                    //     dateIssued:
+                    // })
+
+                    // if (programList.includes(progResults.get("programName"))) {
+                    //     var index = programList.indexOf(progResults.get("programName"))
+                    //     programInstance[index] += 1;
+                    // } else {
+                    //     programList.push(
+                    //         progResults.get("programName")
+                    //     );
+                    //     programInstance.push(1);
+                    // }
 
                 }
 
@@ -290,7 +348,7 @@ export default {
                 }
                 this.listofPrograms.push({
                     applicationType: applicationType.get("applicationTypeName"),
-                    programList: progNum,
+                    programList: heiList,
                 });
                 this.totalEntries.push(programList.length);
                 this.currentpage.push(0);
@@ -376,7 +434,7 @@ export default {
 
                 const text =
                     "*This is a system generated report from the CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM.";
-                    
+
                 pdf.addImage(dataURL, 'JPEG', 1, 3.5, 6.5, 4);
                 pdf.setFontSize(9);
                 pdf.text(text, 1, 10.2);
