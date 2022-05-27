@@ -63,24 +63,24 @@
                                     {{ req.Requirement }}
                                 </td>
                                 <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
-                                <td class="">
+                                <td v-if="req.type != 'Category'" class="">
                                     <div class="flex justify-start items-start">
                                         <textarea v-model="comment1[index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td v-if="req.type != 'Category'" class="px-6 py-4">
                                     <div class="text-center">
                                         <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[index, v$.complied.$model]">
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td v-if="req.type != 'Category'" class="px-6 py-4">
                                     <div class="text-center">
                                         <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[index, v$.notcomplied.$model]" />
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <td class="text-end">
+                                <td v-if="req.type != 'Category'" class="text-end">
                                     <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                     <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
                                     <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea textarea-disabled p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
