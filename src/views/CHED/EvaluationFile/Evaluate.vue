@@ -146,7 +146,7 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                    <div class="flex flex-row justify-between">
                                         <p class="py-2 font-semibold">Recommendations</p>
-                                        <label @click="getSummary()" class="hover:text-brand-darkblue">Generate Recommendations</label>
+                                        <label @click="getRecommendation()" class="hover:text-brand-darkblue">Generate Recommendations</label>
                                     </div>
                                     <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea>
                                 </th>
@@ -511,6 +511,15 @@ export default {
                 for(var j = 0; j < this.comment1[i].length; j++){
                     if (this.comment1[i][j] != undefined && this.comment1[i][j] != "")
                         this.summary = this.summary + " " + this.comment1[i][j];
+                }
+            }
+        },
+        getRecommendation() {
+            this.recommendation = "";
+            for (var i = 0; i < this.comment2.length; i++) {
+                for(var j = 0; j < this.comment2[i].length; j++){
+                    if (this.comment2[i][j] != undefined && this.comment2[i][j] != "" && this.statusShow[i][j] == 'NotComplied')
+                        this.recommendation = this.recommendation + " " + this.comment2[i][j];
                 }
             }
         },
