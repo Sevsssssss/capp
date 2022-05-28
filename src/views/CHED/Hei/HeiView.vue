@@ -684,7 +684,137 @@ export default {
                     }
                 });
 
+                // const HEITypes = Parse.Object.extend("HEI_Types");
+                // const hTypeQuery = new Parse.Query(HEITypes);
+
+                // const hTypeQuerResult = await hTypeQuery.find();
+
+                // var heiTypesLQ = [];
+                // var hTypeCounterLQ = [];
+
+                // for (var h = 0; h < hTypeQuerResult.length; h++) {
+                //     const heiType = hTypeQuerResult[h];
+                //     heiTypesLQ.push({
+                //         id: heiType.id,
+                //         name: heiType.get("name"),
+                //     });
+                //     hTypeCounterLQ.push(0);
+                // }
+                // this.hei_Types = heiTypesLQ;
+
+                // for (var i = 0; i < querResult.length; i++) {
+                //     const hei = querResult[i];
+
+                //     const index = heiTypesLQ.findIndex(object => {
+                //         return object.id == hei.get("hei_type");
+                //     });
+
+                //     console.log(index);
+
+                //     hTypeCounterLQ[index] += 1;
+
+                // }
+
+                // var dataColLQ = [];
+                // for (var t = 0; t < heiTypesLQ.length; t++) {
+                //     dataColLQ.push({
+                //         title: heiTypesLQ[t].name,
+                //         num: hTypeCounterLQ[t],
+                //         color: this.colors[t],
+                //     })
+
+                // }
+                // this.datas = dataColLQ;
+
             });
+            // subscription.on('create', async () => {
+            //     const HEITypes = Parse.Object.extend("HEI_Types");
+            //     const hTypeQuery = new Parse.Query(HEITypes);
+
+            //     const hTypeQuerResult = await hTypeQuery.find();
+
+            //     var heiTypesLQ = [];
+            //     var hTypeCounterLQ = [];
+
+            //     for (var h = 0; h < hTypeQuerResult.length; h++) {
+            //         const heiType = hTypeQuerResult[h];
+            //         heiTypesLQ.push({
+            //             id: heiType.id,
+            //             name: heiType.get("name"),
+            //         });
+            //         hTypeCounterLQ.push(0);
+            //     }
+            //     this.hei_Types = heiTypesLQ;
+
+            //     for (var i = 0; i < querResult.length; i++) {
+            //         const hei = querResult[i];
+
+            //         const index = heiTypesLQ.findIndex(object => {
+            //             return object.id == hei.get("hei_type");
+            //         });
+
+            //         console.log(index);
+
+            //         hTypeCounterLQ[index] += 1;
+
+            //     }
+
+            //     var dataColLQ = [];
+            //     for (var t = 0; t < heiTypesLQ.length; t++) {
+            //         dataColLQ.push({
+            //             title: heiTypesLQ[t].name,
+            //             num: hTypeCounterLQ[t],
+            //             color: this.colors[t],
+            //         })
+
+            //     }
+            //     this.datas = dataColLQ;
+            // })
+
+            // subscription.on('delete', async () => {
+            //     const HEITypes = Parse.Object.extend("HEI_Types");
+            //     const hTypeQuery = new Parse.Query(HEITypes);
+
+            //     const hTypeQuerResult = await hTypeQuery.find();
+
+            //     var heiTypesLQ = [];
+            //     var hTypeCounterLQ = [];
+
+            //     for (var h = 0; h < hTypeQuerResult.length; h++) {
+            //         const heiType = hTypeQuerResult[h];
+            //         heiTypesLQ.push({
+            //             id: heiType.id,
+            //             name: heiType.get("name"),
+            //         });
+            //         hTypeCounterLQ.push(0);
+            //     }
+            //     this.hei_Types = heiTypesLQ;
+
+            //     for (var i = 0; i < querResult.length; i++) {
+            //         const hei = querResult[i];
+
+            //         const index = heiTypesLQ.findIndex(object => {
+            //             return object.id == hei.get("hei_type");
+            //         });
+
+            //         console.log(index);
+
+            //         hTypeCounterLQ[index] += 1;
+
+            //     }
+
+            //     var dataColLQ = [];
+            //     for (var t = 0; t < heiTypesLQ.length; t++) {
+            //         dataColLQ.push({
+            //             title: heiTypesLQ[t].name,
+            //             num: hTypeCounterLQ[t],
+            //             color: this.colors[t],
+            //         })
+
+            //     }
+            //     this.datas = dataColLQ;
+            // })
+
         }
     },
 };
