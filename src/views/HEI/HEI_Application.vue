@@ -114,7 +114,7 @@
                         }">
                             <a v-if="statusChecker(table.status) &&table.status === 'For Compliance'" href="#" class="font-medium text-blue-600 hover:underline">View</a>
                         </router-link>
-                        <a v-if="statusChecker(table.status) &&table.status === 'Completed'"  :href="table.certificate.url()" class="text-blue-400 hover:text-blue-700">
+                        <a v-if="statusChecker(table.status) &&table.status === 'Completed'" :href="table.certificate.url()" class="text-blue-400 hover:text-blue-700">
                             <!-- <svg style="width:20px;height:20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
                             </svg> -->
@@ -297,7 +297,6 @@ export default {
             this.appID = appid;
             this.appIndex = index;
 
-
             //For Tracking
 
             //Query Application
@@ -440,11 +439,11 @@ export default {
                 "November",
                 "December",
             ];
-            
+
             var month;
             var day;
             var year;
-            
+
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
                 const applications = Parse.Object.extend("Applications");
@@ -632,7 +631,7 @@ export default {
                     "November",
                     "December",
                 ];
-               
+
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
@@ -643,8 +642,8 @@ export default {
 
                 const applicationType = await appTypeQuery.first();
 
-                if(application.get("inCompliance") && application.get("applicationStatus") == "For Compliance"){
-                    if(application.get("complianceDueDate") < new Date()){
+                if (application.get("inCompliance") && application.get("applicationStatus") == "For Compliance") {
+                    if (application.get("complianceDueDate") < new Date()) {
                         application.set("applicationStatus", "Non Compliant")
                         application.save()
 
@@ -656,7 +655,7 @@ export default {
                         newNotification.set("date_and_time", new Date());
                         newNotification.set("user", Parse.User.current().id);
                         newNotification.set("isRead", false);
-                        
+
                         //Save new Notification
                         newNotification.save().then((notif) => {
                             console.log("Notification Saved: " + notif.id);
@@ -682,6 +681,30 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = storedApplications;
+
+            /////////////////////////////////////////////////////////////////////////////// Live Queries
+
+            const subscription = await query.subscribe();
+
+            subscription.on("update", async (object) => {
+                console.log("object updated" + object);
+                var index = this.tables.findIndex((application) => application.appID == object.id);
+                console.log("thissssssss: " + object.get("certificate"))
+                if (object.get("certificate") !== undefined) {
+                    this.tables[index] = {
+                        ...this.tables[index],
+                        status: object.get("applicationStatus"),
+                        paymentStatus: object.get("paymentStatus"),
+                        certificate: object.get("certificate")
+                    };
+                } else {
+                    this.tables[index] = {
+                        ...this.tables[index],
+                        status: object.get("applicationStatus"),
+                        paymentStatus: object.get("paymentStatus"),
+                    }
+                }
+            });
         }
     },
 };
