@@ -1094,6 +1094,7 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = storedApplications;
+            const subscription = await query.subscribe();
 
             //Query and Store Count of Applications per Application Status
             const applicationsFA = Parse.Object.extend("Applications");
@@ -1179,8 +1180,6 @@ export default {
                 },
             ];
 
-            const subscription = await query.subscribe();
-
             subscription.on("update", async (object) => {
                 console.log("object updated" + object);
                 var index = this.tables.findIndex((application) => application.appID == object.id);
@@ -1191,6 +1190,174 @@ export default {
                     ...this.tables[index],
                     status: object.get("applicationStatus"),
                 };
+
+                const applicationsFA = Parse.Object.extend("Applications");
+                const queryFA = new Parse.Query(applicationsFA);
+                queryFA.equalTo("applicationStatus", "For Approval");
+
+                const applicationsFR = Parse.Object.extend("Applications");
+                const queryFR = new Parse.Query(applicationsFR);
+                queryFR.equalTo("applicationStatus", "For Revision");
+
+                const applicationsFP = Parse.Object.extend("Applications");
+                const queryFP = new Parse.Query(applicationsFP);
+                queryFP.equalTo("applicationStatus", "For Payment");
+
+                const applicationsFE = Parse.Object.extend("Applications");
+                const queryFE = new Parse.Query(applicationsFE);
+                queryFE.equalTo("applicationStatus", "For Inspection");
+
+                const applicationsFC = Parse.Object.extend("Applications");
+                const queryFC = new Parse.Query(applicationsFC);
+                queryFC.equalTo("applicationStatus", "For Compliance");
+
+                const applicationsFV = Parse.Object.extend("Applications");
+                const queryFV = new Parse.Query(applicationsFV);
+                queryFV.equalTo("applicationStatus", "For Verification");
+
+                const applicationsFI = Parse.Object.extend("Applications");
+                const queryFI = new Parse.Query(applicationsFI);
+                queryFI.equalTo("applicationStatus", "For Issuance");
+
+                const applicationsC = Parse.Object.extend("Applications");
+                const queryC = new Parse.Query(applicationsC);
+                queryC.equalTo("applicationStatus", "Completed");
+
+                const applicationsNC = Parse.Object.extend("Applications");
+                const queryNC = new Parse.Query(applicationsNC);
+                queryNC.equalTo("applicationStatus", "Non Compliant");
+
+                this.datas = [{
+                        title: "FOR APPROVAL",
+                        num: await queryFA.count(),
+                        type: "approval",
+                    },
+                    {
+                        title: "FOR REVISION",
+                        num: await queryFR.count(),
+                        type: "revision",
+                    },
+                    {
+                        title: "FOR PAYMENT",
+                        num: await queryFP.count(),
+                        type: "payment",
+                    },
+                    {
+                        title: "FOR INSPECTION",
+                        num: await queryFE.count(),
+                        type: "evaluation",
+                    },
+                    {
+                        title: "FOR COMPLIANCE",
+                        num: await queryFC.count(),
+                        type: "forcompliance",
+                    },
+                    {
+                        title: "FOR VERIFICATION",
+                        num: await queryFV.count(),
+                        type: "verification",
+                    },
+                    {
+                        title: "FOR ISSUANCE",
+                        num: await queryFI.count(),
+                        type: "issuance",
+                    },
+                    {
+                        title: "COMPLETED",
+                        num: await queryC.count(),
+                        type: "completed",
+                    },
+                    {
+                        title: "NON COMPLIANT",
+                        num: await queryNC.count(),
+                        type: "noncompliant",
+                    },
+                ];
+            });
+
+            subscription.on('create', async() => {
+                const applicationsFA = Parse.Object.extend("Applications");
+                const queryFA = new Parse.Query(applicationsFA);
+                queryFA.equalTo("applicationStatus", "For Approval");
+
+                const applicationsFR = Parse.Object.extend("Applications");
+                const queryFR = new Parse.Query(applicationsFR);
+                queryFR.equalTo("applicationStatus", "For Revision");
+
+                const applicationsFP = Parse.Object.extend("Applications");
+                const queryFP = new Parse.Query(applicationsFP);
+                queryFP.equalTo("applicationStatus", "For Payment");
+
+                const applicationsFE = Parse.Object.extend("Applications");
+                const queryFE = new Parse.Query(applicationsFE);
+                queryFE.equalTo("applicationStatus", "For Inspection");
+
+                const applicationsFC = Parse.Object.extend("Applications");
+                const queryFC = new Parse.Query(applicationsFC);
+                queryFC.equalTo("applicationStatus", "For Compliance");
+
+                const applicationsFV = Parse.Object.extend("Applications");
+                const queryFV = new Parse.Query(applicationsFV);
+                queryFV.equalTo("applicationStatus", "For Verification");
+
+                const applicationsFI = Parse.Object.extend("Applications");
+                const queryFI = new Parse.Query(applicationsFI);
+                queryFI.equalTo("applicationStatus", "For Issuance");
+
+                const applicationsC = Parse.Object.extend("Applications");
+                const queryC = new Parse.Query(applicationsC);
+                queryC.equalTo("applicationStatus", "Completed");
+
+                const applicationsNC = Parse.Object.extend("Applications");
+                const queryNC = new Parse.Query(applicationsNC);
+                queryNC.equalTo("applicationStatus", "Non Compliant");
+
+                this.datas = [{
+                        title: "FOR APPROVAL",
+                        num: await queryFA.count(),
+                        type: "approval",
+                    },
+                    {
+                        title: "FOR REVISION",
+                        num: await queryFR.count(),
+                        type: "revision",
+                    },
+                    {
+                        title: "FOR PAYMENT",
+                        num: await queryFP.count(),
+                        type: "payment",
+                    },
+                    {
+                        title: "FOR INSPECTION",
+                        num: await queryFE.count(),
+                        type: "evaluation",
+                    },
+                    {
+                        title: "FOR COMPLIANCE",
+                        num: await queryFC.count(),
+                        type: "forcompliance",
+                    },
+                    {
+                        title: "FOR VERIFICATION",
+                        num: await queryFV.count(),
+                        type: "verification",
+                    },
+                    {
+                        title: "FOR ISSUANCE",
+                        num: await queryFI.count(),
+                        type: "issuance",
+                    },
+                    {
+                        title: "COMPLETED",
+                        num: await queryC.count(),
+                        type: "completed",
+                    },
+                    {
+                        title: "NON COMPLIANT",
+                        num: await queryNC.count(),
+                        type: "noncompliant",
+                    },
+                ];
             });
 
         }
