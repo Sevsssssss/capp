@@ -175,14 +175,16 @@
 
   //SUPER ADMIN before save to prevent editing
   Parse.Cloud.beforeSave(Parse.User, async(request) => {
-    const Designations = Parse.Object.extend("Designations");
+    if(!request.object.isNew()){
+      const Designations = Parse.Object.extend("Designations");
       const query = new Parse.Query(Designations)
       query.equalTo("objectId", request.object.get("designation"))
 
       const designation = await query.first();
-      
+        
 
-    if(designation.get("name") == "SUPER ADMIN"){
-      throw "Can't Edit SUPER ADMIN Account"
+      if(designation.get("name") == "SUPER ADMIN"){
+        throw "Can't Edit SUPER ADMIN Account"
+      }
     }
   })
