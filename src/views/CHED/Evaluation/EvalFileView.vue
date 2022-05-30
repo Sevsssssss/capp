@@ -47,7 +47,6 @@
                <span class="font-normal"> per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}} </span>
             </div>
 
-            <!-- <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div> -->
             <div>{{Program}}</div>
         </div>
         <div class="">
@@ -108,6 +107,7 @@ export default {
         };
     },
     methods: {
+        //Delete Evaluation Instrument
         async deleteEvalInst() {
             const EvalInstruments = Parse.Object.extend("EvaluationForms");
             const evalQuery = new Parse.Query(EvalInstruments);
@@ -148,6 +148,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Evaluation Instrument
             const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
             evalQuery.equalTo("objectId", this.id);
@@ -155,10 +157,12 @@ export default {
                 useMasterKey: true,
             });
 
+            //Grab CMOs selected in Evaluation Instrument
             var cmos = [];
 
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
-
+                
+                //Query CMOs
                 const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
                 const chedMemoQ = new Parse.Query(CHEDMEMOS);
                 chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
@@ -166,6 +170,7 @@ export default {
                     useMasterKey: true,
                 });
 
+                //Save Categories and Sub Categories Selected
                 var catIndexes = [];
                 var subcatIndexes = [];
 
@@ -211,9 +216,7 @@ export default {
                     if (catIndexes.includes(i + 1)) {
                         var catIndex = catIndexes.indexOf(i + 1)
                         if(hasSubCat[catIndex] == true){
-                            console.log(chedMemo.get("evaluationFormReqs")[i].subcategory.length);
                             for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                                //for(var sub = 0; sub < subcatIndexes.length)
                                 if (subcatIndexes[catIndex].includes(j + 1)) {
                                     var items = [];
 

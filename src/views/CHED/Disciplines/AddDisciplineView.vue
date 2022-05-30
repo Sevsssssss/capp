@@ -208,6 +208,7 @@ export default {
     },
 
     methods: {
+        //For validation of user input
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -273,13 +274,16 @@ export default {
         },
 
         saveDiscipline() {
+            //Saving new Disciplines
             const Disciplines = Parse.Object.extend("Disciplines");
             for (var m = 0; m < this.majorDisciplines.length; m++) {
+                //Set Discipline Data
                 const newDiscipline = new Disciplines();
                 newDiscipline.set("MajDiscCode", this.majorDisciplines[m].MajDiscCode);
                 newDiscipline.set("MajorDiscipline", this.majorDisciplines[m].MajorDiscipline.toUpperCase());
                 newDiscipline.set("specificDiscipline", this.majorDisciplines[m].specificDiscipline);
-
+                
+                //Save new Discipline
                 newDiscipline.save().then((discipline) => {
                     console.log("Discipline Saved: " + discipline.id);
                 }, (error) => {

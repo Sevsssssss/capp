@@ -301,12 +301,15 @@ export default {
             return this.showModal2;
         },
         async changePassword() {
+
+            //Query User
             const rqat = new Parse.Query(Parse.User);
             rqat.equalTo("objectId", this.rqatID);
             const selectedRQAT = await rqat.first({
                 useMasterKey: true,
             });
 
+            //Change Password
             selectedRQAT.setPassword(this.newPass)
             console.log("Password Updated")
             selectedRQAT.save(null, {
@@ -331,8 +334,9 @@ export default {
         },
 
         async updateRQAT() {
-            // this.$refs.Spinner.show();
             try {
+
+                //Query RQAT
                 const rqat = new Parse.Query(Parse.User);
                 rqat.equalTo("objectId", this.rqatID);
                 const selectedRQAT = await rqat.first({
@@ -378,13 +382,14 @@ export default {
                     affilendDate: currentDay,
                 })
 
-
+                //Set RQAT Details
                 selectedRQAT.set("name", rqatName);
                 selectedRQAT.set("username", this.username);
                 selectedRQAT.set("contact_num", this.contactnum);
                 selectedRQAT.set("hei_affil", heiAffil);
                 selectedRQAT.set("past_affil", this.past_affil);
 
+                //Save Updated RQAT
                 await selectedRQAT.save(null, {
                     useMasterKey: true,
                 }).then(() => {
@@ -418,7 +423,6 @@ export default {
         },
         modal() {
             var has_error = 0;
-            console.log(this.hei_affil)
             if (
                 this.lastname == "" ||
                 this.firstname == "" ||
@@ -437,16 +441,6 @@ export default {
             }
 
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
-
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -493,7 +487,7 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
+            //Query HEI Access Type
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "HEI");
@@ -501,11 +495,13 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var heis = [];
-
+            //Query HEIs
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
 
             const querResult = await query.find();
+
+            //Save HEIs
             heis.push({
                 id: "None",
                 title: "None",
@@ -518,12 +514,15 @@ export default {
                 });
             }
             this.heis = heis;
-
+            
+            //Query RQAT
             const queryRQAT = new Parse.Query(Parse.User);
             queryRQAT.equalTo("objectId", this.rqatID);
             const rqat = await queryRQAT.first({
                 useMasterKey: true,
             });
+
+            //Get RQAT Details
             this.lastname = rqat.get("name").lastname;
             this.firstname = rqat.get("name").firstname;
             this.midinit = rqat.get("name").middleinitial;

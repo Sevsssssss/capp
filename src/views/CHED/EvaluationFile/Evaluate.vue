@@ -283,12 +283,14 @@ export default {
         }
     },
     methods: {
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
-        },
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
+        },
+
+        //For Validation of Data
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
         },
         validate() {
             return this.showModal1;
@@ -296,25 +298,15 @@ export default {
         modal() {
             var has_error = 0;
             var missing_comment = 0;
-            // var missing_comment1 = 0;
             var missing_checkbox = 0;
-            console.log(this.comment1.length)
-            console.log(this.comment1)
 
             for (var i = 0; i < this.comment1.length; i++) {
                 for(var c = 0; c < this.comment1[i].length; c++){
                     if (this.comment1[i][c] == null || this.comment1[i][c] == '') {
                     missing_comment++;
-                    console.log(this.comment1[i][c])
                 }
                 }
             }
-            // for (var x = 0; x < this.comment2.length; x++) {
-            //     if(this.comment2[x] == null ||  this.comment2[x] == ''){
-            //         missing_comment1++;
-            //         console.log(this.comment1[i])
-            //     }
-            // }
 
             for (var j = 0; j < this.statusShow.length; j++) {
                 for (var k = 0; k < this.statusShow[j].length; k++) {
@@ -324,7 +316,6 @@ export default {
                 }
             }
 
-            console.log(missing_comment)
             if (
                 this.summary == "" || this.recommendation == "" || missing_comment > 0 || this.statusShow.length == 0 || missing_checkbox > 0
             ) {
@@ -335,7 +326,6 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
                 has_error = 1;
-                console.log("array is empty")
             }
 
             if (has_error < 1) {
@@ -343,6 +333,8 @@ export default {
             }
         },
         async submitEvaluation() {
+
+            //Query Application
             const Applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(Applications);
             query.equalTo("objectId", this.id);
@@ -411,11 +403,10 @@ export default {
                     }
                 }
             }
-
+            //If Application doesn't comply, save as For Compliance with Due Date 
             if (complying == false) {
                 var today = new Date();
                 var complianceDueDate = this.appliType == this.initPermit ? today.setDate(today.getDate() + 45): today.setDate(today.getDate() + 30);
-                console.log(complianceDueDate)
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
@@ -447,7 +438,9 @@ export default {
                     console.log("Error: " + error.message);
                 });
 
-            } else {
+            } 
+            //Else if application is complying, Send Directly for Issuance
+            else {
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
@@ -478,6 +471,7 @@ export default {
                 });
             }
 
+            //Save Application
             application
                 .save()
                 .then((application) => {
@@ -505,6 +499,8 @@ export default {
                 2000
             );
         },
+
+        //For Summary Generation from Actual Situations
         getSummary() {
             this.summary = "";
             for (var i = 0; i < this.comment1.length; i++) {
@@ -514,6 +510,8 @@ export default {
                 }
             }
         },
+
+        //For Recommendation Generation from Remarks
         getRecommendation() {
             this.recommendation = "";
             for (var i = 0; i < this.comment2.length; i++) {
@@ -552,12 +550,13 @@ export default {
         }
         if (flag === 0) {
             console.log(this.$route.path)
-            console.log("heheh")
             this.$router.push("/403");
         } else {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Application
             const applications = Parse.Object.extend("Applications");
             const appQuery = new Parse.Query(applications);
             appQuery.equalTo("objectId", this.id);
@@ -565,6 +564,7 @@ export default {
                 useMasterKey: true,
             });
 
+            //For Date of Inspection
             var months = [
                 "January",
                 "February",
@@ -583,11 +583,13 @@ export default {
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
 
+            //Get Application data
             this.statusTracker = application.get("statusTracker");
             this.hei = application.get("createdBy");
 
             this.dateApplied = months[month] + " " + day + ", " + year;
 
+            //Get HEI who created the Application
             const Users = Parse.Object.extend("User");
             const userQuery = new Parse.Query(Users);
             userQuery.equalTo("objectId", application.get("createdBy"));
@@ -610,8 +612,6 @@ export default {
                 useMasterKey: true,
             });
 
-            console.log(evalInstrument);
-
             //Query the program of the application
             const programs = Parse.Object.extend("Programs");
             const programQuery = new Parse.Query(programs);
@@ -621,6 +621,8 @@ export default {
 
             this.program = program.get("programName");
 
+
+            //Query Evaluation Instrument to be used
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
 
                 const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
@@ -632,9 +634,8 @@ export default {
 
                 var catIndexes = [];
                 var subcatIndexes = [];
-
+                
                 for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
-                    console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr])
                     var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
                     if (catIndexes.includes(parseInt(contents[0]))) {
@@ -647,8 +648,6 @@ export default {
                 }
 
                 var categories = [];
-
-                console.log(catIndexes)
 
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
@@ -706,7 +705,6 @@ export default {
                             Requirement: this.categories[z].subcategory[x].Subcategory,
                             type: "SubCategory",
                         });
-                        console.log(this.categories[z].subcategory[x].items.length)
                         for (
                             var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                         ) {

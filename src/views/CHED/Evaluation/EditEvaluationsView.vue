@@ -230,19 +230,28 @@ export default {
     },
 
     methods: {
+        //For Validation
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
+        },
+        validate() {
+            return this.showModal1;
+        },
+
+        modal() {
+            this.showModal1 = !this.showModal1;
         },
         reset() {
             this.checkedPrograms = [];
         },
+        //Add CMO
         addCMO() {
-            console.log("HI");
             this.eval.push({
                 cmoID: "",
                 checkedRequirements: [],
             });
         },
+        //Remove CMO
         removeCMO() {
             this.eval.pop({
                 cmoID: "",
@@ -253,118 +262,10 @@ export default {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
         },
-        validate() {
-            return this.showModal1;
-        },
-
-        modal() {
-            // var has_error = 0;
-            // var errCat = 0;
-            // var subcat = 0;
-            // var items = 0;
-
-            // for (var i = 0; i < this.categories.length; i++) {
-            //     console.log(this.categories[i].Category);
-            //     if (this.categories[i].Category != "") {
-            //         errCat = errCat - 0;
-            //     } else {
-            //         errCat = errCat + 1;
-            //     }
-            //     console.log(errCat);
-            //     console.log(this.categories[i].id);
-            //     console.log("SUBCAT:" + this.categories[i].subcategory.length);
-            //     if (this.categories[i].subcategory.length == 0) {
-            //         console.log("ANO NI?: " + this.categories[i].subcategory.length);
-            //         subcat = 0;
-            //     } else {
-            //         for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-            //             console.log(
-            //                 "ITEMS:" + this.categories[i].subcategory[x].items.length
-            //             );
-            //             console.log(
-            //                 "name:" + this.categories[i].subcategory[x].Subcategory
-            //             );
-            //             if (this.categories[i].subcategory[x].Subcategory != null) {
-            //                 subcat = subcat - 0;
-            //                 console.log("EYY");
-            //                 console.log(this.categories[i].subcategory[x].Subcategory.length);
-            //                 if (this.categories[i].subcategory[x].items.length == 0) {
-            //                     items = 0;
-            //                 } else {
-            //                     for (
-            //                         var y = 0; y < this.categories[i].subcategory[x].items.length; y++
-            //                     ) {
-            //                         console.log(
-            //                             "name1:" + this.categories[i].subcategory[x].items[y].Item
-            //                         );
-            //                         if (this.categories[i].subcategory[x].items[y].Item != null) {
-            //                             console.log("EYYS");
-            //                             items = items - 0;
-            //                         } else {
-            //                             console.log("EdsYY");
-            //                             items = items + 1;
-            //                         }
-            //                         if (
-            //                             this.categories[i].subcategory[x].items[y].Item.length == 0
-            //                         ) {
-            //                             console.log("EYdasdasY");
-            //                             items = 1;
-            //                         }
-            //                     }
-            //                     // items = 1;
-            //                     // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
-            //                 }
-            //             } else {
-            //                 subcat = subcat + 1;
-            //                 console.log("HELL");
-            //             }
-            //             if (this.categories[i].subcategory[x].Subcategory.length == 0) {
-            //                 subcat = 1;
-            //                 console.log("dEYY");
-            //             }
-
-            //             // if (this.categories[i].subcategory[x].items.length == 0) {
-            //             //     items = 0;
-            //             // } else {
-            //             // for (var y = 0; y < this.categories[i].subcategory[x].items.length; y++) {
-            //             //     console.log("name1:" + this.categories[i].subcategory[x].items[y].Item);
-            //             //     if (this.categories[i].subcategory[x].Subcategory != null) {
-            //             //         items = 0;
-            //             //     } else {
-            //             //         items = 1;
-            //             //     }
-            //             // }
-            //             // }
-            //         }
-            //     }
-            // }
-
-            // if (
-            //     this.cmoID == "" ||
-            //     this.cmoNo == "" ||
-            //     this.seriesYear == "" ||
-            //     this.evalDesc == "" ||
-            //     subcat == 1 ||
-            //     items == 1 ||
-            //     errCat >= 1
-            // ) {
-            //     toast("Please fill out the required information", {
-            //         type: TYPE.ERROR,
-            //         timeout: 3000,
-            //         hideProgressBar: true,
-            //         position: POSITION.TOP_RIGHT,
-            //     });
-            //     has_error = 1;
-            // }
-
-            // if (has_error < 1) {
-
-            this.showModal1 = !this.showModal1;
-            //}
-        },
         async editEvalForm() {
             this.$refs.Spinner.show();
             try {
+                //Query Evaluation Instrument
                 const evalInstrumentsUpdate = Parse.Object.extend(
                     "EvaluationInstruments"
                 );
@@ -374,30 +275,22 @@ export default {
                     useMasterKey: true,
                 });
 
+                //Set Updated Evaluation Instrument
                 evalInstrumentUpdate.set("evaluationFormProgram", this.programName);
                 evalInstrumentUpdate.set("evaluationFormName", this.evalDesc);
                 evalInstrumentUpdate.set("evalInstReqs", this.eval);
 
-                // await newEvaluationForm.save();
-                // console.log(newEvaluationForm.save())
-
+                //Save Evaluation Instrument Updates
                 await evalInstrumentUpdate.save();
                 toast("Evaluation Update", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     }),
-                    // window.location.reload()
                     setTimeout(() => {
                         this.$router.push("/evaluationins");
                     }, 2000);
-                // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
-                //     document.location.reload();
-                // } else {
-                //     this.$router.push("/evaluationins");
-                // }
             } catch (error) {
-                // "Please fill out the required information"
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -416,11 +309,8 @@ export default {
 
         //This removes a category
         removeProgram(name) {
-            console.log(name, this.checkedPrograms.length);
             for (var i = 0; i < this.checkedPrograms.length; i++) {
-                console.log(this.checkedPrograms[i]);
                 if (this.checkedPrograms[i] === name) {
-                    console.log("eyy");
                     this.checkedPrograms.splice(i, 1);
                     i--;
                 }
@@ -457,7 +347,7 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-            //Get Programs
+            //Get Disciplines of Evaluation Instrument
             var disciplineTable = [];
             var disciplinesNames = [];
             const disciplines = Parse.Object.extend("Disciplines");
@@ -465,9 +355,7 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
-                console.log(discipline.get("specificDiscipline").length);
                 for (var a = 0; a < discipline.get("specificDiscipline").length; a++) {
-                    console.log(discipline.get("specificDiscipline")[a].SpecDiscCode);
                     const programs = Parse.Object.extend("Programs");
                     const queryProg = new Parse.Query(programs);
 

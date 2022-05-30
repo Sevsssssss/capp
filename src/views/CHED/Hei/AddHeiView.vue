@@ -280,18 +280,16 @@ export default {
     },
 
     methods: {
+        //For HEI Address
         handleProvince(e) {
             this.regionName = e.target.selectedOptions[0].text;
             this.regionNo = e.target.value;
             provinces(e.target.value).then((response) => {
                 this.provinces = response;
             });
-            console.log(this.regionNo);
-            console.log(this.provinces);
         },
         handleCity(e) {
             this.province = e.target.selectedOptions[0].text;
-            console.log(this.province);
             cities(e.target.value).then((response) => {
                 this.cities = response;
             });
@@ -305,7 +303,7 @@ export default {
         barangaysChange(e) {
             this.barangay = e.target.selectedOptions[0].text;
         },
-
+        //For Validation
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -328,6 +326,7 @@ export default {
         async addHEI() {
             this.$refs.Spinner.show();
             try {
+                //Query Access Type
                 const AccessType = Parse.Object.extend("AccessTypes");
                 const queryACC = new Parse.Query(AccessType);
                 queryACC.equalTo("name", "HEI");
@@ -336,11 +335,10 @@ export default {
 
                 this.hei_acc_id = accQuerResult.id;
 
+                //For Randomized Password
                 var password = Math.random().toString(36).slice(-12);
 
-                ////////////////////////////////////
-                console.log(password); /////////////
-                ////////////////////////////////////
+                //Set HEI Address
                 this.address = {
                     regionCode: this.regionCode,
                     regionName: this.regionName,
@@ -353,7 +351,10 @@ export default {
                     street: this.street,
                 }
 
+                //Create new User
                 const newHEI = new Parse.User();
+
+                //Set HEI Details
                 newHEI.set("hei_name", this.hei_name);
                 newHEI.set("username", this.username);
                 newHEI.set("password", password);
@@ -364,6 +365,8 @@ export default {
                 newHEI.set("hei_type", this.hei_type);
                 newHEI.set("access_type", this.hei_acc_id);
                 newHEI.set("receivedCredentials", false);
+
+                //Save new HEI Account
                 await newHEI.save().then(() => {
                     toast("HEI Account Added!", {
                         type: TYPE.SUCCESS,
@@ -387,29 +390,13 @@ export default {
                     position: POSITION.TOP_RIGHT,
                 });
                 console.log(error.message);
-                // alert("Error: " + error.code + " " + error.message);
-                //document.location.reload();
             }
-            // setTimeout(
-            //     function () {
-            //         this.$refs.Spinner.hide();
-            //     }.bind(this),
-            //     3000
-            // );
         },
         modal() {
-            // this.v$.$validate();
-            // if(!this.v$.$error){
-            //     alert('Yey')
-            // }else{
-            //     alert('nay')
-            // }
             var has_error = 0;
-            //var error_text = "Account not created due to the following reasons:\n";
             if (
                 this.hei_name == "" ||
                 this.username == "" ||
-                this.address == "" ||
                 this.number == "" ||
                 this.inst_code == ""
             ) {
@@ -449,11 +436,13 @@ export default {
             regions().then((response) => {
                 this.regions = response;
             });
-
+            
+            //Query HEI Types
             const HeiTypes = Parse.Object.extend("HEI_Types");
             const queryHT = new Parse.Query(HeiTypes);
             const querResultHT = await queryHT.find();
 
+            //Store HEI Types
             var heiTypes = [];
             for (var w = 0; w < querResultHT.length; w++) {
                 const heitype = querResultHT[w];

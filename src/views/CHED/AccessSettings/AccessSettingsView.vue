@@ -760,15 +760,6 @@ export default {
                     setTimeout(() => {
                         document.location.reload();
                     }, 2000);
-                // if (
-                //     confirm(
-                //         "Application Type added. Would you like to add another Application Type?"
-                //     )
-                // ) {
-                //     document.location.reload();
-                // } else {
-                //     document.location.reload();
-                // }
             } catch (error) {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -779,6 +770,8 @@ export default {
                 console.log(error.message)
             }
         },
+
+        //For table page traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;

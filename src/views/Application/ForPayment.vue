@@ -130,7 +130,6 @@ export default {
     },
     data() {
         return {
-            // id: this.$route.params.id,
             show: false,
             showModal1: false,
             showModal2: false,
@@ -209,11 +208,14 @@ export default {
         },
         async submitChanges() {
             try {
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
 
                 const application = await query.first();
+
+                //Set updated attributes
                 application.set("applicationStatus", "For Inspection");
 
                 this.statusTracker.push({
@@ -223,6 +225,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save changes to application
                 application
                     .save()
                     .then((application) => {
@@ -247,19 +250,21 @@ export default {
                             console.log("Object Updated: " + application.id);
                     })
 
+                    //Add new Notification
                     const Notifications = Parse.Object.extend("Notifications");
-                            const newNotification = new Notifications();
+                    const newNotification = new Notifications();
 
-                            newNotification.set("message", "Your Application has been moved For Inspection");
-                            newNotification.set("date_and_time", new Date());
-                            newNotification.set("user", this.hei);
-                            newNotification.set("isRead", false);
-
-                            newNotification.save().then((notif) => {
-                                console.log("Notification Saved: " + notif.id);
-                            }, (error) => {
-                                console.log("Error: " + error.message);
-                            });
+                    newNotification.set("message", "Your Application has been moved For Inspection");
+                    newNotification.set("date_and_time", new Date());
+                    newNotification.set("user", this.hei);
+                    newNotification.set("isRead", false);
+                    
+                    //Save new Notification
+                    newNotification.save().then((notif) => {
+                        console.log("Notification Saved: " + notif.id);
+                    }, (error) => {
+                        console.log("Error: " + error.message);
+                    });
 
                 setTimeout(() => {
                     this.$router.push({
@@ -283,6 +288,7 @@ export default {
         //Move application to For Revision due to wrong uploaded files
         async submitRevision() {
             try {
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const query = new Parse.Query(applications);
                 query.equalTo("objectId", this.appID);
@@ -299,6 +305,8 @@ export default {
                         comment: this.comment[i],
                     });
                 }
+
+                //Set updated attributes
                 application.set("requirements", requirements);
                 application.set("paymentStatus", "For Revision");
                 application.set("revisionReason", this.revisionReason);
@@ -310,6 +318,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save changes to application
                 application
                     .save()
                     .then((application) => {
@@ -332,19 +341,22 @@ export default {
                             }),
                             console.log("Object Updated: " + application.id);
                     })
+
+                //Add new Notification
                 const Notifications = Parse.Object.extend("Notifications");
-                    const newNotification = new Notifications();
+                const newNotification = new Notifications();
 
-                    newNotification.set("message", "Your Application Payment is in need of Revision, revision and reuploading required");
-                    newNotification.set("date_and_time", new Date());
-                    newNotification.set("user", this.hei);
-                    newNotification.set("isRead", false);
+                newNotification.set("message", "Your Application Payment is in need of Revision, revision and reuploading required");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
 
-                    newNotification.save().then((notif) => {
-                        console.log("Notification Saved: " + notif.id);
-                    }, (error) => {
-                        console.log("Error: " + error.message);
-                    });
+                //Save new Notification
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.replace({

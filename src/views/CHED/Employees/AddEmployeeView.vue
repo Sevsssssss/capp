@@ -223,12 +223,14 @@ export default {
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
-        validationStatus: function (validation) {
-            return typeof validation !== "undefined" ? validation.$error : false;
-        },
         submit: function () {
             this.v$.$touch();
             if (!this.v$.$pending || !this.v$.$error) return;
+        },
+
+        //For Validation
+        validationStatus: function (validation) {
+            return typeof validation !== "undefined" ? validation.$error : false;
         },
         validate() {
             return this.showModal1;
@@ -236,17 +238,17 @@ export default {
         scrollToTop() {
             window.scrollTo(0, 0);
         },
+
         async addEmployee() {
             this.$refs.Spinner.show();
             try {
+                //Save new Employee
                 const newEmployee = new Parse.User();
-
+                
+                //Set Randomized Password
                 var password = Math.random().toString(36).slice(-12);
 
-                ////////////////////////////////////
-                console.log(password); ///////////
-                ////////////////////////////////////
-
+                //Set Employee Name
                 var employeeName = {
                     lastname: this.lastname,
                     firstname: this.firstname,
@@ -287,12 +289,6 @@ export default {
                 });
                 console.log(error.message);
             }
-            // setTimeout(
-            //     function () {
-            //         this.$refs.Spinner.hide();
-            //     }.bind(this),
-            //     2000
-            // );
         },
         modal() {
             var has_error = 0;
@@ -313,15 +309,6 @@ export default {
                 has_error = 1;
             }
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //     password += characters.charAt(
-                //         Math.floor(Math.random() * charactersLength)
-                //     );
-                //}
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -355,9 +342,13 @@ export default {
                 });
             }
             this.access_type = queryResult[0].get("name");
+
+            //Query Designations
             const Designations = Parse.Object.extend("Designations");
             const queryD = new Parse.Query(Designations);
             const queryResultDesig = await queryD.find();
+
+            //Store Designations
             for (var w = 0; w < queryResultDesig.length; w++) {
                 this.designations.push({
                     id: queryResultDesig[w].id,
@@ -369,10 +360,12 @@ export default {
             }
             this.emp_designation = queryResultDesig[0].id;
 
+            //Query Disciplines
             const Discipline = Parse.Object.extend("Disciplines");
             const queryDiscipline = new Parse.Query(Discipline);
             const queryResultDiscipline = await queryDiscipline.find();
-            console.log(queryResultDiscipline);
+
+            //Store Disciplines
             for (var z = 0; z < queryResultDiscipline.length; z++) {
                 this.disciplines.push({
                     id: queryResultDiscipline[z].id,

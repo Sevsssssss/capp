@@ -355,6 +355,7 @@ export default {
     },
 
     computed: {
+        //For Search Functionality
         searchHEI() {
             this.newEntCount();
             return this.tables
@@ -380,6 +381,8 @@ export default {
                 3000
             );
         },
+
+        //Select HEI to delete
         async selectAcc(instNum) {
             this.currentDelAcc = instNum;
 
@@ -400,28 +403,20 @@ export default {
         async deleteAccount() {
             this.$refs.Spinner.show();
 
+            //Query HEI Account
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("inst_code", this.currentDelAcc);
             const querResult = await acc.first({
                 useMasterKey: true,
             });
 
-            // const applications = Parse.Object.extend("Applications");
-            // const queryApp = new Parse.Query(applications);
-            // queryApp.equalTo("createdBy", querResult.id)
-            // const application = await queryApp.find();
-
-            // this.application_counter = application.length;
-
             if (this.application_counter > 0) {
-                //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                 querResult.set("isArchived", true);
                 querResult.save({
                     useMasterKey: true,
                 });
-                //console.log("archived")
-                //}
             } else {
+                //Delete HEI
                 querResult.destroy({
                     useMasterKey: true,
                 });
@@ -449,6 +444,8 @@ export default {
         addHei() {
             this.$router.push("/hei/add");
         },
+
+        //For Table Page Traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.HeiName.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -462,6 +459,8 @@ export default {
                 this.currentpage += 1;
             }
         },
+
+        //For Filter Function
         async filterHEI() {
             var heisPriv = [];
 
@@ -526,6 +525,7 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
+            //Query HEI Access Type
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "HEI");
@@ -533,17 +533,20 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var heis = [];
+            //Query HEI Accounts
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
             const querResult = await query.find({
                 useMasterKey: true,
             });
 
+            //Query HEI Types
             const HEITypes = Parse.Object.extend("HEI_Types");
             const hTypeQuery = new Parse.Query(HEITypes);
 
             const hTypeQuerResult = await hTypeQuery.find();
 
+            //Save HEI Types
             var heiTypes = [];
             var hTypeCounter = [];
 
@@ -567,8 +570,6 @@ export default {
 
                 const htypeName = heiTypes[index].name;
 
-                console.log(index);
-
                 hTypeCounter[index] += 1;
 
                 const heiAddress = hei.get("address").street == undefined || hei.get("address").street == "" ?
@@ -577,6 +578,7 @@ export default {
                     hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
                     hei.get("address").province + ", " + hei.get("address").regionName;
 
+                //Save HEIs
                 heis.push({
                     id: hei.id,
                     InstNo: hei.get("inst_code"),
@@ -605,41 +607,19 @@ export default {
             /////////////////////////////////////////////////////////////////////////////// Live Queries
             var password;
             const subscription = await query.subscribe();
-            // subscription.on('open', () => {
-            //     console.log('subscription opened');
-            // });
-            // subscription.on('create', (object) => {
-            //     console.log('object created' + object);
-            // });
-            // subscription.on('enter', (object) => {
-            //     console.log('object entered' + object);
-            // });
-            // subscription.on('leave', (object) => {
-            //     console.log('object left' + object);
-            // });
-            // subscription.on('delete', (object) => {
-            //     console.log('object deleted' + object);
-            // });
-            // subscription.on('close', () => {
-            //     console.log('subscription closed');
-            // });
             subscription.on("update", async (object) => {
                 console.log("object updated" + object);
-                // this.count();
 
                 var index = this.tables.findIndex((hei) => hei.id == object.id);
                 const heiAddress = object.get("address").street == undefined || object.get("address").street == "" ?
-                    object.get("address").barangay + ", " + object.get("address").city + ", " +
-                    object.get("address").province + ", " + object.get("address").regionName :
-                    object.get("address").street + ", " + object.get("address").barangay + ", " + object.get("address").city + ", " +
-                    object.get("address").province + ", " + object.get("address").regionName;
+                object.get("address").barangay + ", " + object.get("address").city + ", " +
+                object.get("address").province + ", " + object.get("address").regionName :
+                object.get("address").street + ", " + object.get("address").barangay + ", " + object.get("address").city + ", " +
+                object.get("address").province + ", " + object.get("address").regionName;
 
-                // const HEITypes1 = Parse.Object.extend("HEI_Types");
                 const hTypeQuery1 = hTypeQuery.equalTo("objectId", object.get("hei_type"))
 
-                // 
                 const htype = await hTypeQuery1.first();
-                // console.log("THISSSSS" + index)
 
                 this.tables[index] = {
                     ...this.tables[index],
@@ -663,7 +643,6 @@ export default {
                     ) {
 
                         password = Math.random().toString(36).slice(-12);
-                        console.log("first: " + password)
                         const params = {
                             name: objectEmail.get("hei_name"),
                             username: objectEmail.get("username"),
@@ -672,11 +651,9 @@ export default {
                             type: "sendCredentials",
                             approved: true,
                         };
-                        console.log(objectEmail.id);
                         Parse.Cloud.run("sendEmailNotification", params);
 
                         objectEmail.setPassword(password);
-                        console.log("second: " + password)
                         objectEmail.set("receivedCredentials", true);
                         objectEmail.save(null, {
                             useMasterKey: true,
@@ -684,137 +661,7 @@ export default {
                     }
                 });
 
-                // const HEITypes = Parse.Object.extend("HEI_Types");
-                // const hTypeQuery = new Parse.Query(HEITypes);
-
-                // const hTypeQuerResult = await hTypeQuery.find();
-
-                // var heiTypesLQ = [];
-                // var hTypeCounterLQ = [];
-
-                // for (var h = 0; h < hTypeQuerResult.length; h++) {
-                //     const heiType = hTypeQuerResult[h];
-                //     heiTypesLQ.push({
-                //         id: heiType.id,
-                //         name: heiType.get("name"),
-                //     });
-                //     hTypeCounterLQ.push(0);
-                // }
-                // this.hei_Types = heiTypesLQ;
-
-                // for (var i = 0; i < querResult.length; i++) {
-                //     const hei = querResult[i];
-
-                //     const index = heiTypesLQ.findIndex(object => {
-                //         return object.id == hei.get("hei_type");
-                //     });
-
-                //     console.log(index);
-
-                //     hTypeCounterLQ[index] += 1;
-
-                // }
-
-                // var dataColLQ = [];
-                // for (var t = 0; t < heiTypesLQ.length; t++) {
-                //     dataColLQ.push({
-                //         title: heiTypesLQ[t].name,
-                //         num: hTypeCounterLQ[t],
-                //         color: this.colors[t],
-                //     })
-
-                // }
-                // this.datas = dataColLQ;
-
             });
-            // subscription.on('create', async () => {
-            //     const HEITypes = Parse.Object.extend("HEI_Types");
-            //     const hTypeQuery = new Parse.Query(HEITypes);
-
-            //     const hTypeQuerResult = await hTypeQuery.find();
-
-            //     var heiTypesLQ = [];
-            //     var hTypeCounterLQ = [];
-
-            //     for (var h = 0; h < hTypeQuerResult.length; h++) {
-            //         const heiType = hTypeQuerResult[h];
-            //         heiTypesLQ.push({
-            //             id: heiType.id,
-            //             name: heiType.get("name"),
-            //         });
-            //         hTypeCounterLQ.push(0);
-            //     }
-            //     this.hei_Types = heiTypesLQ;
-
-            //     for (var i = 0; i < querResult.length; i++) {
-            //         const hei = querResult[i];
-
-            //         const index = heiTypesLQ.findIndex(object => {
-            //             return object.id == hei.get("hei_type");
-            //         });
-
-            //         console.log(index);
-
-            //         hTypeCounterLQ[index] += 1;
-
-            //     }
-
-            //     var dataColLQ = [];
-            //     for (var t = 0; t < heiTypesLQ.length; t++) {
-            //         dataColLQ.push({
-            //             title: heiTypesLQ[t].name,
-            //             num: hTypeCounterLQ[t],
-            //             color: this.colors[t],
-            //         })
-
-            //     }
-            //     this.datas = dataColLQ;
-            // })
-
-            // subscription.on('delete', async () => {
-            //     const HEITypes = Parse.Object.extend("HEI_Types");
-            //     const hTypeQuery = new Parse.Query(HEITypes);
-
-            //     const hTypeQuerResult = await hTypeQuery.find();
-
-            //     var heiTypesLQ = [];
-            //     var hTypeCounterLQ = [];
-
-            //     for (var h = 0; h < hTypeQuerResult.length; h++) {
-            //         const heiType = hTypeQuerResult[h];
-            //         heiTypesLQ.push({
-            //             id: heiType.id,
-            //             name: heiType.get("name"),
-            //         });
-            //         hTypeCounterLQ.push(0);
-            //     }
-            //     this.hei_Types = heiTypesLQ;
-
-            //     for (var i = 0; i < querResult.length; i++) {
-            //         const hei = querResult[i];
-
-            //         const index = heiTypesLQ.findIndex(object => {
-            //             return object.id == hei.get("hei_type");
-            //         });
-
-            //         console.log(index);
-
-            //         hTypeCounterLQ[index] += 1;
-
-            //     }
-
-            //     var dataColLQ = [];
-            //     for (var t = 0; t < heiTypesLQ.length; t++) {
-            //         dataColLQ.push({
-            //             title: heiTypesLQ[t].name,
-            //             num: hTypeCounterLQ[t],
-            //             color: this.colors[t],
-            //         })
-
-            //     }
-            //     this.datas = dataColLQ;
-            // })
-
         }
     },
 };
