@@ -308,7 +308,6 @@ export default {
             var items = 0;
 
             for (var i = 0; i < this.categories.length; i++) {
-                console.log(this.categories[i].Category);
                 if (this.categories[i].Category != "") {
                     errCat = errCat - 0;
                 } else {
@@ -318,24 +317,14 @@ export default {
                     subcat = 0;
                 } else {
                     for (var x = 0; x < this.categories[i].subcategory.length; x++) {
-                        console.log(
-                            "ITEMS:" + this.categories[i].subcategory[x].items.length
-                        );
-                        console.log(
-                            "name:" + this.categories[i].subcategory[x].Subcategory
-                        );
                         if (this.categories[i].subcategory[x].Subcategory != null) {
                             subcat = subcat - 0;
-                            console.log(this.categories[i].subcategory[x].Subcategory.length);
                             if (this.categories[i].subcategory[x].items.length == 0) {
                                 items = 0;
                             } else {
                                 for (
                                     var y = 0; y < this.categories[i].subcategory[x].items.length; y++
                                 ) {
-                                    console.log(
-                                        "name1:" + this.categories[i].subcategory[x].items[y].Item
-                                    );
                                     if (this.categories[i].subcategory[x].items[y].Item != null) {
                                         items = items - 0;
                                     } else {
@@ -347,8 +336,6 @@ export default {
                                         items = 1;
                                     }
                                 }
-                                // items = 1;
-                                // console.log("ITEMS 1:" + this.categories[i].subcategory[x].items.length);
                             }
                         } else {
                             subcat = subcat + 1;

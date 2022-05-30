@@ -154,14 +154,17 @@ export default {
             //Store CMO Data
             var categories = [];
 
+            //Store Categories
             for (var i = 0; i < CMO.get("evaluationFormReqs").length; i++) {
 
                 var subcat = [];
 
+                //Store Sub Categories
                 for (var j = 0; j < CMO.get("evaluationFormReqs")[i].subcategory.length; j++) {
 
                     var items = [];
 
+                    //Store Items
                     for (var k = 0; k < CMO.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                         items.push({
                             id: CMO.get("evaluationFormReqs")[i].subcategory[j].items[k].id,

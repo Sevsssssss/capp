@@ -1182,10 +1182,7 @@ export default {
             const subscription = await query.subscribe();
 
             subscription.on("update", async (object) => {
-                console.log("object updated" + object);
                 var index = this.tables.findIndex((application) => application.appID == object.id);
-
-                console.log("THISSS: " + index)
 
                 this.tables[index] = {
                     ...this.tables[index],

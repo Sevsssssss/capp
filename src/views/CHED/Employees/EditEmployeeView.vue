@@ -309,6 +309,7 @@ export default {
     },
 
     methods: {
+        //For Validation of Data
         ToggleshowModal() {
             this.showModal = !this.showModal;
         },
@@ -326,15 +327,56 @@ export default {
         validate1() {
             return this.showModal2;
         },
+        modal() {
+            var has_error = 0;
+            if (
+                this.lastname == "" ||
+                this.firstname == "" ||
+                this.midinit == "" ||
+                this.username == "" ||
+                this.contactnum == "" ||
+                this.email == null
+            ) {
+                has_error = 1;
+            }
+
+            if (has_error < 1) {
+                this.showModal1 = !this.showModal1;
+            }
+        },
+        modal1() {
+            if (this.newPass == "" || this.newPassConf == "") {
+                toast("Please fill out the required information", {
+                    type: TYPE.ERROR,
+                    timeout: 3000,
+                    hideProgressBar: true,
+                    position: POSITION.TOP_RIGHT,
+                });
+            } else {
+                if (this.newPass == this.newPassConf) {
+                    this.showModal2 = !this.showModal2;
+                } else {
+                    toast("New Password and Confirm New Password doesn't match", {
+                        type: TYPE.ERROR,
+                        timeout: 3000,
+                        hideProgressBar: true,
+                        position: POSITION.TOP_RIGHT,
+                    });
+                }
+            }
+        },
+        //For changing of employee password
         async changePassword() {
+            //Query employee object
             const empl = new Parse.Query(Parse.User);
             empl.equalTo("objectId", this.empID);
             const selectedEMP = await empl.first({
                 useMasterKey: true,
             });
-
+            //Set new password of employee
             selectedEMP.setPassword(this.newPass)
             console.log("Password Updated")
+            //Save password
             selectedEMP.save(null, {
                 useMasterKey: true,
             });
@@ -355,13 +397,19 @@ export default {
                 2000
             );
         },
+        
+        //Edit Employee Details
         async updateEmployee() {
+
+            //Query Employee Object
             const empl = new Parse.Query(Parse.User);
             empl.equalTo("objectId", this.empID);
             const selectedEMP = await empl.first({
                 useMasterKey: true,
             });
 
+
+            //Set Employee Updated Details
             var employeeName = {
                 lastname: this.lastname,
                 firstname: this.firstname,
@@ -376,7 +424,7 @@ export default {
             selectedEMP.set("designation", this.emp_designation);
             selectedEMP.set("disciplines", this.selectedDiscipline);
 
-            console.log(this.email, this.oldEmail);
+            //Save Employee Updates to database
             try {
                 await selectedEMP.save(null, {
                     useMasterKey: true,
@@ -386,16 +434,6 @@ export default {
                         timeout: 2000,
                         position: POSITION.TOP_RIGHT,
                     });
-                    // if(this.email != this.oldEmail){
-                    //     console.log("HELLOS");
-                    //     const params = {
-                    //     name: this.employeeName,
-                    //     username: this.username,
-                    //     email: this.email,
-                    //     approved: true,
-                    //     };
-                    //     Parse.Cloud.run("sendEmailNotification", params);
-                    // }
                     setTimeout(
                         () =>
                         this.$router.push({
@@ -421,53 +459,6 @@ export default {
                 console.log(error.message);
             }
         },
-        modal() {
-            var has_error = 0;
-            if (
-                this.lastname == "" ||
-                this.firstname == "" ||
-                this.midinit == "" ||
-                this.username == "" ||
-                this.contactnum == "" ||
-                this.email == null
-            ) {
-                has_error = 1;
-            }
-
-            if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //     password += characters.charAt(
-                //         Math.floor(Math.random() * charactersLength)
-                //     );
-                //}
-                this.showModal1 = !this.showModal1;
-            }
-        },
-        modal1() {
-            if (this.newPass == "" || this.newPassConf == "") {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-            } else {
-                if (this.newPass == this.newPassConf) {
-                    this.showModal2 = !this.showModal2;
-                } else {
-                    toast("New Password and Confirm New Password doesn't match", {
-                        type: TYPE.ERROR,
-                        timeout: 3000,
-                        hideProgressBar: true,
-                        position: POSITION.TOP_RIGHT,
-                    });
-                }
-            }
-        },
     },
     mounted: async function () {
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
@@ -489,6 +480,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Employee and get it's details
             const queryEmp = new Parse.Query(Parse.User);
             queryEmp.equalTo("objectId", this.empID);
             const emp = await queryEmp.first({
@@ -511,6 +504,8 @@ export default {
                     title: queryResult[e].get("name"),
                 });
             }
+
+            //Query Desginations and get employee's designation
             const Designations = Parse.Object.extend("Designations");
             const queryD = new Parse.Query(Designations);
             const queryResultDesig = await queryD.find();
@@ -525,6 +520,7 @@ export default {
             }
             this.emp_designation = queryResultDesig[0].id;
 
+            //Query Disciplines and get employee's disciplines
             const Discipline = Parse.Object.extend("Disciplines");
             const queryDiscipline = new Parse.Query(Discipline);
             const queryResultDiscipline = await queryDiscipline.find();
@@ -535,8 +531,6 @@ export default {
                     title: queryResultDiscipline[z].get("MajorDiscipline"),
                 });
             }
-
-            console.log(queryResult[0].get("name"))
 
             this.access_type = emp.get("access_type");
             this.emp_designation = emp.get("designation");

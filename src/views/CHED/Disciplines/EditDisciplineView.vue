@@ -306,7 +306,6 @@ export default {
                 for (
                     var specDisc = 0; specDisc < this.majorDiscipline.specificDiscipline.length; specDisc++
                 ) {
-                    console.log(this.majorDiscipline.specificDiscipline[specDisc].id);
                     if (this.majorDiscipline.specificDiscipline[specDisc].id === id) {
                         this.majorDiscipline.specificDiscipline.splice(specDisc, 1);
                         specDisc--;
@@ -362,7 +361,6 @@ export default {
             for (var j = 0; j < progQueResult.length; j++) {
                 const prog = progQueResult[j];
 
-                console.log(prog.get("programName"));
                 programsMat.push({
                     id: prog.id,
                     name: prog.get("programName"),
@@ -371,6 +369,7 @@ export default {
             }
             this.programs = programsMat;
 
+            //Get Disciplines
             const disciplines = Parse.Object.extend("Disciplines");
             const query = new Parse.Query(disciplines);
             query.equalTo("objectId", this.id);

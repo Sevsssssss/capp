@@ -309,6 +309,7 @@ export default {
         VueInstantLoadingSpinner,
     },
     computed: {
+        //For Search Functionality
         searchEmployee() {
             return this.tables
                 .filter((p) => {
@@ -334,6 +335,7 @@ export default {
         addEmployee() {
             this.$router.push("/employees/add");
         },
+        //Select Account to Delete
         async selectAcc(id) {
             this.currentDelAcc = id;
 
@@ -352,42 +354,32 @@ export default {
         },
         async deleteEmployee() {
             this.$refs.Spinner.show();
-
+            //Query Employee
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("objectId", this.currentDelAcc);
             const querResult = await acc.first({
                 useMasterKey: true,
             });
 
+            //Query Access Types
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("objectId", querResult.get("access_type"));
+            queryACC.equalTo("access_type", "EDUCATION SUPERVISOR")
             const educSup = queryACC.first();
 
-            // const applications = Parse.Object.extend("Applications");
-            // const queryApp = new Parse.Query(applications);
-
+            //For checking whether the employee is an Education Supervisor or Not before deleting
             if (educSup != undefined) {
-
-                // queryApp.equalTo("selectedSupervisor", querResult.id)
-                // const application = await queryApp.find();
-
-                // this.application_counter = application.length;
-
                 if (this.application_counter > 0) {
-                    //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                     querResult.set("isArchived", true);
                     querResult.save({
                         useMasterKey: true,
                     });
-                    //}
                 } else {
 
-                    //if(confirm("Are you sure you would like to delete this account?")){
                     querResult.destroy({
                         useMasterKey: true,
                     });
-                    //}
                     toast("Deleting...", {
                         type: TYPE.WARNING,
                         timeout: 3000,
@@ -400,12 +392,9 @@ export default {
 
                 }
             } else {
-
-                //if (confirm("Are you sure you would like to delete this account?")) {
                 querResult.destroy({
                     useMasterKey: true,
                 });
-                //}
                 toast("Deleting...", {
                     type: TYPE.WARNING,
                     timeout: 3000,
@@ -424,6 +413,7 @@ export default {
             );
 
         },
+        //For Table Page Traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -437,6 +427,8 @@ export default {
                 this.currentpage += 1;
             }
         },
+
+        //For Filter Functionality
         async filterEmployees() {
 
             var i = 0;
@@ -447,10 +439,8 @@ export default {
                 const querEmpResult = await queryEmp.find({
                     useMasterKey: true,
                 });
-                console.log(querEmpResult.length);
                 for (i = 0; i < querEmpResult.length; i++) {
                     const emp = querEmpResult[i];
-                    console.log(emp);
                     employees.push({
                         id: emp.id,
                         Name: emp.get("name")["lastname"] +
@@ -534,7 +524,7 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
+            //Store Access Type that is an HEI
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "HEI");
@@ -542,6 +532,8 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var employees = [];
+
+            //Store Users that are not an HEI
             const query = new Parse.Query(Parse.User);
             query.notEqualTo("access_type", accQuerResult.id);
             query.notEqualTo("designation", null);
@@ -556,14 +548,11 @@ export default {
                 queryACC.equalTo("objectId", emp.get("access_type"));
 
                 const accQuerResult = await queryACC.first();
-                console.log(accQuerResult)
 
                 const Designation = Parse.Object.extend("Designations");
                 const queryDes = new Parse.Query(Designation);
                 queryDes.equalTo("objectId", emp.get("designation"));
-                console.log(emp)
                 const desigResult = await queryDes.first();
-                console.log(desigResult)
                 employees.push({
                     id: emp.id,
                     Name: emp.get("name")["lastname"] +
@@ -606,27 +595,8 @@ export default {
             var password;
             const queryEmployees = new Parse.Query(Parse.User);
             const subscription = await queryEmployees.subscribe();
-            // subscription.on('open', () => {
-            //     console.log('subscription opened');
-            // });
-            // subscription.on('create', (object) => {
-            //     console.log('object created' + object);
-            // });
-            // subscription.on('enter', (object) => {
-            //     console.log('object entered' + object);
-            // });
-            // subscription.on('leave', (object) => {
-            //     console.log('object left' + object);
-            // });
-            // subscription.on('delete', (object) => {
-            //     console.log('object deleted' + object);
-            // });
-            // subscription.on('close', () => {
-            //     console.log('subscription closed');
-            // });
             subscription.on("update", async (object) => {
                 console.log("object updated" + object);
-                // this.count();
 
                 var index = this.tables.findIndex((emp) => emp.id == object.id);
 
@@ -669,7 +639,6 @@ export default {
                     ) {
 
                         password = Math.random().toString(36).slice(-12);
-                        console.log("first: " + password)
 
                         const params = {
                             name: objectEmail.get("name"),
@@ -682,7 +651,6 @@ export default {
                         Parse.Cloud.run("sendEmailNotification", params);
 
                         objectEmail.setPassword(password);
-                        console.log("second: " + password)
                         objectEmail.set("receivedCredentials", true);
                         objectEmail.save(null, {
                             useMasterKey: true,

@@ -246,20 +246,6 @@ export default {
                     console.log("Error: " + error.message);
                 });
 
-                // //Add new Notification for Head RQAT
-                // const newNotification = new Notifications();
-
-                // newNotification.set("message", "An Application has been assigned to you. You are the HEAD RQAT");
-                // newNotification.set("date_and_time", new Date());
-                // newNotification.set("user", this.selectedHeadRQAT);
-                // newNotification.set("isRead", false);
-                // //Save Notification
-                // newNotification.save().then((notif) => {
-                //     console.log("Notification Saved: " + notif.id);
-                // }, (error) => {
-                //     console.log("Error: " + error.message);
-                // });
-
                 for (var r = 0; r < this.selectedRqat.length; r++) {
 
                     //Add new Notification for RQAT Members

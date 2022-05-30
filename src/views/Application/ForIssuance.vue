@@ -92,7 +92,6 @@ export default {
     },
     methods: {
         validate(filename) {
-            console.log("validate")
             var regex = /^.+\.(([pP][dD][fF])|([jJ][pP][gG]))$/;
             if (filename === "") {
                 this.className = "alert-error";
@@ -139,7 +138,6 @@ export default {
                     application.set("certificate", certification);
                     application.set("PermitNo", this.permitNo);
                     application.set("DateIssued", new Date());
-                    console.log(certification);
                     application.set("applicationStatus", "Completed");
 
                     //Add New Status to the Status Tracker

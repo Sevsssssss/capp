@@ -23,11 +23,6 @@
                             </svg>
                         </button>
                     </div>
-                    <!-- <label class="label"></label> -->
-                    <!--<label class="label">
-                        <span class="label-text-alt" :class="{ 'text-error': validationStatus(v$.applicationTypeName) }" v-if="validationStatus(v$.applicationTypeName)">
-                            Application Type Name is Required</span>
-                    </label>-->
                 </div>
             </div>
             <!-- Body -->
@@ -44,9 +39,6 @@
                 </div>
             </div>
             <div :class="{ hide: isZero() }" class="space-x-4 pt-5" style="text-align-last: right">
-                <!-- <button class="btn btn-md bg-brand-darkblue hover:bg-blue-800 border-none" @click="toggleModal">
-                        Add Category
-                    </button> -->
                 <button data-tip="Add Requirement" @click="addRequirement" class="btn tooltip tooltip-left bg-brand-darkblue hover:bg-blue-800 border-none">
                     <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
@@ -131,6 +123,7 @@ export default {
         };
     },
     methods: {
+        //For Validation
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -165,6 +158,7 @@ export default {
                 this.showModal1 = !this.showModal1;
             }
         },
+        //For Saving new Application Type
         async saveAppType() {
             this.$refs.Spinner.show();
 
@@ -183,7 +177,6 @@ export default {
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     }),
-                    // window.location.reload()
                 setTimeout(() => {
                     this.$router.push("/app-settings")
                 }, 2000);
@@ -209,7 +202,6 @@ export default {
             if (this.counter > 0) {
                 this.counter--;
             }
-            //var cat = 'cat' + this.cat1;
             this.appReqs.pop({
                 id: this.cat1,
                 name: "",

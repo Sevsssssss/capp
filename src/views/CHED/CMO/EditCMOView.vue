@@ -454,7 +454,6 @@ export default {
       var items = 0;
 
       for (var i = 0; i < this.categories.length; i++) {
-        console.log(this.categories[i].Category);
         if (this.categories[i].Category != "") {
           errCat = errCat - 0;
         } else {
@@ -669,7 +668,6 @@ export default {
       for (var j = 0; j < progQueResult.length; j++) {
         const prog = progQueResult[j];
 
-        console.log(prog.get("programName"));
         programsMat.push({
           id: prog.id,
           name: prog.get("programName"),
