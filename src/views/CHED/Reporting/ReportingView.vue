@@ -219,7 +219,6 @@ export default {
         if (flag === 0) {
             this.$router.push("/403");
         } else {
-            console.log(console.log.length);
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
@@ -249,7 +248,6 @@ export default {
 
                 counter = await newQuery.count();
                 totalApplication += counter;
-                console.log(totalApplication)
 
                 applicationTypes.push(applicationType.get("applicationTypeName"));
                 appTypeCount.push(counter);
@@ -269,7 +267,6 @@ export default {
                 var programList = [];
                 var heiList = [];
                 var programInstance = [];
-                // var progCounter = 0;
                 const applicationType = appTypeResults[k];
                 const newQuery = query.equalTo("applicationType", applicationType.id);
                 const querResult = await newQuery.find();
@@ -308,7 +305,6 @@ export default {
                         var year = application.get("DateIssued").getFullYear();
 
                         var dateOfIssuance = months[month1] + " " + day + ", " + year;
-                        console.log(dateOfIssuance);
 
                         heiList.push({
                             hei: hei.get("hei_name"),
@@ -317,23 +313,6 @@ export default {
                             dateIssued: dateOfIssuance
                         })
                     }
-
-                    // programlist.push({
-                    //     hei:
-                    //     program:
-                    //     permitId: 
-                    //     dateIssued:
-                    // })
-
-                    // if (programList.includes(progResults.get("programName"))) {
-                    //     var index = programList.indexOf(progResults.get("programName"))
-                    //     programInstance[index] += 1;
-                    // } else {
-                    //     programList.push(
-                    //         progResults.get("programName")
-                    //     );
-                    //     programInstance.push(1);
-                    // }
 
                 }
 
@@ -356,7 +335,6 @@ export default {
         }
         this.numdata = {
             labels: applicationTypes,
-            // ['Initial Permit', 'Renewal', 'Certificate of Program Compliance', 'Government Recognition'],
             datasets: [{
                 label: 'Application Types',
                 data: appTypeCount,
@@ -399,12 +377,8 @@ export default {
             }
         });
         myChart;
-        // var image = myChart.toBase64Image();
-        // console.log(image);
 
         let element = document.getElementById("exportToPdfCharts");
-
-        // document.getElementById('exportToPdfCharts')
 
         element.addEventListener("click", function () {
             try {

@@ -102,23 +102,24 @@ export default {
         }
         if (flag === 0) {
             this.$router.push("/403");
-            console.log("Hello");
         } else {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Applications where RQAT was selected
             var storedApplications = [];
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("selectedRQAT", Parse.User.current().id);
 
             const querResult = await query.find();
-
+            
+            //Save Applications
             for (var i = 0; i < querResult.length; i++) {
                 const application = querResult[i];
                 const user = new Parse.Query(Parse.User);
                 user.equalTo("objectId", application.get("createdBy"));
-                // console.log(application.get("createdBy"));
                 const hei = await user.first();
                 
                 var months = [

@@ -235,6 +235,8 @@ export default {
             return this.showModal1;
         },
         async updateEmployee() {
+
+            //Query Employee
             const empl = new Parse.Query(Parse.User);
             empl.equalTo("objectId", this.empID);
             const selectedEMP = await empl.first({
@@ -247,6 +249,7 @@ export default {
                 middleinitial: this.midinit,
             };
 
+            //Set Employee Updated Data
             selectedEMP.set("name", employeeName);
             selectedEMP.set("username", this.username);
             selectedEMP.set("password", "password");
@@ -257,6 +260,7 @@ export default {
             selectedEMP.set("discipline", this.discipline);
 
             try {
+                //Save Employee Data Update
                 await selectedEMP
                     .save(null, {
                         useMasterKey: true,
@@ -286,12 +290,14 @@ export default {
             }
         },
         async changePassword() {
+            //Get Current User
             const currentUser = Parse.User.current();
-            console.log(currentUser.get("username"));
             try{
+                //Try to login User
                 var testLogin = await Parse.User.logIn(currentUser.get("username"), this.currPass);
                 console.log(testLogin)
                 console.log("Current Password is Correct");
+                //If verified to be the actual user, update password
                 if(this.newPass == this.newPassConf){
                     currentUser.setPassword(this.newPass)
                     console.log("Password Updated")
@@ -319,15 +325,6 @@ export default {
             }
 
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //     password += characters.charAt(
-                //         Math.floor(Math.random() * charactersLength)
-                //     );
-                //}
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -352,12 +349,15 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query User
             const queryEmp = new Parse.Query(Parse.User);
             queryEmp.equalTo("objectId", Parse.User.current().id);
-            console.log()
             const emp = await queryEmp.first({
                 useMasterKey: true,
             });
+
+            //Store User data
             this.lastname = emp.get("name").lastname;
             this.firstname = emp.get("name").firstname;
             this.midinit = emp.get("name").middleinitial;
@@ -399,7 +399,6 @@ export default {
                 });
             }
 
-            console.log(queryResult[0].get("name"));
 
             this.access_type = emp.get("access_type");
             this.emp_designation = emp.get("designation");
