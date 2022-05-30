@@ -79,10 +79,10 @@
     <input type="checkbox" id="deleteFunc" class="modal-toggle" />
     <div class="modal">
         <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Delete Document</div>
+            <div class="font-semibold text-md">Delete Evaluation Instrument</div>
             <p class="py-2 text-sm">
                 This action cannot be undone. Are you sure you want to delete this
-                document?
+                evaluation instrument?
             </p>
             <div class="modal-action">
                 <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
