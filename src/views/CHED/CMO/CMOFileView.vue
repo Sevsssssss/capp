@@ -19,7 +19,7 @@
             <div>per CMO {{ cmoNo }}, s.{{ seriesYear }}</div>
         </div>
         <div class="">
-            <div class="overflow-x-auto shadow-md sm:rounded-lg py-8 ">
+            <div class="overflow-x-auto shadow-md sm:rounded-lg py-8">
                 <table class="w-full text-gray-500 text-left">
                     <tbody>
                         <!-- row 1 -->
