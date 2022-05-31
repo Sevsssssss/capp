@@ -364,10 +364,6 @@ export default {
         async changePassword() {
             const currentUser = Parse.User.current();
             try{
-<<<<<<< HEAD
-                // var testLogin = await Parse.User.logIn(currentUser.get("username"), this.currPass);
-=======
->>>>>>> 0bda6f72197dd1a08e89ca7d0db8b579bb51e899
                 console.log("Current Password is Correct");
                 if(this.newPass == this.newPassConf){
                     currentUser.setPassword(this.newPass)
