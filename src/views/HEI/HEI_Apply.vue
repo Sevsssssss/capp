@@ -207,7 +207,7 @@ export default {
         submitApplication(values) {
 
             var has_error = 0;
-
+            //check if there are empty fields
             if (this.pointPerson == "" ||
                 this.email == "" ||
                 this.phoneNumber == "" ||
@@ -226,11 +226,9 @@ export default {
                 try {
                     var reqFiles = [];
                     let requirement = null;
+                    //Get Uploaded Application Requirements
                     for (var i = 0; i < this.reqs.length; i++) {
                         const file = values.target[5 + i].files[0];
-                        // console.log(file);
-                        // console.log(file.name);
-                        // console.log(file.type);
                         requirement = new Parse.File(
                             file.name.replace(/[^a-zA-Z]/g, ""),
                             file,
@@ -243,15 +241,14 @@ export default {
                             comment: "",
                         });
                     }
-                    // const file = values.target[4].files[0];
-                    // console.log(file);
-                    // console.log(file.name);
-                    // console.log(file.type);
+
+                    //Get Application Class
                     const application = Parse.Object.extend("Applications");
                     const newApplication = new application();
-                    //requirement = new Parse.File(file.name, file, file.type);
                     var currentDate = new Date();
                     var yesterday = currentDate.setDate(currentDate.getDate() - 1);
+
+                    //Save new Application
                     newApplication
                         .save({
                             pointPerson: this.pointPerson,
@@ -265,7 +262,6 @@ export default {
                             selectedRQAT: [],
                             selectedSupervisor: '',
                             summary: '',
-                            //certificate: '',
                             resubmittedFiles: [],
                             actualSituations: [],
                             remarks: [],
@@ -291,7 +287,6 @@ export default {
                                             path: "/hei/application"
                                         })
                                     }, 3000);
-                                // console.log("New Access Type Added:" + newApplication.id)
                             },
                             (e) => {
                                 toast("Application Adding Failed: " + e.message, {
@@ -303,6 +298,8 @@ export default {
                                 // alert("Access Type Adding Failed: " + error)
                             }
                         );
+                    
+                    //Make new Notification about new Application
                     const Notifications = Parse.Object.extend("Notifications");
                     const newNotification = new Notifications();
 
@@ -367,7 +364,6 @@ export default {
                     req,
                 });
             }
-            // console.log(appTypeReqs);
             this.reqs = appTypeReqs;
         },
     },
@@ -392,15 +388,12 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var applicationTypesMenu = [];
-            // var applicationTypeReqs = [];
             const ApplicationTypes = Parse.Object.extend("ApplicationTypes");
             const query = new Parse.Query(ApplicationTypes);
             const queryResult = await query.find();
             if (queryResult !== null) {
-                //this.selected = queryResult[0];
                 this.showApplicationType(queryResult[0]);
             }
-            // this.applicationTypes[0].appType.get('applicationTypeName')
             for (var i = 0; i < queryResult.length; i++) {
                 const appType = queryResult[i];
                 applicationTypesMenu.push({
@@ -419,7 +412,6 @@ export default {
             for (var j = 0; j < progQueResult.length; j++) {
                 const prog = progQueResult[j];
 
-                console.log(prog.get("programName"));
                 programsMat.push({
                     id: prog.id,
                     name: prog.get("programName"),

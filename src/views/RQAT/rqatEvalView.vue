@@ -17,34 +17,34 @@
             </thead>
             <tbody>
                 <tr v-for="tables in table" :key="tables" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    
-                        <th v-if="tables.status == 'For Inspection'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            {{tables.program}}
-                        </th>
-                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
-                            {{tables.HeiName}}
-                        </td>
-                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
-                            {{tables.address}}
-                        </td>
-                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
-                            {{tables.rep}}
-                        </td>
-                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
-                            {{tables.email}}
-                        </td>
 
-                        <td v-if="tables.status == 'For Inspection'" class="px-6 py-4 text-right flex justify-end">
-                            <router-link :to="{
+                    <th v-if="tables.status == 'For Inspection'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        {{tables.program}}
+                    </th>
+                    <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
+                        {{tables.HeiName}}
+                    </td>
+                    <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
+                        {{tables.address}}
+                    </td>
+                    <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
+                        {{tables.rep}}
+                    </td>
+                    <td v-if="tables.status == 'For Inspection'" class="px-6 py-4">
+                        {{tables.email}}
+                    </td>
+
+                    <td v-if="tables.status == 'For Inspection'" class="px-6 py-4 text-right flex justify-end">
+                        <router-link :to="{
                             name: 'Evaluate',
                             params: {
                                 id: tables.appID,
                             },
                             }">
-                                <button @click="onInspection(tables.appID)" class="btn-table rounded-md"> Evaluate </button>
-                            </router-link>
+                            <button @click="onInspection(tables.appID)" class="btn-table rounded-md"> Evaluate </button>
+                        </router-link>
 
-                        </td>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -82,22 +82,8 @@ export default {
             table: [],
         };
     },
-    computed: {
-        // searchApplication() {
-        //     if (this.search) {
-        //         return this.tables.filter((item) => {
-        //             return this.search
-        //                 .toLowerCase()
-        //                 .split(" ")
-        //                 .every((v) => item.HeiName.toLowerCase().includes(v));
-        //         });
-        //     } else {
-        //         return this.tables;
-        //     }
-        // },
-    },
     methods: {
-        async onInspection(id){
+        async onInspection(id) {
             console.log(id);
             const Applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(Applications);
@@ -105,15 +91,10 @@ export default {
 
             const application = await query.first();
 
-            // application.set("On Inspection", true);
-            // application.save().then((application) => {
-            //         console.log("Object Updated: " + application.id);
-            //     })
-            
             application
-                    .save({
-                        onInspection: true,
-                    })
+                .save({
+                    onInspection: true,
+                })
         }
     },
     mounted: async function () {
@@ -136,6 +117,8 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedApplications = [];
+
+            //Query Applications Assigned to RQAT
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("selectedRQAT", Parse.User.current().id);
@@ -143,13 +126,13 @@ export default {
 
             const querResult = await query.find();
 
+            //Store Applications assigned to RQAT
             for (var i = 0; i < querResult.length; i++) {
                 const application = querResult[i];
                 const user = new Parse.Query(Parse.User);
                 user.equalTo("objectId", application.get("createdBy"));
-                // console.log(application.get("createdBy"));
                 const hei = await user.first();
-                
+
                 var months = [
                     "January",
                     "February",
@@ -182,8 +165,8 @@ export default {
 
                 const program = await programQuery.first();
 
-                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
-                                    + hei.get("address").province + ", " + hei.get("address").regionName
+                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                    hei.get("address").province + ", " + hei.get("address").regionName
 
                 storedApplications.push({
                     id: i + 1,
@@ -201,6 +184,20 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.table = storedApplications;
+
+            const subscription = await query.subscribe();
+
+            subscription.on("update", async (object) => {
+                console.log("object updated" + object);
+                var index = this.tables.findIndex((application) => application.appID == object.id);
+
+                console.log("THISSS: " + index)
+
+                this.tables[index] = {
+                    ...this.tables[index],
+                    status: object.get("applicationStatus"),
+                };
+            });
         }
     },
 };

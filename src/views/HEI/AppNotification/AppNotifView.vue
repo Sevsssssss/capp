@@ -107,6 +107,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Notifications of User
             const Notifications = Parse.Object.extend("Notifications");
             const query = new Parse.Query(Notifications);
             query.equalTo("user", Parse.User.current().id);
@@ -114,6 +116,7 @@ export default {
 
             var notifs = [];
 
+            //Store Notifications of User
             for (var i = 0; i < querResult.length; i++) {
                 const notification = querResult[i];
 

@@ -378,19 +378,16 @@ export default {
         };
     },
     methods: {
+        //For Address
         handleProvince(e) {
-            console.log(e)
             this.regionName = e.target.selectedOptions[0].text;
             this.regionNo = e.target.value;
             provinces(e.target.value).then((response) => {
                 this.provinces = response;
             });
-            console.log(this.regionNo);
-            console.log(this.provinces);
         },
         handleCity(e) {
             this.province = e.target.selectedOptions[0].text;
-            console.log(this.province);
             cities(e.target.value).then((response) => {
                 this.cities = response;
             });
@@ -405,13 +402,17 @@ export default {
             this.barangay = e.target.selectedOptions[0].text;
         },
 
+        //For Changing Password
         async changePassword() {
+            
+            //Query HEI Account
             const heis = new Parse.Query(Parse.User);
             heis.equalTo("objectId", this.heiID);
             const selectedHEI = await heis.first({
                 useMasterKey: true,
             });
 
+            //Set and Save new Password
             selectedHEI.setPassword(this.newPass)
 
             selectedHEI.save(null, {
@@ -435,6 +436,8 @@ export default {
             );
         },
         async updateHEI() {
+
+            //Query HEI
             const heis = new Parse.Query(Parse.User);
             heis.equalTo("objectId", this.heiID);
             const selectedHEI = await heis.first({
@@ -443,6 +446,7 @@ export default {
 
             this.$refs.Spinner.show();
 
+            //For Address
             this.address = {
                 regionCode: this.regionCode,
                 regionName: this.regionName,
@@ -456,6 +460,8 @@ export default {
             }
 
             try {
+                
+                //Set new HEI Details
                 selectedHEI.set("hei_name", this.hei_name);
                 selectedHEI.set("username", this.username);
                 selectedHEI.set("email", this.email);
@@ -463,6 +469,8 @@ export default {
                 selectedHEI.set("number", this.number);
                 selectedHEI.set("inst_code", this.inst_code);
                 selectedHEI.set("hei_type", this.hei_type);
+
+                //Update HEI
                 await selectedHEI.save(
                     null, {
                         useMasterKey: true,
@@ -590,11 +598,14 @@ export default {
                 this.regions = response;
             });
 
+            //Query HEI Account
             const query = new Parse.Query(Parse.User);
             query.equalTo("objectId", this.heiID);
             const hei = await query.first({
                 useMasterKey: true,
             });
+
+            //Get HEI Details
             this.hei_name = hei.get("hei_name")
             this.username = hei.get("username")
             this.email = hei.get("email")
@@ -620,11 +631,13 @@ export default {
             this.number = hei.get("number")
             this.inst_code = hei.get("inst_code")
             this.hei_type = hei.get("hei_type")
-
+            
+            //Query HEI Types
             const HeiTypes = Parse.Object.extend("HEI_Types");
             const queryHT = new Parse.Query(HeiTypes);
             const querResultHT = await queryHT.find();
 
+            //Save HEI Types
             var heiTypes = [];
             for (var w = 0; w < querResultHT.length; w++) {
                 const heitype = querResultHT[w];
@@ -633,7 +646,6 @@ export default {
                     title: heitype.get("name"),
                 });
             }
-            console.log(heiTypes);
             this.hei_types = heiTypes;
         }
     },

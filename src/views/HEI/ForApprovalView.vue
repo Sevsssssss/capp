@@ -74,7 +74,6 @@ export default {
     name: "EditHEIapplication",
     data() {
         return {
-            // id: this.$route.params.id,
             show: false,
             statusShow: "",
             status: "",
@@ -124,6 +123,8 @@ export default {
             //count how many rows have uploader
             try {
                 let requirement = null;
+
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
                 appQuery.equalTo("objectId", this.id);
@@ -131,6 +132,7 @@ export default {
                     useMasterKey: true,
                 });
 
+                //Get Disapproved requirements
                 for (var i = 0; i < this.disapprovedCount; i++) {
                     const file = values.target[i].files[0];
                     console.log(file);
@@ -156,6 +158,7 @@ export default {
                     dateTime: new Date(),
                 });
 
+                //Save Application Updates
                 application
                     .save({
                         requirements: this.reqs,
@@ -165,7 +168,7 @@ export default {
                     })
                     .then(
                         (application) => {
-
+                            //Make new Notification
                             const Notifications = Parse.Object.extend("Notifications");
                             const newNotification = new Notifications();
 
@@ -189,7 +192,6 @@ export default {
                                         path: "/HEIapplication"
                                     });
                                 }, 3000);
-                            // console.log("New Access Type Added:" + newApplication.id)
                         },
                         (e) => {
                             toast("Application Update Failed: " + e.message, {
@@ -198,7 +200,6 @@ export default {
                                 hideProgressBar: true,
                                 position: POSITION.TOP_RIGHT,
                             });
-                            // alert("Access Type Adding Failed: " + error)
                         }
                     );
             } catch (error) {
@@ -214,6 +215,7 @@ export default {
     },
 
     computed: {
+        //For Search Functionality
         searchHEI() {
             return this.tables.filter((p) => {
                 return (
@@ -262,6 +264,7 @@ export default {
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
 
+            //Get Application Data
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");

@@ -26,12 +26,14 @@ import Parse from "parse";
 export default {
     props: ['id', 'item', 'date'],
     mounted: async function () {
+        //Query Notification
         const Notifications = Parse.Object.extend("Notifications");
         const query = new Parse.Query(Notifications);
         query.equalTo("objectId", this.id);
 
         const notif = await query.first();
 
+        //Mark Notification as read
         notif.set("isRead", true);
         notif.save();
     }

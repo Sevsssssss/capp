@@ -258,28 +258,10 @@ export default {
     },
 
     methods: {
+
+        //For Validation
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
-        },
-        reset() {
-            this.checkedPrograms = [];
-        },
-        addCMO() {
-            console.log("HI");
-            this.eval.push({
-                cmoID: '',
-                checkedRequirements: [],
-            })
-        },
-        removeCMO() {
-            this.eval.pop({
-                cmoID: '',
-                checkedRequirements: [],
-            });
-        },
-        submit: function () {
-            this.v$.$touch();
-            if (!this.v$.$pending || !this.v$.$error) return;
         },
         validate() {
             return this.showModal1;
@@ -289,9 +271,6 @@ export default {
             var has_error = 0;
             var cmo_checker = 0;
             var requirements_checker = 0;
-            // var errCat = 0;
-            // var subcat = 0;
-            // var items = 0;
             for (var i = 0; i < this.eval.length; i++) {
                 if (this.eval[i].cmoID == "") {
                     cmo_checker++;
@@ -323,11 +302,29 @@ export default {
             }
 
         },
+        reset() {
+            this.checkedPrograms = [];
+        },
+        addCMO() {
+            this.eval.push({
+                cmoID: '',
+                checkedRequirements: [],
+            })
+        },
+        removeCMO() {
+            this.eval.pop({
+                cmoID: '',
+                checkedRequirements: [],
+            });
+        },
+        submit: function () {
+            this.v$.$touch();
+            if (!this.v$.$pending || !this.v$.$error) return;
+        },
         async saveEvalForm() {
             this.$refs.Spinner.show();
             try {
-                console.log("save");
-
+                //Add new Evaluation Instrument
                 const EvaluationForm = Parse.Object.extend("EvaluationInstruments");
                 const newEvaluationForm = new EvaluationForm();
 
@@ -338,26 +335,16 @@ export default {
                     this.eval
                 );
 
-                // await newEvaluationForm.save();
-                // console.log(newEvaluationForm.save())
-
                 await newEvaluationForm.save();
                 toast("Evaluation Added", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     }),
-                    // window.location.reload()
                     setTimeout(() => {
                         this.$router.push("/evaluationins");
                     }, 2000);
-                // if (confirm("Application Type added. Would you like to add another Evaluation Instrument?")) {
-                //     document.location.reload();
-                // } else {
-                //     this.$router.push("/evaluationins");
-                // }
             } catch (error) {
-                // "Please fill out the required information"
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
                     timeout: 3000,
@@ -376,11 +363,8 @@ export default {
 
         //This removes a category
         removeProgram(name) {
-            console.log(name, this.checkedPrograms.length);
             for (var i = 0; i < this.checkedPrograms.length; i++) {
-                console.log(this.checkedPrograms[i]);
                 if (this.checkedPrograms[i] === name) {
-                    console.log("eyy");
                     this.checkedPrograms.splice(i, 1);
                     i--;
                 }
@@ -417,7 +401,7 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-            //Get Programs
+            //Get Disciplines
             var disciplineTable = [];
             var disciplinesNames = [];
             const disciplines = Parse.Object.extend("Disciplines");
@@ -425,9 +409,7 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
-                console.log(discipline.get("specificDiscipline").length);
                 for (var a = 0; a < discipline.get("specificDiscipline").length; a++) {
-                    console.log(discipline.get("specificDiscipline")[a].SpecDiscCode);
                     const programs = Parse.Object.extend("Programs");
                     const queryProg = new Parse.Query(programs);
 
@@ -453,10 +435,10 @@ export default {
                         name: discipline.get("specificDiscipline")[a].SpecificDiscipline,
                     });
                 }
-
                 this.programs = programsMat;
             }
-
+            
+            //Get CMOs for selection
             var storedCMO = [];
             const CMOs = Parse.Object.extend("CHED_MEMO");
             const cmoQuery = new Parse.Query(CMOs);

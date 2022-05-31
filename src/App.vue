@@ -82,7 +82,7 @@ Parse.masterKey = "master"
     //             user.set("email", "chedcapp@gmail.com");
     //             user.set("access_type", accesstype.id);
     //             user.set("designation", designation.id);
-    //             user.set("receivedCredentials", false);
+    //             user.set("receivedCredentials", true);
     //             try {
     //                 user.save().then(() => {
     //                     const params = {

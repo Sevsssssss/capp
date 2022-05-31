@@ -307,6 +307,7 @@ export default {
         },
     },
     methods: {
+        //For Validation
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -320,6 +321,8 @@ export default {
         validate2() {
             return this.showModal2;
         },
+
+        //Select HEI Type to Edit
         async selectHeiType(id) {
             this.heiTypeSelected = id;
 
@@ -331,9 +334,9 @@ export default {
 
             this.heiTypeName = heiTypeSel.get("name");
         },
+        //For Validation
         modalUpdate() {
             var has_error = 0;
-            console.log(this.heiTypeName);
             if (this.heiTypeName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -348,14 +351,16 @@ export default {
             }
         },
         async updateHEIType() {
+            //Query HEI Type
             const heiTypes = Parse.Object.extend("HEI_Types");
             const htQuery = new Parse.Query(heiTypes);
             htQuery.equalTo("objectId", this.heiTypeSelected);
 
             const heiType = await htQuery.first();
 
+            //Set new HEI Type Name
             heiType.set("name", this.heiTypeName)
-
+            //Save HEI Type update
             heiType.save({
                     name: this.heiTypeName.toUpperCase(),
                 }).then(() =>
@@ -371,9 +376,9 @@ export default {
                     window.location.reload()
                 }, 2000);
         },
+        //For Validation of Data
         async modal() {
             var has_error = 0;
-            console.log(this.heiTypeName);
             if (this.heiTypeName == "") {
                 toast("Please fill out the required information", {
                     type: TYPE.ERROR,
@@ -385,7 +390,6 @@ export default {
             }
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
-                console.log(this.heiTypeSelected)
                 const heiTypes = Parse.Object.extend("HEI_Types");
                 const htQuery = new Parse.Query(heiTypes);
                 htQuery.equalTo("objectId", this.heiTypeSelected);
@@ -410,17 +414,20 @@ export default {
                     }, 2000);
             }
         },
+        //Select HEI Type to Delete
         selectedHeiTypeDelete(id) {
             this.deleteDis = id;
         },
         async deleteHeiType() {
             this.$refs.Spinner.show();
+            //Query HEI Type
             const heiTypes = Parse.Object.extend("HEI_Types");
             const htQuery = new Parse.Query(heiTypes);
             htQuery.equalTo("objectId", this.deleteDis);
 
             const heiType = await htQuery.first();
 
+            //Delete HEI Type
             heiType.destroy().then((disc) => {
                 console.log("Deleted object: " + disc.id);
                 toast("Deleting...", {
@@ -450,9 +457,12 @@ export default {
         },
         addHeiType() {
             this.$refs.Spinner.show();
+
+            //Get HEI Type Collection
             const heiType = Parse.Object.extend("HEI_Types");
             const newHeiType = new heiType();
             try {
+                //Save new HEI Type
                 newHeiType.save({
                         name: this.heiTypeName.toUpperCase(),
                     }).then(() =>
@@ -462,8 +472,6 @@ export default {
                             position: POSITION.TOP_RIGHT,
                         }),
                     ),
-
-                    // window.location.reload()
                     setTimeout(() => {
                         document.location.reload()
                     }, 2000);
@@ -483,6 +491,8 @@ export default {
                 2000
             );
         },
+
+        //For Table Page Traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -523,10 +533,12 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var heiTypesTable = [];
 
+            //Query HEI Types
             const HeiTypes = Parse.Object.extend("HEI_Types");
             const query = new Parse.Query(HeiTypes);
             const querResult = await query.find();
 
+            //Save HEI Types
             for (var i = 0; i < querResult.length; i++) {
                 const ht = querResult[i];
 
@@ -537,8 +549,6 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = heiTypesTable;
-
-            // console.log(this.tables);
         }
     },
 };

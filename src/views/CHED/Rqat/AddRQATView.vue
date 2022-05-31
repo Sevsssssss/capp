@@ -271,6 +271,7 @@ export default {
 
                 this.rqat_acc_id = accQuerResultRQAT.id;
 
+                //For Date of HEI Affiliation
                 var months = [
                     "January",
                     "February",
@@ -304,10 +305,7 @@ export default {
                 }
                 var password = Math.random().toString(36).slice(-12);
                 
-                ////////////////////////////////////
-                console.log(password); /////////////
-                ////////////////////////////////////
-                
+                //Set RQAT Data
                 newRQAT.set("name", rqatName);
                 newRQAT.set("username", this.username);
                 newRQAT.set("email", this.email);
@@ -317,6 +315,8 @@ export default {
                 newRQAT.set("past_affil", []);
                 newRQAT.set("access_type", this.rqat_acc_id);
                 newRQAT.set("receivedCredentials", false);
+
+                //Save new RQAT
                 await newRQAT.save().then(() => {
                     toast("RQAT Account Added!", {
                         type: TYPE.SUCCESS,
@@ -341,12 +341,6 @@ export default {
                 });
                 console.log(error.message);
             }
-            // setTimeout(
-            //     function () {
-            //         this.$refs.Spinner.hide();
-            //     }.bind(this),
-            //     2000
-            // );
         },
         modal() {
             var has_error = 0;
@@ -366,15 +360,6 @@ export default {
                 has_error = 1;
             }
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
                 this.showModal1 = !this.showModal1;
             }
         },
@@ -400,7 +385,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
+            
+            //Get HEI Access Type
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "HEI");
@@ -408,9 +394,11 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var heis = [];
+            //Get HEIs
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
             const querResult = await query.find();
+            //If RQAT Doesn't have an affiliation
             heis.push({
                 id: "None",
                 title: "None",

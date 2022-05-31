@@ -250,6 +250,7 @@ export default {
         async updateRQAT() {
             this.$refs.Spinner.show();
             try {
+                //Query User's Account
                 const rqat = new Parse.Query(Parse.User);
                 rqat.equalTo("objectId", this.rqatID);
                 const selectedRQAT = await rqat.first({
@@ -293,6 +294,7 @@ export default {
                     affilendDate: currentDay,
                 });
 
+                //Set User's updated data
                 selectedRQAT.set("name", rqatName);
                 selectedRQAT.set("username", this.username);
                 selectedRQAT.set("password", "password");
@@ -300,6 +302,7 @@ export default {
                 selectedRQAT.set("hei_affil", heiAffil);
                 selectedRQAT.set("past_affil", this.past_affil);
 
+                //Save Users
                 await selectedRQAT
                     .save(null, {
                         useMasterKey: true,
@@ -336,7 +339,6 @@ export default {
         },
         modal() {
             var has_error = 0;
-            console.log(this.hei_affil);
             if (
                 this.lastname == "" ||
                 this.firstname == "" ||
@@ -355,25 +357,14 @@ export default {
             }
 
             if (has_error < 1) {
-                // var password = "";
-                // var characters =
-                //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                // var charactersLength = characters.length;
-                // for (var i = 0; i < 8; i++) {
-                //   password += characters.charAt(
-                //     Math.floor(Math.random() * charactersLength)
-                //   );
-                // }
 
                 this.showModal1 = !this.showModal1;
             }
         },
         async changePassword() {
             const currentUser = Parse.User.current();
-            console.log(currentUser.get("username"));
             try{
                 var testLogin = await Parse.User.logIn(currentUser.get("username"), this.currPass);
-                console.log(testLogin)
                 console.log("Current Password is Correct");
                 if(this.newPass == this.newPassConf){
                     currentUser.setPassword(this.newPass)
@@ -411,6 +402,7 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
+            //Get HEI Access Type
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "HEI");
@@ -418,11 +410,14 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var heis = [];
-
+            
+            //Get all users with HEI Access Type
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
 
             const querResult = await query.find();
+
+            //Save HEIs
             heis.push({
                 id: "None",
                 title: "None",
@@ -436,11 +431,14 @@ export default {
             }
             this.heis = heis;
 
+            //Query and Get RQAT's Object
             const queryRQAT = new Parse.Query(Parse.User);
-            queryRQAT.equalTo("objectId", this.rqatID);
+            queryRQAT.equalTo("objectId", Parse.User.current().id);
             const rqat = await queryRQAT.first({
                 useMasterKey: true,
             });
+
+            //Store RQAT's data
             this.lastname = rqat.get("name").lastname;
             this.firstname = rqat.get("name").firstname;
             this.midinit = rqat.get("name").middleinitial;

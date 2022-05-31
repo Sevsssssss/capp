@@ -176,6 +176,7 @@ export default {
         VueInstantLoadingSpinner,
     },
     computed: {
+        //For Search Functionality
         searchEval() {
             if (this.search) {
                 return this.tables.filter((item) => {
@@ -194,17 +195,23 @@ export default {
         addEvalIns() {
             this.$router.push("/evaluationins/add");
         },
+
+        //Select Evaluation Instrument to delete
         selectedEvalInst(id) {
             this.evalInsID = id;
         },
+
+        //For Deletion of Evaluation Instrument
         async deleteEval() {
             this.$refs.Spinner.show();
 
+            //Query Evaluation Instrument
             const EvalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQueryDel = new Parse.Query(EvalInstruments);
             evalQueryDel.equalTo("objectId", this.evalInsID);
             const evalDel = await evalQueryDel.first();
 
+            //Delete Evaluation Instrument
             evalDel.destroy().then((eval_inst) => {
                     toast("Deleting Evaluation Instrument: " + eval_inst.id, {
                         type: TYPE.WARNING,
@@ -234,6 +241,8 @@ export default {
             );
 
         },
+
+        //For Traversal of pages in table
         prevPage() {
             if (this.currentpage > 0) this.currentpage -= 1;
         },
@@ -263,6 +272,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query all Evaluation Instruments
             var storedEvalInstruments = [];
             const instruments = Parse.Object.extend("EvaluationInstruments");
             const evalInsQuery = new Parse.Query(instruments);
@@ -277,8 +288,6 @@ export default {
                 programQuery.equalTo("objectId", evalInst.get("evaluationFormProgram"));
 
                 const program = await programQuery.first();
-
-                // console.log("test" + program.id)
 
                 storedEvalInstruments.push({
                     id: evalInst.id,

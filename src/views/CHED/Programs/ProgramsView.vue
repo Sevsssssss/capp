@@ -374,6 +374,7 @@ export default {
         };
     },
     computed: {
+        //For Search Functionality
         searchProgram() {
             return this.tables
                 .filter((p) => {
@@ -386,6 +387,7 @@ export default {
         },
     },
     methods: {
+        //Add a program Field
         addProgramName() {
             this.progCounter++;
             this.programs.push({
@@ -396,26 +398,15 @@ export default {
         reset() {
             this.programs = [];
         },
+        //Select Program to Delete
         selectedProgramDelete(id) {
             this.deleteProg = id;
         },
         removeProgram(id) {
-            console.log(this.programs.length);
+            //Remove program from list
             for (var i = 0; i < this.programs.length; i++) {
-                console.log(i, id);
-                console.log(this.programs[i]);
                 if (this.programs[i].id === id) {
-                    console.log("true");
-                    console.log(id, this.programs[i].id);
                     this.programs.splice(i, 1);
-                    i--;
-                }
-            }
-        },
-        removeProgramEdit(id) {
-            for (var i = 0; i < this.editPrograms.length; i++) {
-                if (this.editPrograms[i].id === id) {
-                    this.editPrograms.splice(i, 1);
                     i--;
                 }
             }
@@ -423,12 +414,14 @@ export default {
 
         async deleteProgram() {
             this.$refs.Spinner.show();
+            //Query Program to delete
             const programsDel = Parse.Object.extend("Programs");
             const progDelQuery = new Parse.Query(programsDel);
             progDelQuery.equalTo("objectId", this.deleteProg);
 
             const programs = await progDelQuery.first();
 
+            //Delete Program
             programs.destroy().then(
                 (disc) => {
                     toast("Deleting...", {
@@ -460,6 +453,7 @@ export default {
             );
         },
 
+        //For Validation
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -526,7 +520,8 @@ export default {
                 this.showModal3 = !this.showModal3;
             }
         },
-
+        
+        //Select Program to Edit
         async editProgramSelect(id) {
             this.editID = id;
 
@@ -539,10 +534,15 @@ export default {
             this.selectedDiscipline = progResult.get("programDiscipline")
         },
         addProgram() {
+            this.$refs.Spinner.show();
+            
             try {
                 for (var i = 0; i < this.programs.length; i++) {
+                    //Get Program Collection
                     const programs = Parse.Object.extend("Programs");
                     const newProgram = new programs();
+
+                    //Save new Program
                     newProgram.save({
                         programName: this.programs[i].programName.toUpperCase(),
                         programDiscipline: this.selectedDiscipline.specDisc,
@@ -552,14 +552,10 @@ export default {
                             timeout: 2000,
                             position: POSITION.TOP_RIGHT,
                         }),
-                        //this.$refs.Spinner.show();
-                        // window.location.reload()
                         setTimeout(() => {
                             document.location.reload();
-                            //this.$refs.Spinner.hide();
                         }, 2000);
                 }
-                //alert("New Discipline Added: " + this.atname);
 
             } catch (error) {
                 toast("Please fill out the required information", {
@@ -570,19 +566,16 @@ export default {
                 });
                 console.log(error.message);
             }
-            // setTimeout(
-            //     function () {
-            //         this.$refs.Spinner.hide();
-            //     }.bind(this),
-            //     2000
-            // );
         },
         async editProgram() {
             try {
+                //Query Program
                 const programsUpdate = Parse.Object.extend("Programs");
                 const queryProgUpdate = new Parse.Query(programsUpdate);
                 queryProgUpdate.equalTo("objectId", this.editID)
                 const programToEdit = await queryProgUpdate.first();
+
+                //Save Program Updates
                 programToEdit.save({
                     programName: this.editProgramName,
                     programDiscipline: this.selectedDiscipline.specDisc,
@@ -593,11 +586,9 @@ export default {
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
                     }),
-                    // window.location.reload()
                     setTimeout(() => {
                         document.location.reload();
                     }, 2000);
-                //alert("New Discipline Added: " + this.atname);
 
             } catch (error) {
                 toast("Please fill out the required information", {
@@ -609,30 +600,8 @@ export default {
                 console.log(error.message);
             }
         },
-        addAccessType() {
-            const accessType = Parse.Object.extend("AccessTypes");
-            const newAccessType = new accessType();
-            try {
-                newAccessType.save({
-                    name: this.atname.toUpperCase(),
-                    privileges: this.checkedAccessTypes,
-                });
-                if (
-                    confirm(
-                        "Application Type added. Would you like to add another Application Type?"
-                    )
-                ) {
-                    document.location.reload();
-                } else {
-                    document.location.reload();
-                }
-            } catch (error) {
-                alert("Error: " + error.code + " " + error.message);
-            }
-        },
-        addAppType() {
-            this.$router.push("/settings/add");
-        },
+
+        //For Table Page Traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -672,12 +641,16 @@ export default {
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var programsData = [];
             var disciplinesNames = [];
+
+            //Query Disciplines
             const disciplines = Parse.Object.extend("Disciplines");
             const query = new Parse.Query(disciplines);
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
                 for (var a = 0; a < discipline.get("specificDiscipline").length; a++) {
+
+                    //Query Programs Related to the Queried Discipline
                     const programs = Parse.Object.extend("Programs");
                     const queryProg = new Parse.Query(programs);
                     queryProg.equalTo("programDiscipline", discipline.get("specificDiscipline")[a].SpecDiscCode);
@@ -685,6 +658,7 @@ export default {
                     for (var j = 0; j < progResult.length; j++) {
                         const prog = progResult[j];
 
+                        //Store Programs
                         programsData.push({
                             id: prog.id,
                             programName: prog.get("programName"),
@@ -704,7 +678,6 @@ export default {
             this.tables = programsData;
             this.disciplines = disciplinesNames;
             this.selectedDiscipline = {specDisc: disciplinesNames[0].SpecDiscCode, majorDisc: disciplinesNames[0].MajorDisc};
-            // console.log(this.tables);
         }
     },
 };

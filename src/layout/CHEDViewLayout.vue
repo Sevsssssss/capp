@@ -420,13 +420,62 @@ export default {
 
         //Display a Toast(Banner) when a Notification is created
         applicationSub.on('create', (notif) => {
-            
+
             toast(notif.get("message"), {
                 type: TYPE.INFO,
                 timeout: 5000,
                 hideProgressBar: false,
                 position: POSITION.TOP_RIGHT,
             });
+        });
+
+        /////////////////////////////////////////////////////////////////////////////// Live Queries
+
+        const query1 = new Parse.Query(Parse.User);
+        const subscription = await query1.subscribe();
+
+        subscription.on("open", async () => {
+            var password = [];
+            const emailQuery = new Parse.Query(Parse.User);
+            emailQuery.equalTo("emailVerified", true)
+            emailQuery.notEqualTo("receivedCredentials", true)
+            await emailQuery.find({
+                useMasterKey: true
+            }).then((objectEmail) => {
+                for (let e = 0; e < objectEmail.length; e++) {
+                    if (
+                        objectEmail[e].get("emailVerified") == true &&
+                        objectEmail[e].get("receivedCredentials") == false
+                    ) {
+
+                        password.push(Math.random().toString(36).slice(-12))
+                        console.log("first: " + password)
+                        setTimeout(
+                            () => {
+                                const params = {
+                                    username: objectEmail[e].get("username"),
+                                    email: objectEmail[e].get("email"),
+                                    password: password[e],
+                                    type: "sendCredentials",
+                                    approved: true,
+                                };
+                                console.log(objectEmail[e].id);
+                                Parse.Cloud.run("sendEmailNotification", params)
+                            },
+                            2000
+                        );
+
+                        objectEmail[e].setPassword(password[e]);
+                        console.log("second: " + password[e])
+                        objectEmail[e].set("receivedCredentials", true);
+                        objectEmail[e].save(null, {
+                            useMasterKey: true,
+                        });
+                    }
+                }
+
+            });
+
         });
     },
 };

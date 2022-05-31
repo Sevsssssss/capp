@@ -176,52 +176,6 @@
             </div>
         </div>
     </div>
-    <input type="checkbox" id="editPrograms" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="flex flex-row justify-between">
-                <div>
-                    <div class="font-semibold text-md">EDIT SPECIFIC DISCIPLINES</div>
-                    <p class="py-2 text-sm">
-                        Edit the Specific Discipline Name.
-                    </p>
-                </div>
-            </div>
-
-            <form v-on:submit.prevent="submit">
-
-                <div class="mb-6" v-for="i in searchDiscipline" :key="i">
-                    <div v-if="editDisciplineName === i.MajorDiscipline">
-                        <div v-for="x in i.specificDiscipline" :key="x">
-
-                            <div class="flex flex-row">
-                                <div>
-                                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Specific Discipline Name:</label>
-                                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
-                                </div>
-                                <div class="pl-4">
-                                    <button data-tip="Remove Program" class="btn btn-outline tooltip tooltip-left hover:bg-brand-red/60" @click="removeProgram(program.id)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900">Major Discipline Name:</label>
-                    <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter Name" v-model="v$.editProgramName.$model" />
-                </div>
-            </form>
-            <div class="modal-action">
-                <label for="editPrograms" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label for="my-modal-6" id="my-modal-6" type="submit" class="btn btn-sm bg-blue-700 rounded-md hover:bg-blue-800 border-none" @click="editProgram()">Submit</label>
-            </div>
-        </div>
-    </div>
 
     <div :class="{ 'modal-open ': validate1() }" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box relative rounded-md text-left">
@@ -268,9 +222,6 @@ import {
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 const toast = useToast();
-// var dataNumber = 10;
-// var page = 0;
-// import NoDataAvail from "@/components//NoDataAvail.vue";
 export default {
     name: "DisciplinesView",
     components: {
@@ -337,44 +288,28 @@ export default {
         },
     },
     methods: {
-        // sendData(item) {
-        //     this.selectedMajDiscipline = item;
-        // },
         addDisciplines() {
             this.$router.push("/disciplines/add");
         },
-        addProgramName() {
-            this.progCounter++;
-            this.programs.push({
-                id: this.progCounter,
-                programName: "",
-            });
-        },
+
+        //Select discipline to be deleted
         selectedDisciplineDelete(id) {
             this.deleteDis = id;
         },
-        removeProgram(id) {
-            console.log(this.programs.length);
-            for (var i = 0; i < this.programs.length; i++) {
-                console.log(i, id);
-                console.log(this.programs[i]);
-                if (this.programs[i].id === id) {
-                    console.log("true");
-                    console.log(id, this.programs[i].id);
-                    this.programs.splice(i, 1);
-                    i--;
-                }
-            }
-        },
 
+        //For Deletion
         async deleteDiscipline() {
             this.$refs.Spinner.show();
+
+            //Query Discipline selected
             const disciplines = Parse.Object.extend("Disciplines");
             const discQuery = new Parse.Query(disciplines);
             discQuery.equalTo("objectId", this.deleteDis);
 
             const discipline = await discQuery.first();
+            
 
+            //Delete Discipline
             discipline.destroy().then(
                 (disc) => {
                     toast("Deleting...", {
@@ -406,6 +341,7 @@ export default {
             );
         },
 
+        //For Validation
         validationStatus: function (validation) {
             return typeof validation !== "undefined" ? validation.$error : false;
         },
@@ -473,20 +409,26 @@ export default {
             }
         },
 
+        //For editing of Discipline
         editDiscipline(name, id) {
             this.editDisciplineName = name;
             this.editID = id;
         },
         async newDiscName() {
             this.$refs.Spinner.show();
+
+            //Query Discipline
             const Disciplines = Parse.Object.extend("Disciplines");
             const discipline = new Parse.Query(Disciplines);
             discipline.equalTo("objectId", this.editID);
             const disc = await discipline.first();
+            
+            //Set updated name
             disc.set("disciplineName", this.editDisciplineName);
+
+            //Save Dicipline updates
             disc.save();
             try {
-                //alert("New Discipline Added: " + newDiscipline.id);
                 toast("Edited Dicsipline Name Successfully", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
@@ -506,17 +448,16 @@ export default {
                 console.log(error.message);
             }
 
-            console.log("Edit Successful");
         },
         addDiscipline() {
             this.$refs.Spinner.show();
+            //Add Discipline to database
             const disciplines = Parse.Object.extend("Disciplines");
             const newDiscipline = new disciplines();
             try {
                 newDiscipline.save({
                     disciplineName: this.disciplineName,
                 });
-                //alert("New Discipline Added: " + newDiscipline.id);
                 toast("New Discipline Added: " + this.disciplineName, {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
@@ -536,62 +477,7 @@ export default {
                 console.log(error.message);
             }
         },
-        addProgram() {
-            this.$refs.Spinner.show();
-            try {
-                for (var i = 0; i < this.programs.length; i++) {
-                    const programs = Parse.Object.extend("Programs");
-                    const newProgram = new programs();
-                    newProgram.save({
-                        programName: this.programs[i].programName,
-                        programDiscipline: this.selectedDiscipline,
-                    });
-                    toast("New Program Added: " + this.programs[i].programName, {
-                            type: TYPE.SUCCESS,
-                            timeout: 3000,
-                            position: POSITION.TOP_RIGHT,
-                        }),
-                        // window.location.reload()
-                        setTimeout(() => {
-                            document.location.reload();
-                        }, 2000);
-                }
-                //alert("New Discipline Added: " + this.atname);
-
-            } catch (error) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
-                });
-                console.log(error.message);
-            }
-        },
-        addAccessType() {
-            const accessType = Parse.Object.extend("AccessTypes");
-            const newAccessType = new accessType();
-            try {
-                newAccessType.save({
-                    name: this.atname.toUpperCase(),
-                    privileges: this.checkedAccessTypes,
-                });
-                if (
-                    confirm(
-                        "Application Type added. Would you like to add another Application Type?"
-                    )
-                ) {
-                    document.location.reload();
-                } else {
-                    document.location.reload();
-                }
-            } catch (error) {
-                alert("Error: " + error.code + " " + error.message);
-            }
-        },
-        addAppType() {
-            this.$router.push("/settings/add");
-        },
+        //For Table Page Traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return p.Name.toLowerCase().indexOf(this.search.toLowerCase()) != -1;
@@ -605,6 +491,7 @@ export default {
                 this.currentpage += 1;
             }
         },
+        //Routing to Upload Disciplines
         excelDisciplines() {
             this.$router.push("/disciplines/upload");
         },
@@ -629,6 +516,8 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Get Disciplines Stored in database
             var disciplineTable = [];
             var disciplinesNames = [];
             const disciplines = Parse.Object.extend("Disciplines");
@@ -636,9 +525,7 @@ export default {
             const querResult = await query.find();
             for (var i = 0; i < querResult.length; i++) {
                 const discipline = querResult[i];
-                console.log(discipline.get("MajorDiscipline"), );
                 const sDiscipline = discipline.get("specificDiscipline");
-                console.log(sDiscipline);
 
                 disciplineTable.push({
                     id: discipline.id,
@@ -654,7 +541,6 @@ export default {
             this.totalEntries = querResult.length;
             this.disciplines = disciplinesNames;
             this.tables = disciplineTable;
-            console.log(this.tables);
         }
     },
 };

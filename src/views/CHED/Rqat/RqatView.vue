@@ -279,6 +279,7 @@ export default {
         addRQAT() {
             this.$router.push("/rqat/add");
         },
+        //Select RQAT to Delete
         async selectAcc(id) {
             this.currentDelAcc = id;
 
@@ -298,26 +299,20 @@ export default {
         },
         async deleteRQAT() {
             this.$refs.Spinner.show();
-
+            //Query RQAT to be deleted
             const acc = new Parse.Query(Parse.User);
             acc.equalTo("objectId", this.currentDelAcc);
             const querResult = await acc.first({
                 useMasterKey: true,
             });
 
-            // const applications = Parse.Object.extend("Applications");
-            // const queryApp = new Parse.Query(applications);
-            // queryApp.equalTo("selectedRQAT", querResult.id)
-            // const application = await queryApp.find();
-
             if (this.application_counter > 0) {
-                //if (confirm("This account would be archived instead of deleted due to having past transactions. Would you like to continue?")) {
                 querResult.set("isArchived", true);
                 querResult.save({
                     useMasterKey: true,
                 });
-                //}
             } else {
+                //Delete RQAT
                 querResult.destroy({
                     useMasterKey: true,
                 });
@@ -341,6 +336,8 @@ export default {
         viewAssignments() {
             this.$router.push("/rqat/AdminHistory");
         },
+
+        //For Table Page Traversal
         newEntCount() {
             this.totalEntries = this.tables.filter((p) => {
                 return (
@@ -380,7 +377,7 @@ export default {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
+            //Query RQAT Access Type
             const AccessType = Parse.Object.extend("AccessTypes");
             const queryACC = new Parse.Query(AccessType);
             queryACC.equalTo("name", "RQAT");
@@ -388,10 +385,14 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var rqats = [];
+            
+            //Query RQAT Users
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
             query.notEqualTo("hei_affil", null);
             const querResult = await query.find();
+
+            //Store RQATs
             for (var i = 0; i < querResult.length; i++) {
                 const rqat = querResult[i];
 
@@ -427,24 +428,6 @@ export default {
             var password;
             const queryRQAT = new Parse.Query(Parse.User);
             const subscription = await queryRQAT.subscribe();
-            // subscription.on('open', () => {
-            //     console.log('subscription opened');
-            // });
-            // subscription.on('create', (object) => {
-            //     console.log('object created' + object);
-            // });
-            // subscription.on('enter', (object) => {
-            //     console.log('object entered' + object);
-            // });
-            // subscription.on('leave', (object) => {
-            //     console.log('object left' + object);
-            // });
-            // subscription.on('delete', (object) => {
-            //     console.log('object deleted' + object);
-            // });
-            // subscription.on('close', () => {
-            //     console.log('subscription closed');
-            // });
             subscription.on("update", async (object) => {
                 console.log("object updated" + object);
                 // this.count();
@@ -487,7 +470,6 @@ export default {
                     ) {
 
                         password = Math.random().toString(36).slice(-12);
-                        console.log("first: " + password)
 
                         const params = {
                             username: objectEmail.get("username"),
@@ -497,9 +479,7 @@ export default {
                             approved: true,
                         };
                         Parse.Cloud.run("sendEmailNotification", params);
-                        console.log(objectEmail.id);
                         objectEmail.setPassword(password);
-                        console.log("second: " + password)
                         objectEmail.set("receivedCredentials", true);
                         objectEmail.save(null, {
                             useMasterKey: true,

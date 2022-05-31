@@ -220,7 +220,7 @@
                             <span class="font-semibold">ID:</span>
                             <span class="">{{appID}}</span>
                         </div>
-                        
+
                     </div>
                     <div class="space-y-1">
                         <div class="flex flex-row space-x-1">
@@ -232,7 +232,7 @@
                             <span class="">{{stHEI}}</span>
                         </div>
                         <div class="flex flex-row space-x-1">
-                            <div class="font-semibold">Program:  </div>
+                            <div class="font-semibold">Program: </div>
                             <span class="">{{stProgram}}</span>
                         </div>
                     </div>
@@ -359,7 +359,7 @@ export default {
     methods: {
         async id(appid, index) {
             this.appID = appid;
-            this.appIndex = index; 
+            this.appIndex = index;
 
             //For Tracking
 
@@ -392,7 +392,6 @@ export default {
             this.stHEI = querResultHEI.get("hei_name");
             this.stProgram = querResultProgs.get("programName");
             var progSpecID = querResultProgs.get("programDiscipline");
-
 
             var statTrack = [];
             var months = [
@@ -469,19 +468,18 @@ export default {
             const disciplines = Parse.Object.extend("Disciplines");
             const queryDisc = new Parse.Query(disciplines);
             const querDiscResult = await queryDisc.find();
-            
+
             for (var x = 0; x < querDiscResult.length; x++) {
                 const discipline = querDiscResult[x];
                 const sDiscipline = discipline.get("specificDiscipline");
-               
-                 
-                for (var z = 0; z < sDiscipline.length; z++){
-                    if (progSpecID == sDiscipline[z].SpecDiscCode){
+
+                for (var z = 0; z < sDiscipline.length; z++) {
+                    if (progSpecID == sDiscipline[z].SpecDiscCode) {
                         var MajDiscID = discipline.id;
                     }
                 }
             }
-            
+
             //Query Supervisors
             const Designations1 = Parse.Object.extend("Designations");
             const queryDesig = new Parse.Query(Designations1);
@@ -493,7 +491,6 @@ export default {
             user.equalTo("designation", designationQueryResult.id);
             user.equalTo("disciplines", MajDiscID)
 
-            
             const supervisorResult = await user.find();
 
             var dbSupervisors = [];
@@ -513,7 +510,7 @@ export default {
             }
 
             this.supervisors = dbSupervisors;
-            
+
         },
         modal() {
             var has_error = 0;
@@ -562,12 +559,12 @@ export default {
                 "November",
                 "December",
             ];
-            
+
             var month;
             var day;
             var year;
             var hei_name = "";
-            
+
             //If All is Selected
             if (this.sort_type == "All") {
                 var storedApplicationsAll = [];
@@ -761,7 +758,7 @@ export default {
                 } else {
                     this.sort_type_var = true;
                 }
-            //If For Revision
+                //If For Revision
             } else if (this.sort_type == "For Revision") {
                 var storedApplicationsFR = [];
                 const applications = Parse.Object.extend("Applications");
@@ -920,7 +917,7 @@ export default {
                 newNotification.set("date_and_time", new Date());
                 newNotification.set("user", this.selectedSupervisor);
                 newNotification.set("isRead", false);
-                
+
                 //Save new Notification
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
@@ -1013,7 +1010,7 @@ export default {
                     "November",
                     "December",
                 ];
-                
+
                 var month = application.createdAt.getMonth();
                 var day = application.createdAt.getDate();
                 var year = application.createdAt.getFullYear();
@@ -1021,8 +1018,8 @@ export default {
                 var minutes = application.createdAt.getMinutes();
                 var seconds = application.createdAt.getSeconds();
 
-                if(application.get("inCompliance") && application.get("applicationStatus") == "For Compliance"){
-                    if(application.get("complianceDueDate") < new Date()){
+                if (application.get("inCompliance") && application.get("applicationStatus") == "For Compliance") {
+                    if (application.get("complianceDueDate") < new Date()) {
                         application.set("applicationStatus", "Non Compliant")
                         application.save()
 
@@ -1034,7 +1031,7 @@ export default {
                         newNotification.set("date_and_time", new Date());
                         newNotification.set("user", this.hei);
                         newNotification.set("isRead", false);
-                        
+
                         //Save new Notification
                         newNotification.save().then((notif) => {
                             console.log("Notification Saved: " + notif.id);
@@ -1065,23 +1062,19 @@ export default {
                     hour -= 12;
                 }
 
-                if(hour == 0) {
+                if (hour == 0) {
                     hour = 12;
                 }
-                if(minutes < 10){
+                if (minutes < 10) {
                     MinText = "0" + minutes;
-                }
-                else{
+                } else {
                     MinText = minutes.toString();
                 }
-                if(seconds < 10){
+                if (seconds < 10) {
                     SecText = "0" + seconds;
-                }
-                else{
+                } else {
                     SecText = seconds.toString();
                 }
-
-
 
                 storedApplications.push({
                     id: i + 1,
@@ -1101,6 +1094,7 @@ export default {
             }
             this.totalEntries = querResult.length;
             this.tables = storedApplications;
+            const subscription = await query.subscribe();
 
             //Query and Store Count of Applications per Application Status
             const applicationsFA = Parse.Object.extend("Applications");
@@ -1185,6 +1179,183 @@ export default {
                     type: "noncompliant",
                 },
             ];
+
+            subscription.on("update", async (object) => {
+                var index = this.tables.findIndex((application) => application.appID == object.id);
+
+                this.tables[index] = {
+                    ...this.tables[index],
+                    status: object.get("applicationStatus"),
+                };
+
+                const applicationsFA = Parse.Object.extend("Applications");
+                const queryFA = new Parse.Query(applicationsFA);
+                queryFA.equalTo("applicationStatus", "For Approval");
+
+                const applicationsFR = Parse.Object.extend("Applications");
+                const queryFR = new Parse.Query(applicationsFR);
+                queryFR.equalTo("applicationStatus", "For Revision");
+
+                const applicationsFP = Parse.Object.extend("Applications");
+                const queryFP = new Parse.Query(applicationsFP);
+                queryFP.equalTo("applicationStatus", "For Payment");
+
+                const applicationsFE = Parse.Object.extend("Applications");
+                const queryFE = new Parse.Query(applicationsFE);
+                queryFE.equalTo("applicationStatus", "For Inspection");
+
+                const applicationsFC = Parse.Object.extend("Applications");
+                const queryFC = new Parse.Query(applicationsFC);
+                queryFC.equalTo("applicationStatus", "For Compliance");
+
+                const applicationsFV = Parse.Object.extend("Applications");
+                const queryFV = new Parse.Query(applicationsFV);
+                queryFV.equalTo("applicationStatus", "For Verification");
+
+                const applicationsFI = Parse.Object.extend("Applications");
+                const queryFI = new Parse.Query(applicationsFI);
+                queryFI.equalTo("applicationStatus", "For Issuance");
+
+                const applicationsC = Parse.Object.extend("Applications");
+                const queryC = new Parse.Query(applicationsC);
+                queryC.equalTo("applicationStatus", "Completed");
+
+                const applicationsNC = Parse.Object.extend("Applications");
+                const queryNC = new Parse.Query(applicationsNC);
+                queryNC.equalTo("applicationStatus", "Non Compliant");
+
+                this.datas = [{
+                        title: "FOR APPROVAL",
+                        num: await queryFA.count(),
+                        type: "approval",
+                    },
+                    {
+                        title: "FOR REVISION",
+                        num: await queryFR.count(),
+                        type: "revision",
+                    },
+                    {
+                        title: "FOR PAYMENT",
+                        num: await queryFP.count(),
+                        type: "payment",
+                    },
+                    {
+                        title: "FOR INSPECTION",
+                        num: await queryFE.count(),
+                        type: "evaluation",
+                    },
+                    {
+                        title: "FOR COMPLIANCE",
+                        num: await queryFC.count(),
+                        type: "forcompliance",
+                    },
+                    {
+                        title: "FOR VERIFICATION",
+                        num: await queryFV.count(),
+                        type: "verification",
+                    },
+                    {
+                        title: "FOR ISSUANCE",
+                        num: await queryFI.count(),
+                        type: "issuance",
+                    },
+                    {
+                        title: "COMPLETED",
+                        num: await queryC.count(),
+                        type: "completed",
+                    },
+                    {
+                        title: "NON COMPLIANT",
+                        num: await queryNC.count(),
+                        type: "noncompliant",
+                    },
+                ];
+            });
+
+            subscription.on('create', async() => {
+                const applicationsFA = Parse.Object.extend("Applications");
+                const queryFA = new Parse.Query(applicationsFA);
+                queryFA.equalTo("applicationStatus", "For Approval");
+
+                const applicationsFR = Parse.Object.extend("Applications");
+                const queryFR = new Parse.Query(applicationsFR);
+                queryFR.equalTo("applicationStatus", "For Revision");
+
+                const applicationsFP = Parse.Object.extend("Applications");
+                const queryFP = new Parse.Query(applicationsFP);
+                queryFP.equalTo("applicationStatus", "For Payment");
+
+                const applicationsFE = Parse.Object.extend("Applications");
+                const queryFE = new Parse.Query(applicationsFE);
+                queryFE.equalTo("applicationStatus", "For Inspection");
+
+                const applicationsFC = Parse.Object.extend("Applications");
+                const queryFC = new Parse.Query(applicationsFC);
+                queryFC.equalTo("applicationStatus", "For Compliance");
+
+                const applicationsFV = Parse.Object.extend("Applications");
+                const queryFV = new Parse.Query(applicationsFV);
+                queryFV.equalTo("applicationStatus", "For Verification");
+
+                const applicationsFI = Parse.Object.extend("Applications");
+                const queryFI = new Parse.Query(applicationsFI);
+                queryFI.equalTo("applicationStatus", "For Issuance");
+
+                const applicationsC = Parse.Object.extend("Applications");
+                const queryC = new Parse.Query(applicationsC);
+                queryC.equalTo("applicationStatus", "Completed");
+
+                const applicationsNC = Parse.Object.extend("Applications");
+                const queryNC = new Parse.Query(applicationsNC);
+                queryNC.equalTo("applicationStatus", "Non Compliant");
+
+                this.datas = [{
+                        title: "FOR APPROVAL",
+                        num: await queryFA.count(),
+                        type: "approval",
+                    },
+                    {
+                        title: "FOR REVISION",
+                        num: await queryFR.count(),
+                        type: "revision",
+                    },
+                    {
+                        title: "FOR PAYMENT",
+                        num: await queryFP.count(),
+                        type: "payment",
+                    },
+                    {
+                        title: "FOR INSPECTION",
+                        num: await queryFE.count(),
+                        type: "evaluation",
+                    },
+                    {
+                        title: "FOR COMPLIANCE",
+                        num: await queryFC.count(),
+                        type: "forcompliance",
+                    },
+                    {
+                        title: "FOR VERIFICATION",
+                        num: await queryFV.count(),
+                        type: "verification",
+                    },
+                    {
+                        title: "FOR ISSUANCE",
+                        num: await queryFI.count(),
+                        type: "issuance",
+                    },
+                    {
+                        title: "COMPLETED",
+                        num: await queryC.count(),
+                        type: "completed",
+                    },
+                    {
+                        title: "NON COMPLIANT",
+                        num: await queryNC.count(),
+                        type: "noncompliant",
+                    },
+                ];
+            });
 
         }
 

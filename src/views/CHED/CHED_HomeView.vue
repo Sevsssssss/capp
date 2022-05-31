@@ -148,7 +148,6 @@ export default {
     name: "HomeView",
     components: {},
     mounted: async function () {
-        console.log("hi");
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
@@ -167,6 +166,8 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
         }
+
+        //Query User Counts
         const queryhei = new Parse.Query(Parse.User);
         queryhei.notEqualTo("hei_type", null);
         const count = await queryhei.count();
@@ -271,7 +272,6 @@ export default {
 
             counter = await newQuery.count();
             totalApplication += counter;
-            console.log(totalApplication)
 
             applicationTypes.push(applicationType.get("applicationTypeName"));
             appTypeCount.push(counter);

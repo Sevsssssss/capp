@@ -137,7 +137,6 @@ export default {
         modal() {
             var errChecker = 0;
             for (var i = 0; i < this.appReqs.length; i++) {
-                console.log(this.appReqs.length);
                 if (this.appReqs[i].applicationReq == "") {
                     errChecker = errChecker + 1;
                 } else {
@@ -214,7 +213,6 @@ export default {
         addRequirement() {
             //Add Application Type Requirement
             this.counter++;
-            console.log(this.counter)
             this.appReqs.push({
                 id: this.counter,
                 applicationReq: "",
@@ -224,10 +222,7 @@ export default {
             //Remove Application Type Requirement
             if(id < this.counter){
                 var tick = id;
-                console.log(tick + " " + (this.counter - 1))
                 while(tick <= this.counter - 1){
-                    console.log(this.appReqs[tick].id)
-                    console.log(this.appReqs[tick].id - 1)
                     this.appReqs[tick].id = this.appReqs[tick].id - 1;
                     tick++;
                 }

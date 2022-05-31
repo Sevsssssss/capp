@@ -172,3 +172,18 @@
       }
 
   });
+
+  //SUPER ADMIN before save to prevent editing
+  Parse.Cloud.beforeSave(Parse.User, async(request) => {
+    if(!request.object.isNew()){
+      const AccessTypes = Parse.Object.extend("AccessTypes");
+      const query = new Parse.Query(AccessTypes)
+      query.equalTo("objectId", request.object.get("access_type"))
+
+      const access_type = await query.first();
+        
+      if(access_type.get("name") == "SUPER ADMIN"){
+        throw "Can't Edit SUPER ADMIN Account"
+      }
+    }
+  })
