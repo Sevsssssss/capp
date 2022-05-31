@@ -1270,9 +1270,144 @@ export default {
                         type: "noncompliant",
                     },
                 ];
+                if (this.supervisorChecker()) {
+                    console.log("YES0")
+                    if (this.$route.name === "application") {
+                        console.log("YES")
+                        document.location.reload();
+                    }
+                }
+
             });
 
-            subscription.on('create', async() => {
+            subscription.on('create', async () => {
+                //Query the applications
+                var storedApplications = [];
+                const applications = Parse.Object.extend("Applications");
+                const query = new Parse.Query(applications);
+                query.descending("createdAt")
+
+                //Get to view applications to specific user (Education Supervisor)
+                const Designations = Parse.Object.extend("Designations");
+                const queryDes = new Parse.Query(Designations);
+                queryDes.equalTo("name", "EDUCATION SUPERVISOR");
+
+                const desigQueryResult = await queryDes.first();
+
+                if (Parse.User.current().get("designation") == desigQueryResult.id) {
+                    query.equalTo("selectedSupervisor", Parse.User.current().id);
+                    this.supervisor = true;
+                }
+
+                const querResult = await query.find();
+
+                //Get details of the applications
+                for (var i = 0; i < querResult.length; i++) {
+                    var hei_name = "";
+                    const application = querResult[i];
+                    const user = new Parse.Query(Parse.User);
+                    user.equalTo("objectId", application.get("createdBy"));
+                    const hei = await user.first();
+                    hei_name = hei.get("hei_name");
+                    var months = [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                        "July",
+                        "August",
+                        "September",
+                        "October",
+                        "November",
+                        "December",
+                    ];
+
+                    var month = application.createdAt.getMonth();
+                    var day = application.createdAt.getDate();
+                    var year = application.createdAt.getFullYear();
+                    var hour = application.createdAt.getHours();
+                    var minutes = application.createdAt.getMinutes();
+                    var seconds = application.createdAt.getSeconds();
+
+                    if (application.get("inCompliance") && application.get("applicationStatus") == "For Compliance") {
+                        if (application.get("complianceDueDate") < new Date()) {
+                            application.set("applicationStatus", "Non Compliant")
+                            application.save()
+
+                            //Add new Notification
+                            const Notifications = Parse.Object.extend("Notifications");
+                            const newNotification = new Notifications();
+
+                            newNotification.set("message", "Your Application did not Comply within the Given Due Date and thus was set to Non Compliant");
+                            newNotification.set("date_and_time", new Date());
+                            newNotification.set("user", this.hei);
+                            newNotification.set("isRead", false);
+
+                            //Save new Notification
+                            newNotification.save().then((notif) => {
+                                console.log("Notification Saved: " + notif.id);
+                            }, (error) => {
+                                console.log("Error: " + error.message);
+                            });
+                        }
+                    }
+
+                    //Query the applicationType of the application
+                    const appTypes = Parse.Object.extend("ApplicationTypes");
+                    const appTypeQuery = new Parse.Query(appTypes);
+                    appTypeQuery.equalTo("objectId", application.get("applicationType"));
+
+                    const appType = await appTypeQuery.first();
+
+                    //Query the program of the application
+                    const programs = Parse.Object.extend("Programs");
+                    const programQuery = new Parse.Query(programs);
+                    programQuery.equalTo("objectId", application.get("program"));
+
+                    const program = await programQuery.first();
+
+                    var MinText = "";
+                    var SecText = "";
+
+                    if (hour >= 12) {
+                        hour -= 12;
+                    }
+
+                    if (hour == 0) {
+                        hour = 12;
+                    }
+                    if (minutes < 10) {
+                        MinText = "0" + minutes;
+                    } else {
+                        MinText = minutes.toString();
+                    }
+                    if (seconds < 10) {
+                        SecText = "0" + seconds;
+                    } else {
+                        SecText = seconds.toString();
+                    }
+
+                    storedApplications.push({
+                        id: i + 1,
+                        rep: application.get("pointPerson"),
+                        email: application.get("email"),
+                        phoneNumber: application.get("phoneNumber"),
+                        type: appType.get("applicationTypeName"),
+                        requirements: application.get("requirements"),
+                        dateApplied: months[month] + " " + day + ", " + year + " " + hour + ":" + MinText + ":" + SecText,
+                        status: application.get("applicationStatus"),
+                        program: program.get("programName"),
+                        HeiName: hei_name,
+                        appID: application.id,
+                        selectedRqat: application.get("selectedRQAT"),
+                        selectedSupervisor: application.get("selectedSupervisor")
+                    });
+                }
+                this.totalEntries = querResult.length;
+                this.tables = storedApplications;
+
                 const applicationsFA = Parse.Object.extend("Applications");
                 const queryFA = new Parse.Query(applicationsFA);
                 queryFA.equalTo("applicationStatus", "For Approval");
@@ -1356,7 +1491,6 @@ export default {
                     },
                 ];
             });
-
         }
 
     },
