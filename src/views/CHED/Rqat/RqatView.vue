@@ -385,7 +385,7 @@ export default {
             const accQuerResult = await queryACC.first();
 
             var rqats = [];
-            
+
             //Query RQAT Users
             const query = new Parse.Query(Parse.User);
             query.equalTo("access_type", accQuerResult.id);
@@ -487,6 +487,9 @@ export default {
                     }
                 });
 
+                /////////////////////////////UPDATE TABLE
+
+             
             });
         }
     },
