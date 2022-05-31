@@ -2,12 +2,19 @@
 <form v-on:submit.prevent="submit">
     <div class="mx-3">
         <div class="py-4 px-1">
-            <div class="flex justify-start space-x-4">
-                <div class="font-normal text-sm">
-                    Point Person: <span class="font-semibold">{{ rep }}</span>
+            <div class="flex justify-between ">
+                <div class="flex space-x-4"> 
+                    <div class="font-normal text-sm">
+                        Point Person: <span class="font-semibold">{{ rep }}</span>
+                    </div>
+                    <div class="font-normal text-sm">
+                        Email: <span class="font-semibold">{{ email }}</span>
+                    </div>
                 </div>
-                <div class="font-normal text-sm">
-                    Email: <span class="font-semibold">{{ email }}</span>
+                <div>
+                    <button v-if="fileCheck() == true && this.paymentStatus != 'For Revision'" @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn btn-sm rounded-md border-none text-white bg-red-400 hover:bg-red-500">
+                        Revise
+                    </button>
                 </div>
             </div>
         </div>
@@ -65,11 +72,6 @@
                     <div>Dismiss</div>
                 </button>
             </div>
-            <div>
-                <button v-if="fileCheck() == true && this.paymentStatus != 'For Revision'" @click="modalRevise()" for="for-revision" id="for-revision" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
-                    Revise
-                </button>
-            </div>
             <div v-if="fileCheck() == true && this.paymentStatus != 'For Revision'">
                 <button @click="modal()" for="for-approval" id="for-approval" type="submit" class="submit btn modal-button border-none text-white bg-blue-700 hover:bg-blue-800">
                     Submit
@@ -104,7 +106,6 @@
     </div>
     <VueInstantLoadingSpinner ref="Spinner" color="#0E3385" spinnerStyle="pulse-loader" margin="4px" size="20px"></VueInstantLoadingSpinner>
 </form>
-
 </template>
 
 <script>
@@ -250,21 +251,21 @@ export default {
                             console.log("Object Updated: " + application.id);
                     })
 
-                    //Add new Notification
-                    const Notifications = Parse.Object.extend("Notifications");
-                    const newNotification = new Notifications();
+                //Add new Notification
+                const Notifications = Parse.Object.extend("Notifications");
+                const newNotification = new Notifications();
 
-                    newNotification.set("message", "Your Application has been moved For Inspection");
-                    newNotification.set("date_and_time", new Date());
-                    newNotification.set("user", this.hei);
-                    newNotification.set("isRead", false);
-                    
-                    //Save new Notification
-                    newNotification.save().then((notif) => {
-                        console.log("Notification Saved: " + notif.id);
-                    }, (error) => {
-                        console.log("Error: " + error.message);
-                    });
+                newNotification.set("message", "Your Application has been moved For Inspection");
+                newNotification.set("date_and_time", new Date());
+                newNotification.set("user", this.hei);
+                newNotification.set("isRead", false);
+
+                //Save new Notification
+                newNotification.save().then((notif) => {
+                    console.log("Notification Saved: " + notif.id);
+                }, (error) => {
+                    console.log("Error: " + error.message);
+                });
 
                 setTimeout(() => {
                     this.$router.push({
@@ -420,7 +421,7 @@ export default {
         } else {
             this.fileCheker = false;
         }
-        this.paymentStatus  = application.get("paymentStatus");
+        this.paymentStatus = application.get("paymentStatus");
 
         //Query Application Type
         const applicationTypes = Parse.Object.extend("ApplicationTypes");
