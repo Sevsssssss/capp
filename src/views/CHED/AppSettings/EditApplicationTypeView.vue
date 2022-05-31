@@ -57,7 +57,7 @@
                         Cancel
                     </button>
                     <button for="my-modal-6" id="my-modal-6" type="submit" class="border-none btn btn-m submit bg-brand-darkblue hover:bg-brand-blue" @click="modal()">
-                        Edit
+                        Update
                     </button>
                 </div>
             </div>
