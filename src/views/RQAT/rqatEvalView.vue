@@ -82,20 +82,6 @@ export default {
             table: [],
         };
     },
-    computed: {
-        // searchApplication() {
-        //     if (this.search) {
-        //         return this.tables.filter((item) => {
-        //             return this.search
-        //                 .toLowerCase()
-        //                 .split(" ")
-        //                 .every((v) => item.HeiName.toLowerCase().includes(v));
-        //         });
-        //     } else {
-        //         return this.tables;
-        //     }
-        // },
-    },
     methods: {
         async onInspection(id) {
             console.log(id);
@@ -104,11 +90,6 @@ export default {
             query.equalTo("objectId", id);
 
             const application = await query.first();
-
-            // application.set("On Inspection", true);
-            // application.save().then((application) => {
-            //         console.log("Object Updated: " + application.id);
-            //     })
 
             application
                 .save({
@@ -136,6 +117,8 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedApplications = [];
+
+            //Query Applications Assigned to RQAT
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("selectedRQAT", Parse.User.current().id);
@@ -143,11 +126,11 @@ export default {
 
             const querResult = await query.find();
 
+            //Store Applications assigned to RQAT
             for (var i = 0; i < querResult.length; i++) {
                 const application = querResult[i];
                 const user = new Parse.Query(Parse.User);
                 user.equalTo("objectId", application.get("createdBy"));
-                // console.log(application.get("createdBy"));
                 const hei = await user.first();
 
                 var months = [

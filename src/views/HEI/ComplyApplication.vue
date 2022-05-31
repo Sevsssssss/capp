@@ -206,12 +206,15 @@ export default {
             var blank_count = 0;
             var blank_count2 = 0;
 
+            //Check if every description has text
             for (var x = 0; x < this.desc.length; x++) {
                 if(this.desc[x].desc == null ||  this.desc[x].desc == ""){
                     blank_count++;
                     
                 }
             }
+
+            //Check if every remarks has text
              for (var a = 0; a < this.resubmittedDesc.length; a++) {
                 if(this.resubmittedDesc[a] == null ||  this.resubmittedDesc[a] == ""){
                     blank_count2++;
@@ -219,12 +222,16 @@ export default {
                 }
             }
 
+            //If Application is in Compliance for the first time
             if (this.filesReturned.length < 1 && blank_count <= 0) {
                 try {
+
                     var filesToResubmit = [];
                     var counter = 0;
 
                     let files = null;
+
+                    //Query Application
                     const applications = Parse.Object.extend("Applications");
                     const appQuery = new Parse.Query(applications);
                     appQuery.equalTo("objectId", this.id);
@@ -232,6 +239,7 @@ export default {
                         useMasterKey: true,
                     });
 
+                    //Get files uploaded by the HEI
                     for (var i = 1; i < this.desc.length * 2; i += 2) {
                         const file = values.target[i].files[0];
 
@@ -249,6 +257,7 @@ export default {
                         counter++;
                     }
 
+                    //Set new resubmitted files and new Status
                     application.set("resubmittedFiles", filesToResubmit);
                     application.set("applicationStatus", "For Verification")
 
@@ -260,10 +269,13 @@ export default {
 
                     application.set("statusTracker", this.statusTracker);
 
+                    //Save Updates
                     application
                         .save()
                         .then(
                             (application) => {
+
+                                //Create new Notification for Education Supervisor
                                 const Notifications = Parse.Object.extend("Notifications");
                                 const newNotification = new Notifications();
 
@@ -272,6 +284,7 @@ export default {
                                 newNotification.set("user", this.educationSupervisor);
                                 newNotification.set("isRead", false);
 
+                                //Create new Notification for Admin
                                 const newNotification2 = new Notifications();
 
                                 newNotification2.set("message", "An Application is open for verification for compliance");
@@ -320,9 +333,12 @@ export default {
                     });
                 }
             } else {
+                //If application is in compliance more than 1 times
                 if (this.resubmittedDesc.length > 0 && blank_count2 <= 0) {
                     try {
                         let resubmittedFile = null;
+
+                        //Query Application
                         const applications = Parse.Object.extend("Applications");
                         const appQuery = new Parse.Query(applications);
                         appQuery.equalTo("objectId", this.id);
@@ -330,6 +346,8 @@ export default {
                             useMasterKey: true,
                         });
                         var count = 0;
+
+                        //Get Files Uploaded
                         for (i = 0; i < this.disapprovedCount; i++) {
                             const file = values.target[i + count].files[0];
                             resubmittedFile = new Parse.File(
@@ -348,15 +366,20 @@ export default {
                             this.filesReturned[j].status = "";
                             this.filesReturned[j].comment = "";
                         }
+
+                        //Set resubmitted files and new Status
                         application.set("resubmittedFiles", this.filesReturned);
                         application.set("applicationStatus", "For Verification")
+
+                        //Save Updates
                         application
                             .save()
                             .then(
                                 (application) => {
                                     const Notifications = Parse.Object.extend("Notifications");
                                     const newNotification = new Notifications();
-
+                                    
+                                    //Create notification for Education Supervisor
                                     newNotification.set("message", "An Application is open for verification for compliance");
                                     newNotification.set("date_and_time", new Date());
                                     newNotification.set("user", this.educationSupervisor);
@@ -364,6 +387,7 @@ export default {
 
                                     const newNotification2 = new Notifications();
 
+                                    //Create Notification for Admin
                                     newNotification2.set("message", "An Application is open for verification for compliance");
                                     newNotification2.set("date_and_time", new Date());
                                     newNotification2.set("user", this.adminID);
@@ -465,6 +489,7 @@ export default {
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
 
+            //Get Application Data
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");

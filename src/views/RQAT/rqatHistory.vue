@@ -37,18 +37,6 @@
                         <td v-if="tables.status != 'For Inspection'" class="px-6 py-4">
                             {{tables.dateApplied}}
                         </td>
-
-                        <!-- <td v-if="tables.status == 'For Inspection'" class="px-6 py-4 text-right flex justify-end">
-                            <router-link :to="{
-                            name: 'Evaluate',
-                            params: {
-                                id: tables.appID,
-                            },
-                            }">
-                                <button class="btn-table rounded-md"> Evaluate </button>
-                            </router-link>
-
-                        </td> -->
                 </tr>
             </tbody>
         </table>
@@ -89,20 +77,6 @@ export default {
             table: [],
         };
     },
-    computed: {
-        // searchApplication() {
-        //     if (this.search) {
-        //         return this.tables.filter((item) => {
-        //             return this.search
-        //                 .toLowerCase()
-        //                 .split(" ")
-        //                 .every((v) => item.HeiName.toLowerCase().includes(v));
-        //         });
-        //     } else {
-        //         return this.tables;
-        //     }
-        // },
-    },
     methods: {
 
     },
@@ -126,17 +100,19 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedApplications = [];
+
+            //Query Applications assigned to RQAT
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("selectedRQAT", Parse.User.current().id);
 
             const querResult = await query.find();
 
+            //Store Applications' data
             for (var i = 0; i < querResult.length; i++) {
                 const application = querResult[i];
                 const user = new Parse.Query(Parse.User);
                 user.equalTo("objectId", application.get("createdBy"));
-                // console.log(application.get("createdBy"));
                 const hei = await user.first();
                 
                 var months = [
@@ -171,8 +147,11 @@ export default {
 
                 const program = await programQuery.first();
 
-                const heiAddress = hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", "
-                                    + hei.get("address").province + ", " + hei.get("address").regionName
+                const heiAddress = hei.get("address").street == undefined || hei.get("address").street == "" ?
+                hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                hei.get("address").province + ", " + hei.get("address").regionName :
+                hei.get("address").street + ", " + hei.get("address").barangay + ", " + hei.get("address").city + ", " +
+                hei.get("address").province + ", " + hei.get("address").regionName;
 
                 storedApplications.push({
                     id: i + 1,
@@ -197,7 +176,6 @@ export default {
                 console.log("object updated" + object);
                 var index = this.tables.findIndex((application) => application.appID == object.id);
 
-                console.log("THISSS: "+ index)
 
                 this.tables[index] = {
                     ...this.tables[index],
