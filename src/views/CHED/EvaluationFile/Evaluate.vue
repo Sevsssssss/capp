@@ -657,41 +657,44 @@ export default {
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
-                        for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                            if (subcatIndexes[i].includes(j + 1)) {
-                                var items = [];
-                                for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                                    items.push({
-                                        id: k + 1,
-                                        Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
-                                            .items[k].Item,
+                        var catIndex = catIndexes.indexOf(i + 1)
+                        if(hasSubCat[catIndex] == true){
+                            for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
+                                if (subcatIndexes[catIndex].includes(j + 1)) {
+                                    var items = [];
+                                    for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
+                                        items.push({
+                                            id: k + 1,
+                                            Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                                .items[k].Item,
+                                        });
+                                    }
+
+                                    subcat.push({
+                                        id: j + 1,
+                                        Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
+                                            .Subcategory,
+                                        items: items,
                                     });
                                 }
-
-                                subcat.push({
-                                    id: j + 1,
-                                    Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
-                                        .Subcategory,
-                                    items: items,
-                                });
                             }
+
+                            this.Name = evalInstrument.get("evaluationFormName");
+
+                            if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
+                                this.cmoNoYr.push({
+                                    cmoNo: chedMemo.get("CMO_No"),
+                                    seriesYear: chedMemo.get("Series_Year"),
+                                })
+                            }
+
+                            categories.push({
+                                id: i + 1,
+                                Category: chedMemo.get("evaluationFormReqs")[i].Category,
+                                Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
+                                subcategory: subcat,
+                            });
                         }
-
-                        this.Name = evalInstrument.get("evaluationFormName");
-
-                        if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
-                            this.cmoNoYr.push({
-                                cmoNo: chedMemo.get("CMO_No"),
-                                seriesYear: chedMemo.get("Series_Year"),
-                            })
-                        }
-
-                        categories.push({
-                            id: i + 1,
-                            Category: chedMemo.get("evaluationFormReqs")[i].Category,
-                            Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
-                            subcategory: subcat,
-                        });
                     }
                 }
                 this.categories = categories;
