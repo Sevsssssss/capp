@@ -117,17 +117,9 @@
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ i.Name }}
                     </td>
-                    <!-- <td class="px-6 py-4 text-right">
-              <a
-                @click="viewEvalIns"
-                href="#"
-                class="font-medium text-blue-600 hover:underline"
-                >Edit</a
-              >
-            </td> -->
                     <td class="px-6 py-4 flex flex-row justify-end">
-                        <label for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3" @click="selectDesignation(i.id)">Edit</label>
-                        <label for="deleteFunc" class="hover:text-brand-red/60 self-center">
+                        <label v-if="i.Name != 'SUPER ADMIN'" for="editDesignation" href="#" class="font-medium text-blue-600 hover:underline pr-3" @click="selectDesignation(i.id)">Edit</label>
+                        <label v-if="i.Name != 'SUPER ADMIN'" for="deleteFunc" class="hover:text-brand-red/60 self-center">
                             <svg style="width: 20px; height: 20px" viewBox="0 0 24 24" @click="selectedDesignationDelete(i.id)">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
