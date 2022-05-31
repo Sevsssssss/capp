@@ -1,5 +1,5 @@
 <template>
-<div class="flex xxl:flex-row xl:flex-row md:flex-col sm:flex-col xs:flex-col  justify-center items-center space-y-5 xxl:p-16 xl:p-16 md:p-12 sm:p-8 xss-6 mx-2  ">
+<div class="flex xxl:flex-row xl:flex-row md:flex-col sm:flex-col xs:flex-col  justify-center items-center space-y-5 xxl:p-10 xl:p-5 md:p-5 sm:p-5 xss-5 mx-2  ">
     <!-- Map -->
     <div class="justify-center mt-6 md:mt-3 sm:mt-2 xs:mt-1 sm:pt-0 hidden md:block">
         <img src="../assets/img/Map.png" alt="Map">

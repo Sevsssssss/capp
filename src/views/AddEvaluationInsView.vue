@@ -16,13 +16,7 @@
                     <!--v-if--></label>
             </div>
             <div class="flex flex-row center" style="margin-top: 20px">
-                <button class="
-              btn btn-margin
-              bg-brand-darkblue
-              hover:bg-brand-blue
-              border-none
-              p-2
-            ">
+                <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none p-2">
                     Add Category
                 </button>
             </div>
@@ -41,25 +35,13 @@
                     </div>
                 </div>
                 <div class="center" style="margin-top: 35px">
-                    <button class="
-                btn btn-margin
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-                pr-2
-              ">
+                    <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none pr-2">
                         Add Sub-Category
                     </button>
 
-                    <button class="
-                btn btn-margin
-                bg-brand-darkblue
-                hover:bg-brand-blue
-                border-none
-              ">
+                    <button class="btn btn-margin bg-brand-darkblue hover:bg-brand-blue border-none">
                         DELETE
                     </button>
-
                 </div>
             </div>
             <div class="overflow-x-auto rounded-lg">
@@ -73,19 +55,7 @@
                             <label class="label"><span class="label-text">Item</span></label><textarea class="textarea textarea-bordered" placeholder="Enter requirements" style="height: 150px; width: 800px"></textarea><label class="label">
                                 <!--v-if--></label>
                         </div>
-                        <button type="button" class="
-                  rounded-md
-                  p-2
-                  inline-flex
-                  items-center
-                  justify-center
-                  text-black-400
-                  hover:text-gray-500 hover:bg-gray-100
-                  focus:outline-none
-                  focus:ring-2
-                  focus:ring-inset
-                  focus:ring-indigo-500
-                " style="margin: 35px 0px 15px 10px">
+                        <button type="button" class="rounded-md p-2 inline-flex items-center justify-center text-black-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" style="margin: 35px 0px 15px 10px">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-4.586 6l1.768 1.768-1.414 1.414L12 15.414l-1.768 1.768-1.414-1.414L10.586 14l-1.768-1.768 1.414-1.414L12 12.586l1.768-1.768 1.414 1.414L13.414 14zM9 4v2h6V4H9z" />
@@ -163,5 +133,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

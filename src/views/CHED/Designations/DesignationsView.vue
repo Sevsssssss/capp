@@ -2,7 +2,8 @@
 <div v-if="!tables.length" style="height: 100%">
     <div class="flex flex-col center h-full p-5">
         <div class="noDataAvail">No Data Available</div>
-        <div class="h-fit pt-3 items-center">
+        <div class="flex">
+            <div class="h-fit items-center">
             <button @click="excelDesignation()" type="button" class="btn-table">
                 <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -20,6 +21,7 @@
                 </svg>
                 <div class="pl-2">Add Designation</div>
             </label>
+        </div>
         </div>
     </div>
 

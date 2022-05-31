@@ -1,34 +1,6 @@
 <template>
 <div class="m-3">
-    <div class="flex flex-row p-2 justify-end">
-        <!-- <button class="flex flex-row" >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z" />
-            </svg>
-            <div class="font-semibold text-grey-300">Back</div>
-        </button> -->
-        <div class="flex space-x-2 pr-2">
-            <!-- add -->
-            <button class="btn btn-md bg-brand-darkblue hover:bg-brand-blue border-none" @click="deleteEvalInst()">
-                <div class="flex flex-row">
-                    <svg class="mr-1" style="width: 20px; height: 20px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                    </svg>
-                    <label for="deleteFunc" class="btn-text">DELETE</label>
-                </div>
-            </button>
-        </div>
-    </div>
-    <!-- <div class="flex space-x-10 text-left center">
-        <div class="">
-            <img src="../assets/img/CHED_logo.png" alt="ChedLogo" width="90px" height="90px">
-        </div>
-        <div class="">
-            <div class="font-bold" style="width: 490px;"> COMMISION ON HIGHER EDUCATION OFFICE OF PROGRAMS AND STANDARDS MONITORING INSTRUMENT FOR UNDERGRADUATE ACADEMIC PROGRAMS</div>
-        </div>
-    </div> -->
-    <div class="overflow-x-auto shadow-lg rounded-lg m-3 p-5">
+    <div class="p-3">
         <div class="flex flex-row justify-center items-center space-x-4">
             <div class="">
                 <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
@@ -44,49 +16,33 @@
             <div class="font-semibold">{{ Name }}</div>
 
             <div v-for="cmono in cmoNoYr" :key="cmono">
-               <span class="font-normal"> per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}} </span>
+                <span class="font-normal"> per CMO No. {{cmono.cmoNo}} s. {{cmono.seriesYear}} </span>
             </div>
 
             <div>{{Program}}</div>
         </div>
-        <div class="">
-            <div class="overflow-x-auto shadow-md sm:rounded-lg py-8">
-                <table class="w-full text-gray-500 text-left">
-                    <tbody>
-                        <!-- row 1 -->
-                        <div class="bg-white border-b" v-for="cat in cmos" :key="cat">
-                            <div v-for="category in cat.categories" :key="category">
-                                <td class="px-6 py-4 font-semibold">{{ category.id }} {{ category.Category }}</td>
-                                <div v-for="subcat in category.subcategory" :key="subcat">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg py-8">
+            <table class="w-full text-gray-500 text-left">
+                <tbody>
+                    <!-- row 1 -->
+                    <div class="bg-white border-b" v-for="cat in cmos" :key="cat">
+                        <div v-for="category in cat.categories" :key="category">
+                            <td class="px-6 py-4 font-semibold">{{ category.id }} {{ category.Category }}</td>
+                            <div v-for="subcat in category.subcategory" :key="subcat">
+                                <td class="px-6 py-4"></td>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ category.id }}.{{ subcat.id }}</th>
+                                <td class="px-6 py-4 font-semibold">{{ subcat.Subcategory }}</td>
+                                <div v-for="item in subcat.items" :key="item">
                                     <td class="px-6 py-4"></td>
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ category.id }}.{{ subcat.id }}</th>
-                                    <td class="px-6 py-4 font-semibold">{{ subcat.Subcategory }}</td>
-                                    <div v-for="item in subcat.items" :key="item">
-                                        <td  class="px-6 py-4"></td>
-                                        <td  class="px-6 py-4"></td>
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ category.id }}.{{ subcat.id }}.{{ item.id }}</th>
-                                        <td class="px-6 py-4">{{ item.Item }}</td>
-                                    </div>
+                                    <td class="px-6 py-4"></td>
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ category.id }}.{{ subcat.id }}.{{ item.id }}</th>
+                                    <td class="px-6 py-4">{{ item.Item }}</td>
                                 </div>
                             </div>
                         </div>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <input type="checkbox" id="deleteFunc" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative rounded-md text-left">
-            <div class="font-semibold text-md">Delete Document</div>
-            <p class="py-2 text-sm">
-                This action cannot be undone. Are you sure you want to delete this
-                document?
-            </p>
-            <div class="modal-action">
-                <label for="deleteFunc" class="btn btn-sm rounded-md text-blue-700 bg-transparent border border-blue-700 hover:bg-white">Cancel</label>
-                <label class="btn btn-sm bg-red-500 hover:bg-red-600 rounded-md border-none">Delete</label>
-            </div>
+                    </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -161,7 +117,7 @@ export default {
             var cmos = [];
 
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
-                
+
                 //Query CMOs
                 const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
                 const chedMemoQ = new Parse.Query(CHEDMEMOS);
@@ -185,7 +141,7 @@ export default {
                             catIndexes.push(parseInt(contents[0]));
                             subcatIndexes.push([parseInt(contents[1])]);
                         }
-                    }else {
+                    } else {
                         if (!catIndexes.includes(parseInt(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]))) {
                             catIndexes.push(parseInt(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]));
                             subcatIndexes.push([-1]);
@@ -196,15 +152,14 @@ export default {
 
                 var hasSubCat = [];
 
-                for(var cs = 0; cs < catIndexes.length; cs++) {
-                    if(subcatIndexes[cs].every(x => x < 0)) {
+                for (var cs = 0; cs < catIndexes.length; cs++) {
+                    if (subcatIndexes[cs].every(x => x < 0)) {
                         hasSubCat.push(false);
-                    }
-                    else{
+                    } else {
                         hasSubCat.push(true);
                     }
-                    for(var ss = 0; ss < subcatIndexes[cs].length; ss++){
-                        if(subcatIndexes[cs][ss] == -1){
+                    for (var ss = 0; ss < subcatIndexes[cs].length; ss++) {
+                        if (subcatIndexes[cs][ss] == -1) {
                             subcatIndexes[cs].splice(ss, 1)
                         }
                     }
@@ -215,7 +170,7 @@ export default {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
                         var catIndex = catIndexes.indexOf(i + 1)
-                        if(hasSubCat[catIndex] == true){
+                        if (hasSubCat[catIndex] == true) {
                             for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
                                 if (subcatIndexes[catIndex].includes(j + 1)) {
                                     var items = [];
@@ -251,8 +206,7 @@ export default {
                                 Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
                                 subcategory: subcat,
                             })
-                        }
-                        else{
+                        } else {
                             this.Name = chedMemo.get("evaluationFormName");
 
                             if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
@@ -269,7 +223,6 @@ export default {
                                 subcategory: [],
                             })
                         }
-                        
 
                     }
 

@@ -5,12 +5,12 @@
             <!-- Section for Logo and tile -->
             <div class="flex-col space-y-32 md:space-y-20 sm:space-y-14 xs:space-y-14 xxs:space-y-12 xl:p-20 xxxl:p-60 md:p-20 sm:p-10 xs:p-10 xxs:p-10">
                 <!-- LOGO -->
-                <div class="flex max-w-md space-x-5 text-left">
+                <div class="flex max-w-md space-x-5 text-left font-normal">
                     <div class="">
                         <img src="../assets/img/CHED_logo.png" alt="ChedLogo" width="90px" height="90px" />
                     </div>
                     <div class="" style="align-self: center">
-                        <div class="font-semibold body-small xxs:leading-tight">
+                        <div class="font-semibold xxs:leading-tight">
                             REPUBLIC OF THE PHILIPPINES
                         </div>
                         <hr />

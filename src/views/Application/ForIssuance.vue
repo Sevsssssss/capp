@@ -20,9 +20,9 @@
                 </div>
             </div>
         </div>
-        <div class="form-control w-full max-w-xs items-center justify-center">
+        <div class="form-control pt-4 w-full max-w-xs items-start justify-center">
             <label class="label">
-                <span class="label-text">Enter Authority/Permit No.:</span>
+                <span class="label-text flex">Enter Authority/Permit No.:</span>
             </label>
             <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" v-model="permitNo" />
         </div>

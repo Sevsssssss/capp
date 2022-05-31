@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
-{{comment1}} <br>
+    {{comment1}} <br> {{comment2}} <br> {{statusShow}}
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -40,7 +40,7 @@
         </div>
         <div>
             <div class="py-4">
-                <div class="relative overflow-x-auto shadow-md m-5">
+                <div class="overflow-x-auto shadow-md m-5">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr class="divide-x-2">
@@ -52,7 +52,7 @@
                         <tbody v-for="(cat, catIndex) in eval" :key="(cat, catIndex)">
                             <tr scope="row" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                                 <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    {{ cat.id }}
+                                    {{ cat.id }} - {{cat.key}}
                                 </td>
                                 <td  class="aoe font-bold p-2">
                                     {{ cat.name }}
@@ -83,7 +83,7 @@
                             </tr>
                             <tr scope="row" v-for="(req, index) in cat.cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                                 <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    {{ req.id }} 
+                                    {{ req.id }}  - {{req.key}}
                                 </td>
                                 <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
                                     {{ req.Requirement }}
@@ -102,13 +102,13 @@
                                 </td>
                                 <td  class="px-6 py-4">
                                     <div class="text-center">
-                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[catIndex][index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]">
+                                        <input :name="req.key" :id="req.key" type="radio" @change="statusShow[catIndex][index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]">
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
                                 <td  class="px-6 py-4">
                                     <div class="text-center">
-                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[catIndex][index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]" />
+                                        <input :name="req.key" :id="req.key" type="radio" @change="statusShow[catIndex][index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]" />
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
@@ -136,15 +136,15 @@
                         <tbody>
                             <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    <div class="flex flex-row justify-between">
-                                        <p class="py-2 font-semibold">Summary</p>
+                                    <div class="flex flex-row justify-between items-center">
+                                        <p class="py-2 font-semibold ">Summary</p>
                                         <label @click="getSummary()" class="hover:text-brand-darkblue">Generate Summary</label>
                                     </div>
                                     <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                                 </th>
 
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                   <div class="flex flex-row justify-between">
+                                   <div class="flex flex-row justify-between items-center">
                                         <p class="py-2 font-semibold">Recommendations</p>
                                         <label @click="getRecommendation()" class="hover:text-brand-darkblue">Generate Recommendations</label>
                                     </div>
@@ -710,6 +710,7 @@ export default {
                         this.comment2[z].push("");
                         categoryReqs.push({
                             id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
+                            key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             Requirement: this.categories[z].subcategory[x].Subcategory,
                             type: "SubCategory",
                         });
@@ -721,6 +722,7 @@ export default {
                             this.comment2[z].push("");
                             categoryReqs.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
+                                key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,
                                 type: "Item",
                             });
@@ -729,6 +731,7 @@ export default {
 
                     this.eval.push({
                         id: this.categories[z].id,
+                        key: this.categories[z].key +"-"+ this.categories[z].id ,
                         name: this.categories[z].Category,
                         cat: categoryReqs,
                     });
