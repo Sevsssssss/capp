@@ -744,14 +744,12 @@ export default {
             const newAccessType = new accessType();
 
             //Save new Access Type
-            try {
-                newAccessType.save({
+            newAccessType.save({
                     name: this.atname.toUpperCase(),
                     hometype: '/home',
                     privileges: this.checkedAccessTypes,
-                });
-
-                toast("Access Type Added", {
+                }).then(() => {
+                    toast("Access Type Added", {
                         type: TYPE.SUCCESS,
                         timeout: 3000,
                         position: POSITION.TOP_RIGHT,
@@ -760,15 +758,29 @@ export default {
                     setTimeout(() => {
                         document.location.reload();
                     }, 2000);
-            } catch (error) {
-                toast("Please fill out the required information", {
-                    type: TYPE.ERROR,
-                    timeout: 3000,
-                    hideProgressBar: true,
-                    position: POSITION.TOP_RIGHT,
+                }, (error) => {
+                    if(this.atname == "" || this.atname == undefined){
+                        toast("Please fill out required information.", {
+                            type: TYPE.ERROR,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                    }
+                    else{
+                        toast(error.message, {
+                            type: TYPE.ERROR,
+                            timeout: 3000,
+                            hideProgressBar: true,
+                            position: POSITION.TOP_RIGHT,
+                        });
+                    }
+                    setTimeout(() => {
+                        document.location.reload();
+                    }, 2000);
+                    console.log(error.message)
                 });
-                console.log(error.message)
-            }
+
         },
 
         //For table page traversal
