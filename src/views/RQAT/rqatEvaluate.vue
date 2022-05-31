@@ -39,7 +39,7 @@
         </div>
         <div>
             <div class="py-4">
-                <div class="overflow-x-auto shadow-md m-5">
+                <div class="relative overflow-x-auto shadow-md m-5">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr class="divide-x-2">
@@ -48,10 +48,41 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr scope="row" v-for="(req, index) in eval" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
-                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                    {{ req.id }}
+                        <tbody v-for="(cat, catIndex) in eval" :key="(cat, catIndex)">
+                            <tr scope="row" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {{ cat.id }}
+                                </td>
+                                <td  class="aoe font-bold p-2">
+                                    {{ cat.name }}
+                                </td>
+                                <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
+                                <!-- <td v-if="req.type != 'Category'" class="">
+                                    <div class="flex justify-start items-start">
+                                        <textarea v-model="comment1[index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    </div>
+                                </td>
+                                <td v-if="req.type != 'Category'" class="px-6 py-4">
+                                    <div class="text-center">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[index, v$.complied.$model]">
+                                        <label class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td v-if="req.type != 'Category'" class="px-6 py-4">
+                                    <div class="text-center">
+                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[index, v$.notcomplied.$model]" />
+                                        <label class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td v-if="req.type != 'Category'" class="text-end">
+                                    <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                    <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea textarea-disabled p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                </td> -->
+                            </tr>
+                            <tr scope="row" v-for="(req, index) in cat.cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
+                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {{ req.id }} {{index}}
                                 </td>
                                 <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
                                     {{ req.Requirement }}
@@ -63,27 +94,27 @@
                                     {{ req.Requirement }}
                                 </td>
                                 <!-- v-if="req.type == 'Category' && subcatCounter == 0 || req.type == 'SubCategory' && itemCounter == 0" -->
-                                <td class="">
+                                <td  class="">
                                     <div class="flex justify-start items-start">
-                                        <textarea v-model="comment1[index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                        <textarea v-model="comment1[catIndex][index]" rows="3" id="message1" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td  class="px-6 py-4">
                                     <div class="text-center">
-                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[index, v$.complied.$model]">
+                                        <input :name="req.key" :id="req.key" type="radio" @change="statusShow[catIndex][index] = 'Complied'" value="Complied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]">
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td  class="px-6 py-4">
                                     <div class="text-center">
-                                        <input :name="req.id" :id="req.id" type="radio" @change="statusShow[index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[index, v$.notcomplied.$model]" />
+                                        <input :name="req.key" :id="req.key" type="radio" @change="statusShow[catIndex][index] = 'NotComplied'" value="NotComplied" class="radio" :v-model="statusShow[catIndex][index, v$.complied.$model]" />
                                         <label class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <td class="text-end">
-                                    <textarea v-if=" statusShow[index] === 'NotComplied' " v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
-                                    <textarea v-else-if="statusShow[index] === 'Complied' || statusShow[index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
-                                    <textarea v-else disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                <td v-if="req.type != 'Category'" class="text-end">
+                                    <textarea v-if=" statusShow[catIndex][index] === 'NotComplied' " v-model="comment2[catIndex][index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Leave a comment..."></textarea>
+                                    <textarea v-else-if="statusShow[catIndex][index] === 'Complied' || statusShow[catIndex][index] === null " disabled v-model="comment2[index]" rows="3" id="message2" class="object-fill textarea p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
+                                    <textarea v-else disabled v-model="comment2[catIndex][index]" rows="3" id="message2" class="object-fill textarea textarea-disabled p-2.5 w-full h-full text-sm text-gray-900 rounded-none" placeholder="Comment disabled..."></textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -118,7 +149,7 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     <div class="flex flex-row justify-between">
                                         <p class="py-2 font-semibold">Recommendations</p>
-                                        <a @click="getSummary()">Generate Recommendations</a>
+                                        <a @click="getRecommendation()">Generate Recommendations</a>
                                         <!-- <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" @click="getSummary()">
                                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                                         </svg> -->
@@ -175,9 +206,7 @@ import {
 } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import Parse from "parse";
-
 const toast = useToast();
-
 export default {
     props: ["id"],
     name: "rqatEvaluate",
@@ -218,12 +247,10 @@ export default {
             cmoNo: "",
             seriesYear: "",
             dateApplied: "",
-
             instName: "",
             address: "",
             program: "",
             evalDate: "",
-
             complied: '',
             notcomplied: '',
             comment1: [],
@@ -273,21 +300,25 @@ export default {
         modal() {
             var has_error = 0;
             var missing_comment = 0;
+            // var missing_comment1 = 0;
             var missing_checkbox = 0;
-
+            console.log(this.comment1.length)
             for (var i = 0; i < this.comment1.length; i++) {
                 if (this.comment1[i] == null || this.comment1[i] == '') {
                     missing_comment++;
-
                 }
             }
-
+            // for (var x = 0; x < this.comment2.length; x++) {
+            //     if(this.comment2[x] == null ||  this.comment2[x] == ''){
+            //         missing_comment1++;
+            //         console.log(this.comment2[i])
+            //     }
+            // }
             for (var j = 0; j < this.statusShow.length; j++) {
                 if (this.statusShow[j] == 'NotComplied' && this.comment2[j] == '') {
                     missing_checkbox++;
                 }
             }
-
             if (
                 this.summary == "" || this.recommendation == "" || missing_comment > 0 || this.statusShow.length == 0 || missing_checkbox > 0
             ) {
@@ -299,24 +330,17 @@ export default {
                 });
                 has_error = 1;
             }
-
             if (has_error < 1) {
                 this.showModal1 = !this.showModal1;
             }
         },
         async submitEvaluation() {
-
-            //Query Application
             const Applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(Applications);
             query.equalTo("objectId", this.id);
-
             const application = await query.first();
-
             var actualSituations = [];
-
             var counter = 0;
-
             //ACTUAL SITUATIONS
             for (var i = 0; i < this.categories.length; i++) {
                 actualSituations.push({
@@ -332,7 +356,6 @@ export default {
                         type: "SubCategory",
                     });
                     counter++;
-
                     for (var k = 0; k < this.categories[i].subcategory[j].items.length; k++) {
                         actualSituations.push({
                             id: counter,
@@ -341,11 +364,8 @@ export default {
                         });
                         counter++;
                     }
-
                 }
-
             }
-
             //REMARKS
             var remarks = [];
             counter = 0;
@@ -363,7 +383,6 @@ export default {
                         type: "SubCategory",
                     });
                     counter++;
-
                     for (k = 0; k < this.categories[i].subcategory[j].items.length; k++) {
                         remarks.push({
                             id: counter,
@@ -372,18 +391,12 @@ export default {
                         });
                         counter++;
                     }
-
                 }
-
             }
-
             if (this.statusShow.includes("NotComplied")) {
-                
-                //For Compliance Due Date
                 var today = new Date();
                 var complianceDueDate = this.appliType == this.initPermit ? today.setDate(today.getDate() + 45): today.setDate(today.getDate() + 30);
-                
-                //Set Application Updates
+                console.log(complianceDueDate)
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
@@ -393,15 +406,12 @@ export default {
                 if (application.get("inCompliance") == false) {
                     application.set("inCompliance", true)
                 }
-
                 this.statusTracker.push({
                     status: "For Compliance",
                     detail: "Application didn't comply.",
                     dateTime: new Date(),
                 });
                 application.set("statusTracker", this.statusTracker);
-
-                //Save Application Updates
                 application
                     .save()
                     .then((application) => {
@@ -414,66 +424,52 @@ export default {
                         Parse.Cloud.run("sendStatusUpdate", params);
                         console.log("Object Updated: " + application.id);
                     })
-
-                //Make a new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
-
                 newNotification.set("message", "Your Application has been moved for compliance");
                 newNotification.set("date_and_time", new Date());
                 newNotification.set("user", this.hei);
                 newNotification.set("isRead", false);
-
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
                     console.log("Error: " + error.message);
                 });
-
             } else {
-                
-                //Set Application Updates
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
                 application.set("summary", this.summary);
                 application.set("recommendation", this.recommendation);
-
                 this.statusTracker.push({
                     status: "For Issuance",
                     detail: "Application Approved, waiting for Issuance.",
                     dateTime: new Date(),
                 });
                 application.set("statusTracker", this.statusTracker);
-
-                //Save Updates
                 application
                     .save()
                     .then((application) => {
                         console.log("Object Updated: " + application.id);
                     })
-
-                //Make a New Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
-
                 newNotification.set("message", "Your Application has been processed. Please wait for Issuance");
                 newNotification.set("date_and_time", new Date());
                 newNotification.set("user", this.hei);
                 newNotification.set("isRead", false);
-
                 newNotification.save().then((notif) => {
                     console.log("Notification Saved: " + notif.id);
                 }, (error) => {
                     console.log("Error: " + error.message);
                 });
             }
-
             toast("Successfully Evaluated!", {
                 type: TYPE.SUCCESS,
                 timeout: 2000,
                 position: POSITION.TOP_RIGHT,
             });
+            // this.sendEmail().then(() => {
             setTimeout(
                 () =>
                 this.$router.push({
@@ -496,6 +492,16 @@ export default {
                     this.summary = this.summary + " " + this.comment1[i];
             }
         },
+        //For Recommendation Generation from Remarks
+        getRecommendation() {
+            this.recommendation = "";
+            for (var i = 0; i < this.comment2.length; i++) {
+                for(var j = 0; j < this.comment2[i].length; j++){
+                    if (this.comment2[i][j] != undefined && this.comment2[i][j] != "" && this.statusShow[i][j] == 'NotComplied')
+                        this.recommendation = this.recommendation + " " + this.comment2[i][j];
+                }
+            }
+        },
         scrollToTop() {
             window.scrollTo(0, 0);
         },
@@ -507,13 +513,11 @@ export default {
             }
         },
     },
-
     mounted: async function () {
         //THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
         query.equalTo("objectId", Parse.User.current().get("access_type"));
-
         const querResult = await query.find();
         var homeType = querResult[0].get("hometype");
         var accType = querResult[0].get("privileges");
@@ -526,24 +530,20 @@ export default {
         }
         if (flag === 0) {
             console.log(this.$route.path)
+            console.log("heheh")
             this.$router.push("/403");
         } else {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
-            //Query Application
             const applications = Parse.Object.extend("Applications");
             const appQuery = new Parse.Query(applications);
             appQuery.equalTo("objectId", this.id);
             const application = await appQuery.first({
                 useMasterKey: true,
             });
-
-            //Get Application Data
             this.statusTracker = application.get("statusTracker")
             this.hei = application.get("createdBy")
-
             var months = [
                 "January",
                 "February",
@@ -561,21 +561,19 @@ export default {
             var month = application.createdAt.getMonth();
             var day = application.createdAt.getDate();
             var year = application.createdAt.getFullYear();
-
             this.dateApplied = months[month] + " " + day + ", " + year;
-
             const Users = Parse.Object.extend("User");
             const userQuery = new Parse.Query(Users);
             userQuery.equalTo("objectId", application.get("createdBy"));
             const user = await userQuery.first({
                 useMasterKey: true,
             });
-
             this.instName = user.get("hei_name");
             const heiAddress = user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", " +
                 user.get("address").province + ", " + user.get("address").regionName;
             this.address = heiAddress;
-
+            console.log("Hello" + user.get("hei_name"));
+            
             //Query Evaluation Instrument
             const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
@@ -593,10 +591,10 @@ export default {
 
             this.program = program.get("programName");
 
-            //Get the Evaluation Instrument Requirements needed for the Program
+
+            //Query Evaluation Instrument to be used
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
-                
-                //Query CMOs Used
+
                 const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
                 const chedMemoQ = new Parse.Query(CHEDMEMOS);
                 chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
@@ -606,7 +604,7 @@ export default {
 
                 var catIndexes = [];
                 var subcatIndexes = [];
-
+                
                 for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
                     var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
@@ -630,6 +628,7 @@ export default {
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                                     items.push({
                                         id: k + 1,
+                                        key: chedMemo.get("CMO_No"),
                                         Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
                                             .items[k].Item,
                                     });
@@ -637,6 +636,7 @@ export default {
 
                                 subcat.push({
                                     id: j + 1,
+                                    key: chedMemo.get("CMO_No"),
                                     Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
                                         .Subcategory,
                                     items: items,
@@ -644,7 +644,7 @@ export default {
                             }
                         }
 
-                        this.Name = chedMemo.get("evaluationFormName");
+                        this.Name = evalInstrument.get("evaluationFormName");
 
                         if (!this.cmoNoYr.some(cmo => cmo.cmoNo === chedMemo.get("CMO_No") && cmo.seriesYear === chedMemo.get("Series_Year"))) {
                             this.cmoNoYr.push({
@@ -655,6 +655,7 @@ export default {
 
                         categories.push({
                             id: i + 1,
+                            key: chedMemo.get("CMO_No"),
                             Category: chedMemo.get("evaluationFormReqs")[i].Category,
                             Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
                             subcategory: subcat,
@@ -664,36 +665,41 @@ export default {
                 this.categories = categories;
 
                 for (var z = 0; z < this.categories.length; z++) {
-                    this.statusShow.push("");
-                    this.comment1.push("");
-                    this.comment2.push("");
-                    this.eval.push({
-                        id: this.categories[z].id,
-                        Requirement: this.categories[z].Category,
-                        type: "Category",
-                    });
+                    var categoryReqs = []
+                    this.statusShow.push([]);
+                        // this.comment1.push([]);
+                        // this.comment2.push([]);
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                        this.statusShow.push("");
-                        this.comment1.push("");
-                        this.comment2.push("");
-                        this.eval.push({
+                        this.statusShow[z].push("");
+                        this.comment1[z].push("");
+                        this.comment2[z].push("");
+                        categoryReqs.push({
                             id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
+                            key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             Requirement: this.categories[z].subcategory[x].Subcategory,
                             type: "SubCategory",
                         });
                         for (
                             var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                         ) {
-                            this.statusShow.push("");
-                            this.comment1.push("");
-                            this.comment2.push("");
-                            this.eval.push({
+                            this.statusShow[z].push("");
+                            this.comment1[z].push("");
+                            this.comment2[z].push("");
+                            categoryReqs.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
+                                key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,
                                 type: "Item",
                             });
                         }
                     }
+
+                    this.eval.push({
+                        id: this.categories[z].id,
+                        key: this.categories[z].key +"-"+ this.categories[z].id ,
+                        name: this.categories[z].Category,
+                        cat: categoryReqs,
+                    });
                 }
             }
             //Get Application Type of Application and id of Initial Permit Application Type for compliance due date
@@ -704,7 +710,6 @@ export default {
             appTypeQuery.equalTo("applicationTypeName", "INITIAL PERMIT")
             const appType = await appTypeQuery.first();
             this.initPermit = appType.id
-
         }
     },
 };
