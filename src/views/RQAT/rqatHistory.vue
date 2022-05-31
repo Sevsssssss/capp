@@ -4,7 +4,7 @@
 </div>
 <div v-else class="px-3 py-2">
     
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 ">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                 <tr>
@@ -19,7 +19,7 @@
             <tbody>
                 <tr v-for="tables in table" :key="tables" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     
-                        <th v-if="tables.status != 'For Inspection'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        <th v-if="tables.status != 'For Inspection'" scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                             {{tables.program}}
                         </th>
                         <td v-if="tables.status != 'For Inspection'" class="px-6 py-4">

@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
-{{comment1}} <br>
+<br>
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
@@ -40,7 +40,7 @@
         </div>
         <div>
             <div class="py-4">
-                <div class="relative overflow-x-auto shadow-md m-5">
+                <div class="overflow-x-auto shadow-md m-5">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr class="divide-x-2">
@@ -136,15 +136,15 @@
                         <tbody>
                             <tr class="divide-x-2 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    <div class="flex flex-row justify-between">
-                                        <p class="py-2 font-semibold">Summary</p>
+                                    <div class="flex flex-row justify-between items-center">
+                                        <p class="py-2 font-semibold ">Summary</p>
                                         <label @click="getSummary()" class="hover:text-brand-darkblue">Generate Summary</label>
                                     </div>
                                     <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea>
                                 </th>
 
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                   <div class="flex flex-row justify-between">
+                                   <div class="flex flex-row justify-between items-center">
                                         <p class="py-2 font-semibold">Recommendations</p>
                                         <label @click="getRecommendation()" class="hover:text-brand-darkblue">Generate Recommendations</label>
                                     </div>

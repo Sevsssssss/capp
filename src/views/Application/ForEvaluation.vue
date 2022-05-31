@@ -19,7 +19,7 @@
         <div v-if="this.storedRqats != null && this.storedRqats.length > 0" class="flex flex-row">
             <span class="text-sm">Assigned To:</span>
             <div v-for="rqat in storedRqats" :key="rqat" class="flex flex-row">
-                <p class="font-semibold uppercase badge badge-accent text-sm rounded-sm mx-2">{{rqat}}</p>
+                <p class="font-semibold uppercase badge badge-accent text-brand-white text-sm rounded-sm mx-2">{{rqat}}</p>
             </div>
         </div>
     </div>
