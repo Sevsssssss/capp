@@ -279,6 +279,7 @@ export default {
         };
     },
     computed: {
+        //For Search Functionality
         searchApplication() {
             this.newEntCount();
             return this.tables
@@ -608,12 +609,15 @@ export default {
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             var storedApplications = [];
+
+            //Query Applications
             const applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(applications);
             query.equalTo("createdBy", Parse.User.current().id);
             query.descending("createdAt")
             const querResult = await query.find();
-
+            
+            //Store Applications
             for (var i = 0; i < querResult.length; i++) {
                 const application = querResult[i];
 
@@ -689,7 +693,6 @@ export default {
             subscription.on("update", async (object) => {
                 console.log("object updated" + object);
                 var index = this.tables.findIndex((application) => application.appID == object.id);
-                console.log("thissssssss: " + object.get("certificate"))
                 if (object.get("certificate") !== undefined) {
                     this.tables[index] = {
                         ...this.tables[index],

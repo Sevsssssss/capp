@@ -89,7 +89,6 @@ export default {
         };
     },
     mounted: async function () {
-      console.log('hi')
     // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
     const AccessTypes = Parse.Object.extend("AccessTypes");
     const query = new Parse.Query(AccessTypes);

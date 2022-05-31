@@ -599,10 +599,15 @@ export default {
 
             this.instName = user.get("hei_name");
 
-            const heiAddress = user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", " +
-                user.get("address").province + ", " + user.get("address").regionName;
+        
+
+            const heiAddress = user.get("address").street == undefined || user.get("address").street == "" ?
+            user.get("address").barangay + ", " + user.get("address").city + ", " +
+            user.get("address").province + ", " + user.get("address").regionName :
+            user.get("address").street + ", " + user.get("address").barangay + ", " + user.get("address").city + ", " +
+            user.get("address").province + ", " + user.get("address").regionName;
+            
             this.address = heiAddress;
-            console.log("Hello" + user.get("hei_name"));
 
             //Query Evaluation Instrument
             const evalInstruments = Parse.Object.extend("EvaluationInstruments");

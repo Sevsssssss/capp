@@ -138,6 +138,8 @@ export default {
             //count how many rows have uploader
             try {
                 let requirement = null;
+
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
                 appQuery.equalTo("objectId", this.id);
@@ -145,11 +147,9 @@ export default {
                     useMasterKey: true,
                 });
 
+                //Get Disapproved requirements
                 for (var i = 0; i < this.disapprovedCount; i++) {
                     const file = values.target[i].files[0];
-                    console.log(file);
-                    console.log(file.name);
-                    console.log(file.type);
                     requirement = new Parse.File(
                         file.name.replace(/[^a-zA-Z]/g, ""),
                         file,
@@ -170,6 +170,7 @@ export default {
                     dateTime: new Date(),
                 });
 
+                //Save Application updates
                 application
                     .save({
                         requirements: this.reqs,
@@ -205,7 +206,6 @@ export default {
                                         path: "/hei/application"
                                     });
                                 }, 3000);
-                            // console.log("New Access Type Added:" + newApplication.id)
                         },
                         (e) => {
                             toast("Application Update Failed: " + e.message, {
@@ -236,6 +236,7 @@ export default {
     },
 
     computed: {
+        //For Search Functionality
         searchHEI() {
             return this.tables.filter((p) => {
                 return (
@@ -245,7 +246,6 @@ export default {
         },
     },
     mounted: async function () {
-        console.log("hi");
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
@@ -284,7 +284,7 @@ export default {
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
 
-
+            //Get Application Data
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");

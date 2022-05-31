@@ -115,26 +115,7 @@ export default {
                     title: "FILES",
                 },
             ],
-            tables: [{
-                    credential: "Articles of Incorporation and By-Laws..",
-                    file: "ArticlesofInc.pdf",
-                    comment: "Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit.",
-                },
-                {
-                    credential: "Copy(ies) of Transfer of Certificate(s) Title (TCT)",
-                    file: "Copy(ies)ofTransferof.pdf",
-                    comment: "",
-                },
-                {
-                    credential: "Ownership of School Building",
-                    file: "OwnershipofSchoolBuilding.pdf",
-                    comment: "",
-                },
-                {
-                    credential: "Campus Development and Landscaping Plan",
-                    file: "CampusDevelopme.pdf",
-                    comment: "",
-                },
+            tables: [
             ],
             statusTracker: [],
             search: "",
@@ -149,6 +130,8 @@ export default {
             try {
 
                 let pay = null;
+
+                //Query Application
                 const applications = Parse.Object.extend("Applications");
                 const appQuery = new Parse.Query(applications);
                 appQuery.equalTo("objectId", this.id);
@@ -156,6 +139,7 @@ export default {
                     useMasterKey: true,
                 });
 
+                //Get Payment Files
                 for (var i = 0; i < 2; i++) {
                     const file = values.target[i].files[0];
                     pay = new Parse.File(
@@ -175,6 +159,7 @@ export default {
                     dateTime: new Date(),
                 });
 
+                //Save Application Updates
                 application
                     .save({
                         payment: this.payment,
@@ -184,6 +169,8 @@ export default {
                     .then(
                         (application) => {
                             this.$refs.Spinner.show();
+
+                            //Make a notification for Education SuperVisor selected
                             const Notifications = Parse.Object.extend("Notifications");
                             const newNotification = new Notifications();
 
@@ -192,6 +179,7 @@ export default {
                             newNotification.set("user", this.educationSupervisor);
                             newNotification.set("isRead", false);
 
+                            //Make a new Notification for Admin
                             const newNotification2 = new Notifications();
 
                             newNotification2.set("message", "An Application is open for verification for compliance");
@@ -199,6 +187,8 @@ export default {
                             newNotification2.set("user", this.adminID);
                             newNotification2.set("isRead", false);
 
+
+                            //Save Notifications
                             newNotification.save().then((notif) => {
                                 console.log("Notification Saved: " + notif.id);
                             }, (error) => {
@@ -220,7 +210,6 @@ export default {
                                         path: "/hei/application"
                                     });
                                 }, 3000);
-                            // console.log("New Access Type Added:" + newApplication.id)
                         },
                         (e) => {
                             toast("Application Update Failed: " + e.message, {
@@ -249,18 +238,7 @@ export default {
             );
         },
     },
-
-    computed: {
-        searchHEI() {
-            return this.tables.filter((p) => {
-                return (
-                    p.credential.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-                );
-            });
-        },
-    },
     mounted: async function () {
-        console.log("hi");
         // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
         const AccessTypes = Parse.Object.extend("AccessTypes");
         const query = new Parse.Query(AccessTypes);
@@ -299,6 +277,7 @@ export default {
             appTypeQuery.equalTo("objectId", application.get("applicationType"));
             const appType = await appTypeQuery.first();
 
+            //Get Application Data
             this.status = application.get("applicationStatus");
             this.type = appType.get("applicationTypeName");
             this.program = program.get("programName");

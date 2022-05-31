@@ -273,9 +273,7 @@ export default {
         modal() {
             var has_error = 0;
             var missing_comment = 0;
-            // var missing_comment1 = 0;
             var missing_checkbox = 0;
-            console.log(this.comment1.length)
 
             for (var i = 0; i < this.comment1.length; i++) {
                 if (this.comment1[i] == null || this.comment1[i] == '') {
@@ -283,12 +281,6 @@ export default {
 
                 }
             }
-            // for (var x = 0; x < this.comment2.length; x++) {
-            //     if(this.comment2[x] == null ||  this.comment2[x] == ''){
-            //         missing_comment1++;
-            //         console.log(this.comment2[i])
-            //     }
-            // }
 
             for (var j = 0; j < this.statusShow.length; j++) {
                 if (this.statusShow[j] == 'NotComplied' && this.comment2[j] == '') {
@@ -313,6 +305,8 @@ export default {
             }
         },
         async submitEvaluation() {
+
+            //Query Application
             const Applications = Parse.Object.extend("Applications");
             const query = new Parse.Query(Applications);
             query.equalTo("objectId", this.id);
@@ -384,9 +378,12 @@ export default {
             }
 
             if (this.statusShow.includes("NotComplied")) {
+                
+                //For Compliance Due Date
                 var today = new Date();
                 var complianceDueDate = this.appliType == this.initPermit ? today.setDate(today.getDate() + 45): today.setDate(today.getDate() + 30);
-                console.log(complianceDueDate)
+                
+                //Set Application Updates
                 application.set("applicationStatus", "For Compliance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
@@ -404,6 +401,7 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save Application Updates
                 application
                     .save()
                     .then((application) => {
@@ -417,6 +415,7 @@ export default {
                         console.log("Object Updated: " + application.id);
                     })
 
+                //Make a new Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -432,6 +431,8 @@ export default {
                 });
 
             } else {
+                
+                //Set Application Updates
                 application.set("applicationStatus", "For Issuance");
                 application.set("actualSituations", actualSituations);
                 application.set("remarks", remarks);
@@ -445,12 +446,14 @@ export default {
                 });
                 application.set("statusTracker", this.statusTracker);
 
+                //Save Updates
                 application
                     .save()
                     .then((application) => {
                         console.log("Object Updated: " + application.id);
                     })
 
+                //Make a New Notification
                 const Notifications = Parse.Object.extend("Notifications");
                 const newNotification = new Notifications();
 
@@ -471,7 +474,6 @@ export default {
                 timeout: 2000,
                 position: POSITION.TOP_RIGHT,
             });
-            // this.sendEmail().then(() => {
             setTimeout(
                 () =>
                 this.$router.push({
@@ -524,12 +526,13 @@ export default {
         }
         if (flag === 0) {
             console.log(this.$route.path)
-            console.log("heheh")
             this.$router.push("/403");
         } else {
             console.log("Hi!, You have permission to access this Page");
             //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
             //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            //Query Application
             const applications = Parse.Object.extend("Applications");
             const appQuery = new Parse.Query(applications);
             appQuery.equalTo("objectId", this.id);
@@ -537,6 +540,7 @@ export default {
                 useMasterKey: true,
             });
 
+            //Get Application Data
             this.statusTracker = application.get("statusTracker")
             this.hei = application.get("createdBy")
 
@@ -572,8 +576,6 @@ export default {
                 user.get("address").province + ", " + user.get("address").regionName;
             this.address = heiAddress;
 
-            console.log("Hello" + user.get("hei_name"));
-
             //Query Evaluation Instrument
             const evalInstruments = Parse.Object.extend("EvaluationInstruments");
             const evalQuery = new Parse.Query(evalInstruments);
@@ -581,8 +583,6 @@ export default {
             const evalInstrument = await evalQuery.first({
                 useMasterKey: true,
             });
-
-            console.log(evalInstrument);
 
             //Query the program of the application
             const programs = Parse.Object.extend("Programs");
@@ -593,8 +593,10 @@ export default {
 
             this.program = program.get("programName");
 
+            //Get the Evaluation Instrument Requirements needed for the Program
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
-
+                
+                //Query CMOs Used
                 const CHEDMEMOS = Parse.Object.extend("CHED_MEMO");
                 const chedMemoQ = new Parse.Query(CHEDMEMOS);
                 chedMemoQ.equalTo("objectId", evalInstrument.get("evalInstReqs")[c].cmoID);
@@ -606,7 +608,6 @@ export default {
                 var subcatIndexes = [];
 
                 for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
-                    console.log(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr])
                     var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
                     if (catIndexes.includes(parseInt(contents[0]))) {
@@ -623,19 +624,10 @@ export default {
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
-                        // this.statusShow.push("");
-                        // this.comment1.push("");
-                        // this.comment2.push("");
                         for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
                             if (subcatIndexes[i].includes(j + 1)) {
                                 var items = [];
-                                // this.statusShow.push("");
-                                // this.comment1.push("");
-                                // this.comment2.push("");
                                 for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
-                                    // this.statusShow.push("");
-                                    // this.comment1.push("");
-                                    // this.comment2.push("");
                                     items.push({
                                         id: k + 1,
                                         Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
@@ -672,8 +664,6 @@ export default {
                 this.categories = categories;
 
                 for (var z = 0; z < this.categories.length; z++) {
-                    //console.log(i)
-                    // console.log(this.categories[i].Category);
                     this.statusShow.push("");
                     this.comment1.push("");
                     this.comment2.push("");
@@ -682,10 +672,7 @@ export default {
                         Requirement: this.categories[z].Category,
                         type: "Category",
                     });
-                    //this.catCounter++;
-                    //this.subcatCounter = this.categories[i].subcategory.length;
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                        // console.log(this.categories[i].subcategory[x].Subcategory);
                         this.statusShow.push("");
                         this.comment1.push("");
                         this.comment2.push("");
@@ -694,13 +681,9 @@ export default {
                             Requirement: this.categories[z].subcategory[x].Subcategory,
                             type: "SubCategory",
                         });
-                        //var itemLen = this.categories[i].subcategory[x].items.length;
-                        //this.subcatCounter++;
-                        //this.itemCounter =this.categories[i].subcategory[x].items.length;
                         for (
                             var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                         ) {
-                            //console.log(this.categories[i].subcategory[x].items[y].Item);
                             this.statusShow.push("");
                             this.comment1.push("");
                             this.comment2.push("");
@@ -709,7 +692,6 @@ export default {
                                 Requirement: this.categories[z].subcategory[x].items[a].Item,
                                 type: "Item",
                             });
-                            //this.itemCounter++;
                         }
                     }
                 }
