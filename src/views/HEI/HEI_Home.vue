@@ -5,17 +5,16 @@
         <div class="flex flex-row text-left space-x-4">
             <!-- <img src="../assets/img/CHED_logo.png" alt="" > -->
             <img src="@/assets/img/CHED_logo.png" class="h-28 w-28" />
-            <div class="space-y-2">
+            <div class="flex flex-col justify-start items-start space-y-2">
                 <div class="font-semibold text-2xl xxs:leading-tight">
                     CHED Program Applications Management System
                 </div>
                 <p class="font-medium body-small">
-                    Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam
-                    no suscipit quaerendum. At nam minimum ponderum. Est audiam animal
-                    molestiae te. Ex duo eripuit mentitum. Et has minim elitr
-                    intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit
-                    quaerendum. At nam minimum ponderum. Est audiam animal molestiae te.
-                    Ex duo eripuit mentitum
+                    The CHED Programs Application Management System was developed in order to have a more efficient
+                    and effective way of managing HEIs program applications. This system should take away the hassle
+                    of the manual application process that the CHED is currently implementing. The system will consist
+                    of two (2) main systems which are the CHED who will use the admin side and the HEIs who will utilize
+                    the client side of the application/system.
                 </p>
             </div>
         </div>
@@ -89,27 +88,27 @@ export default {
         };
     },
     mounted: async function () {
-    // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes);
-    query.equalTo("objectId", Parse.User.current().get("access_type"));
+        // THIS LINES OF CODE CHECKS IF THE USER HAS A PERMISSION TO ACCESS THIS ROUTE
+        const AccessTypes = Parse.Object.extend("AccessTypes");
+        const query = new Parse.Query(AccessTypes);
+        query.equalTo("objectId", Parse.User.current().get("access_type"));
 
-    const querResult = await query.find();
-    var homeType = querResult[0].get("hometype");
-    var flag = 0;
-      if (homeType === '/hei/home') {
-        flag = 1;
-      }
-    if (flag === 0) {
-      this.$router.push("/403");
-      console.log("HEI Home page");
-    } else {
-      console.log("Hi!, You have permission to access this Page");
-      //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
-      //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+        const querResult = await query.find();
+        var homeType = querResult[0].get("hometype");
+        var flag = 0;
+        if (homeType === '/hei/home') {
+            flag = 1;
+        }
+        if (flag === 0) {
+            this.$router.push("/403");
+            console.log("HEI Home page");
+        } else {
+            console.log("Hi!, You have permission to access this Page");
+            //INSERT HERE MOUNTED ARGUMENTS FOR THIS COMPONENT
+            //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-    }
-  },
+        }
+    },
 };
 </script>
 
