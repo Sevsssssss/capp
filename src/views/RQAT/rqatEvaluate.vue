@@ -617,6 +617,21 @@ export default {
                     }
                 }
 
+                var hasSubCat = [];
+
+                for (var cs = 0; cs < catIndexes.length; cs++) {
+                    if (subcatIndexes[cs].every(x => x < 0)) {
+                        hasSubCat.push(false);
+                    } else {
+                        hasSubCat.push(true);
+                    }
+                    for (var ss = 0; ss < subcatIndexes[cs].length; ss++) {
+                        if (subcatIndexes[cs][ss] == -1) {
+                            subcatIndexes[cs].splice(ss, 1)
+                        }
+                    }
+                }
+
                 var categories = [];
 
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
