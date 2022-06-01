@@ -641,15 +641,23 @@ export default {
                 var subcatIndexes = [];
                 
                 for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
-                    var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
+                    if (evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].indexOf(".") > -1) {
+                        var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
 
-                    if (catIndexes.includes(parseInt(contents[0]))) {
-                        var index = catIndexes.indexOf(parseInt(contents[0]));
-                        subcatIndexes[index].push(parseInt(contents[1]))
+                        if (catIndexes.includes(parseInt(contents[0]))) {
+                            var index = catIndexes.indexOf(parseInt(contents[0]));
+                            subcatIndexes[index].push(parseInt(contents[1]))
+                        } else {
+                            catIndexes.push(parseInt(contents[0]));
+                            subcatIndexes.push([parseInt(contents[1])]);
+                        }
                     } else {
-                        catIndexes.push(parseInt(contents[0]));
-                        subcatIndexes.push([parseInt(contents[1])]);
+                        if (!catIndexes.includes(parseInt(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]))) {
+                            catIndexes.push(parseInt(evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr]));
+                            subcatIndexes.push([-1]);
+                        }
                     }
+
                 }
 
                 var hasSubCat = [];
@@ -693,6 +701,7 @@ export default {
                                             .Subcategory,
                                         items: items,
                                     });
+                                    console.log
                                 }
                             }
 
