@@ -640,7 +640,7 @@ export default {
                         var catIndex = catIndexes.indexOf(i + 1)
                         if(hasSubCat[catIndex] == true){
                             for (var j = 0; j < chedMemo.get("evaluationFormReqs")[i].subcategory.length; j++) {
-                                if (subcatIndexes[catIndexes].includes(j + 1)) {
+                                if (subcatIndexes[catIndex].includes(j + 1)) {
                                     var items = [];
                                     for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                                         items.push({
@@ -685,6 +685,8 @@ export default {
                 for (var z = 0; z < this.categories.length; z++) {
                     var categoryReqs = []
                     this.statusShow.push([]);
+                        this.comment1.push([]);
+                        this.comment2.push([]);
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
                         this.statusShow[z].push("");
                         this.comment1[z].push("");
