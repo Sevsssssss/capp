@@ -591,6 +591,11 @@ export default {
 
             this.program = program.get("programName");
 
+            //For Getting
+            var categoryCounter = 0;
+
+            //For Textboxes
+            var categoryCount = 0;
 
             //Query Evaluation Instrument to be used
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
@@ -677,9 +682,9 @@ export default {
                                     seriesYear: chedMemo.get("Series_Year"),
                                 })
                             }
-
+                            categoryCounter++;
                             categories.push({
-                                id: i + 1,
+                                id: categoryCounter,
                                 key: chedMemo.get("CMO_No"),
                                 Category: chedMemo.get("evaluationFormReqs")[i].Category,
                                 Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
@@ -688,6 +693,7 @@ export default {
                         }
                     }
                 }
+                categoryCount += this.categories.length;
                 this.categories = categories;
 
                 for (var z = 0; z < this.categories.length; z++) {
@@ -696,21 +702,19 @@ export default {
                         this.comment1.push([]);
                         this.comment2.push([]);
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                        this.statusShow[z].push("");
-                        this.comment1[z].push("");
-                        this.comment2[z].push("");
+                        this.statusShow[z + categoryCount].push("");
+                        this.comment1[z + categoryCount].push("");
+                        this.comment2[z + categoryCount].push("");
                         categoryReqs.push({
                             id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             Requirement: this.categories[z].subcategory[x].Subcategory,
                             type: "SubCategory",
                         });
-                        for (
-                            var a = 0; a < this.categories[z].subcategory[x].items.length; a++
-                        ) {
-                            this.statusShow[z].push("");
-                            this.comment1[z].push("");
-                            this.comment2[z].push("");
+                        for (var a = 0; a < this.categories[z].subcategory[x].items.length; a++) {
+                            this.statusShow[z + categoryCount].push("");
+                            this.comment1[z + categoryCount].push("");
+                            this.comment2[z + categoryCount].push("");
                             categoryReqs.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
@@ -728,6 +732,7 @@ export default {
                     });
                 }
             }
+            console.log(categoryCounter)
             //Get Application Type of Application and id of Initial Permit Application Type for compliance due date
             this.appliType = application.get("applicationType");
 

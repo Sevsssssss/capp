@@ -625,8 +625,14 @@ export default {
             const program = await programQuery.first();
 
             this.program = program.get("programName");
+            
 
+            //For Getting
+            var categoryCounter = 0;
 
+            //For Textboxes
+            var categoryCount = 0; 
+            
             //Query Evaluation Instrument to be used
             for (var c = 0; c < evalInstrument.get("evalInstReqs").length; c++) {
 
@@ -713,9 +719,9 @@ export default {
                                     seriesYear: chedMemo.get("Series_Year"),
                                 })
                             }
-
+                            categoryCounter++
                             categories.push({
-                                id: i + 1,
+                                id: categoryCounter,
                                 key: chedMemo.get("CMO_No"),
                                 Category: chedMemo.get("evaluationFormReqs")[i].Category,
                                 Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
@@ -724,17 +730,17 @@ export default {
                         }
                     }
                 }
+                categoryCount += this.categories.length;
                 this.categories = categories;
-
                 for (var z = 0; z < this.categories.length; z++) {
                     var categoryReqs = []
                     this.statusShow.push([]);
                         this.comment1.push([]);
                         this.comment2.push([]);
                     for (var x = 0; x < this.categories[z].subcategory.length; x++) {
-                        this.statusShow[z].push("");
-                        this.comment1[z].push("");
-                        this.comment2[z].push("");
+                        this.statusShow[z + categoryCount].push("");
+                        this.comment1[z + categoryCount].push("");
+                        this.comment2[z + categoryCount].push("");
                         categoryReqs.push({
                             id: this.categories[z].id + "." + this.categories[z].subcategory[x].id,
                             key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id,
@@ -744,9 +750,9 @@ export default {
                         for (
                             var a = 0; a < this.categories[z].subcategory[x].items.length; a++
                         ) {
-                            this.statusShow[z].push("");
-                            this.comment1[z].push("");
-                            this.comment2[z].push("");
+                            this.statusShow[z + categoryCount].push("");
+                            this.comment1[z + categoryCount].push("");
+                            this.comment2[z + categoryCount].push("");
                             categoryReqs.push({
                                 id: this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
                                 key: this.categories[z].key +"-"+ this.categories[z].id + "." + this.categories[z].subcategory[x].id + "." + this.categories[z].subcategory[x].items[a].id,
