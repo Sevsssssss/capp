@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent="submit">
-    {{comment1}} <br> {{comment2}} <br> {{statusShow}}
+    <!-- {{comment1}} <br> {{comment2}} <br> {{statusShow}} -->
     <div class="shadow-lg rounded-lg my-3 py-5">
         <div class="flex flex-row justify-center items-center space-x-4 text-sm">
             <div class="">
