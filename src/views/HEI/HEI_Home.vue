@@ -14,8 +14,7 @@
                     and effective way of managing HEIs program applications. This system should take away the hassle
                     of the manual application process that the CHED is currently implementing. The system will consist
                     of two (2) main systems which are the CHED who will use the admin side and the HEIs who will utilize
-                    the client side of the application/system.
-                </p>
+                    the client side of the application/system. </p>
             </div>
         </div>
     </div>
