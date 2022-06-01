@@ -86,7 +86,7 @@
                         </td> -->
                         <td class="px-6 py-4">
                             <div class="flex  space-x-2 items-end justify-end">
-                                <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                <!-- <a href="#" @click="viewAssignments()" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a> -->
 
                                 <router-link :to="{
                                 name: 'EditRQATView',

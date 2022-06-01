@@ -142,7 +142,6 @@ import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 
 import MenuOpen from "vue-material-design-icons/MenuOpen.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
-
 import HomeOutline from "@/assets/sidebar_icons/home.svg";
 import FileOutline from "@/assets/sidebar_icons/file.svg";
 import BankLine from "@/assets/sidebar_icons/bank-line.svg";
@@ -154,6 +153,7 @@ import FileSettingsLine from "@/assets/sidebar_icons/file-settings-line.svg";
 import AccessTypeLine from "@/assets/sidebar_icons/shield-user-line.svg";
 import BookLine from "@/assets/sidebar_icons/book-line.svg";
 import ContactLine from "@/assets/sidebar_icons/contacts-line.svg";
+
 
 const toast = useToast();
 
@@ -365,7 +365,7 @@ export default {
                     icon: {
                         element: "img",
                         attributes: {
-                            src: HomeOutline,
+                            src: BankLine,
                         },
                     },
                 });
