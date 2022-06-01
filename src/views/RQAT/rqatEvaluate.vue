@@ -393,7 +393,16 @@ export default {
                     }
                 }
             }
-            if (this.statusShow.includes("NotComplied")) {
+
+            var complying = true;
+            for(var statArr = 0; statArr < this.statusShow.length; statArr++){
+                for(var status = 0; status < this.statusShow[statArr].length; status++){
+                    if(this.statusShow[statArr][status] == "NotComplied"){
+                        complying = false;
+                    }
+                }
+            }
+            if (complying == false) {
                 var today = new Date();
                 var complianceDueDate = this.appliType == this.initPermit ? today.setDate(today.getDate() + 45): today.setDate(today.getDate() + 30);
                 console.log(complianceDueDate)
