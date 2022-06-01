@@ -5,12 +5,10 @@
     <div class="space-y-4">
         <div class="font-bold xl:text-2xl md:text-xl sm:text-xl xs:text-xl">HOW TO APPLY?</div>
         <p class="xl:mx-32 md:mx-20 label-text ">
-            Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam
-            no suscipit quaerendum. At nam minimum ponderum. Est audiam animal
-            molestiae te. Ex duo eripuit mentitum. Et has minim elitr
-            intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit
-            quaerendum. At nam minimum ponderum. Est audiam animal molestiae te.
-            Ex duo eripuit mentitum </p>
+           A valid Higher Education Institution email address and phone number should be used. 
+           It is mandatory that the files have the same name as the requirements. 
+           The steps for HEI to apply for an application are listed below.
+        </p>
     </div>
     <!-- Details -->
     <div class="grid xxxl:grid-cols-4 xl:grid-cols-4 md:grid-cols-2 self-center sm:grid-cols-2 xs:grid-cols-1 gap-8">

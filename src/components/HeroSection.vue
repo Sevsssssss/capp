@@ -145,7 +145,7 @@ export default {
             showErr: false,
             showErr1: false,
             title: "CHED PROGRAMS APPLICATION MANAGEMENT SYSTEM",
-            Info: "Lorem asdasda asdasdas asd asd asipsum dolor sit amet consectetur adipisicing elit. Nesciunt molestias minus rem omnis aliquid ducimus et neque, dolore itaque cupiditate nostrum pariatur!",
+            Info: "A web based application that will cater the processing of program applications by different Higher Education Institutions",
             username: "",
             password: "",
             usernameErr: "Please Enter your Email",
