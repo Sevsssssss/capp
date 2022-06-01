@@ -680,6 +680,7 @@ export default {
                                     for (var k = 0; k < chedMemo.get("evaluationFormReqs")[i].subcategory[j].items.length; k++) {
                                         items.push({
                                             id: k + 1,
+                                            key: chedMemo.get("CMO_No"),
                                             Item: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
                                                 .items[k].Item,
                                         });
@@ -687,6 +688,7 @@ export default {
 
                                     subcat.push({
                                         id: j + 1,
+                                        key: chedMemo.get("CMO_No"),
                                         Subcategory: chedMemo.get("evaluationFormReqs")[i].subcategory[j]
                                             .Subcategory,
                                         items: items,
@@ -705,6 +707,7 @@ export default {
 
                             categories.push({
                                 id: i + 1,
+                                key: chedMemo.get("CMO_No"),
                                 Category: chedMemo.get("evaluationFormReqs")[i].Category,
                                 Desc: chedMemo.get("evaluationFormReqs")[i].Desc,
                                 subcategory: subcat,
