@@ -39,7 +39,7 @@
         </div>
         <div>
             <div class="py-4">
-                <div class="relative overflow-x-auto shadow-md m-5">
+                <div class="overflow-x-auto shadow-md m-5">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr class="divide-x-2">
@@ -50,7 +50,7 @@
                         </thead>
                         <tbody v-for="(cat, catIndex) in eval" :key="(cat, catIndex)">
                             <tr scope="row" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
-                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     {{ cat.id }}
                                 </td>
                                 <td  class="aoe font-bold p-2">
@@ -81,7 +81,7 @@
                                 </td> -->
                             </tr>
                             <tr scope="row" v-for="(req, index) in cat.cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
-                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     {{ req.id }} {{index}}
                                 </td>
                                 <td v-if="req.type == 'Category'" class="aoe font-bold p-2">

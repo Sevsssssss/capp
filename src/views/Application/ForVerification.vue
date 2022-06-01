@@ -30,7 +30,6 @@
                             <span>{{summary}}</span>
                             <!-- <textarea id="summary" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="summary"></textarea> -->
                         </th>
-
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white w-1/2">
                             <p class="py-2 font-semibold">Recommendation</p>
                             <!-- <textarea id="recommendation" rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300" placeholder="Leave a comment..." v-model="recommendation"></textarea> -->
