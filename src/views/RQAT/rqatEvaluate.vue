@@ -82,7 +82,7 @@
                             </tr>
                             <tr scope="row" v-for="(req, index) in cat.cat" :key="(req, index)" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                                 <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                    {{ req.id }} {{index}}
+                                    {{ req.id }}
                                 </td>
                                 <td v-if="req.type == 'Category'" class="aoe font-bold p-2">
                                     {{ req.Requirement }}

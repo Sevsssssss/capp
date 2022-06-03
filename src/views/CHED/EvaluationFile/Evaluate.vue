@@ -51,7 +51,7 @@
                         <tbody v-for="(cat, catIndex) in eval" :key="(cat, catIndex)">
                             <tr scope="row" class="divide-x-2 bg-white border dark:bg-gray-800 dark:border-gray-700">
                                 <td class=" text-center p-5 px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    {{ cat.id }} - {{cat.key}}
+                                    {{ cat.id }}
                                 </td>
                                 <td  class="aoe font-bold p-2">
                                     {{ cat.name }}
