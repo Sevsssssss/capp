@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED='0'
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
