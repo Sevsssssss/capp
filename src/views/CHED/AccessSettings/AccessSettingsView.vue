@@ -618,6 +618,7 @@ export default {
 
             const accessType = await atQuery.first();
 
+            console.log(this.selectedAT);
             //Save Changes to Access Type
             try {
                 accessType.save({

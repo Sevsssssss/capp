@@ -175,24 +175,28 @@
 
   //Access Type beforeSave for unique name
   Parse.Cloud.beforeSave("AccessTypes", async(request) => {
-    const AccessTypes = Parse.Object.extend("AccessTypes");
-    const query = new Parse.Query(AccessTypes)
-    query.equalTo("name", request.object.get("name"))
-      
-    const accessTypeCount = await query.count({useMasterKey:true})
-    if (accessTypeCount > 0) {
-      throw "Access Type Already Exists";
+    if(request.object.isNew()){
+      const AccessTypes = Parse.Object.extend("AccessTypes");
+      const query = new Parse.Query(AccessTypes)
+      query.equalTo("name", request.object.get("name"))
+        
+      const accessTypeCount = await query.count({useMasterKey:true})
+      if (accessTypeCount > 0) {
+        throw "Access Type Already Exists";
+      }
     }
   })
 
   //Designation beforeSave for unique name
   Parse.Cloud.beforeSave("Designations", async(request) => {
-    const Designations = Parse.Object.extend("Designations");
-    const query = new Parse.Query(Designations)
-    query.equalTo("name", request.object.get("name"))
+    if(request.object.isNew()){
+      const Designations = Parse.Object.extend("Designations");
+      const query = new Parse.Query(Designations)
+      query.equalTo("name", request.object.get("name"))
       
-    const designationCount = await query.count({useMasterKey:true})
-    if (designationCount > 0) {
-      throw "Designation Already Exists";
+      const designationCount = await query.count({useMasterKey:true})
+      if (designationCount > 0) {
+        throw "Designation Already Exists";
+      }
     }
   })

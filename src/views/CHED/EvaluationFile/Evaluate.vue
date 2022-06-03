@@ -645,6 +645,7 @@ export default {
                 var catIndexes = [];
                 var subcatIndexes = [];
                 
+                //To get the index of the selected categories and subcategories
                 for (var cr = 0; cr < evalInstrument.get("evalInstReqs")[c].checkedRequirements.length; cr++) {
                     if (evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].indexOf(".") > -1) {
                         var contents = evalInstrument.get("evalInstReqs")[c].checkedRequirements[cr].split(".");
@@ -667,6 +668,7 @@ export default {
 
                 var hasSubCat = [];
 
+                //To get the categories that does not have subcategories
                 for (var cs = 0; cs < catIndexes.length; cs++) {
                     if (subcatIndexes[cs].every(x => x < 0)) {
                         hasSubCat.push(false);
@@ -682,6 +684,7 @@ export default {
 
                 var categories = [];
 
+                //To get all items
                 for (var i = 0; i < chedMemo.get("evaluationFormReqs").length; i++) {
                     var subcat = [];
                     if (catIndexes.includes(i + 1)) {
